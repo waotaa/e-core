@@ -170,11 +170,11 @@ return [
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        Vng\EvaCore\Providers\AuthServiceProvider::class,
+        // Vng\EvaCore\Providers\BroadcastServiceProvider::class,
+        Vng\EvaCore\Providers\EventServiceProvider::class,
     ],
 
     /*

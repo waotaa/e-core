@@ -30,10 +30,11 @@
     26 => 'Laravel\\Tinker\\TinkerServiceProvider',
     27 => 'Carbon\\Laravel\\ServiceProvider',
     28 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    29 => 'App\\Providers\\AppServiceProvider',
-    30 => 'App\\Providers\\AuthServiceProvider',
-    31 => 'App\\Providers\\EventServiceProvider',
-    32 => 'App\\Providers\\RouteServiceProvider',
+    29 => 'Webpatser\\Uuid\\UuidServiceProvider',
+    30 => 'App\\Providers\\AppServiceProvider',
+    31 => 'App\\Providers\\RouteServiceProvider',
+    32 => 'Vng\\Cor\\Src\\Providers\\AuthServiceProvider',
+    33 => 'Vng\\Cor\\Src\\Providers\\EventServiceProvider',
   ),
   'eager' => 
   array (
@@ -52,10 +53,11 @@
     12 => 'Laravel\\Sanctum\\SanctumServiceProvider',
     13 => 'Carbon\\Laravel\\ServiceProvider',
     14 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    15 => 'App\\Providers\\AppServiceProvider',
-    16 => 'App\\Providers\\AuthServiceProvider',
-    17 => 'App\\Providers\\EventServiceProvider',
-    18 => 'App\\Providers\\RouteServiceProvider',
+    15 => 'Webpatser\\Uuid\\UuidServiceProvider',
+    16 => 'App\\Providers\\AppServiceProvider',
+    17 => 'App\\Providers\\RouteServiceProvider',
+    18 => 'Vng\\Cor\\Src\\Providers\\AuthServiceProvider',
+    19 => 'Vng\\Cor\\Src\\Providers\\EventServiceProvider',
   ),
   'deferred' => 
   array (

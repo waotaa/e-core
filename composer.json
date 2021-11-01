@@ -1,6 +1,6 @@
 {
-    "name": "vng/cor",
-    "description": "Kern voor beheerapplicaties van Eva instrumentengids",
+    "name": "vng/eva-core",
+    "description": "Kern voor beheerapplicaties van instrumentengids Eva",
     "type": "project",
     "authors": [
         {
@@ -8,17 +8,20 @@
             "email": "woutersteggerda@gmail.com"
         }
     ],
-    "keywords": ["vng", "instrumentengids", "eva"],
+    "keywords": ["vng", "instrumentengids", "eva", "core"],
     "license": "MIT",
     "require": {
         "php": "^7.4",
+        "elasticsearch/elasticsearch": "^7.4",
         "ext-dom": "*",
         "ext-json": "*",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "myclabs/php-enum": "^1.7",
+        "webpatser/laravel-uuid": "^3.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -31,6 +34,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "Vng\\EvaCore\\": "src/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
@@ -57,7 +61,11 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [],
+            "providers": [
+                "Vng\\EvaCore\\Providers\\EvaServiceProvider",
+                "Vng\\EvaCore\\Providers\\EventServiceProvider"
+            ]
         }
     },
     "config": {
