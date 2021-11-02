@@ -86,7 +86,6 @@ class EventServiceProvider extends ServiceProvider
         Provider::observe(ProviderObserver::class);
         Rating::observe(RatingObserver::class);
         RegistrationCode::observe(RegistrationCodeObserver::class);
-        User::observe(UserObserver::class);
         Video::observe(VideoObserver::class);
     }
 }
