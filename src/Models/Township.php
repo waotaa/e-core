@@ -2,9 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
-use Vng\EvaCore\Contracts\HasMembers as HasMembersContract;
-use Vng\EvaCore\Contracts\IsOwner as IsOwnerContract;
-use Vng\EvaCore\Traits\HasMembers;
+use Vng\EvaCore\Interfaces\IsOwnerInterface;
 use Vng\EvaCore\Traits\HasSlug;
 use Vng\EvaCore\Traits\IsOwner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,9 +13,9 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
-class Township extends Model implements HasMembersContract, IsOwnerContract
+class Township extends Model implements IsOwnerInterface
 {
-    use HasFactory, SoftDeletes, HasSlug, IsOwner, HasMembers;
+    use HasFactory, SoftDeletes, HasSlug, IsOwner;
 
     protected $table = 'townships';
 

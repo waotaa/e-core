@@ -2,10 +2,10 @@
 
 namespace Vng\EvaCore\Traits;
 
+use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\Region;
 use Vng\EvaCore\Models\Township;
-use Vng\EvaCore\Models\User;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 trait IsMember
@@ -17,7 +17,7 @@ trait IsMember
 
     public function isAssociated(): bool
     {
-        return !is_null($this->association);
+        return !is_null($this->getAttribute('association'));
     }
 
     public function getAssociationType(): ?string
@@ -25,7 +25,7 @@ trait IsMember
         if (!$this->isAssociated()) {
             return null;
         }
-        return get_class($this->association);
+        return get_class($this->getAttribute('association'));
     }
 
     public function isMemberOfRegion(): bool
@@ -43,8 +43,8 @@ trait IsMember
         return $this->isAssociated() && $this->getAssociationType() === Environment::class;
     }
 
-    public function usersShareAssociation(User $user): bool
+    public function usersShareAssociation(EvaUserInterface $user): bool
     {
-        return $this->isAssociated() && $this->association->hasMember($user);
+        return $this->isAssociated() && $this->getAttribute('association')->hasMember($user);
     }
 }

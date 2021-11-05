@@ -2,22 +2,19 @@
 
 namespace Vng\EvaCore\Traits;
 
-use Vng\EvaCore\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait HasMembers
 {
-    public function members(): MorphMany
+    public abstract function members(): MorphMany;
+
+    public function hasMember(Model $user): bool
     {
-        return $this->morphMany(User::class, 'association');
+        return $this->getAttribute('members') && $this->getAttribute('members')->contains($user->id);
     }
 
-    public function hasMember(User $user): bool
-    {
-        return $this->members && $this->members->contains($user->id);
-    }
-
-    public function join(User $user)
+    public function join(Model $user)
     {
         return $this->members()->save($user);
     }

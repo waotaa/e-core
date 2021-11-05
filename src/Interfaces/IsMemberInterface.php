@@ -1,11 +1,10 @@
 <?php
 
-namespace Vng\EvaCore\Contracts;
+namespace Vng\EvaCore\Interfaces;
 
-use Vng\EvaCore\Models\User;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-interface IsMember
+interface IsMemberInterface
 {
     public function association(): MorphTo;
 
@@ -19,5 +18,5 @@ interface IsMember
 
     public function isMemberOfEnvironment(): bool;
 
-    public function usersShareAssociation(User $user): bool;
+    public function usersShareAssociation(EvaUserInterface $user): bool;
 }

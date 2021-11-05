@@ -2,11 +2,9 @@
 
 namespace Vng\EvaCore\Models;
 
-use Vng\EvaCore\Contracts\HasMembers as HasMembersContract;
-use Vng\EvaCore\Contracts\IsOwner as IsOwnerContract;
+use Vng\EvaCore\Interfaces\IsOwnerInterface;
 use Vng\EvaCore\ElasticResources\RegionResource;
 use Vng\EvaCore\Traits\HasContacts;
-use Vng\EvaCore\Traits\HasMembers;
 use Vng\EvaCore\Traits\HasSlug;
 use Vng\EvaCore\Traits\IsOwner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,9 +14,9 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
-class Region extends SearchableModel implements HasMembersContract, IsOwnerContract
+class Region extends SearchableModel implements IsOwnerInterface
 {
-    use HasFactory, SoftDeletes, HasSlug, IsOwner, HasMembers, HasContacts;
+    use HasFactory, SoftDeletes, HasSlug, IsOwner, HasContacts;
 
     protected $table = 'regions';
     protected string $elasticResource = RegionResource::class;

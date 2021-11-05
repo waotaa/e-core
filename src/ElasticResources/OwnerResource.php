@@ -2,7 +2,7 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
-use Vng\EvaCore\Contracts\IsOwner;
+use Vng\EvaCore\Interfaces\IsOwnerInterface;
 
 class OwnerResource extends ElasticResource
 {
@@ -10,7 +10,7 @@ class OwnerResource extends ElasticResource
     {
         return [
             'id' => $this->id,
-            'type' => $this->resource instanceof IsOwner ? $this->resource->getShortClassname() : null,
+            'type' => $this->resource instanceof IsOwnerInterface ? $this->resource->getShortClassname() : null,
             'name' => $this->name,
             'slug' => $this->slug
         ];

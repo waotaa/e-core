@@ -1,7 +1,7 @@
 {
     "name": "vng/eva-core",
     "description": "Kern voor beheerapplicaties van instrumentengids Eva",
-    "type": "project",
+    "type": "library",
     "authors": [
         {
             "name": "Wouter Steggerda",

@@ -1,11 +1,11 @@
 <?php
 
-namespace Vng\EvaCore\Contracts;
+namespace Vng\EvaCore\Interfaces;
 
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-interface IsOwner
+interface IsOwnerInterface
 {
     public function ownedInstruments(): MorphMany;
 

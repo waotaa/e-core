@@ -45,7 +45,6 @@ use Vng\EvaCore\Commands\Operations\SetupGeoData;
 use Vng\EvaCore\Commands\Professionals\CognitoGetConfig;
 use Vng\EvaCore\Commands\Professionals\CognitoSetup;
 use Vng\EvaCore\Commands\Professionals\CognitoSyncProfessionals;
-use Vng\EvaCore\Commands\Professionals\CreateProfessionalFromUsers;
 use Vng\EvaCore\Commands\Professionals\ProfessionalPasswordExpirationCheck;
 use Vng\EvaCore\Commands\Reallocation\DuplicateOwnedItems;
 use Vng\EvaCore\Commands\Reallocation\MoveOwnedItems;
@@ -63,7 +62,7 @@ class EvaServiceProvider extends ServiceProvider
 
         $this->publishConfig();
         $this->publishTranslations();
-
+        $this->registerCommands();
     }
 
     private function publishConfig()
@@ -119,7 +118,6 @@ class EvaServiceProvider extends ServiceProvider
                 CognitoGetConfig::class,
                 CognitoSetup::class,
                 CognitoSyncProfessionals::class,
-                CreateProfessionalFromUsers::class,
                 ProfessionalPasswordExpirationCheck::class,
                 DuplicateOwnedItems::class,
                 MoveOwnedItems::class,

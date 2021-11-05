@@ -2,11 +2,11 @@
 
 namespace Vng\EvaCore\Models;
 
-use Vng\EvaCore\Interfaces\Searchable;
+use Vng\EvaCore\Interfaces\SearchableInterface;
 use Vng\EvaCore\Observers\ElasticsearchObserver;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class SearchableModel extends Model implements Searchable
+abstract class SearchableModel extends Model implements SearchableInterface
 {
     protected string $elasticResource;
 

@@ -2,7 +2,7 @@
 
 namespace Vng\EvaCore\Interfaces;
 
-interface Searchable
+interface SearchableInterface
 {
     public function getSearchIndex();
     public function getSearchType();

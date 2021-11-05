@@ -1,11 +1,10 @@
 <?php
 
-namespace Vng\EvaCore\Contracts;
+namespace Vng\EvaCore\Interfaces;
 
-use Vng\EvaCore\Models\User;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-interface HasOwner
+interface HasOwnerInterface
 {
     public function owner(): MorphTo;
 
@@ -19,5 +18,5 @@ interface HasOwner
 
     public function isOwnedByAdministrator(): bool;
 
-    public function isUserMemberOfOwner(User $user): bool;
+    public function isUserMemberOfOwner(EvaUserInterface $user): bool;
 }

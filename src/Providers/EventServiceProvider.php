@@ -20,7 +20,6 @@ use Vng\EvaCore\Models\Professional;
 use Vng\EvaCore\Models\Provider;
 use Vng\EvaCore\Models\Rating;
 use Vng\EvaCore\Models\RegistrationCode;
-use Vng\EvaCore\Models\User;
 use Vng\EvaCore\Models\Video;
 use Vng\EvaCore\Observers\ContactablesObserver;
 use Vng\EvaCore\Observers\ContactObserver;
@@ -35,7 +34,6 @@ use Vng\EvaCore\Observers\ProfessionalObserver;
 use Vng\EvaCore\Observers\ProviderObserver;
 use Vng\EvaCore\Observers\RatingObserver;
 use Vng\EvaCore\Observers\RegistrationCodeObserver;
-use Vng\EvaCore\Observers\UserObserver;
 use Vng\EvaCore\Observers\VideoObserver;
 
 class EventServiceProvider extends ServiceProvider

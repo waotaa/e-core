@@ -2,9 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
-use Vng\EvaCore\Contracts\HasMembers as HasMembersContract;
-use Vng\EvaCore\Contracts\IsOwner as IsOwnerContract;
-use Vng\EvaCore\Traits\HasMembers;
+use Vng\EvaCore\Interfaces\IsOwnerInterface;
 use Vng\EvaCore\Traits\HasSlug;
 use Vng\EvaCore\Traits\IsOwner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,9 +12,9 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
-class Partnership extends Model implements HasMembersContract, IsOwnerContract
+class Partnership extends Model implements IsOwnerInterface
 {
-    use SoftDeletes, HasFactory, IsOwner, HasMembers, HasSlug;
+    use SoftDeletes, HasFactory, IsOwner, HasSlug;
 
     protected $fillable = [
         'name',

@@ -2,7 +2,7 @@
 
 namespace Vng\EvaCore\Traits;
 
-use Vng\EvaCore\Models\User;
+use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 trait HasOwner
@@ -25,7 +25,7 @@ trait HasOwner
         return get_class($this->owner);
     }
 
-    public function isUserMemberOfOwner(User $user): bool
+    public function isUserMemberOfOwner(EvaUserInterface $user): bool
     {
         return $this->hasOwner() && $this->owner->hasMember($user);
     }
