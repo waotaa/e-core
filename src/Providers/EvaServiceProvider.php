@@ -51,8 +51,8 @@ use Vng\EvaCore\Commands\Reallocation\MoveOwnedItems;
 use Vng\EvaCore\Commands\Setup;
 use Vng\EvaCore\Commands\Setup\SeedCharacteristics;
 use Vng\EvaCore\Commands\Update;
-use Vng\EvaCore\Console\Commands\Elastic\SyncTiles;
-use Vng\EvaCore\Console\Commands\Format\MigrateToFormat2;
+use Vng\EvaCore\Commands\Elastic\SyncTiles;
+use Vng\EvaCore\Commands\Format\MigrateToFormat2;
 
 class EvaServiceProvider extends ServiceProvider
 {

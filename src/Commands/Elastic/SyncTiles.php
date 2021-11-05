@@ -1,6 +1,6 @@
 <?php
 
-namespace Vng\EvaCore\Console\Commands\Elastic;
+namespace Vng\EvaCore\Commands\Elastic;
 
 use Vng\EvaCore\Jobs\RemoveResourceFromElastic;
 use Vng\EvaCore\Jobs\SyncResourceToElastic;

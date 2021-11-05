@@ -1,6 +1,6 @@
 <?php
 
-namespace Vng\EvaCore\Console\Commands\Format;
+namespace Vng\EvaCore\Commands\Format;
 
 use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\Instrument;
