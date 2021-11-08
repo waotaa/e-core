@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Traits;
 
+use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Notifications\AccountCreationEmail;
 use Vng\EvaCore\Notifications\ResetPassword;
 use Vng\EvaCore\Services\PasswordService;
@@ -40,19 +41,9 @@ trait UserPropertiesTrait
 
     public static function bootUserPropertiesTrait()
     {
-        self::creating(function (UserPropertiesTrait $user) {
+        self::creating(function (EvaUserInterface $user) {
             $user->assignRandomPassword();
         });
-    }
-
-    public function canImpersonate()
-    {
-        return $this->isSuperAdmin();
-    }
-
-    public function canBeImpersonated()
-    {
-        return !$this->isSuperAdmin();
     }
 
     public abstract function isSuperAdmin();
@@ -84,5 +75,15 @@ trait UserPropertiesTrait
     {
         $sixMonthsAgo = (new DateTime())->modify('-6 months');
         return $this->password_updated_at < $sixMonthsAgo;
+    }
+
+    public function canImpersonate()
+    {
+        return $this->isSuperAdmin();
+    }
+
+    public function canBeImpersonated()
+    {
+        return !$this->isSuperAdmin();
     }
 }
