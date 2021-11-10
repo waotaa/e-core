@@ -12,9 +12,10 @@
     "license": "MIT",
     "require": {
         "php": "^7.4",
-        "elasticsearch/elasticsearch": "^7.4",
         "ext-dom": "*",
         "ext-json": "*",
+        "doctrine/dbal": "^3.1",
+        "elasticsearch/elasticsearch": "^7.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.54",
@@ -43,21 +44,6 @@
         "psr-4": {
             "Tests\\": "tests/"
         }
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
-        ],
-        "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi"
-        ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi"
-        ]
     },
     "extra": {
         "laravel": {

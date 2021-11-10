@@ -48,9 +48,9 @@ use Vng\EvaCore\Commands\Professionals\CognitoSyncProfessionals;
 use Vng\EvaCore\Commands\Professionals\ProfessionalPasswordExpirationCheck;
 use Vng\EvaCore\Commands\Reallocation\DuplicateOwnedItems;
 use Vng\EvaCore\Commands\Reallocation\MoveOwnedItems;
-use Vng\EvaCore\Commands\Setup;
 use Vng\EvaCore\Commands\Setup\SeedCharacteristics;
-use Vng\EvaCore\Commands\Update;
+use Vng\EvaCore\Commands\Setup\Setup;
+use Vng\EvaCore\Commands\Setup\Update;
 use Vng\EvaCore\Commands\Elastic\SyncTiles;
 use Vng\EvaCore\Commands\Format\MigrateToFormat2;
 
@@ -122,6 +122,7 @@ class EvaServiceProvider extends ServiceProvider
                 DuplicateOwnedItems::class,
                 MoveOwnedItems::class,
                 SeedCharacteristics::class,
+                Setup::class,
                 AssignRegions::class,
                 ExportInstruments::class,
                 ExportInstrumentsCosts::class,
@@ -133,7 +134,6 @@ class EvaServiceProvider extends ServiceProvider
                 ImportRegions::class,
                 ImportTownships::class,
                 MakeAreas::class,
-                Setup::class,
                 Update::class,
             ]);
         }

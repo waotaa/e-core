@@ -2,11 +2,14 @@
 
 namespace Vng\EvaCore\Traits;
 
+use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait HasMembers
 {
+    use HasAttributes;
+
     public abstract function members(): MorphMany;
 
     public function hasMember(Model $user): bool

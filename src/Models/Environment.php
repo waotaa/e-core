@@ -3,7 +3,6 @@
 namespace Vng\EvaCore\Models;
 
 use Vng\EvaCore\ElasticResources\EnvironmentResource;
-use Vng\EvaCore\Traits\HasMembers;
 use Vng\EvaCore\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Environment extends SearchableModel
 {
-    use HasFactory, SoftDeletes, HasSlug, HasMembers;
+    use HasFactory, SoftDeletes, HasSlug;
 
     protected string $elasticResource = EnvironmentResource::class;
 

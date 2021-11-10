@@ -1,13 +1,13 @@
 <?php
 
-namespace Vng\EvaCore\Commands;
+namespace Vng\EvaCore\Commands\Setup;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 
 class Update extends Command
 {
-    protected $signature = 'eva:update';
+    protected $signature = 'eva-core:update';
     protected $description = 'Post deploy update script';
 
     public function handle(): int
@@ -23,9 +23,9 @@ class Update extends Command
         }
 
         $this->call('migrate', ['--force' => true]);
-        $this->call('setup:seed-characteristics');
-        $this->call('professionals:setup', ['--silent' => true]);
+        $this->call(SeedCharacteristics::class);
 
+        $this->call('professionals:setup', ['--silent' => true]);
         $this->call('elastic:sync-all', ['--fresh' => true]);
         return 0;
     }

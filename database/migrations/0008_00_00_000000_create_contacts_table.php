@@ -17,8 +17,6 @@ class CreateContactsTable extends Migration
             $table->string('name');
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-
-//            $table->enum('type', ContactTypeEnum::keys())->nullable();
             $table->string('type')->nullable();
         });
     }
