@@ -7,6 +7,7 @@ use Vng\EvaCore\ElasticResources\InstrumentResource;
 use Vng\EvaCore\Enums\CostsUnitEnum;
 use Vng\EvaCore\Enums\DurationUnitEnum;
 use Vng\EvaCore\Enums\LocationEnum;
+use Vng\EvaCore\Observers\InstrumentObserver;
 use Vng\EvaCore\Traits\CanSaveQuietly;
 use Vng\EvaCore\Traits\HasContacts;
 use Vng\EvaCore\Traits\HasOwner;
@@ -108,7 +109,7 @@ class Instrument extends SearchableModel
 
     protected $with = [];
 
-    public static function boot()
+    protected static function boot()
     {
         parent::boot();
         self::creating(function ($model) {
@@ -118,6 +119,8 @@ class Instrument extends SearchableModel
         self::deleted(function ($model) {
             $model->is_active = false;
         });
+
+        static::observe(InstrumentObserver::class);
     }
 
     public function getCostsUnitAttribute($value)

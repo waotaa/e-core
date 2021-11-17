@@ -10,7 +10,7 @@ abstract class SearchableModel extends Model implements SearchableInterface
 {
     protected string $elasticResource;
 
-    public static function boot()
+    protected static function boot()
     {
         parent::boot();
         static::observe(ElasticsearchObserver::class);

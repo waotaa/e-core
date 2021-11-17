@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Vng\EvaCore\Observers\ProfessionalObserver;
 
 class Professional extends Model implements CanResetPasswordContract
 {
@@ -39,6 +40,12 @@ class Professional extends Model implements CanResetPasswordContract
     protected $dates = [
         'last_seen_at',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(ProfessionalObserver::class);
+    }
 
     public function passwordCanBeReset()
     {

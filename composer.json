@@ -34,7 +34,6 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
             "Vng\\EvaCore\\": "src/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
@@ -49,8 +48,7 @@
         "laravel": {
             "dont-discover": [],
             "providers": [
-                "Vng\\EvaCore\\Providers\\EvaServiceProvider",
-                "Vng\\EvaCore\\Providers\\EventServiceProvider"
+                "Vng\\EvaCore\\Providers\\EvaServiceProvider"
             ]
         }
     },

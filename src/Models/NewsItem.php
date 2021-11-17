@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Models;
 use Vng\EvaCore\ElasticResources\NewsItemResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Vng\EvaCore\Observers\NewsItemObserver;
 
 class NewsItem extends SearchableModel
 {
@@ -27,6 +28,12 @@ class NewsItem extends SearchableModel
         'publish_from',
         'publish_to'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(NewsItemObserver::class);
+    }
 
     public function environment(): BelongsTo
     {

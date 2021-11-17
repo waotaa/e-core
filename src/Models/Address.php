@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Vng\EvaCore\Observers\AddressObserver;
 
 class Address extends Model
 {
@@ -22,6 +23,12 @@ class Address extends Model
         'postcode',
         'woonplaats',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+        static::observe(AddressObserver::class);
+    }
 
     public function addressable(): MorphTo
     {

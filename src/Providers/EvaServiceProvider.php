@@ -2,7 +2,7 @@
 
 namespace Vng\EvaCore\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\AggregateServiceProvider;
 use Vng\EvaCore\Commands\AssignRegions;
 use Vng\EvaCore\Commands\Dev\PasswordGenerationTest;
 use Vng\EvaCore\Commands\Elastic\DeleteIndex;
@@ -54,8 +54,70 @@ use Vng\EvaCore\Commands\Setup\Update;
 use Vng\EvaCore\Commands\Elastic\SyncTiles;
 use Vng\EvaCore\Commands\Format\MigrateToFormat2;
 
-class EvaServiceProvider extends ServiceProvider
+class EvaServiceProvider extends AggregateServiceProvider
 {
+    protected $providers = [
+        EventServiceProvider::class
+    ];
+
+    protected $commands = [
+        PasswordGenerationTest::class,
+        DeleteIndex::class,
+        FetchNewInstrumentRatings::class,
+        SyncAll::class,
+        SyncEnvironments::class,
+        SyncInstruments::class,
+        SyncInstrumentsDescription::class,
+        SyncNewsItems::class,
+        SyncProviders::class,
+        SyncRegions::class,
+        SyncThemes::class,
+        SyncTiles::class,
+        MigrateToFormat2::class,
+        GeoEnsureIntegrity::class,
+        GeoSourceGenerate::class,
+        RegionsAssign::class,
+        RegionsCheckDataFromApi::class,
+        RegionsCheckDataFromSource::class,
+        RegionsCheckSourceFromApi::class,
+        RegionsCreateDataFromSource::class,
+        RegionsCreateDataSetFromApi::class,
+        RegionsUpdateDataFromSource::class,
+        TownshipsCheckDataFromApi::class,
+        TownshipsCheckDataFromSource::class,
+        TownshipsCheckSourceFromApi::class,
+        TownshipsCreateDataFromSource::class,
+        TownshipsCreateDataSetFromApi::class,
+        TownshipsUpdateDataFromSource::class,
+        CleanContacts::class,
+        SetupGeoData::class,
+        CognitoGetConfig::class,
+        CognitoSetup::class,
+        CognitoSyncProfessionals::class,
+        ProfessionalPasswordExpirationCheck::class,
+        DuplicateOwnedItems::class,
+        MoveOwnedItems::class,
+        SeedCharacteristics::class,
+        Setup::class,
+        AssignRegions::class,
+        ExportInstruments::class,
+        ExportInstrumentsCosts::class,
+        ExportOldInstruments::class,
+        ExtractGeoData::class,
+        ImportGeoData::class,
+        ImportInstruments::class,
+        ImportOldFormatInstruments::class,
+        ImportRegions::class,
+        ImportTownships::class,
+        MakeAreas::class,
+        Update::class
+    ];
+
+    public function register()
+    {
+        parent::register();
+    }
+
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
@@ -84,58 +146,7 @@ class EvaServiceProvider extends ServiceProvider
     private function registerCommands(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->commands([
-                PasswordGenerationTest::class,
-                DeleteIndex::class,
-                FetchNewInstrumentRatings::class,
-                SyncAll::class,
-                SyncEnvironments::class,
-                SyncInstruments::class,
-                SyncInstrumentsDescription::class,
-                SyncNewsItems::class,
-                SyncProviders::class,
-                SyncRegions::class,
-                SyncThemes::class,
-                SyncTiles::class,
-                MigrateToFormat2::class,
-                GeoEnsureIntegrity::class,
-                GeoSourceGenerate::class,
-                RegionsAssign::class,
-                RegionsCheckDataFromApi::class,
-                RegionsCheckDataFromSource::class,
-                RegionsCheckSourceFromApi::class,
-                RegionsCreateDataFromSource::class,
-                RegionsCreateDataSetFromApi::class,
-                RegionsUpdateDataFromSource::class,
-                TownshipsCheckDataFromApi::class,
-                TownshipsCheckDataFromSource::class,
-                TownshipsCheckSourceFromApi::class,
-                TownshipsCreateDataFromSource::class,
-                TownshipsCreateDataSetFromApi::class,
-                TownshipsUpdateDataFromSource::class,
-                CleanContacts::class,
-                SetupGeoData::class,
-                CognitoGetConfig::class,
-                CognitoSetup::class,
-                CognitoSyncProfessionals::class,
-                ProfessionalPasswordExpirationCheck::class,
-                DuplicateOwnedItems::class,
-                MoveOwnedItems::class,
-                SeedCharacteristics::class,
-                Setup::class,
-                AssignRegions::class,
-                ExportInstruments::class,
-                ExportInstrumentsCosts::class,
-                ExportOldInstruments::class,
-                ExtractGeoData::class,
-                ImportGeoData::class,
-                ImportInstruments::class,
-                ImportOldFormatInstruments::class,
-                ImportRegions::class,
-                ImportTownships::class,
-                MakeAreas::class,
-                Update::class,
-            ]);
+            $this->commands($this->commands);
         }
     }
 }

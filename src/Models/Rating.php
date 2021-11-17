@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Vng\EvaCore\Observers\RatingObserver;
 
 class Rating extends Model
 {
@@ -23,6 +24,12 @@ class Rating extends Model
         'execution_explanation',
         'created_at',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(RatingObserver::class);
+    }
 
     public function professional(): BelongsTo
     {

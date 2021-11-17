@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Vng\EvaCore\Observers\GroupFormObserver;
 
 class GroupForm extends Model
 {
@@ -16,6 +17,12 @@ class GroupForm extends Model
         'name',
         'custom'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(GroupFormObserver::class);
+    }
 
     public function instruments(): BelongsToMany
     {

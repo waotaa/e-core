@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Vng\EvaCore\Observers\ImplementationObserver;
 
 class Implementation extends Model
 {
@@ -16,6 +17,12 @@ class Implementation extends Model
         'name',
         'custom'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(ImplementationObserver::class);
+    }
 
     public function instruments(): HasMany
     {

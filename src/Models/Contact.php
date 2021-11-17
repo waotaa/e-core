@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Vng\EvaCore\Observers\ContactObserver;
 
 class Contact extends Model
 {
@@ -18,6 +19,12 @@ class Contact extends Model
         'email',
         'type'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(ContactObserver::class);
+    }
 
     public function setTypeAttribute($value)
     {

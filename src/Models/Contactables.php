@@ -4,6 +4,7 @@ namespace Vng\EvaCore\Models;
 
 use Vng\EvaCore\Enums\ContactTypeEnum;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Vng\EvaCore\Observers\ContactablesObserver;
 
 class Contactables extends MorphPivot
 {
@@ -17,6 +18,12 @@ class Contactables extends MorphPivot
     protected $fillable = [
         'type'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(ContactablesObserver::class);
+    }
 
     public function setTypeAttribute($value)
     {

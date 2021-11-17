@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Models;
 
 use Vng\EvaCore\ElasticResources\ProviderResource;
+use Vng\EvaCore\Observers\ProviderObserver;
 use Vng\EvaCore\Traits\HasContacts;
 use Vng\EvaCore\Traits\HasOwner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,12 +42,14 @@ class Provider extends SearchableModel
     /**
      *  Setup model event hooks
      */
-    public static function boot()
+    protected static function boot()
     {
         parent::boot();
         self::creating(function ($model) {
             $model->uuid = (string) Uuid::generate(4);
         });
+
+        static::observe(ProviderObserver::class);
     }
 
     public function instruments(): HasMany
