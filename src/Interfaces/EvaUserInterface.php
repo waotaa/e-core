@@ -10,5 +10,5 @@ interface EvaUserInterface
     public function assignRandomPassword();
 
     public function sendAccountCreationNotification();
-    public function sendPasswordResetNotification();
+    public function sendPasswordResetNotification($token);
 }
