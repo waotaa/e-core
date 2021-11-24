@@ -13,6 +13,7 @@ use Vng\EvaCore\ElasticResources\LinkResource;
 use Vng\EvaCore\ElasticResources\LocationResource;
 use Vng\EvaCore\ElasticResources\ProviderResource;
 use Vng\EvaCore\ElasticResources\TargetGroupResource;
+use Vng\EvaCore\ElasticResources\ThemeResource;
 use Vng\EvaCore\ElasticResources\TileResource;
 use Vng\EvaCore\ElasticResources\VideoResource;
 use Vng\EvaCore\Models\Instrument;
@@ -55,14 +56,16 @@ class InstrumentDescriptionResource extends ElasticResource
             'location_description' => $this->location_description,
             'work_agreements' => $this->work_agreements,
             'application_instructions' => $this->application_instructions,
-            'intenstiy_hours_per_week' => $this->intenstiy_hours_per_week,
+            'intensity_hours_per_week' => $this->intensity_hours_per_week,
             'total_duration_value' => $this->total_duration_value,
             'total_duration_unit' => $this->total_duration_unit,
             'total_duration_unit_key' => $this->raw_total_duration_unit,
 
 //            Don't share costs on public page
 //            'total_costs' => $this->total_costs,
-//            'intensity_duration_costs_description' => $this->intensity_duration_costs_description,
+//            'costs_description' => $this->costs_description,
+//            'duration_description' => $this->duration_description,
+//            'intensity_description' => $this->intensity_description,
 
             // relations
             'implementation' => ImplementationResource::one($this->implementation),
@@ -81,6 +84,24 @@ class InstrumentDescriptionResource extends ElasticResource
             'address' => AddressResource::one($this->address),
             'addresses' => AddressResource::many($this->addresses),
             'contacts' => ContactResource::many($this->contacts),
+
+            // v1
+
+            // descriptions
+            'short_description' => $this->short_description,
+            'description' => $this->description,
+            'conditions' => $this->conditions,
+
+//            'location' => $this->location,
+
+            // info section
+            'duration' => $this->duration,
+            'duration_unit' => $this->duration_unit,
+            'costs' => $this->costs,
+            'costs_unit' => $this->costs_unit,
+
+            // relations
+            'themes' => ThemeResource::many($this->themes),
         ];
     }
 }

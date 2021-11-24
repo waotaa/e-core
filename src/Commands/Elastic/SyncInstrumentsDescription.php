@@ -3,7 +3,7 @@
 namespace Vng\EvaCore\Commands\Elastic;
 
 use Vng\EvaCore\ElasticResources\Instrument\InstrumentDescriptionResource;
-use Vng\EvaCore\Jobs\RemoveCustomResourceFromElastic;
+use Vng\EvaCore\Jobs\RemoveResourceFromElastic;
 use Vng\EvaCore\Jobs\SyncCustomResourceToElastic;
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
@@ -33,10 +33,7 @@ class SyncInstrumentsDescription extends Command
         }
 
         foreach (Instrument::onlyTrashed()->get() as $instrument) {
-            dispatch(new RemoveCustomResourceFromElastic(
-                $instrument,
-                'instruments_description'
-            ));
+            dispatch(new RemoveResourceFromElastic('instruments_description', $instrument->getSearchId()));
         }
 
         $this->output->writeln('');

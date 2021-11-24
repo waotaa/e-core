@@ -7,8 +7,8 @@ use Vng\EvaCore\Observers\ProviderObserver;
 use Vng\EvaCore\Traits\HasContacts;
 use Vng\EvaCore\Traits\HasOwner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Webpatser\Uuid\Uuid;
 
@@ -62,8 +62,8 @@ class Provider extends SearchableModel
 //        return $this->belongsToMany(Instrument::class, 'instrument_provider')->withTimestamps()->using(InstrumentProvider::class);
 //    }
 
-    public function address(): MorphOne
+    public function address(): BelongsTo
     {
-        return $this->morphOne(Address::class, 'addressable');
+        return $this->belongsTo(Address::class);
     }
 }

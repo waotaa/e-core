@@ -2,52 +2,47 @@
 
 namespace Vng\EvaCore\Listeners;
 
+use Illuminate\Support\Facades\Bus;
 use Vng\EvaCore\ElasticResources\Instrument\InstrumentDescriptionResource;
 use Vng\EvaCore\Events\InstrumentRemoved;
 use Vng\EvaCore\Events\InstrumentSaved;
-use Vng\EvaCore\Jobs\RemoveCustomResourceFromElastic;
+use Vng\EvaCore\Jobs\PruneSyncAttempts;
+use Vng\EvaCore\Jobs\RemoveResourceFromElastic;
 use Vng\EvaCore\Jobs\SyncCustomResourceToElastic;
-use Vng\EvaCore\Models\SyncAttempt;
-use Carbon\Carbon;
 use Illuminate\Events\Dispatcher;
+use Vng\EvaCore\Services\ElasticSearch\SyncService;
 
 class InstrumentEventSubscriber
 {
     public function handleInstrumentSaved(InstrumentSaved $event)
     {
-        $this->clearOldAttempts();
-        $attempt = new SyncAttempt();
-        $attempt->action = 'save_description';
-        $attempt->resource()->associate($event->instrument);
-        $attempt->save();
+        $instrument = $event->instrument;
+        $attempt = SyncService::createSyncAttempt($instrument, 'save_description');
 
-        dispatch(new SyncCustomResourceToElastic(
-            $event->instrument,
-            'instruments_description',
-            InstrumentDescriptionResource::make($event->instrument),
-            $attempt
-        ));
+        Bus::chain([
+            new SyncCustomResourceToElastic(
+                $instrument,
+                'instruments_description',
+                InstrumentDescriptionResource::make($instrument),
+                $attempt
+            ),
+            new PruneSyncAttempts()
+        ])->dispatch();
     }
 
     public function handleInstrumentRemoved(InstrumentRemoved $event)
     {
-        $this->clearOldAttempts();
-        $attempt = new SyncAttempt();
-        $attempt->action = 'remove_description';
-        $attempt->resource()->associate($event->instrument);
-        $attempt->save();
+        $instrument = $event->instrument;
+        $attempt = SyncService::createSyncAttempt($instrument, 'remove_description');
 
-        dispatch(new RemoveCustomResourceFromElastic(
-            $event->instrument,
-            'instruments_description',
-            $attempt
-        ));
-    }
-
-    private function clearOldAttempts()
-    {
-        $weekAgo = Carbon::now()->subDays(7)->startOfDay()->toDateTimeString();
-        SyncAttempt::query()->where('created_at', '<=', $weekAgo)->delete();
+        Bus::chain([
+            new RemoveResourceFromElastic(
+                'instruments_description',
+                $event->instrument->getSearchId(),
+                $attempt
+            ),
+            new PruneSyncAttempts()
+        ])->dispatch();
     }
 
     public function subscribe(Dispatcher $events)

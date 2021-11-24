@@ -17,7 +17,7 @@ class RatingResource extends ElasticResource
             'execution_explanation' => $this->execution_explanation,
 
             'instrument_id' => $this->instrument->id,
-            'professional_email' => $this->professional->email,
+            'professional_email' => $this->professional ? $this->professional->email : null,
 
             'created_at' => $this->created_at,
 

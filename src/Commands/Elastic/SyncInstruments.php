@@ -6,6 +6,7 @@ use Vng\EvaCore\Jobs\RemoveResourceFromElastic;
 use Vng\EvaCore\Jobs\SyncResourceToElastic;
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
+use Vng\EvaCore\Models\SyncAttempt;
 
 class SyncInstruments extends Command
 {
@@ -28,11 +29,16 @@ class SyncInstruments extends Command
         foreach (Instrument::all() as $instrument) {
             $this->output->write('.');
 //            $this->getOutput()->write('- ' . $instrument->name);
-            dispatch(new SyncResourceToElastic($instrument));
+            $attempt = new SyncAttempt();
+            $attempt->action = 'sync';
+            $attempt->resource()->associate($instrument);
+            $attempt->save();
+
+            dispatch(new SyncResourceToElastic($instrument, $attempt));
         }
 
         foreach (Instrument::onlyTrashed()->get() as $instrument) {
-            dispatch(new RemoveResourceFromElastic($instrument));
+            dispatch(new RemoveResourceFromElastic($instrument->getSearchIndex(), $instrument->getSearchId()));
         }
 
         $this->output->newLine(2);

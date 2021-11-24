@@ -29,7 +29,7 @@ class SyncEnvironments extends Command
         }
 
         foreach (Environment::onlyTrashed()->get() as $environment) {
-            dispatch(new RemoveResourceFromElastic($environment));
+            dispatch(new RemoveResourceFromElastic($environment->getSearchIndex(), $environment->getSearchId()));
         }
 
         $this->output->writeln('');

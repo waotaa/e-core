@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Commands\Format;
 
+use Vng\EvaCore\Enums\DurationUnitEnum;
 use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Location;
@@ -54,11 +55,31 @@ class MigrateToFormat2 extends Command
             $instrument->participation_conditions = $instrument->participation_conditions ?: $instrument->conditions;
             $instrument->additional_information = $instrument->additional_information ?: $instrument->description;
             $instrument->total_duration_value = $instrument->total_duration_value ?: (int) $instrument->duration;
-            $instrument->total_duration_unit = $instrument->total_duration_unit ?: $instrument->duration_unit;
+            $instrument->total_duration_unit = $instrument->total_duration_unit ?: $this->getDurationUnit($instrument);
             $instrument->total_costs = $instrument->total_costs ?: $instrument->costs;
-            $instrument->intensity_duration_costs_description = $instrument->intensity_duration_costs_description ?: $instrument->duration;
+            $instrument->duration_description = $instrument->duration_description ?: $instrument->duration;
             $instrument->saveQuietly();
         });
+    }
+
+    private function getDurationUnit(Instrument $instrument)
+    {
+        $duration_unit = $instrument->duration_unit;
+        if (!is_null($duration_unit)) {
+            return $duration_unit;
+        }
+        switch ($instrument->getRawDurationUnitAttribute()) {
+            case 'Uur':
+                return DurationUnitEnum::hour();
+            case 'Dag':
+                return DurationUnitEnum::day();
+            case 'Week':
+                return DurationUnitEnum::week();
+            case 'Maand':
+                return DurationUnitEnum::month();
+            default:
+                return null;
+        }
     }
 
     private function migrateThemesToClientCharacteristics()

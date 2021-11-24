@@ -29,7 +29,7 @@ class SyncProviders extends Command
         }
 
         foreach (Provider::onlyTrashed()->get() as $provider) {
-            dispatch(new RemoveResourceFromElastic($provider));
+            dispatch(new RemoveResourceFromElastic($provider->getSearchIndex(), $provider->getSearchId()));
         }
 
         $this->output->writeln('');

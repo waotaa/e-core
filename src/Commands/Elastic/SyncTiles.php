@@ -29,7 +29,7 @@ class SyncTiles extends Command
         }
 
         foreach (Tile::onlyTrashed()->get() as $tile) {
-            dispatch(new RemoveResourceFromElastic($tile));
+            dispatch(new RemoveResourceFromElastic($tile->getSearchIndex(), $tile->getSearchId()));
         }
 
         $this->getOutput()->writeln('');

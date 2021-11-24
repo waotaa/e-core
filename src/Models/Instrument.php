@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use MyCLabs\Enum\Enum;
 use Vng\EvaCore\Casts\CleanedHtml;
 use Vng\EvaCore\ElasticResources\InstrumentResource;
 use Vng\EvaCore\Enums\CostsUnitEnum;
@@ -56,7 +57,6 @@ class Instrument extends SearchableModel
         'costs_unit',
         'duration',
         'duration_unit',
-        'location',
         'location_description',
 
         // format 2
@@ -67,11 +67,13 @@ class Instrument extends SearchableModel
         'additional_information',
         'location_description',
         'work_agreements',
-        'intenstiy_hours_per_week',
+        'intensity_hours_per_week',
         'total_duration_value',
         'total_duration_unit',
         'total_costs',
-        'intensity_duration_costs_description',
+        'costs_description',
+        'duration_description',
+        'intensity_description',
 
         // auxilary
         'import_mark',
@@ -104,7 +106,9 @@ class Instrument extends SearchableModel
         'additional_information' => CleanedHtml::class,
         'location_description' => CleanedHtml::class,
         'work_agreements' => CleanedHtml::class,
-        'intensity_duration_costs_description' => CleanedHtml::class,
+        'costs_description' => CleanedHtml::class,
+        'duration_description' => CleanedHtml::class,
+        'intensity_description' => CleanedHtml::class,
     ];
 
     protected $with = [];
@@ -123,15 +127,21 @@ class Instrument extends SearchableModel
         static::observe(InstrumentObserver::class);
     }
 
-    public function getCostsUnitAttribute($value)
+    public function setCostsUnitAttribute($value)
     {
         if (is_null($value)) {
+            $this->attributes['costs_unit'] = null;
+            return;
+        }
+        $this->attributes['costs_unit'] = (new CostsUnitEnum($value))->getKey();
+    }
+
+    public function getCostsUnitAttribute($value)
+    {
+        if (is_null($value) || !in_array($value, CostsUnitEnum::keys())) {
             return null;
         }
-        if (in_array($value, CostsUnitEnum::keys())) {
-            return CostsUnitEnum::$value();
-        }
-        return $this->attributes['costs_unit'];
+        return CostsUnitEnum::$value();
     }
 
     public function getRawCostsUnitAttribute()
@@ -139,36 +149,48 @@ class Instrument extends SearchableModel
         return $this->attributes['costs_unit'];
     }
 
-    public function getTotalDurationUnitAttribute($value)
+    public function setDurationUnitAttribute($value)
     {
         if (is_null($value)) {
+            $this->attributes['duration_unit'] = null;
+            return;
+        }
+        $this->attributes['duration_unit'] = (new DurationUnitEnum($value))->getKey();
+    }
+
+    public function getDurationUnitAttribute($value)
+    {
+        if (is_null($value) || !in_array($value, DurationUnitEnum::keys())) {
             return null;
         }
-        if (in_array($value, DurationUnitEnum::keys())) {
-            return DurationUnitEnum::$value();
+        return DurationUnitEnum::$value();
+    }
+
+    public function getRawDurationUnitAttribute()
+    {
+        return $this->attributes['duration_unit'];
+    }
+
+    public function setTotalDurationUnitAttribute($value)
+    {
+        if (is_null($value)) {
+            $this->attributes['total_duration_unit'] = null;
+            return;
         }
-        return $this->attributes['total_duration_unit'];
+        $this->attributes['total_duration_unit'] = (new DurationUnitEnum($value))->getKey();
+    }
+
+    public function getTotalDurationUnitAttribute($value)
+    {
+        if (is_null($value) || !in_array($value, DurationUnitEnum::keys())) {
+            return null;
+        }
+        return DurationUnitEnum::$value();
     }
 
     public function getRawTotalDurationUnitAttribute()
     {
         return $this->attributes['total_duration_unit'];
-    }
-
-    public function getLocationAttribute($value)
-    {
-        if (is_null($value)) {
-            return null;
-        }
-        if (in_array($value, LocationEnum::keys())) {
-            return LocationEnum::$value();
-        }
-        return $this->attributes['location'];
-    }
-
-    public function getRawLocationAttribute()
-    {
-        return $this->attributes['location'];
     }
 
     public function areas(): BelongsToMany

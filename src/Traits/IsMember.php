@@ -38,11 +38,6 @@ trait IsMember
         return $this->isAssociated() && $this->getAssociationType() === Township::class;
     }
 
-    public function isMemberOfEnvironment(): bool
-    {
-        return $this->isAssociated() && $this->getAssociationType() === Environment::class;
-    }
-
     public function usersShareAssociation(EvaUserInterface $user): bool
     {
         return $this->isAssociated() && $this->getAttribute('association')->hasMember($user);

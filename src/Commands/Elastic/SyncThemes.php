@@ -28,7 +28,7 @@ class SyncThemes extends Command
         }
 
         foreach (Theme::onlyTrashed()->get() as $theme) {
-            dispatch(new RemoveResourceFromElastic($theme));
+            dispatch(new RemoveResourceFromElastic($theme->getSearchIndex(), $theme->getSearchId()));
         }
 
         $this->getOutput()->writeln('');

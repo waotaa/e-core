@@ -22,7 +22,7 @@ class UserPoolService
         'AdminCreateUserConfig' => [
             'AllowAdminCreateUserOnly' => true,
             'InviteMessageTemplate' => [
-                'EmailMessage' => 'Beste professional, er is een account voor je aangemaakt voor instrumentengids Eva met gebruikersnaam {username}. Uw tijdelijke wachtwoord is {####}',
+                'EmailMessage' => 'Beste professional, Er is een account voor je aangemaakt voor instrumentengids Eva met gebruikersnaam {username}. Uw tijdelijke wachtwoord is {####}',
                 'EmailSubject' => 'Uitnodiging instrumentengids Eva',
                 'SMSMessage' => 'Er is een account voor je aangemaakt voor instrumentengids Eva met gebruikersnaam {username}. Uw tijdelijke wachtwoord is {####}',
             ],
@@ -165,9 +165,9 @@ class UserPoolService
             Jouw gebruikersnaam is: {username}<br>
             Jouw tijdelijke wachtwoord is: {####}<br>
             <br>
-            Let op: dit tijdelijke wachtwoord is slechts 24 uur geldig. Na de eerste keer inloggen wordt je meteen gevraagd je wachtwoord te wijzigen, daarna kan je al aan de slag!
+            Na de eerste keer inloggen wordt je meteen gevraagd je wachtwoord te wijzigen, daarna kan je al aan de slag! Neem voor vragen contact op met je teamleider of de contactpersoon voor Eva binnen jullie gemeente.<br>
             <br>
-            Neem voor vragen contact op met je teamleider of de contactpersoon voor Eva binnen jullie gemeente.<br>
+            Let op: dit tijdelijke wachtwoord is slechts 24 uur geldig. Als je tijdelijke wachtwoord verlopen is zal de beheerder van jullie instrumentengids je opnieuw moeten uitnodigen. Stem indien nodig een handig moment af.<br>
             <br>
             Veel succes met Eva!";
         return $message;
@@ -218,7 +218,7 @@ class UserPoolService
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
 
         $args = [
-            'MaxResults' => 10,
+            'MaxResults' => 60,
         ];
         if (!is_null($nextToken)) {
             $args['NextToken'] = $nextToken;

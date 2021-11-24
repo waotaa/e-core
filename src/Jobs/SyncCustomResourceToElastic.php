@@ -12,10 +12,14 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\App;
+use Vng\EvaCore\Services\ElasticSearch\SyncService;
 
 class SyncCustomResourceToElastic implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public $tries = 2;
+    public $backoff = 3;
 
     private SearchableModel $model;
     private string $index;
@@ -46,8 +50,8 @@ class SyncCustomResourceToElastic implements ShouldQueue
         ]);
 
         if (!is_null($this->attempt)){
-            $this->attempt->status = $result['_shards'];
-            $this->attempt->save();
+            $status = $result['_shards']['failed'] === 0 ? 'succes' : 'failed';
+            SyncService::updateStatus($this->attempt, $status);
         }
     }
 }

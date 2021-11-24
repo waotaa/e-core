@@ -47,8 +47,8 @@ class InstrumentHelper
 
     public function isComplete(): bool
     {
-        return $this->hasTile()
-            && $this->hasClientCharacteristic();
+        return $this->hasTile();
+//            && $this->hasClientCharacteristic();
     }
 
     public function hasProvider(): bool
@@ -64,11 +64,6 @@ class InstrumentHelper
     public function hasTargetGroup(): bool
     {
         return $this->instrument->targetGroups()->count() > 0;
-    }
-
-    public function hasTheme(): bool
-    {
-        return $this->instrument->themes()->count() > 0;
     }
 
     public function hasClientCharacteristic(): bool
@@ -128,15 +123,16 @@ class InstrumentHelper
     {
         return $builder
             ->has('tiles')
-            ->has('targetGroups')
-            ->has('themes');
+            ->has('targetGroups');
+//            ->has('clientCharacteristics');
+
     }
 
     public static function queryIncomplete(Builder $builder): Builder
     {
         return $builder
             ->doesntHave('tiles')
-            ->orDoesntHave('targetGroups')
-            ->orDoesntHave('themes');
+            ->orDoesntHave('targetGroups');
+//            ->orDoesntHave('clientCharacteristics');
     }
 }

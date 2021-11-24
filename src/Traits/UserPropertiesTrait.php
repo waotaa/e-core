@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Traits;
 
+use Illuminate\Support\Facades\Date;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Notifications\AccountCreationEmail;
 use Vng\EvaCore\Notifications\ResetPassword;
@@ -75,6 +76,11 @@ trait UserPropertiesTrait
     {
         $sixMonthsAgo = (new DateTime())->modify('-6 months');
         return $this->password_updated_at < $sixMonthsAgo;
+    }
+
+    public function setPasswordUpdatedAtToNow()
+    {
+        $this->password_updated_at = Date::now();
     }
 
     public function canImpersonate()

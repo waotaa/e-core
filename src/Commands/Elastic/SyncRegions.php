@@ -29,7 +29,7 @@ class SyncRegions extends Command
         }
 
         foreach (Region::onlyTrashed()->get() as $region) {
-            dispatch(new RemoveResourceFromElastic($region));
+            dispatch(new RemoveResourceFromElastic($region->getSearchIndex(), $region->getSearchId()));
         }
 
         $this->getOutput()->writeln('');
