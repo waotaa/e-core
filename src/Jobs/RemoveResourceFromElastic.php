@@ -20,10 +20,10 @@ class RemoveResourceFromElastic implements ShouldQueue
     public $backoff = 3;
 
     private string $index;
-    private int $id;
+    private $id;
     private ?SyncAttempt $attempt;
 
-    public function __construct(string $index, int $id, SyncAttempt $attempt = null)
+    public function __construct(string $index, $id, SyncAttempt $attempt = null)
     {
         $this->id = $id;
         $this->index = $index;
@@ -37,9 +37,21 @@ class RemoveResourceFromElastic implements ShouldQueue
 
         $index = $this->index;
         $prefix = config('elastic.prefix');
+        $full_index = $prefix ? $prefix . '-' . $index : $index;
+
+        $exists = $elasticsearch->exists([
+            'index' => $full_index,
+            'id' => $this->id,
+        ]);
+        if (!$exists) {
+            if (!is_null($this->attempt)) {
+                SyncService::updateStatus($this->attempt, 'Resource not found');
+            }
+            return;
+        }
 
         $result = $elasticsearch->delete([
-            'index' => $prefix ? $prefix.'-'.$index : $index,
+            'index' => $full_index,
             'id' => $this->id,
         ]);
 

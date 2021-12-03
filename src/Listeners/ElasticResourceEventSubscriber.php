@@ -114,10 +114,10 @@ class ElasticResourceEventSubscriber
     public function handleContactAttached(ContactAttachedEvent $event)
     {
         /** @var Contact $contact */
-        $contact = Contact::query()->find($event->pivot->contact_id);
+        $contact = Contact::withTrashed()->find($event->pivot->contact_id);
 
         /** @var Instrument|Provider|Region $attached */
-        $attached = $event->pivot->contactable_type::query()->find($event->pivot->contactable_id);
+        $attached = $event->pivot->contactable_type::withTrashed()->find($event->pivot->contactable_id);
 
         $attempt = SyncService::createSyncAttempt($attached, 'attach');
         $attempt = SyncService::addRelatedModel($attempt, $contact);
@@ -137,7 +137,7 @@ class ElasticResourceEventSubscriber
     public function handleContactDetached(ContactDetachedEvent $event)
     {
         /** @var Contact $contact */
-        $contact = Contact::query()->find($event->pivot->contact_id);
+        $contact = Contact::withTrashed()->find($event->pivot->contact_id);
 
         /** @var Instrument|Provider|Region $attached */
         $detached = $event->pivot->contactable_type::withTrashed()->find($event->pivot->contactable_id);
