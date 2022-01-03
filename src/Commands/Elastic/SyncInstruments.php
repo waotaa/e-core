@@ -29,6 +29,7 @@ class SyncInstruments extends Command
         foreach (Instrument::all() as $instrument) {
             $this->output->write('.');
 //            $this->getOutput()->write('- ' . $instrument->name);
+
             $attempt = new SyncAttempt();
             $attempt->action = 'sync';
             $attempt->resource()->associate($instrument);

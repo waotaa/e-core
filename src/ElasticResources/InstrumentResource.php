@@ -25,7 +25,6 @@ class InstrumentResource extends ElasticResource
 
             'published' => InstrumentHelper::create($this->resource)->isPublished(),
             'complete' => InstrumentHelper::create($this->resource)->isComplete(),
-            'is_nationally_available' => (bool) $this->is_nationally_available,
 
             // v2
 
@@ -55,6 +54,11 @@ class InstrumentResource extends ElasticResource
             // auxilary
             'import_mark' => $this->import_mark,
 
+            // computed
+            'is_national' => $this->resource->isNational(),
+            'is_regional' => $this->resource->isRegional(),
+            'is_local' => $this->resource->isLocal(),
+
             // relations
             'owner' => OwnerResource::one($this->owner),
             'implementation' => ImplementationResource::one($this->implementation),
@@ -74,35 +78,38 @@ class InstrumentResource extends ElasticResource
             'downloads' => DownloadResource::many($this->downloads),
 
             'provider' => ProviderResource::one($this->provider),
-//            'providers' => ProviderResource::many($this->providers),
-            'address' => AddressResource::one($this->address),
             'addresses' => AddressResource::many($this->addresses),
             'contacts' => ContactResource::many($this->contacts),
 
-            'areas' => AreaResource::many($this->areas),
-            'available_areas' => AreaResource::many($this->availableAreas),
-            'regions' => RegionResource::many($this->availableRegions),
-            'townships' => TownshipResource::many($this->availableTownships),
-            'townshipParts' => TownshipPartResource::many($this->availableTownshipParts),
+            'available_areas' => AreaInterfaceResource::many($this->availableAreas),
+            'available_areas_all' => AreaInterfaceResource::many($this->allAvailableAreas),
+
+            // specified availability
+            'available_areas_specified' => AreaInterfaceResource::many($this->specifiedAvailableAreas),
+            'available_regions' => RegionResource::many($this->availableRegions),
+            'available_townships' => TownshipResource::many($this->availableTownships),
+            'available_neighbourhoods' => NeighbourhoodResource::many($this->availableNeighbourhoods),
 
 
-            // v1
 
-            // descriptions
-            'short_description' => $this->short_description,
-            'description' => $this->description,
-            'conditions' => $this->conditions,
-
+//             // v1
+//
+//             // descriptions
+//            'short_description' => $this->short_description,
+//            'description' => $this->description,
+//            'conditions' => $this->conditions,
+//
 //            'location' => $this->location,
-
-            // info section
-            'duration' => $this->duration,
-            'duration_unit' => $this->duration_unit,
-            'costs' => $this->costs,
-            'costs_unit' => $this->costs_unit,
-
-            // relations
-            'themes' => ThemeResource::many($this->themes),
+//
+//            // info section
+//            'duration' => $this->duration,
+//            'duration_unit' => $this->duration_unit,
+//            'costs' => $this->costs,
+//            'costs_unit' => $this->costs_unit,
+//
+//            // relations
+//            'themes' => ThemeResource::many($this->themes),
+//            'areas' => AreaResource::many($this->areas),
         ];
     }
 }

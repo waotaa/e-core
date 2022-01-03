@@ -51,27 +51,30 @@ class TargetGroupSeeder extends Seeder
         ])->update([
             'description' => 'Werkzoekende algemeen v1',
         ]);
+        TargetGroup::query()->where([
+            'description' => 'Werkzoekende algemeen v1'
+        ])->delete();
 
         TargetGroup::query()->where([
             'description' => 'Kandidaat met psychische problematiek'
         ])->update([
             'description' => 'Kandidaat met psychische problematiek v1',
         ]);
+        TargetGroup::query()->where([
+            'description' => 'Kandidaat met psychische problematiek v1'
+        ])->delete();
 
         TargetGroup::query()->where([
             'description' => 'Alleenstaande ouder'
         ])->update([
             'description' => 'Alleenstaande ouder v1',
         ]);
+        TargetGroup::query()->where([
+            'description' => 'Alleenstaande ouder v1'
+        ])->delete();
 
 
         // The data set
-//        TargetGroup::query()->updateOrCreate([
-//            'description' => 'Werkzoekende algemeen'
-//        ], [
-//            'custom' => false,
-//        ]);
-
         TargetGroup::query()->updateOrCreate([
             'description' => 'Jongeren tot 27 jaar'
         ], [

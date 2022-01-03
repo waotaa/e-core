@@ -42,6 +42,8 @@ class Setup extends Command
     private function setupUtilities()
     {
         $this->call('eva:setup-geo');
+        $this->call('setup:init-environment');
+        $this->call('setup:create-test-instrument');
         $this->call('professionals:setup', ['--no-interaction' => $this->option('no-interaction')]);
     }
 }

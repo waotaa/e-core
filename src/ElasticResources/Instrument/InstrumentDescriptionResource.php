@@ -13,7 +13,6 @@ use Vng\EvaCore\ElasticResources\LinkResource;
 use Vng\EvaCore\ElasticResources\LocationResource;
 use Vng\EvaCore\ElasticResources\ProviderResource;
 use Vng\EvaCore\ElasticResources\TargetGroupResource;
-use Vng\EvaCore\ElasticResources\ThemeResource;
 use Vng\EvaCore\ElasticResources\TileResource;
 use Vng\EvaCore\ElasticResources\VideoResource;
 use Vng\EvaCore\Models\Instrument;
@@ -38,7 +37,6 @@ class InstrumentDescriptionResource extends ElasticResource
 
             'published' => InstrumentHelper::create($this->resource)->isPublished(),
             'complete' => InstrumentHelper::create($this->resource)->isComplete(),
-            'is_nationally_available' => (bool) $this->is_nationally_available,
 
             // v2
 
@@ -81,7 +79,6 @@ class InstrumentDescriptionResource extends ElasticResource
             'downloads' => DownloadResource::many($this->downloads),
 
             'provider' => ProviderResource::one($this->provider),
-            'address' => AddressResource::one($this->address),
             'addresses' => AddressResource::many($this->addresses),
             'contacts' => ContactResource::many($this->contacts),
 
@@ -99,9 +96,6 @@ class InstrumentDescriptionResource extends ElasticResource
             'duration_unit' => $this->duration_unit,
             'costs' => $this->costs,
             'costs_unit' => $this->costs_unit,
-
-            // relations
-            'themes' => ThemeResource::many($this->themes),
         ];
     }
 }

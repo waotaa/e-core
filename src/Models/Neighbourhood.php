@@ -5,10 +5,15 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
+use Vng\EvaCore\Interfaces\AreaInterface;
+use Vng\EvaCore\Traits\AreaTrait;
 
-class TownshipPart extends Model
+class Neighbourhood extends Model implements AreaInterface
 {
-    protected $table = 'township_parts';
+    use AreaTrait;
+
+    protected $table = 'neighbourhoods';
 
     protected $fillable = [
         'name',
@@ -23,6 +28,16 @@ class TownshipPart extends Model
     {
         return $this->belongsToMany(Instrument::class, 'available_township_part_instrument')
             ->withTimestamps()
-            ->using(AvailableTownshipPartInstrument::class);
+            ->using(AvailableNeighbourhoodInstrument::class);
+    }
+
+    public function getParentAreas(): ?Collection
+    {
+        return collect([$this->township]);
+    }
+
+    public function getChildAreas(): ?Collection
+    {
+        return null;
     }
 }

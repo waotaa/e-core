@@ -2,13 +2,13 @@
 
 namespace Vng\EvaCore\Models;
 
-use MyCLabs\Enum\Enum;
 use Vng\EvaCore\Casts\CleanedHtml;
 use Vng\EvaCore\ElasticResources\InstrumentResource;
 use Vng\EvaCore\Enums\CostsUnitEnum;
 use Vng\EvaCore\Enums\DurationUnitEnum;
-use Vng\EvaCore\Enums\LocationEnum;
+use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Observers\InstrumentObserver;
+use Vng\EvaCore\Services\AreaService;
 use Vng\EvaCore\Traits\CanSaveQuietly;
 use Vng\EvaCore\Traits\HasContacts;
 use Vng\EvaCore\Traits\HasOwner;
@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
@@ -39,34 +38,23 @@ class Instrument extends SearchableModel
         'is_active',
         'publish_from',
         'publish_to',
-        'is_nationally_available',
 
-        // descriptions
-        'short_description',
-        'description',
-        'application_instructions',
-        'conditions',
-        'distinctive_approach',
-        'cooperation_partners',
-
-        // right sidebar
+        // general information
         'aim',
-
-        // info section
-        'costs',
-        'costs_unit',
-        'duration',
-        'duration_unit',
-        'location_description',
 
         // format 2
         'summary',
         'method',
+        'distinctive_approach',
         'target_group_description',
         'participation_conditions',
+        'cooperation_partners',
         'additional_information',
+
+        // practical information
         'location_description',
         'work_agreements',
+        'application_instructions',
         'intensity_hours_per_week',
         'total_duration_value',
         'total_duration_unit',
@@ -77,6 +65,19 @@ class Instrument extends SearchableModel
 
         // auxilary
         'import_mark',
+
+//        // v1
+//
+//        // descriptions
+//        'short_description',
+//        'description',
+//        'conditions',
+//
+//        // info section
+//        'duration',
+//        'duration_unit',
+//        'costs',
+//        'costs_unit',
     ];
 
     protected $dates = [
@@ -90,25 +91,24 @@ class Instrument extends SearchableModel
 
     protected $casts = [
         'is_active' => 'boolean',
-        'is_nationally_available' => 'boolean',
-        'short_description' => CleanedHtml::class,
-        'description' => CleanedHtml::class,
-        'application_instructions' => CleanedHtml::class,
-        'conditions' => CleanedHtml::class,
-        'distinctive_approach' => CleanedHtml::class,
-        'cooperation_partners' => CleanedHtml::class,
+//        'short_description' => CleanedHtml::class,
+//        'description' => CleanedHtml::class,
+//        'conditions' => CleanedHtml::class,
         'aim' => CleanedHtml::class,
-
         'summary' => CleanedHtml::class,
         'method' => CleanedHtml::class,
+        'distinctive_approach' => CleanedHtml::class,
         'target_group_description' => CleanedHtml::class,
         'participation_conditions' => CleanedHtml::class,
+        'cooperation_partners' => CleanedHtml::class,
         'additional_information' => CleanedHtml::class,
+
         'location_description' => CleanedHtml::class,
         'work_agreements' => CleanedHtml::class,
         'costs_description' => CleanedHtml::class,
         'duration_description' => CleanedHtml::class,
         'intensity_description' => CleanedHtml::class,
+        'application_instructions' => CleanedHtml::class,
     ];
 
     protected $with = [];
@@ -127,7 +127,7 @@ class Instrument extends SearchableModel
         static::observe(InstrumentObserver::class);
     }
 
-    public function setCostsUnitAttribute($value)
+    public function setCostsUnitAttribute($value): void
     {
         if (is_null($value)) {
             $this->attributes['costs_unit'] = null;
@@ -136,7 +136,7 @@ class Instrument extends SearchableModel
         $this->attributes['costs_unit'] = (new CostsUnitEnum($value))->getKey();
     }
 
-    public function getCostsUnitAttribute($value)
+    public function getCostsUnitAttribute($value): ?string
     {
         if (is_null($value) || !in_array($value, CostsUnitEnum::keys())) {
             return null;
@@ -144,12 +144,12 @@ class Instrument extends SearchableModel
         return CostsUnitEnum::$value();
     }
 
-    public function getRawCostsUnitAttribute()
+    public function getRawCostsUnitAttribute(): ?string
     {
-        return $this->attributes['costs_unit'];
+        return $this->attributes['costs_unit'] ?? null;
     }
 
-    public function setDurationUnitAttribute($value)
+    public function setDurationUnitAttribute($value): void
     {
         if (is_null($value)) {
             $this->attributes['duration_unit'] = null;
@@ -158,7 +158,7 @@ class Instrument extends SearchableModel
         $this->attributes['duration_unit'] = (new DurationUnitEnum($value))->getKey();
     }
 
-    public function getDurationUnitAttribute($value)
+    public function getDurationUnitAttribute($value): ?string
     {
         if (is_null($value) || !in_array($value, DurationUnitEnum::keys())) {
             return null;
@@ -166,12 +166,12 @@ class Instrument extends SearchableModel
         return DurationUnitEnum::$value();
     }
 
-    public function getRawDurationUnitAttribute()
+    public function getRawDurationUnitAttribute(): ?string
     {
-        return $this->attributes['duration_unit'];
+        return $this->attributes['duration_unit'] ?? null;
     }
 
-    public function setTotalDurationUnitAttribute($value)
+    public function setTotalDurationUnitAttribute($value): void
     {
         if (is_null($value)) {
             $this->attributes['total_duration_unit'] = null;
@@ -180,7 +180,7 @@ class Instrument extends SearchableModel
         $this->attributes['total_duration_unit'] = (new DurationUnitEnum($value))->getKey();
     }
 
-    public function getTotalDurationUnitAttribute($value)
+    public function getTotalDurationUnitAttribute($value): ?string
     {
         if (is_null($value) || !in_array($value, DurationUnitEnum::keys())) {
             return null;
@@ -188,7 +188,7 @@ class Instrument extends SearchableModel
         return DurationUnitEnum::$value();
     }
 
-    public function getRawTotalDurationUnitAttribute()
+    public function getRawTotalDurationUnitAttribute(): ?string
     {
         return $this->attributes['total_duration_unit'];
     }
@@ -214,83 +214,110 @@ class Instrument extends SearchableModel
             ->using(AvailableTownshipInstrument::class);
     }
 
-    public function availableTownshipParts(): BelongsToMany
+    public function availableNeighbourhoods(): BelongsToMany
     {
-        return $this->belongsToMany(TownshipPart::class, 'available_township_part_instrument')
+        return $this->belongsToMany(Neighbourhood::class, 'available_neighbourhood_instrument')
             ->withTimestamps()
-            ->using(AvailableTownshipPartInstrument::class);
+            ->using(AvailableNeighbourhoodInstrument::class);
     }
 
     /**
-     * Collects all areas where this instruments areas are located in
-     * @return Collection
+     * Returns the exact ereas (no sub-areas) the instrument is available in when the availablity is
+     * overridden throught the availableRegions, -Townships, or -Neighbourhoods properties
+     *
+     * @return Collection|null
      */
-    public function getAreasLocatedInAttribute(): Collection
+    public function getSpecifiedAvailableAreasAttribute(): ?Collection
     {
-        if (!$this->areas) {
-            return collect([]);
+        if ($this->availableRegions()->count() === 0) {
+            return null;
         }
 
-        return $this->areas->map(function(Area $area) {
-            return $area->area->areasLocatedIn;
-        })
-            ->filter()
-            ->flatten()
-            ->unique('id')  // unique preserves index keys
-            ->values();     // return values so keys get lost / json_encode returns an array, not an object
+        $areas = collect($this->availableRegions);
+
+        if ($this->availableTownships()->count() > 0) {
+            $this->availableTownships()->each(function (Township $township) use ($areas) {
+                $areas->add($township);
+                AreaService::removeAreaFromCollection($areas, $township->region);
+            });
+        }
+
+        if ($this->availableNeighbourhoods()->count() > 0) {
+            $this->availableNeighbourhoods()->each(function (Neighbourhood $neighbourhood) use ($areas) {
+                $areas->add($neighbourhood);
+                AreaService::removeAreaFromCollection($areas, $neighbourhood->township);
+            });
+        }
+
+        return $areas->values();
     }
 
-    // The areas where this instrument is available.
-    // Overwritten by is_nationally_available if true
-    // If owner is set, availability is limited by it
+    /**
+     * Returns the exact ereas (no sub-areas) the instrument is available in
+     * either based on the specified availablity or based on the owner of the instrument
+     *
+     * @return Collection|null
+     */
     public function getAvailableAreasAttribute(): Collection
     {
-        // Nationally available => return all areas
-        if ($this->is_nationally_available) {
-            return Area::all();
+        if (!is_null($this->specifiedAvailableAreas)) {
+            return $this->specifiedAvailableAreas;
         }
 
-        if (!$this->relationLoaded('areas')) {
-            $this->load('areas');
+        if (is_null($this->owner)) {
+            return AreaService::getNationalAreas();
         }
 
-        // If areas are specified return those
-        if ($this->areasLocatedIn->count() > 0) {
-            return $this->areasLocatedIn;
-        }
-
-        // Has owner. Return owner areas or subset
+        // Has owner: Return owner areas
         /** @var Partnership|Region|Township $owner */
         $owner = $this->owner;
-        // Has an owner with a area restriction
-        if ($owner && $owner->areasLocatedIn) {
-            return $owner->areas;
-        }
+        return $owner->getOwnAreas();
+    }
 
-        // Has no owner, or owner has no areas
-        return collect([]);
+    /**
+     * Returns all (encompassing) areas the instrument is available in.
+     * Includes all townships of an available region
+     * Includes the region of an available township
+     *
+     * @return Collection
+     */
+    public function getAllAvailableAreasAttribute(): Collection
+    {
+        return AreaService::getEncompassingAreasForCollection($this->availableAreas);
+    }
+
+    /**
+     * Checks if every region is available in the available areas
+     *
+     * @return bool
+     */
+    public function isNational(): bool
+    {
+        $nationalAreaIdentifiers = AreaService::getNationalAreas()->map(fn (AreaInterface $area) => $area->getAreaIdentifier());
+        $availableAreaIdentifiers = $this->availableAreas->map(fn (AreaInterface $area) => $area->getAreaIdentifier());
+        $regionsNotInAvailableAreas = $nationalAreaIdentifiers->diff($availableAreaIdentifiers);
+        return $regionsNotInAvailableAreas->count() === 0;
+    }
+
+    public function isRegional(): bool
+    {
+        if ($this->isNational()) {
+            return false;
+        }
+        $regionAreas = $this->availableAreas->filter(function (AreaInterface $area) {
+            return $area->getType() === 'Region';
+        });
+        return $regionAreas->count() > 0;
+    }
+
+    public function isLocal(): bool
+    {
+        return !$this->isNational() && !$this->isRegional();
     }
 
     public function provider(): BelongsTo
     {
         return $this->belongsTo(Provider::class);
-    }
-
-    /**
-     * Even though this is a belongs to many relation
-     * an instrument should probably belong to just one provider
-     * actually the provider belongs to the instrument. But one provider can belong to multiple instruments
-     *
-     * @return BelongsToMany
-     */
-    public function providers(): BelongsToMany
-    {
-        return $this->belongsToMany(Provider::class, 'instrument_provider')->withTimestamps()->using(InstrumentProvider::class);
-    }
-
-    public function address(): MorphOne
-    {
-        return $this->morphOne(Address::class, 'addressable');
     }
 
     public function addresses(): MorphToMany
@@ -333,11 +360,6 @@ class Instrument extends SearchableModel
     public function tiles(): BelongsToMany
     {
         return $this->belongsToMany(Tile::class, 'instrument_tile')->withTimestamps()->using(TileInstrument::class);
-    }
-
-    public function themes(): BelongsToMany
-    {
-        return $this->belongsToMany(Theme::class, 'instrument_theme')->withTimestamps()->using(ThemeInstrument::class);
     }
 
     public function clientCharacteristics(): BelongsToMany

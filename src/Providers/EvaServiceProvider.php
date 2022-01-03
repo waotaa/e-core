@@ -14,7 +14,6 @@ use Vng\EvaCore\Commands\Elastic\SyncInstrumentsDescription;
 use Vng\EvaCore\Commands\Elastic\SyncNewsItems;
 use Vng\EvaCore\Commands\Elastic\SyncProviders;
 use Vng\EvaCore\Commands\Elastic\SyncRegions;
-use Vng\EvaCore\Commands\Elastic\SyncThemes;
 use Vng\EvaCore\Commands\ExportInstruments;
 use Vng\EvaCore\Commands\ExportInstrumentsCosts;
 use Vng\EvaCore\Commands\ExportOldInstruments;
@@ -48,6 +47,8 @@ use Vng\EvaCore\Commands\Professionals\CognitoSyncProfessionals;
 use Vng\EvaCore\Commands\Professionals\ProfessionalPasswordExpirationCheck;
 use Vng\EvaCore\Commands\Reallocation\DuplicateOwnedItems;
 use Vng\EvaCore\Commands\Reallocation\MoveOwnedItems;
+use Vng\EvaCore\Commands\Setup\CreateTestInstrument;
+use Vng\EvaCore\Commands\Setup\InitializeEnvironment;
 use Vng\EvaCore\Commands\Setup\SeedCharacteristics;
 use Vng\EvaCore\Commands\Setup\Setup;
 use Vng\EvaCore\Commands\Setup\Update;
@@ -71,7 +72,6 @@ class EvaServiceProvider extends AggregateServiceProvider
         SyncNewsItems::class,
         SyncProviders::class,
         SyncRegions::class,
-        SyncThemes::class,
         SyncTiles::class,
         MigrateToFormat2::class,
         GeoEnsureIntegrity::class,
@@ -97,6 +97,8 @@ class EvaServiceProvider extends AggregateServiceProvider
         ProfessionalPasswordExpirationCheck::class,
         DuplicateOwnedItems::class,
         MoveOwnedItems::class,
+        CreateTestInstrument::class,
+        InitializeEnvironment::class,
         SeedCharacteristics::class,
         Setup::class,
         AssignRegions::class,
@@ -130,6 +132,7 @@ class EvaServiceProvider extends AggregateServiceProvider
     private function publishConfig()
     {
         $this->publishes([
+            __DIR__.'/../../config/eva-core.php' => config_path('eva-core.php'),
             __DIR__.'/../../config/roles.php' => config_path('roles.php'),
         ], 'eva-config');
     }

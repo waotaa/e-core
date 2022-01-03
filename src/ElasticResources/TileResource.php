@@ -2,8 +2,6 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
-use Vng\EvaCore\ElasticResources\Tile\ThemeResource as TileThemeResource;
-
 class TileResource extends ElasticResource
 {
     public function toArray()
@@ -16,7 +14,6 @@ class TileResource extends ElasticResource
             'list'  => $this->list,
             'key'  => $this->key,
             'position'  => $this->position,
-            'themes' => TileThemeResource::many($this->themes)
         ];
     }
 }

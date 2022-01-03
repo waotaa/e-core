@@ -114,7 +114,7 @@ class ElasticResourceEventSubscriber
     public function handleContactAttached(ContactAttachedEvent $event)
     {
         /** @var Contact $contact */
-        $contact = Contact::withTrashed()->find($event->pivot->contact_id);
+        $contact = Contact::query()->find($event->pivot->contact_id);
 
         /** @var Instrument|Provider|Region $attached */
         $attached = $event->pivot->contactable_type::withTrashed()->find($event->pivot->contactable_id);
@@ -137,7 +137,7 @@ class ElasticResourceEventSubscriber
     public function handleContactDetached(ContactDetachedEvent $event)
     {
         /** @var Contact $contact */
-        $contact = Contact::withTrashed()->find($event->pivot->contact_id);
+        $contact = Contact::query()->find($event->pivot->contact_id);
 
         /** @var Instrument|Provider|Region $attached */
         $detached = $event->pivot->contactable_type::withTrashed()->find($event->pivot->contactable_id);

@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use Vng\EvaCore\Enums\LocationEnum;
 use Vng\EvaCore\Models\Area;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Partnership;
@@ -22,16 +21,15 @@ class InstrumentFactory extends Factory
         return [
             'name' => $this->faker->name,
             'is_active' => true,
-            'is_nationally_available' => $this->faker->boolean,
-            'location' => collect(LocationEnum::keys())->random(),
+            'summary' => $this->faker->text,
+            'method' => $this->faker->text,
         ];
     }
 
     public function nationallyAvailable(): Factory
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function () {
             return [
-                'is_nationally_available' => true,
                 'owner_type' => null,
                 'owner_id' => null,
             ];
@@ -45,11 +43,7 @@ class InstrumentFactory extends Factory
             $region = $area->area;
         }
 
-        return $this->state(function (array $attributes) {
-            return [
-                'is_nationally_available' => false,
-            ];
-        })->for($region, 'owner');
+        return $this->for($region, 'owner');
     }
 
     public function forTownship(Township $township = null): Factory
@@ -59,20 +53,12 @@ class InstrumentFactory extends Factory
             $township = $area->area;
         }
 
-        return $this->state(function (array $attributes) {
-            return [
-                'is_nationally_available' => false,
-            ];
-        })->for($township, 'owner');
+        return $this->for($township, 'owner');
     }
 
     public function forPartnership(Partnership $partnership = null): Factory
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'is_nationally_available' => false,
-            ];
-        })->for(
+        return $this->for(
             $partnership ?? Partnership::factory(), 'owner'
         );
     }

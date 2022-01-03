@@ -4,10 +4,10 @@
 namespace Vng\EvaCore\Services;
 
 use Vng\EvaCore\Models\Area;
+use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Provider;
 use Vng\EvaCore\Models\TargetGroup;
-use Vng\EvaCore\Models\Theme;
 use Vng\EvaCore\Models\Tile;
 use Vng\EvaCore\Traits\HasOwner;
 use Vng\EvaCore\Traits\IsOwner;
@@ -86,8 +86,7 @@ class ReallocationService
 
             $instrument->areas->each(fn (Area $area) => $newInstrument->areas()->attach($area));
             $instrument->tiles->each(fn (Tile $tile) => $newInstrument->tiles()->attach($tile));
-
-            $instrument->themes->each(fn (Theme $theme) => $newInstrument->themes()->attach($theme));
+            $instrument->clientCharacteristics->each(fn (ClientCharacteristic $clientCharacteristic) => $newInstrument->clientCharacteristics()->attach($clientCharacteristic));
             $instrument->targetGroups->each(fn (TargetGroup $targetGroup) => $newInstrument->targetGroups()->attach($targetGroup));
 
             foreach ($instrument->links as $link) {

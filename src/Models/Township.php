@@ -2,8 +2,11 @@
 
 namespace Vng\EvaCore\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Interfaces\IsOwnerInterface;
-use Vng\EvaCore\Traits\HasSlug;
+use Vng\EvaCore\Traits\AreaTrait;
+use Vng\EvaCore\Traits\HasDynamicSlug;
 use Vng\EvaCore\Traits\IsOwner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,9 +16,9 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
-class Township extends Model implements IsOwnerInterface
+class Township extends Model implements IsOwnerInterface, AreaInterface
 {
-    use HasFactory, SoftDeletes, HasSlug, IsOwner;
+    use HasFactory, SoftDeletes, HasDynamicSlug, IsOwner, AreaTrait;
 
     protected $table = 'townships';
 
@@ -33,36 +36,26 @@ class Township extends Model implements IsOwnerInterface
         return $this->belongsTo(Region::class);
     }
 
+    // A Township can have many parts
+    public function neighbourhoods(): HasMany
+    {
+        return $this->hasMany(Neighbourhood::class);
+    }
+
     // A Township is an area
     public function area(): MorphOne
     {
         return $this->morphOne(Area::class, 'area');
     }
 
-    public function getAreasAttribute(): Collection
+    public function getParentAreas(): ?Collection
     {
-        if (!$this->relationLoaded('area')) {
-            $this->load('area');
-        }
-
-        return collect([
-            $this->area,
-        ]);
+        return collect([$this->region]);
     }
 
-    /**
-     * Returns all areas this township is located in
-     * For a township that means the township itself and it's parent region
-     * Change when provinces are added
-     * @return Collection
-     */
-    public function getAreasLocatedInAttribute(): Collection
+    public function getChildAreas(): ?Collection
     {
-        $areas = $this->getAreasAttribute();
-        if ($this->region && $this->region->area) {
-            $areas->add($this->region->area,);
-        }
-        return $areas;
+        return $this->neighbourhoods;
     }
 
     public function instruments(): BelongsToMany

@@ -2,10 +2,12 @@
 
 namespace Vng\EvaCore\Models;
 
+use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Interfaces\IsOwnerInterface;
 use Vng\EvaCore\ElasticResources\RegionResource;
+use Vng\EvaCore\Traits\AreaTrait;
 use Vng\EvaCore\Traits\HasContacts;
-use Vng\EvaCore\Traits\HasSlug;
+use Vng\EvaCore\Traits\HasDynamicSlug;
 use Vng\EvaCore\Traits\IsOwner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,9 +16,9 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
-class Region extends SearchableModel implements IsOwnerInterface
+class Region extends SearchableModel implements IsOwnerInterface, AreaInterface
 {
-    use HasFactory, SoftDeletes, HasSlug, IsOwner, HasContacts;
+    use HasFactory, SoftDeletes, HasDynamicSlug, IsOwner, HasContacts, AreaTrait;
 
     protected $table = 'regions';
     protected string $elasticResource = RegionResource::class;
@@ -36,47 +38,20 @@ class Region extends SearchableModel implements IsOwnerInterface
         return $this->hasMany(Township::class);
     }
 
+    public function getParentAreas(): ?Collection
+    {
+        return null;
+    }
+
+    public function getChildAreas(): ?Collection
+    {
+        return $this->townships;
+    }
+
     // A Region is an area
     public function area(): MorphOne
     {
         return $this->morphOne(Area::class, 'area');
-    }
-
-    public function getAreasAttribute(): Collection
-    {
-        if (!$this->relationLoaded('area')) {
-            $this->load('area');
-        }
-        if (!$this->relationLoaded('townships')) {
-            $this->load('townships');
-        }
-
-        if ($this->townships->isEmpty()) {
-            return collect([$this->area]);
-        }
-
-        $areas = collect($this->townships)->map(function(Township $township) {
-            return $township->area;
-        })->filter();
-
-        if (!is_null($this->area)) {
-            $areas->add($this->area);
-        }
-        return $areas;
-    }
-
-    /**
-     * Returns all areas this region is located in
-     * For a region that means it owns region
-     * Change when provinces are added
-     * @return Collection
-     */
-    public function getAreasLocatedInAttribute(): Collection
-    {
-        if (!is_null($this->area)) {
-            return collect([]);
-        }
-        return collect([$this->area]);
     }
 
     public function instruments(): BelongsToMany
