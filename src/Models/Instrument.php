@@ -193,13 +193,6 @@ class Instrument extends SearchableModel
         return $this->attributes['total_duration_unit'];
     }
 
-    public function areas(): BelongsToMany
-    {
-        return $this->belongsToMany(Area::class, 'area_instrument')
-            ->withTimestamps()
-            ->using(AreaInstrument::class);
-    }
-
     public function availableRegions(): BelongsToMany
     {
         return $this->belongsToMany(Region::class, 'available_region_instrument')

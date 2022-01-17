@@ -109,7 +109,6 @@ class InstrumentResource extends ElasticResource
 //
 //            // relations
 //            'themes' => ThemeResource::many($this->themes),
-//            'areas' => AreaResource::many($this->areas),
         ];
     }
 }

@@ -42,12 +42,6 @@ class Township extends Model implements IsOwnerInterface, AreaInterface
         return $this->hasMany(Neighbourhood::class);
     }
 
-    // A Township is an area
-    public function area(): MorphOne
-    {
-        return $this->morphOne(Area::class, 'area');
-    }
-
     public function getParentAreas(): ?Collection
     {
         return collect([$this->region]);
@@ -58,11 +52,6 @@ class Township extends Model implements IsOwnerInterface, AreaInterface
         return $this->neighbourhoods;
     }
 
-    public function instruments(): BelongsToMany
-    {
-        return $this->area->instruments();
-    }
-
     public function partnerships(): BelongsToMany
     {
         return $this->belongsToMany(Partnership::class);
@@ -71,11 +60,5 @@ class Township extends Model implements IsOwnerInterface, AreaInterface
     public function featuredByEnvironment(): MorphOne
     {
         return $this->morphOne(Environment::class, 'featured_association');
-    }
-
-    public function delete()
-    {
-        $this->area()->delete();
-        return parent::delete();
     }
 }

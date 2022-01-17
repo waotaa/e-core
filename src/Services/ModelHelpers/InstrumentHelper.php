@@ -47,8 +47,8 @@ class InstrumentHelper
 
     public function isComplete(): bool
     {
-        return $this->hasTile();
-//            && $this->hasClientCharacteristic();
+        return $this->hasTile()
+            && $this->hasClientCharacteristic();
     }
 
     public function hasProvider(): bool
@@ -123,8 +123,8 @@ class InstrumentHelper
     {
         return $builder
             ->has('tiles')
-            ->has('targetGroups');
-//            ->has('clientCharacteristics');
+            ->has('targetGroups')
+            ->has('clientCharacteristics');
 
     }
 
@@ -132,7 +132,7 @@ class InstrumentHelper
     {
         return $builder
             ->doesntHave('tiles')
-            ->orDoesntHave('targetGroups');
-//            ->orDoesntHave('clientCharacteristics');
+            ->orDoesntHave('targetGroups')
+            ->orDoesntHave('clientCharacteristics');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use Vng\EvaCore\Models\Area;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\Partnership;
 use Vng\EvaCore\Models\Provider;
@@ -26,7 +25,7 @@ class ProviderFactory extends Factory
 
     public function ownerless(): Factory
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function () {
             return [
                 'owner_type' => null,
                 'owner_id' => null,
@@ -36,29 +35,21 @@ class ProviderFactory extends Factory
 
     public function forRegion(Region $region = null): Factory
     {
-        return $this->for(
-            $region ?? Region::factory()->has(Area::factory()), 'owner'
-        );
+        return $this->for($region ?? Region::factory(), 'owner');
     }
 
     public function forTownship(Township $township = null): Factory
     {
-        return $this->for(
-            $township ?? Township::factory()->has(Area::factory()), 'owner'
-        );
+        return $this->for($township ?? Township::factory(), 'owner');
     }
 
     public function forEnvironment(Environment $environment = null): Factory
     {
-        return $this->for(
-            $environment ?? Environment::factory(), 'owner'
-        );
+        return $this->for($environment ?? Environment::factory(), 'owner');
     }
 
     public function forPartnership(Partnership $partnership = null): Factory
     {
-        return $this->for(
-            $partnership ?? Partnership::factory(), 'owner'
-        );
+        return $this->for($partnership ?? Partnership::factory(), 'owner');
     }
 }

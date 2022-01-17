@@ -16,7 +16,7 @@ interface IsMemberInterface
 
     public function isMemberOfTownship(): bool;
 
-    public function isMemberOfEnvironment(): bool;
+    public function isMemberOfPartnership(): bool;
 
     public function usersShareAssociation(EvaUserInterface $user): bool;
 }

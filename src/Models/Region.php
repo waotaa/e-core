@@ -10,7 +10,6 @@ use Vng\EvaCore\Traits\HasContacts;
 use Vng\EvaCore\Traits\HasDynamicSlug;
 use Vng\EvaCore\Traits\IsOwner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -48,25 +47,8 @@ class Region extends SearchableModel implements IsOwnerInterface, AreaInterface
         return $this->townships;
     }
 
-    // A Region is an area
-    public function area(): MorphOne
-    {
-        return $this->morphOne(Area::class, 'area');
-    }
-
-    public function instruments(): BelongsToMany
-    {
-        return $this->area->instruments();
-    }
-
     public function featuredByEnvironment(): MorphOne
     {
         return $this->morphOne(Environment::class, 'featured_association');
-    }
-
-    public function delete()
-    {
-        $this->area()->delete();
-        return parent::delete();
     }
 }

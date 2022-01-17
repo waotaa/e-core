@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use Vng\EvaCore\Models\Area;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Partnership;
 use Vng\EvaCore\Models\Region;
@@ -38,22 +37,12 @@ class InstrumentFactory extends Factory
 
     public function forRegion(Region $region = null): Factory
     {
-        if (is_null($region)) {
-            $area = Area::factory()->for(Region::factory(), 'area')->create();
-            $region = $area->area;
-        }
-
-        return $this->for($region, 'owner');
+        return $this->for($region ?? Region::factory()->create(), 'owner');
     }
 
     public function forTownship(Township $township = null): Factory
     {
-        if (is_null($township)) {
-            $area = Area::factory()->for(Township::factory()->forRegion(), 'area')->create();
-            $township = $area->area;
-        }
-
-        return $this->for($township, 'owner');
+        return $this->for($township ?? Township::factory()->forRegion()->create(), 'owner');
     }
 
     public function forPartnership(Partnership $partnership = null): Factory

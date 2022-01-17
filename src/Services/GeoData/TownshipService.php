@@ -2,7 +2,6 @@
 
 namespace Vng\EvaCore\Services\GeoData;
 
-use Vng\EvaCore\Models\Area;
 use Vng\EvaCore\Models\Region;
 use Vng\EvaCore\Models\Township;
 
@@ -20,10 +19,6 @@ class TownshipService
 
         static::connectTownshipToRegion($township);
 
-        Area::query()->firstOrCreate([
-            'area_id' => $township->id,
-            'area_type' => Township::class
-        ]);
         return $township;
     }
 

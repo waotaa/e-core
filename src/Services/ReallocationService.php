@@ -3,12 +3,14 @@
 
 namespace Vng\EvaCore\Services;
 
-use Vng\EvaCore\Models\Area;
 use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\Instrument;
+use Vng\EvaCore\Models\Neighbourhood;
 use Vng\EvaCore\Models\Provider;
+use Vng\EvaCore\Models\Region;
 use Vng\EvaCore\Models\TargetGroup;
 use Vng\EvaCore\Models\Tile;
+use Vng\EvaCore\Models\Township;
 use Vng\EvaCore\Traits\HasOwner;
 use Vng\EvaCore\Traits\IsOwner;
 use Exception;
@@ -84,10 +86,13 @@ class ReallocationService
                 $newInstrument->contacts()->save($contact->replicate());
             }
 
-            $instrument->areas->each(fn (Area $area) => $newInstrument->areas()->attach($area));
             $instrument->tiles->each(fn (Tile $tile) => $newInstrument->tiles()->attach($tile));
             $instrument->clientCharacteristics->each(fn (ClientCharacteristic $clientCharacteristic) => $newInstrument->clientCharacteristics()->attach($clientCharacteristic));
             $instrument->targetGroups->each(fn (TargetGroup $targetGroup) => $newInstrument->targetGroups()->attach($targetGroup));
+
+            $instrument->availableRegions->each(fn (Region $region) => $newInstrument->availableRegions()->attach($region));
+            $instrument->availableTownships->each(fn (Township $township) => $newInstrument->availableTownships()->attach($township));
+            $instrument->availableNeighbourhoods->each(fn (Neighbourhood $neighbourhood) => $newInstrument->availableNeighbourhoods()->attach($neighbourhood));
 
             foreach ($instrument->links as $link) {
                 $newInstrument->links()->save($link->replicate());

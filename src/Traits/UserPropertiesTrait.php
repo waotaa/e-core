@@ -77,7 +77,7 @@ trait UserPropertiesTrait
         $sixMonthsAgo = (new DateTime())->modify('-6 months');
         return $this->password_updated_at < $sixMonthsAgo;
     }
-
+    
     public function setPasswordUpdatedAtToNow()
     {
         $this->password_updated_at = Date::now();

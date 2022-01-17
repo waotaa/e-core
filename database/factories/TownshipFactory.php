@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use Vng\EvaCore\Models\Area;
 use Vng\EvaCore\Models\Region;
 use Vng\EvaCore\Models\Township;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -29,10 +28,6 @@ class TownshipFactory extends Factory
 
     public function forRegion(Region $region = null): Factory
     {
-        if (is_null($region)) {
-            $area = Area::factory()->for(Region::factory(), 'area')->create();
-            $region = $area->area;
-        }
-        return $this->for($region);
+        return $this->for($region ?? Region::factory(), 'region');
     }
 }
