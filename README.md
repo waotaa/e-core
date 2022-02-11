@@ -1,64 +1,148 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## Eva Laravel core
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Environments files
+```
+.env.test
+.env.staging
+.env.production
+.env.testing (unit tests)
+```
 
-## About Laravel
+## Setup
+`php artisan eva-core:setup {--n|no-interaction} {--l|lean}`
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Force data sync with elastic
+```angular2html
+php artisan elastic:sync-all -f
+php artisan elastic:sync-environments
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tests
+Make sure you setup your testing .env's before running the tests.
+You probably want to use a different database for running the tests.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Browser tests
+We use laravel dusk for browser tests. It uses a .env.dusk.[env] environment file. If your test fails due to a chrome
+driver failure, you first should try to update it.
 
-## Learning Laravel
+Running the tests:
+```
+php artisan dusk:chrome-driver
+php artisan dusk
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Unit tests
+For unit testing we use phpunit. In phpunit.xml the .env.testing environment isset as the used environment file. Laravel
+doesn't use the .env directly. It loads it in the config. Therefor you need to clear your config before running a test.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Running the tests:
+```
+php artisan config:clear
+php artisan test
+```
 
-## Laravel Sponsors
+## Geo Data
+Eva uses geo data from townships and labor market regions.\
+There are various API's that can be used as the source for this data.\
+We use the API data to generate a source file. This source file is the
+single point of truth we use to create our database entries.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+There are various commands to check if the source file or database is up
+to date and other commands to update them if they're not.
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
+### New source and new data set
+To generate a new township and region source run
 
-## Contributing
+```
+php artisan geo:generate-source
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+You can also generate a new source for either townships or regions.
+Without the `--update-source` option you create a new source snapshot.
+Run it, check the file, and when satisfied add the option to overwrite
+the source file.
 
-## Code of Conduct
+```
+php artisan geo:townships-create-dataset {--update-source}
+php artisan geo:regions-create-dataset {--update-source}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+You can create townships and regions from the source file with the following
+commands. These commands are not careful. They will create or update the data
+but they will not check if current entries don't exist anymore and the items
+associated with them need reallocation.
+So not recommended with an existing data set.
 
-## Security Vulnerabilities
+```
+php artisan geo:townships-create 
+php artisan geo:regions-create 
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+### Existing source or existing data set
+Once you have your data established you want to monitor for changes.
+To do this you can run the following commands. These will only show
+the missing items between multiple API's and the data source.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The checks do not check for content changes!
+
+```
+php artisan geo:townships-check-source-from-api
+php artisan geo:regions-check-source-from-api
+``` 
+
+We currently use the Cbs Open Data Api to create the source file.
+When checking for changes in the various API results, look for that one.
+
+Create data snapshot and check them in storage under fixed/area
+```
+php artisan geo:townships-create-dataset
+php artisan geo:regions-create-dataset
+```
+
+When your happy with the snapshot, run it again with the `update-source`
+option.
+```
+php artisan geo:townships-create-dataset --update-source
+php artisan geo:regions-create-dataset --update-source
+```
+
+You can also check if the database is up to date with the source data.
+The following commands will check for missing items and content
+deviations.
+
+```
+php artisan geo:townships-check-data-from-source
+php artisan geo:regions-check-data-from-source
+```
+
+When you decide to update the database with the source data you can run
+the update commands. These commands will show you each deviation and
+offers you the choice to update the data.
+
+Before you run this you want to have checked all the changes between the
+source and the database and want the source in a state in which you can
+just answer yes to all the changes.
+
+```
+php artisan geo:townships-update-data-from-source
+php artisan geo:regions-update-data-from-source
+```
+
+
+## Professionals
+
+The data from the id provider is leading
+The data in the professionals table is a copy of the data in the
+id-provider. To sync the data in the database with the data from the
+id-provider you can run the following command.
+
+```
+professionals:sync
+```
+
+The commands updates the last_seen_date of all the professionals it
+found. Naturally the last_seen_date of professionals missing from the
+id-provider will not update. You might want to remove those from
+professionals from the database. There are methods in place to do so

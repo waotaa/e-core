@@ -13,6 +13,7 @@ class AddressResource extends ElasticResource
             'postbusnummer' => $this->postbusnummer,
             'antwoordnummer' => $this->antwoordnummer,
             'postcode' => $this->postcode,
+            'postcode_digits' => (int) substr($this->postcode, 0, 4),
             'woonplaats' => $this->woonplaats,
         ];
     }

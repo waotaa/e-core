@@ -38,5 +38,9 @@ class AddressObserver
         if (!is_null($addressable)) {
             ElasticRelatedResourceChanged::dispatch($addressable, $address);
         }
+
+        $address->providers->each(
+            fn($provider) => ElasticRelatedResourceChanged::dispatch($provider, $address)
+        );
     }
 }

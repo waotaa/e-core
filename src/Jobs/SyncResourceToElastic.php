@@ -31,7 +31,7 @@ class SyncResourceToElastic implements ShouldQueue
 
     public function handle(): void
     {
-        /** @var Client $elastic */
+        /** @var Client $elasticsearch */
         $elasticsearch = App::make('elasticsearch');
 
         $index = $this->model->getSearchIndex();

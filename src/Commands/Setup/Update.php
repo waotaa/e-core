@@ -26,7 +26,7 @@ class Update extends Command
         $this->call(SeedCharacteristics::class);
 
         $this->call('professionals:setup', ['--silent' => true]);
-        $this->call('elastic:sync-all', ['--fresh' => true]);
+        $this->call('elastic:sync-all', ['--fresh' => false]);
         return 0;
     }
 }

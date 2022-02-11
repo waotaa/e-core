@@ -46,9 +46,9 @@ class Contact extends Model
         return $this->attributes['type'];
     }
 
-    public function getRawTypeAttribute()
+    public function getRawTypeAttribute(): ?string
     {
-        return $this->attributes['type'];
+        return $this->attributes['type'] ?? null;
     }
 
     public function environments(): HasMany

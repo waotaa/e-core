@@ -17,6 +17,7 @@ class SyncAll extends Command
         $this->output->writeln('used elastic username: ' . config('elastic.username'));
 
         $this->call('elastic:sync-environments', ['--fresh' => $this->option('fresh')]);
+        $this->call('elastic:sync-client-characteristics', ['--fresh' => $this->option('fresh')]);
         $this->call('elastic:sync-instruments', ['--fresh' => $this->option('fresh')]);
         $this->call('elastic:sync-instruments-description', ['--fresh' => $this->option('fresh')]);
         $this->call('elastic:sync-news-items', ['--fresh' => $this->option('fresh')]);

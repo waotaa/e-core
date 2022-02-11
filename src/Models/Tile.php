@@ -17,8 +17,11 @@ class Tile extends SearchableModel
     protected $fillable = [
         'name',
         'sub_title',
+        'excerpt',
         'description',
         'list',
+        'crisis_description',
+        'crisis_services',
         'key',
         'position',
     ];

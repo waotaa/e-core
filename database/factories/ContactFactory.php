@@ -19,9 +19,7 @@ class ContactFactory extends Factory
             'name' => $this->faker->name,
             'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->email,
-            'type' => collect(ContactTypeEnum::toArray())->random(),
-            'contactable_id' => null,
-            'contactable_type' => null,
+            'type' => collect(ContactTypeEnum::toArray())->random()
         ];
     }
 }
