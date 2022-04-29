@@ -16,10 +16,9 @@ class ContactResource extends ElasticResource
 
         $pivot = $this->resource->pivot;
         if ($pivot) {
-            $type = $pivot->type;
             $data['type'] = [
                 'key' => $pivot->rawType,
-                'name' => $type,
+                'name' => $pivot->type,
             ];
         }
 

@@ -28,7 +28,7 @@ class TownshipDataComparisonService extends GeoDataComparisonService
 
     public static function getSourceCollection(): Collection
     {
-        $data = TownshipDataService::loadData();
+        $data = TownshipDataService::loadSourceData();
         return TownshipDataService::createBasicGeoCollectionFromData($data);
     }
 

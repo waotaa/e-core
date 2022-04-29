@@ -2,13 +2,13 @@
 
 namespace Vng\EvaCore\Services\Cognito;
 
+use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
+use Aws\CognitoIdentityProvider\Exception\CognitoIdentityProviderException;
+use Carbon\Carbon;
 use Vng\EvaCore\Models\Professional;
-use Vng\EvaCore\CognitoIdentityProvider\CognitoIdentityProviderClient;
 use Aws\Laravel\AwsFacade;
 use Aws\Result;
-use DateTime;
 use Illuminate\Support\Collection;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class CognitoService
 {
@@ -58,38 +58,63 @@ class CognitoService
         UserPoolClientService::ensureUserPoolClient();
     }
 
-    /**
-     * Gets all users from the idp and updates the database accordingly
-     */
-    public static function syncProfessionals(): void
+    public static function fetchNewCognitoUsers()
     {
-        $users = static::getUsers();
+        $users = static::findNewCognitoUsers();
         $users->each(function (UserModel $user) {
             static::updateOrCreateProfessionalQuietly($user);
         });
+    }
+
+    public static function findNewCognitoUsers()
+    {
+        $users = static::getUsers();
+        if (is_null($users)) {
+            return null;
+        }
+        return $users->filter(function (UserModel $user) {
+            return is_null(static::findProfessional($user));
+        });
+    }
+
+    /**
+     * Gets all users from the idp and updates the database accordingly
+     */
+    public static function syncProfessionals($destructive = true): void
+    {
+        static::fetchNewCognitoUsers();
+
+        $professionals = Professional::all();
+        if (is_null($professionals)) {
+            return;
+        }
+
+        $professionals->each(fn (Professional $p) => static::syncProfessional($p, $destructive));
     }
 
     /**
      * Sync the given professional with the idp data
      * Deletes the professsional when not present
      */
-    public static function syncProfessional(Professional $professional): ?Professional
+    public static function syncProfessional(Professional $professional, $destructive = true): ?Professional
     {
-        $userPool = UserPoolService::getUserPool();
-        if (is_null($userPool)) {
+        $user = static::getUser($professional);
+        if (is_null($user)) {
+            if ($destructive) {
+                $professional->delete();
+            }
             return null;
         }
+        return static::updateOrCreateProfessionalQuietly($user);
+    }
 
-        try {
-            $userData = static::adminGetUser($userPool, $professional->email);
-            if ($userData) {
-                $user = UserModel::create($userData);
-                return static::updateOrCreateProfessionalQuietly($user);
-            }
-        } catch (ResourceNotFoundException $e) {
-            $professional->delete();
-        }
-        return null;
+    protected static function findProfessional(UserModel $user): ?Professional
+    {
+        /** @var Professional|object|static|null $professional */
+        $professional = Professional::query()->where([
+            'email' => $user->getEmail(),
+        ])->first();
+        return $professional;
     }
 
     protected static function updateOrCreateProfessionalQuietly(UserModel $user): ?Professional
@@ -115,7 +140,7 @@ class CognitoService
         });
     }
 
-    protected static function checkPasswordExpiration(UserModel $user)
+    public static function checkPasswordExpiration(UserModel $user)
     {
         $pwUpdatedAt = $user->getPasswordUpdatedAtDate();
         if (is_null($pwUpdatedAt)){
@@ -153,6 +178,22 @@ class CognitoService
         });
     }
 
+    public static function getUser(Professional $professional): ?UserModel
+    {
+        $userPool = UserPoolService::getUserPool();
+        if (is_null($userPool)) {
+            return null;
+        }
+        try {
+            $user = static::adminGetUser($userPool->getId(), $professional->username);
+        } catch (CognitoIdentityProviderException $e) {
+            if ($e->getAwsErrorCode() === 'UserNotFoundException') {
+                return null;
+            }
+        }
+        return UserModel::create($user);
+    }
+
     protected static function getUsers(string $paginationToken = null): ?Collection
     {
         $userPool = UserPoolService::getUserPool();
@@ -183,12 +224,12 @@ class CognitoService
         return $cognitoClient->listUsers($args);
     }
 
-    protected static function adminGetUser(UserPoolModel $userPool, string $username)
+    protected static function adminGetUser($userPoolId, string $username): Result
     {
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         return $cognitoClient->adminGetUser([
-            'UserPoolId' => $userPool->getId(),
+            'UserPoolId' => $userPoolId,
             'Username' => $username,
         ]);
     }
@@ -274,7 +315,7 @@ class CognitoService
         $args['UserAttributes'] = [
             [
                 'Name' => 'custom:password_updated_at',
-                'Value' => (new DateTime())->format('Y-m-d H:i:s e')
+                'Value' => Carbon::now()->format('Y-m-d H:i:s O')
             ]
         ];
         return $cognitoClient->adminUpdateUserAttributes(
@@ -299,6 +340,12 @@ class CognitoService
 
     public static function deleteProfessional(Professional $professional)
     {
+        $user = static::getUser($professional);
+        if (is_null($user)) {
+            // Professional not found so no need to delete here
+            return null;
+        }
+
         $userPool = UserPoolService::getUserPool();
         static::adminDeleteUser($userPool, [
             'Username' => $professional->username,

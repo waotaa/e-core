@@ -35,11 +35,11 @@ class ContactablesObserver
 
     private function attachConnectedElasticResources(Contactables $contactables): void
     {
-        ContactAttachedEvent::dispatch($contactables);
+        ContactAttachedEvent::dispatch($contactables->contact, $contactables->findContactable());
     }
 
     private function detachConnectedElasticResources(Contactables $contactables): void
     {
-        ContactDetachedEvent::dispatch($contactables);
+        ContactDetachedEvent::dispatch($contactables->contact, $contactables->findContactable());
     }
 }

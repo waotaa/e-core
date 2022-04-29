@@ -4,6 +4,7 @@ namespace Vng\EvaCore\Services\GeoApi;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
+use Vng\EvaCore\Services\GeoData\RegionDataService;
 
 class CbsOpenDataApiService extends GeoApiService
 {
@@ -16,8 +17,10 @@ class CbsOpenDataApiService extends GeoApiService
 
     public static function fetchApiContents($includeGeo = false): string
     {
+        // 84929NED (2021)
+        // 85067NED (2022)
         $client = new Client(['base_uri' => 'https://opendata.cbs.nl/ODataApi/odata/']);
-        $response = $client->request('GET', '84929NED/TypedDataSet', [
+        $response = $client->request('GET', '85067NED/TypedDataSet', [
             'query' => [
                 '$select' => 'RegioS,Code_1,Naam_2,Code_4,Naam_5',
             ]
@@ -26,26 +29,22 @@ class CbsOpenDataApiService extends GeoApiService
         return $response->getBody()->getContents();
     }
 
-    public static function fetchApiData($includeGeo = false): array
+    public static function getData($includeGeo = false, $allowFromCache = false): array
     {
-        $contents = static::fetchApiContents($includeGeo);
-        $data = static::transformResponseToArray($contents);
-        $data['value'] = static::transformValues($data['value']);
-        return $data;
+        $data = parent::getData($includeGeo, $allowFromCache);
+        return static::cleanValues($data['value']);
     }
 
-    public static function getData($includeGeo = false): array
-    {
-        $data = parent::getData($includeGeo);
-        $data['value'] = static::transformValues($data['value']);
-        return $data;
-    }
-
-    public static function transformValues(array $data): array
+    public static function cleanValues(array $data): array
     {
         return array_map(function($entry) {
             return array_map('trim', $entry);
         }, $data);
+    }
+
+    public static function getRegionsFromData(array $cbsAreaData)
+    {
+        return collect($cbsAreaData)->unique('Code_4')->toArray();
     }
 
     public static function getFormattedRegionData(array $data)
@@ -55,6 +54,7 @@ class CbsOpenDataApiService extends GeoApiService
                 'code' => $entry['Code_4'],
                 'name' => $entry['Naam_5'],
                 'slug' => (string) Str::slug($entry['Naam_5']),
+                'color' => RegionDataService::getRegionColor($entry['Code_4']),
             ];
         }, $data);
     }
@@ -66,6 +66,7 @@ class CbsOpenDataApiService extends GeoApiService
                 'code' => $entry['Code_1'],
                 'name' => $entry['Naam_2'],
                 'slug' => (string) Str::slug($entry['Naam_2']),
+                'region_code' => $entry['Code_4'],
             ];
         }, $data);
     }

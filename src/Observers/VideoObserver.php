@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Observers;
 
 use Vng\EvaCore\Events\ElasticRelatedResourceChanged;
+use Vng\EvaCore\Events\InstrumentSaved;
 use Vng\EvaCore\Models\Video;
 
 class VideoObserver
@@ -36,6 +37,7 @@ class VideoObserver
     {
         if (!is_null($video->instrument)) {
             ElasticRelatedResourceChanged::dispatch($video->instrument, $video);
+            InstrumentSaved::dispatch($video->instrument);
         }
     }
 }

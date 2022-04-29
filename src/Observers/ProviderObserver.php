@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Observers;
 
 use Vng\EvaCore\Events\ElasticRelatedResourceChanged;
+use Vng\EvaCore\Events\InstrumentSaved;
 use Vng\EvaCore\Models\Provider;
 
 class ProviderObserver
@@ -35,7 +36,10 @@ class ProviderObserver
     private function syncConnectedElasticResources(Provider $provider): void
     {
         $provider->instruments->each(
-            fn($instrument) => ElasticRelatedResourceChanged::dispatch($instrument, $provider)
+            function ($instrument) use ($provider) {
+                ElasticRelatedResourceChanged::dispatch($instrument, $provider);
+                InstrumentSaved::dispatch($instrument);
+            }
         );
     }
 }

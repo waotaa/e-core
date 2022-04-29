@@ -81,21 +81,6 @@ class InstrumentDescriptionResource extends ElasticResource
             'provider' => ProviderResource::one($this->provider),
             'addresses' => AddressResource::many($this->addresses),
             'contacts' => ContactResource::many($this->contacts),
-
-            // v1
-
-            // descriptions
-            'short_description' => $this->short_description,
-            'description' => $this->description,
-            'conditions' => $this->conditions,
-
-//            'location' => $this->location,
-
-            // info section
-            'duration' => $this->duration,
-            'duration_unit' => $this->duration_unit,
-            'costs' => $this->costs,
-            'costs_unit' => $this->costs_unit,
         ];
     }
 }

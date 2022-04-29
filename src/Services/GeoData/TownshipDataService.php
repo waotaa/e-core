@@ -8,16 +8,17 @@ use Illuminate\Support\Str;
 
 class TownshipDataService extends GeoDataService
 {
-    public static function fetchBaseData(): Collection
+    public static function fetchApiData(): Collection
     {
         $data = CbsOpenDataApiService::getData();
-        $cbsAreaData = CbsOpenDataApiService::transformValues($data['value']);
-        return collect($cbsAreaData)->map(fn ($entry) => [
-            'code' => $entry['Code_1'],
-            'name' => $entry['Naam_2'],
-            'slug' => (string) Str::slug($entry['Naam_2']),
-            'region_code' => $entry['Code_4'],
-        ])->values();
+        return collect(CbsOpenDataApiService::getFormattedTownshipData($data))->values();
+    }
+
+    // fetch from file or api
+    public static function fetchData(): Collection
+    {
+        $data = CbsOpenDataApiService::getData(false, true);
+        return collect(CbsOpenDataApiService::getFormattedTownshipData($data))->values();
     }
 
     public static function createBasicGeoModelFromDataEntry(array $entry): BasicTownshipModel

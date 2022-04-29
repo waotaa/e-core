@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 
 class RegionsCreateDataSetFromApi extends Command
 {
-    protected $signature = 'geo:regions-create-dataset {--update-source}';
+    protected $signature = 'geo:regions-create-dataset {--update-source} {--yes-to-all}';
     protected $description = 'create our region dataset from different sources';
 
     public function handle(): int
@@ -15,10 +15,12 @@ class RegionsCreateDataSetFromApi extends Command
         $this->output->writeln('creating region dataset..');
         $this->output->writeln('');
 
+        $yesToAll = (bool) $this->option('yes-to-all');
+
         $updateSource = $this->option('update-source');
         if ($updateSource) {
             $this->info('Please create and check a snapshot before updating the general dataset');
-            if ($this->confirm('Are you sure you want to overwrite the general dataset?')) {
+            if ($yesToAll || $this->confirm('Are you sure you want to overwrite the general dataset?')) {
                 $this->output->writeln('updating general dataset');
                 $this->output->writeln('');
                 RegionDataService::createSourceData();

@@ -28,7 +28,7 @@ class RegionDataComparisonService extends GeoDataComparisonService
 
     public static function getSourceCollection(): Collection
     {
-        $data = RegionDataService::loadData();
+        $data = RegionDataService::loadSourceData();
         return RegionDataService::createBasicGeoCollectionFromData($data);
     }
 

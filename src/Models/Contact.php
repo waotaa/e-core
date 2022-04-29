@@ -58,16 +58,22 @@ class Contact extends Model
 
     public function instruments(): MorphToMany
     {
-        return $this->morphedByMany(Instrument::class, 'contactable')->using(Contactables::class)->withPivot('type');
+        return $this->morphedByMany(Instrument::class, 'contactable')
+            ->using(Contactables::class)
+            ->withPivot('type');
     }
 
     public function providers(): MorphToMany
     {
-        return $this->morphedByMany(Provider::class, 'contactable')->using(Contactables::class)->withPivot('type');
+        return $this->morphedByMany(Provider::class, 'contactable')
+            ->using(Contactables::class)
+            ->withPivot('type');
     }
 
     public function regions(): MorphToMany
     {
-        return $this->morphedByMany(Region::class, 'contactable')->using(Contactables::class)->withPivot('type');
+        return $this->morphedByMany(Region::class, 'contactable')
+            ->using(Contactables::class)
+            ->withPivot('type');
     }
 }

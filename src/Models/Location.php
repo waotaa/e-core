@@ -3,21 +3,52 @@
 namespace Vng\EvaCore\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Vng\EvaCore\Enums\LocationEnum;
 
 class Location extends Model
 {
-    use SoftDeletes;
-
     protected $table = 'locations';
 
     protected $fillable = [
         'name',
+        'type',
+        'is_active',
+        'description'
     ];
 
-    public function instruments(): BelongsToMany
+    public function setTypeAttribute($value)
     {
-        return $this->belongsToMany(Instrument::class, 'instrument_location')->withTimestamps()->using(InstrumentLocation::class);
+        if (is_null($value)) {
+            $this->attributes['type'] = null;
+            return;
+        }
+        $this->attributes['type'] = (new LocationEnum($value))->getKey();
+    }
+
+    public function getTypeAttribute($value)
+    {
+        if (is_null($value)) {
+            return null;
+        }
+        if(in_array($value, LocationEnum::keys())) {
+            return LocationEnum::$value();
+        }
+        return $this->attributes['type'];
+    }
+
+    public function getRawTypeAttribute()
+    {
+        return $this->attributes['type'] ?? null;
+    }
+
+    public function instrument(): BelongsTo
+    {
+        return $this->belongsTo(Instrument::class);
+    }
+
+    public function address(): BelongsTo
+    {
+        return $this->belongsTo(Address::class);
     }
 }

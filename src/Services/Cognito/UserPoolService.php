@@ -62,7 +62,7 @@ class UserPoolService
 //            'UserMigration' => '<string>',
 //            'VerifyAuthChallengeResponse' => '<string>',
 //        ],
-        'MfaConfiguration' => 'OFF', // Migrate to 'ON'
+        'MfaConfiguration' => 'OPTIONAL',
         'Policies' => [
             'PasswordPolicy' => [
                 'MinimumLength' => 8,
@@ -116,6 +116,7 @@ class UserPoolService
         } else {
             static::createUserPool();
         }
+        static::setupMfaConfig($userPool->getId());
     }
 
     protected static function createUserPool(): Result
@@ -141,6 +142,26 @@ class UserPoolService
         $args['AdminCreateUserConfig']['InviteMessageTemplate']['EmailMessage'] = static::getInvitationEmail();
         $args['VerificationMessageTemplate']['EmailMessage'] = static::getValidationMessage();
         return $args;
+    }
+
+    protected static function setupMfaConfig($userPoolId): Result
+    {
+        /** @var CognitoIdentityProviderClient $cognitoClient */
+        $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
+        return $cognitoClient->setUserPoolMfaConfig([
+            "MfaConfiguration" => static::DEFAULT_POOL_SETTINGS['MfaConfiguration'],
+//            "SmsMfaConfiguration" => [
+//                "SmsAuthenticationMessage" => "a message with the token: {####}",
+//                "SmsConfiguration" => [
+//                    "ExternalId" => "string",
+//                    "SnsCallerArn" => "string"
+//                ]
+//            ],
+            "SoftwareTokenMfaConfiguration" => [
+                "Enabled" => true
+            ],
+            'UserPoolId' => $userPoolId
+        ]);
     }
 
     public static function getUserPoolName()
@@ -232,6 +253,15 @@ class UserPoolService
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         return $cognitoClient->describeUserPool([
             'UserPoolId' => $userPool->getId()
+        ]);
+    }
+
+    public static function getUserPoolMfaConfig(string $userPoolId): Result
+    {
+        /** @var CognitoIdentityProviderClient $cognitoClient */
+        $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
+        return $cognitoClient->getUserPoolMfaConfig([
+            'UserPoolId' => $userPoolId
         ]);
     }
 

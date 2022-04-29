@@ -2,8 +2,11 @@
 
 namespace Vng\EvaCore\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Vng\EvaCore\ElasticResources\ProviderResource;
+use Vng\EvaCore\Interfaces\IsMemberInterface;
 use Vng\EvaCore\Observers\ProviderObserver;
+use Vng\EvaCore\Repositories\Eloquent\ProviderRepository;
 use Vng\EvaCore\Traits\HasContacts;
 use Vng\EvaCore\Traits\HasOwner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -65,5 +68,12 @@ class Provider extends SearchableModel
     public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class);
+    }
+
+
+    public function scopeOwnedBy(Builder $query, IsMemberInterface $user)
+    {
+        $repo = new ProviderRepository();
+        return $repo->addMultipleOwnerConditions($query, $user->getAssociations());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Vng\EvaCore\Enums\ContactTypeEnum;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Vng\EvaCore\Observers\ContactablesObserver;
@@ -16,8 +17,23 @@ class Contactables extends MorphPivot
     ];
 
     protected $fillable = [
-        'type'
+        'type',
     ];
+
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
+
+    public function getContactableClass(): string
+    {
+        return Relation::getMorphedModel($this->morphClass);
+    }
+
+    public function findContactable()
+    {
+        return $this->getContactableClass()::find($this->contactable_id);
+    }
 
     protected static function boot()
     {
@@ -47,7 +63,7 @@ class Contactables extends MorphPivot
 
     public function getRawTypeAttribute()
     {
-        return $this->attributes['type'];
+        return $this->attributes['type'] ?? null;
     }
 }
 

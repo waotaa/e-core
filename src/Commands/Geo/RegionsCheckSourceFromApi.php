@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Commands\Geo;
 
+use Illuminate\Support\Collection;
 use Vng\EvaCore\Services\GeoApi\CbsAreaRegionApiService;
 use Vng\EvaCore\Services\GeoApi\CbsOpenDataApiService;
 use Vng\EvaCore\Services\GeoComparison\RegionDataComparisonService;
@@ -20,13 +21,15 @@ class RegionsCheckSourceFromApi extends GeoCheckCommand
         $this->output->writeln('check source data from api results..');
         $this->output->writeln('');
 
-        $this->output->writeln('Checking CBS Area API');
-        $this->checkCbsAreaRegionsApiRegions();
-        $this->output->writeln('');
-
         $this->output->writeln('Checking CBS Open Data API');
         $this->checkCbsOpenDataRegions();
         $this->output->writeln('');
+
+        if ($this->confirm('Check other API\'s as well?')) {
+            $this->output->writeln('Checking CBS Area API');
+            $this->checkCbsAreaRegionsApiRegions();
+            $this->output->writeln('');
+        }
 
         $this->output->writeln('check source data from api results finished!');
         $this->output->writeln('');
@@ -34,25 +37,37 @@ class RegionsCheckSourceFromApi extends GeoCheckCommand
         return 0;
     }
 
-    public function checkCbsAreaRegionsApiRegions()
-    {
-        $apiData = CbsAreaRegionApiService::fetchApiData();
-        $testData = CbsAreaRegionApiService::getFormattedData($apiData['features']);
-        $this->checkForMissingItems($testData);
-    }
-
     public function checkCbsOpenDataRegions()
     {
-        $apiData = CbsOpenDataApiService::fetchApiData();
-        $testData = CbsOpenDataApiService::getFormattedRegionData($apiData['value']);
-        $this->checkForMissingItems($testData);
+        $apiData = CbsOpenDataApiService::getData();
+        $testData = CbsOpenDataApiService::getRegionsFromData($apiData);
+        $testData = CbsOpenDataApiService::getFormattedRegionData($testData);
+        $geoCollection = RegionDataService::createBasicGeoCollectionFromData($testData);
+
+        $this->checkForMissingItems($geoCollection);
+        $this->checkForContentDeviation($geoCollection);
     }
 
-    public function checkForMissingItems($testData)
+    public function checkCbsAreaRegionsApiRegions()
     {
+        $apiData = CbsAreaRegionApiService::getData();
+        $testData = CbsAreaRegionApiService::getFormattedData($apiData['features']);
         $geoCollection = RegionDataService::createBasicGeoCollectionFromData($testData);
+
+        $this->checkForMissingItems($geoCollection);
+        $this->checkForContentDeviation($geoCollection);
+    }
+
+    public function checkForMissingItems(Collection $geoCollection)
+    {
         $comparisonService = RegionDataComparisonService::createWithSourceCollection($geoCollection);
         $this->checkItemsMissingFromCollectionA($comparisonService);
         $this->checkItemsMissingFromCollectionB($comparisonService);
+    }
+
+    public function checkForContentDeviation(Collection $geoCollection)
+    {
+        $comparisonService = RegionDataComparisonService::createWithSourceCollection($geoCollection);
+        $this->checkDeviatingItems($comparisonService, null, ['name', 'slug']);
     }
 }

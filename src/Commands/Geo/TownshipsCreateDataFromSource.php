@@ -18,9 +18,9 @@ class TownshipsCreateDataFromSource extends Command
         $this->output->writeln('');
 
         if ($this->option('download')) {
-            $townshipData = TownshipDataService::loadOrCreateData();
+            $townshipData = TownshipDataService::loadOrCreateSourceData();
         } else {
-            $townshipData = TownshipDataService::loadData();
+            $townshipData = TownshipDataService::loadSourceData();
         }
 
         $sourceData = TownshipDataService::createBasicGeoCollectionFromData($townshipData);

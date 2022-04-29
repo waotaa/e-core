@@ -18,9 +18,9 @@ class RegionsCreateDataFromSource extends Command
         $this->output->writeln('');
 
         if ($this->option('download')) {
-            $regionData = RegionDataService::loadOrCreateData();
+            $regionData = RegionDataService::loadOrCreateSourceData();
         } else {
-            $regionData = RegionDataService::loadData();
+            $regionData = RegionDataService::loadSourceData();
         }
 
         $sourceData = RegionDataService::createBasicGeoCollectionFromData($regionData);

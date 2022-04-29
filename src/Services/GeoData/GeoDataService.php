@@ -10,24 +10,22 @@ abstract class GeoDataService
 {
     public static function createDataSnapshot()
     {
-        $newData = self::assembleData();
+        $newData = static::fetchData();
         static::storeData(static::getTimestampedFileName(), $newData);
     }
 
     public static function createSourceData()
     {
-        $newData = self::assembleData();
+        $newData = static::fetchData();
         static::storeData(static::getFileName(), $newData);
     }
 
-    private static function assembleData()
-    {
-        $baseData = static::fetchBaseData();
-        // Add data from other sources?
-        return $baseData;
-    }
+    // fetch from api
+    abstract public static function fetchApiData(): Collection;
 
-    abstract public static function fetchBaseData(): Collection;
+    // fetch from cache (24 hrs) or api
+    abstract public static function fetchData(): Collection;
+
 
     public static function createBasicGeoCollectionFromData(array $data): Collection
     {
@@ -38,24 +36,21 @@ abstract class GeoDataService
 
     abstract public static function createBasicGeoModelFromDataEntry(array $entry): BasicGeoModel;
 
-    /**
-     * @return array
-     * @throws Exception
-     */
-    public static function loadData(): array
+    public static function loadOrCreateSourceData(): array
+    {
+        if(!StorageService::fileExists(static::getFilePath(static::getFileName()), static::getDisk())) {
+            static::createSourceData();
+        }
+        return static::loadSourceData();
+    }
+
+    // load data from source file
+    public static function loadSourceData(): array
     {
         if(!StorageService::fileExists(static::getFilePath(static::getFileName()), static::getDisk())) {
             throw new Exception('No data found');
         }
         return StorageService::loadJson(static::getFilePath(static::getFileName()), static::getDisk());
-    }
-
-    public static function loadOrCreateData(): array
-    {
-        if(!StorageService::fileExists(static::getFilePath(static::getFileName()), static::getDisk())) {
-            static::createSourceData();
-        }
-        return static::loadData();
     }
 
     protected static function storeData(string $filename, string $data)

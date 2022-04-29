@@ -2,22 +2,27 @@
 
 namespace Vng\EvaCore\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\AggregateServiceProvider;
 use Vng\EvaCore\Commands\AssignRegions;
 use Vng\EvaCore\Commands\Dev\PasswordGenerationTest;
 use Vng\EvaCore\Commands\Elastic\DeleteIndex;
 use Vng\EvaCore\Commands\Elastic\FetchNewInstrumentRatings;
 use Vng\EvaCore\Commands\Elastic\SyncAll;
+use Vng\EvaCore\Commands\Elastic\SyncClientCharacteristics;
 use Vng\EvaCore\Commands\Elastic\SyncEnvironments;
 use Vng\EvaCore\Commands\Elastic\SyncInstruments;
 use Vng\EvaCore\Commands\Elastic\SyncInstrumentsDescription;
 use Vng\EvaCore\Commands\Elastic\SyncNewsItems;
+use Vng\EvaCore\Commands\Elastic\SyncProfessionals;
 use Vng\EvaCore\Commands\Elastic\SyncProviders;
 use Vng\EvaCore\Commands\Elastic\SyncRegions;
 use Vng\EvaCore\Commands\ExportInstruments;
 use Vng\EvaCore\Commands\ExportInstrumentsCosts;
 use Vng\EvaCore\Commands\ExportOldInstruments;
 use Vng\EvaCore\Commands\ExtractGeoData;
+use Vng\EvaCore\Commands\Format\ApplyMorphMap;
+use Vng\EvaCore\Commands\Format\CleanupActionLog;
 use Vng\EvaCore\Commands\Geo\GeoEnsureIntegrity;
 use Vng\EvaCore\Commands\Geo\GeoSourceGenerate;
 use Vng\EvaCore\Commands\Geo\RegionsAssign;
@@ -33,12 +38,8 @@ use Vng\EvaCore\Commands\Geo\TownshipsCheckSourceFromApi;
 use Vng\EvaCore\Commands\Geo\TownshipsCreateDataFromSource;
 use Vng\EvaCore\Commands\Geo\TownshipsCreateDataSetFromApi;
 use Vng\EvaCore\Commands\Geo\TownshipsUpdateDataFromSource;
-use Vng\EvaCore\Commands\ImportGeoData;
 use Vng\EvaCore\Commands\ImportInstruments;
 use Vng\EvaCore\Commands\ImportOldFormatInstruments;
-use Vng\EvaCore\Commands\ImportRegions;
-use Vng\EvaCore\Commands\ImportTownships;
-use Vng\EvaCore\Commands\MakeAreas;
 use Vng\EvaCore\Commands\Operations\CleanContacts;
 use Vng\EvaCore\Commands\Operations\SetupGeoData;
 use Vng\EvaCore\Commands\Professionals\CognitoGetConfig;
@@ -58,7 +59,8 @@ use Vng\EvaCore\Commands\Format\MigrateToFormat2;
 class EvaServiceProvider extends AggregateServiceProvider
 {
     protected $providers = [
-        EventServiceProvider::class
+        EventServiceProvider::class,
+        MorphMapServiceProvider::class,
     ];
 
     protected $commands = [
@@ -66,13 +68,17 @@ class EvaServiceProvider extends AggregateServiceProvider
         DeleteIndex::class,
         FetchNewInstrumentRatings::class,
         SyncAll::class,
+        SyncClientCharacteristics::class,
         SyncEnvironments::class,
         SyncInstruments::class,
         SyncInstrumentsDescription::class,
         SyncNewsItems::class,
+        SyncProfessionals::class,
         SyncProviders::class,
         SyncRegions::class,
         SyncTiles::class,
+        ApplyMorphMap::class,
+        CleanupActionLog::class,
         MigrateToFormat2::class,
         GeoEnsureIntegrity::class,
         GeoSourceGenerate::class,
@@ -106,12 +112,8 @@ class EvaServiceProvider extends AggregateServiceProvider
         ExportInstrumentsCosts::class,
         ExportOldInstruments::class,
         ExtractGeoData::class,
-        ImportGeoData::class,
         ImportInstruments::class,
         ImportOldFormatInstruments::class,
-        ImportRegions::class,
-        ImportTownships::class,
-        MakeAreas::class,
         Update::class
     ];
 

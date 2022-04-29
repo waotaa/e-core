@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Commands\Geo;
 
+use Illuminate\Support\Collection;
 use Vng\EvaCore\Services\GeoApi\CbsAreaRegionApiService;
 use Vng\EvaCore\Services\GeoApi\CbsOpenDataApiService;
 use Vng\EvaCore\Services\GeoComparison\RegionDataComparisonService;
@@ -22,13 +23,15 @@ class RegionsCheckDataFromApi extends GeoCheckCommand
 
         $this->call('geo:integrity');
 
-        $this->output->writeln('Checking CBS Area API');
-        $this->checkCbsAreaRegionsApiRegions();
-        $this->output->writeln('');
-
         $this->output->writeln('Checking CBS Open Data API');
         $this->checkCbsOpenDataRegions();
         $this->output->writeln('');
+
+        if ($this->confirm('Check other API\'s as well?')) {
+            $this->output->writeln('Checking CBS Area API');
+            $this->checkCbsAreaRegionsApiRegions();
+            $this->output->writeln('');
+        }
 
         $this->output->writeln('check database data from api results finished!');
         $this->output->writeln('');
@@ -36,25 +39,37 @@ class RegionsCheckDataFromApi extends GeoCheckCommand
         return 0;
     }
 
-    public function checkCbsAreaRegionsApiRegions()
-    {
-        $apiData = CbsAreaRegionApiService::fetchApiData();
-        $testData = CbsAreaRegionApiService::getFormattedData($apiData['features']);
-        $this->checkForMissingItems($testData);
-    }
-
     public function checkCbsOpenDataRegions()
     {
-        $apiData = CbsOpenDataApiService::fetchApiData();
-        $testData = CbsOpenDataApiService::getFormattedRegionData($apiData['value']);
-        $this->checkForMissingItems($testData);
+        $apiData = CbsOpenDataApiService::getData();
+        $apiData = CbsOpenDataApiService::getRegionsFromData($apiData);
+        $testData = CbsOpenDataApiService::getFormattedRegionData($apiData);
+        $geoCollection = RegionDataService::createBasicGeoCollectionFromData($testData);
+
+        $this->checkForMissingItems($geoCollection);
+        $this->checkForContentDeviation($geoCollection);
     }
 
-    public function checkForMissingItems($testData)
+    public function checkCbsAreaRegionsApiRegions()
     {
+        $apiData = CbsAreaRegionApiService::getData();
+        $testData = CbsAreaRegionApiService::getFormattedData($apiData['features']);
         $geoCollection = RegionDataService::createBasicGeoCollectionFromData($testData);
+
+        $this->checkForMissingItems($geoCollection);
+        $this->checkForContentDeviation($geoCollection);
+    }
+
+    public function checkForMissingItems(Collection $geoCollection)
+    {
         $comparisonService = RegionDataComparisonService::createWithDatabaseCollection($geoCollection);
         $this->checkItemsMissingFromCollectionA($comparisonService);
         $this->checkItemsMissingFromCollectionB($comparisonService);
+    }
+
+    public function checkForContentDeviation(Collection $geoCollection)
+    {
+        $comparisonService = RegionDataComparisonService::createWithDatabaseCollection($geoCollection);
+        $this->checkDeviatingItems($comparisonService, null, ['name', 'slug']);
     }
 }

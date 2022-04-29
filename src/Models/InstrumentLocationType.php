@@ -6,9 +6,9 @@ use Vng\EvaCore\Events\InstrumentAttachedEvent;
 use Vng\EvaCore\Events\InstrumentDetachedEvent;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class InstrumentLocation extends Pivot
+class InstrumentLocationType extends Pivot
 {
-    protected $table = 'instrument_location';
+    protected $table = 'instrument_location_type';
 
     public $incrementing = true;
 

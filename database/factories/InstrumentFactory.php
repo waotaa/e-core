@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Vng\EvaCore\Models\Instrument;
+use Vng\EvaCore\Models\NationalParty;
 use Vng\EvaCore\Models\Partnership;
 use Vng\EvaCore\Models\Region;
 use Vng\EvaCore\Models\Township;
@@ -33,6 +34,11 @@ class InstrumentFactory extends Factory
                 'owner_id' => null,
             ];
         });
+    }
+
+    public function forNationalParty(NationalParty $nationalParty = null): Factory
+    {
+        return $this->for($nationalParty ?? NationalParty::factory(), 'owner');
     }
 
     public function forRegion(Region $region = null): Factory

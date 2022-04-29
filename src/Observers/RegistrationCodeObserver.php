@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Observers;
 
 use Vng\EvaCore\Events\ElasticRelatedResourceChanged;
+use Vng\EvaCore\Events\InstrumentSaved;
 use Vng\EvaCore\Models\RegistrationCode;
 
 class RegistrationCodeObserver
@@ -36,6 +37,7 @@ class RegistrationCodeObserver
     {
         if (!is_null($registrationCode->instrument)) {
             ElasticRelatedResourceChanged::dispatch($registrationCode->instrument, $registrationCode);
+            InstrumentSaved::dispatch($registrationCode->instrument);
         }
     }
 }

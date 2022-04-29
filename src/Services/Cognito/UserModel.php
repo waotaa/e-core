@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Services\Cognito;
 
+use Carbon\Carbon;
 use DateTime;
 use Exception;
 
@@ -48,7 +49,7 @@ class UserModel
     private function getPasswordUpdatedAt(): ?DateTime
     {
         $passwordUpdatedAt = $this->getAttributeValue('custom:password_updated_at') ?? null;
-        if (null) {
+        if (is_null($passwordUpdatedAt)) {
             return null;
         }
         return new DateTime($passwordUpdatedAt);
@@ -106,7 +107,7 @@ class UserModel
 
     public function isPasswordExpired(): bool
     {
-        $sixMonthsAgo = (new DateTime())->modify('-6 months');
+        $sixMonthsAgo = Carbon::now()->modify('-6 months');
         $statusAllowsReset = $this->getUserStatus() !== 'FORCE_CHANGE_PASSWORD';
         $isExpired = $this->getPasswordUpdatedAtDate() < $sixMonthsAgo;
         return $statusAllowsReset && $isExpired;

@@ -29,7 +29,7 @@ class RegionsUpdateDataFromSource extends GeoCheckCommand
         $this->output->writeln('updating regions');
         $this->output->writeln('');
 
-        $data = RegionDataService::loadData();
+        $data = RegionDataService::loadSourceData();
         $this->sourceData = RegionDataService::createBasicGeoCollectionFromData($data);
 
         $this->call('geo:integrity');

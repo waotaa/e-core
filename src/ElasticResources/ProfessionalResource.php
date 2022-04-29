@@ -8,7 +8,7 @@ class ProfessionalResource extends ElasticResource
     {
         return [
             'username' => $this->username,
-            'email' => $this->email,
+            'ratings_count' => $this->ratings->count(),
         ];
     }
 }

@@ -10,7 +10,7 @@ class OwnerResource extends ElasticResource
     {
         return [
             'id' => $this->id,
-            'type' => $this->resource instanceof IsOwnerInterface ? $this->resource->getShortClassname() : null,
+            'type' => $this->resource instanceof IsOwnerInterface ? $this->resource->getOwnerType() : null,
             'name' => $this->name,
             'slug' => $this->slug
         ];

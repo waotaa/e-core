@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Commands\Geo;
 
+use Illuminate\Support\Collection;
 use Vng\EvaCore\Services\GeoApi\CbsAreaTownshipApiService;
 use Vng\EvaCore\Services\GeoApi\CbsDistrictNeighborhoodTownshipApiService;
 use Vng\EvaCore\Services\GeoApi\CbsOpenDataApiService;
@@ -22,23 +23,27 @@ class TownshipsCheckSourceFromApi extends GeoCheckCommand
         $this->output->writeln('check source data from api results..');
         $this->output->writeln('');
 
-        $this->output->writeln('Checking CBS Area API');
-        $this->checkCbsAreaTownshipApiTownships();
-        $this->output->writeln('');
-
-        $this->output->writeln('Checking CBS District Neighborhood API');
-        $this->checkCbsDistrictNeighborhoodTownshipApiTownships();
-        $this->output->writeln('');
-
         $this->output->writeln('Checking CBS Open Data API');
         // This source seems to update late
         $this->checkCbsOpenDataTownships();
         $this->output->writeln('');
 
-        $this->output->writeln('Checking Kadaster API');
-        // This source seems to update late
-        $this->checkKadasterTownshipApiTownships();
-        $this->output->writeln('');
+        if ($this->confirm('Check other API\'s as well?')) {
+            $this->output->writeln('Checking CBS Area API');
+            $this->checkCbsAreaTownshipApiTownships();
+            $this->output->writeln('');
+
+            $this->output->writeln('Checking CBS District Neighborhood API');
+            $this->checkCbsDistrictNeighborhoodTownshipApiTownships();
+            $this->output->writeln('');
+
+//          NO LONGER AVAILABLE..?
+//
+//            $this->output->writeln('Checking Kadaster API');
+//            // This source seems to update late
+//            $this->checkKadasterTownshipApiTownships();
+//            $this->output->writeln('');
+        }
 
         $this->output->writeln('check source data from api results finished!');
         $this->output->writeln('');
@@ -46,39 +51,60 @@ class TownshipsCheckSourceFromApi extends GeoCheckCommand
         return 0;
     }
 
+    public function checkCbsOpenDataTownships()
+    {
+        $apiData = CbsOpenDataApiService::getData();
+        $testData = CbsOpenDataApiService::getFormattedTownshipData($apiData);
+        $geoCollection = TownshipDataService::createBasicGeoCollectionFromData($testData);
+
+        $this->checkForMissingItems($geoCollection);
+        $this->checkForContentDeviation($geoCollection);
+    }
+
     public function checkCbsAreaTownshipApiTownships()
     {
-        $apiData = CbsAreaTownshipApiService::fetchApiData();
+        $apiData = CbsAreaTownshipApiService::getData();
         $testData = CbsAreaTownshipApiService::getFormattedData($apiData['features']);
-        $this->checkForMissingItems($testData);
+        $geoCollection = TownshipDataService::createBasicGeoCollectionFromData($testData);
+
+        $this->checkForMissingItems($geoCollection);
+        $this->checkForContentDeviation($geoCollection);
     }
 
     public function checkCbsDistrictNeighborhoodTownshipApiTownships()
     {
-        $apiData = CbsDistrictNeighborhoodTownshipApiService::fetchApiData();
+        $apiData = CbsDistrictNeighborhoodTownshipApiService::getData();
         $testData = CbsDistrictNeighborhoodTownshipApiService::getFormattedData($apiData['features']);
-        $this->checkForMissingItems($testData);
-    }
+        $geoCollection = TownshipDataService::createBasicGeoCollectionFromData($testData);
 
-    public function checkCbsOpenDataTownships()
-    {
-        $apiData = CbsOpenDataApiService::fetchApiData();
-        $testData = CbsOpenDataApiService::getFormattedTownshipData($apiData['value']);
-        $this->checkForMissingItems($testData);
+        $this->checkForMissingItems($geoCollection);
+        $this->checkForContentDeviation($geoCollection);
     }
 
     public function checkKadasterTownshipApiTownships()
     {
-        $apiData = KadasterTownshipApiService::fetchApiData();
+        $apiData = KadasterTownshipApiService::getData();
         $testData = KadasterTownshipApiService::getFormattedData($apiData['features']);
-        $this->checkForMissingItems($testData);
+        $geoCollection = TownshipDataService::createBasicGeoCollectionFromData($testData);
+
+        $this->checkForMissingItems($geoCollection);
+        $this->checkForContentDeviation($geoCollection);
     }
 
-    public function checkForMissingItems($testData)
+    public function checkForMissingItems(Collection $geoCollection)
     {
-        $geoCollection = TownshipDataService::createBasicGeoCollectionFromData($testData);
         $comparisonService = TownshipDataComparisonService::createWithSourceCollection($geoCollection);
         $this->checkItemsMissingFromCollectionA($comparisonService);
         $this->checkItemsMissingFromCollectionB($comparisonService);
     }
+
+    public function checkForContentDeviation(Collection $geoCollection, $attributes = null)
+    {
+        if (is_null($attributes)) {
+            $attributes = ['name', 'slug', 'region_code'];
+        }
+        $comparisonService = TownshipDataComparisonService::createWithSourceCollection($geoCollection);
+        $this->checkDeviatingItems($comparisonService, null, $attributes);
+    }
+
 }

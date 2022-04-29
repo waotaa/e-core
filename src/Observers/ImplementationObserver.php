@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Observers;
 
 use Vng\EvaCore\Events\ElasticRelatedResourceChanged;
+use Vng\EvaCore\Events\InstrumentSaved;
 use Vng\EvaCore\Models\Implementation;
 
 class ImplementationObserver
@@ -35,7 +36,10 @@ class ImplementationObserver
     private function syncConnectedElasticResources(Implementation $implementation): void
     {
         $implementation->instruments->each(
-            fn($instrument) => ElasticRelatedResourceChanged::dispatch($instrument, $implementation)
+            function($instrument) use ($implementation) {
+                ElasticRelatedResourceChanged::dispatch($instrument, $implementation);
+                InstrumentSaved::dispatch($instrument);
+            }
         );
     }
 }

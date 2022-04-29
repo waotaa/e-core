@@ -2,20 +2,25 @@
 
 namespace Vng\EvaCore\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Vng\EvaCore\Interfaces\IsMemberInterface;
 
 trait HasMembers
 {
-    public abstract function members(): MorphMany;
+    public abstract function members(): MorphToMany;
+
+    public abstract function scopeIsMember(Builder $query, IsMemberInterface $user): Builder;
 
     public function hasMember(Model $user): bool
     {
         return $this->getAttribute('members') && $this->getAttribute('members')->contains($user->id);
     }
 
-    public function join(Model $user)
+    public function join(Model $user): self
     {
-        return $this->members()->save($user);
+        $this->members()->attach($user);
+        return $this;
     }
 }

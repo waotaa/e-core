@@ -3,11 +3,11 @@
 namespace Vng\EvaCore\Interfaces;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 interface HasMembersInterface
 {
-    public function members(): MorphMany;
+    public function members(): MorphToMany;
 
     public function hasMember(Model $user): bool;
 

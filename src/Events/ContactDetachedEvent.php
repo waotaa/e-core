@@ -5,19 +5,22 @@ namespace Vng\EvaCore\Events;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Vng\EvaCore\Models\Contact;
 
 class ContactDetachedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public MorphPivot $pivot;
+    public Model $contactable;
+    public Contact $contact;
 
-    public function __construct(MorphPivot $pivot)
+    public function __construct(Contact $contact, Model $contactable)
     {
-        $this->pivot = $pivot;
+        $this->contact = $contact;
+        $this->contactable = $contactable;
     }
 
     /**

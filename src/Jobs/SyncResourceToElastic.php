@@ -36,9 +36,14 @@ class SyncResourceToElastic implements ShouldQueue
 
         $index = $this->model->getSearchIndex();
         $prefix = config('elastic.prefix');
+        $prefixedIndex = $prefix ? $prefix . '-' . $index : $index;
+
+        if (!is_null($this->attempt)) {
+            SyncService::updateStatus($this->attempt, 'executing');
+        }
 
         $result = $elasticsearch->index([
-            'index' => $prefix ? $prefix.'-'.$index : $index,
+            'index' => $prefixedIndex,
             'type' => $this->model->getSearchType(),
             'id' => $this->model->getSearchId(),
             'body' => $this->model->toSearchArray(),

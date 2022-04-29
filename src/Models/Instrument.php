@@ -2,12 +2,15 @@
 
 namespace Vng\EvaCore\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Vng\EvaCore\Casts\CleanedHtml;
 use Vng\EvaCore\ElasticResources\InstrumentResource;
 use Vng\EvaCore\Enums\CostsUnitEnum;
 use Vng\EvaCore\Enums\DurationUnitEnum;
 use Vng\EvaCore\Interfaces\AreaInterface;
+use Vng\EvaCore\Interfaces\IsMemberInterface;
 use Vng\EvaCore\Observers\InstrumentObserver;
+use Vng\EvaCore\Repositories\Eloquent\InstrumentRepository;
 use Vng\EvaCore\Services\AreaService;
 use Vng\EvaCore\Traits\CanSaveQuietly;
 use Vng\EvaCore\Traits\HasContacts;
@@ -56,28 +59,15 @@ class Instrument extends SearchableModel
         'work_agreements',
         'application_instructions',
         'intensity_hours_per_week',
+        'intensity_description',
         'total_duration_value',
         'total_duration_unit',
+        'duration_description',
         'total_costs',
         'costs_description',
-        'duration_description',
-        'intensity_description',
 
         // auxilary
         'import_mark',
-
-//        // v1
-//
-//        // descriptions
-//        'short_description',
-//        'description',
-//        'conditions',
-//
-//        // info section
-//        'duration',
-//        'duration_unit',
-//        'costs',
-//        'costs_unit',
     ];
 
     protected $dates = [
@@ -125,50 +115,6 @@ class Instrument extends SearchableModel
         });
 
         static::observe(InstrumentObserver::class);
-    }
-
-    public function setCostsUnitAttribute($value): void
-    {
-        if (is_null($value)) {
-            $this->attributes['costs_unit'] = null;
-            return;
-        }
-        $this->attributes['costs_unit'] = (new CostsUnitEnum($value))->getKey();
-    }
-
-    public function getCostsUnitAttribute($value): ?string
-    {
-        if (is_null($value) || !in_array($value, CostsUnitEnum::keys())) {
-            return null;
-        }
-        return CostsUnitEnum::$value();
-    }
-
-    public function getRawCostsUnitAttribute(): ?string
-    {
-        return $this->attributes['costs_unit'] ?? null;
-    }
-
-    public function setDurationUnitAttribute($value): void
-    {
-        if (is_null($value)) {
-            $this->attributes['duration_unit'] = null;
-            return;
-        }
-        $this->attributes['duration_unit'] = (new DurationUnitEnum($value))->getKey();
-    }
-
-    public function getDurationUnitAttribute($value): ?string
-    {
-        if (is_null($value) || !in_array($value, DurationUnitEnum::keys())) {
-            return null;
-        }
-        return DurationUnitEnum::$value();
-    }
-
-    public function getRawDurationUnitAttribute(): ?string
-    {
-        return $this->attributes['duration_unit'] ?? null;
     }
 
     public function setTotalDurationUnitAttribute($value): void
@@ -328,6 +274,11 @@ class Instrument extends SearchableModel
         return $this->hasMany(RegistrationCode::class);
     }
 
+    public function locations(): HasMany
+    {
+        return $this->hasMany(Location::class);
+    }
+
     // Property selection (singular choice)
     public function implementation(): BelongsTo
     {
@@ -337,27 +288,37 @@ class Instrument extends SearchableModel
     // Property lists (multiple choice)
     public function groupForms(): BelongsToMany
     {
-        return $this->belongsToMany(GroupForm::class, 'group_form_instrument')->withTimestamps()->using(GroupFormInstrument::class);
+        return $this->belongsToMany(GroupForm::class, 'group_form_instrument')
+            ->withTimestamps()
+            ->using(GroupFormInstrument::class);
     }
 
-    public function locations(): BelongsToMany
+    public function location_types(): BelongsToMany
     {
-        return $this->belongsToMany(Location::class, 'instrument_location')->withTimestamps()->using(InstrumentLocation::class);
+        return $this->belongsToMany(LocationType::class, 'instrument_location_type')
+            ->withTimestamps()
+            ->using(InstrumentLocationType::class);
     }
 
     public function targetGroups(): BelongsToMany
     {
-        return $this->belongsToMany(TargetGroup::class, 'instrument_target_group')->withTimestamps()->using(InstrumentTargetGroup::class);
+        return $this->belongsToMany(TargetGroup::class, 'instrument_target_group')
+            ->withTimestamps()
+            ->using(InstrumentTargetGroup::class);
     }
 
     public function tiles(): BelongsToMany
     {
-        return $this->belongsToMany(Tile::class, 'instrument_tile')->withTimestamps()->using(TileInstrument::class);
+        return $this->belongsToMany(Tile::class, 'instrument_tile')
+            ->withTimestamps()
+            ->using(TileInstrument::class);
     }
 
     public function clientCharacteristics(): BelongsToMany
     {
-        return $this->belongsToMany(ClientCharacteristic::class, 'client_characteristic_instrument')->withTimestamps()->using(ClientCharacteristicInstrument::class);
+        return $this->belongsToMany(ClientCharacteristic::class, 'client_characteristic_instrument')
+            ->withTimestamps()
+            ->using(ClientCharacteristicInstrument::class);
     }
 
     // Content
@@ -374,5 +335,12 @@ class Instrument extends SearchableModel
     public function downloads(): HasMany
     {
         return $this->hasMany(Download::class);
+    }
+
+
+    public function scopeOwnedBy(Builder $query, IsMemberInterface $user)
+    {
+        $repo = new InstrumentRepository();
+        return $repo->addMultipleOwnerConditions($query, $user->getAssociations());
     }
 }

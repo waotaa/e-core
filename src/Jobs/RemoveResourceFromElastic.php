@@ -37,10 +37,14 @@ class RemoveResourceFromElastic implements ShouldQueue
 
         $index = $this->index;
         $prefix = config('elastic.prefix');
-        $full_index = $prefix ? $prefix . '-' . $index : $index;
+        $prefixedIndex = $prefix ? $prefix . '-' . $index : $index;
+
+        if (!is_null($this->attempt)) {
+            SyncService::updateStatus($this->attempt, 'executing');
+        }
 
         $exists = $elasticsearch->exists([
-            'index' => $full_index,
+            'index' => $prefixedIndex,
             'id' => $this->id,
         ]);
         if (!$exists) {
@@ -51,7 +55,7 @@ class RemoveResourceFromElastic implements ShouldQueue
         }
 
         $result = $elasticsearch->delete([
-            'index' => $full_index,
+            'index' => $prefixedIndex,
             'id' => $this->id,
         ]);
 

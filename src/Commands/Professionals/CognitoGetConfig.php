@@ -29,7 +29,12 @@ class CognitoGetConfig extends Command
 
         if (!$this->option('silent') && $this->confirm('See configuration?')) {
             $config = UserPoolService::describeUserPool($userpool);
-            dd($config);
+            $mfaConfig = UserPoolService::getUserPoolMfaConfig($userpool->getId());
+            dd([
+                $config,
+                $mfaConfig
+            ]);
+
         }
         return 0;
     }

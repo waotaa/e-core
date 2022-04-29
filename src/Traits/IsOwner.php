@@ -9,6 +9,21 @@ use ReflectionClass;
 
 trait IsOwner
 {
+    public function getOwnerClass(): string
+    {
+        return get_class($this);
+    }
+
+    public function getOwnerId()
+    {
+        return $this->id;
+    }
+
+    public function getOwnerType(): string
+    {
+        return (new ReflectionClass($this))->getShortName();
+    }
+
     public function ownedInstruments(): MorphMany
     {
         return $this->morphMany(Instrument::class, 'owner');
@@ -29,10 +44,5 @@ trait IsOwner
         $instrumentCount = $this->ownedInstruments()->count();
         $providerCount = $this->ownedProviders()->count();
         return $instrumentCount + $providerCount;
-    }
-
-    public function getShortClassname(): string
-    {
-        return (new ReflectionClass($this))->getShortName();
     }
 }

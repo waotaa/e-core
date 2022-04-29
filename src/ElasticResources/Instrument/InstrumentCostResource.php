@@ -11,8 +11,7 @@ class InstrumentCostResource extends ElasticResource
     {
         return [
             'name' => $this->name,
-            'costs' => $this->costs,
-            'costs_unit' => $this->costs_unit,
+            'total_costs' => $this->total_costs,
             'provider' => ProviderNameResource::many($this->provider),
 //            'providers' => ProviderNameResource::many($this->providers),
         ];

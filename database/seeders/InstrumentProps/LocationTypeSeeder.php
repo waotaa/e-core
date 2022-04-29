@@ -2,26 +2,26 @@
 
 namespace Database\Seeders\InstrumentProps;
 
-use Vng\EvaCore\Models\Location;
+use Vng\EvaCore\Models\LocationType;
 use Illuminate\Database\Seeder;
 
-class LocationSeeder extends Seeder
+class LocationTypeSeeder extends Seeder
 {
     public function run(): void
     {
-        Location::query()->updateOrCreate([
+        LocationType::query()->updateOrCreate([
             'name' => 'Adres',
         ]);
-        Location::query()->updateOrCreate([
+        LocationType::query()->updateOrCreate([
             'name' => 'Aanbieder',
         ]);
-        Location::query()->updateOrCreate([
+        LocationType::query()->updateOrCreate([
             'name' => 'Werkgever',
         ]);
-        Location::query()->updateOrCreate([
+        LocationType::query()->updateOrCreate([
             'name' => 'Gemeente',
         ]);
-        Location::query()->updateOrCreate([
+        LocationType::query()->updateOrCreate([
             'name' => 'Klant thuis',
         ]);
     }

@@ -21,6 +21,7 @@ class SyncAll extends Command
         $this->call('elastic:sync-instruments', ['--fresh' => $this->option('fresh')]);
         $this->call('elastic:sync-instruments-description', ['--fresh' => $this->option('fresh')]);
         $this->call('elastic:sync-news-items', ['--fresh' => $this->option('fresh')]);
+        $this->call('elastic:sync-professionals', ['--fresh' => $this->option('fresh')]);
         $this->call('elastic:sync-providers', ['--fresh' => $this->option('fresh')]);
         $this->call('elastic:sync-regions', ['--fresh' => $this->option('fresh')]);
 //        $this->call('elastic:sync-themes', ['--fresh' => $this->option('fresh')]);

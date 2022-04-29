@@ -2,21 +2,41 @@
 
 namespace Vng\EvaCore\Interfaces;
 
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Vng\EvaCore\Models\Instrument;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Collection;
 
 interface IsMemberInterface
 {
-    public function association(): MorphTo;
+    public function associateables(): HasMany;
 
-    public function isAssociated(): bool;
+    public function getAssociations(): ?Collection;
 
-    public function getAssociationType(): ?string;
+    public function nationalParties(): MorphToMany;
 
-    public function isMemberOfRegion(): bool;
+    public function regions(): MorphToMany;
 
-    public function isMemberOfTownship(): bool;
+    public function partnerships(): MorphToMany;
 
-    public function isMemberOfPartnership(): bool;
+    public function townships(): MorphToMany;
+
+    public function hasAnyAssociation(): bool;
 
     public function usersShareAssociation(EvaUserInterface $user): bool;
+
+    public function managesInstrument(Instrument $instrument): bool;
+
+//    public function association(): MorphTo;
+//
+//    public function isAssociated(): bool;
+//
+//    public function getAssociationType(): ?string;
+//
+//    public function isMemberOfRegion(): bool;
+//
+//    public function isMemberOfTownship(): bool;
+//
+//    public function isMemberOfPartnership(): bool;
+
 }

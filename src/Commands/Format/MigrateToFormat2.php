@@ -5,7 +5,7 @@ namespace Vng\EvaCore\Commands\Format;
 use Vng\EvaCore\Enums\DurationUnitEnum;
 use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\Instrument;
-use Vng\EvaCore\Models\Location;
+use Vng\EvaCore\Models\LocationType;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -270,8 +270,8 @@ class MigrateToFormat2 extends Command
             ->orWhere('location', 'address')
             ->get();
 
-        /** @var Location $employerLocation */
-        $employerLocation = Location::query()->where('name', 'Adres')->firstOrFail();
+        /** @var LocationType $employerLocation */
+        $employerLocation = LocationType::query()->where('name', 'Adres')->firstOrFail();
         $employerLocation->instruments()->syncWithoutDetaching($employerInstruments->pluck('id'));
 
 
@@ -280,8 +280,8 @@ class MigrateToFormat2 extends Command
             ->orWhere('location', 'provider')
             ->get();
 
-        /** @var Location $employerLocation */
-        $employerLocation = Location::query()->where('name', 'Aanbieder')->firstOrFail();
+        /** @var LocationType $employerLocation */
+        $employerLocation = LocationType::query()->where('name', 'Aanbieder')->firstOrFail();
         $employerLocation->instruments()->syncWithoutDetaching($employerInstruments->pluck('id'));
 
 
@@ -290,8 +290,8 @@ class MigrateToFormat2 extends Command
             ->orWhere('location', 'employer')
             ->get();
 
-        /** @var Location $employerLocation */
-        $employerLocation = Location::query()->where('name', 'Werkgever')->firstOrFail();
+        /** @var LocationType $employerLocation */
+        $employerLocation = LocationType::query()->where('name', 'Werkgever')->firstOrFail();
         $employerLocation->instruments()->syncWithoutDetaching($employerInstruments->pluck('id'));
 
 
@@ -300,8 +300,8 @@ class MigrateToFormat2 extends Command
             ->orWhere('location', 'township')
             ->get();
 
-        /** @var Location $employerLocation */
-        $employerLocation = Location::query()->where('name', 'Gemeente')->firstOrFail();
+        /** @var LocationType $employerLocation */
+        $employerLocation = LocationType::query()->where('name', 'Gemeente')->firstOrFail();
         $employerLocation->instruments()->syncWithoutDetaching($employerInstruments->pluck('id'));
 
 
@@ -310,8 +310,8 @@ class MigrateToFormat2 extends Command
             ->orWhere('location', 'client')
             ->get();
 
-        /** @var Location $employerLocation */
-        $employerLocation = Location::query()->where('name', 'Klant thuis')->firstOrFail();
+        /** @var LocationType $employerLocation */
+        $employerLocation = LocationType::query()->where('name', 'Klant thuis')->firstOrFail();
         $employerLocation->instruments()->syncWithoutDetaching($employerInstruments->pluck('id'));
     }
 

@@ -3,7 +3,6 @@
 namespace Vng\EvaCore\Jobs;
 
 use Vng\EvaCore\ElasticResources\RatingResource;
-use Vng\EvaCore\Exceptions\ElasticIndexNotFoundException;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Professional;
 use Vng\EvaCore\Models\Rating;
@@ -36,12 +35,18 @@ class FetchNewInstrumentRatings implements ShouldQueue
         $index = 'instruments';
         $prefixedIndex = $prefix ? $prefix . '-' . $index : $index;
 
+        $indexExists = $elasticsearch->indices()->exists([
+            'index' => $prefixedIndex
+        ]);
+        if (!$indexExists) {
+            return;
+        }
+
         $exists = $elasticsearch->exists([
             'index' => $prefixedIndex,
             'id' => $this->instrument->uuid,
         ]);
         if (!$exists) {
-            $this->fail(new ElasticIndexNotFoundException(''));
             return;
         }
 

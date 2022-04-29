@@ -1,6 +1,7 @@
 <?php
 
 namespace Vng\EvaCore\Traits;
+
 use Illuminate\Support\Collection;
 use ReflectionClass;
 use Vng\EvaCore\Interfaces\AreaInterface;

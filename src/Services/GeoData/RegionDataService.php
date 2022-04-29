@@ -8,19 +8,18 @@ use Illuminate\Support\Str;
 
 class RegionDataService extends GeoDataService
 {
-    public static function fetchBaseData(): Collection
+    public static function fetchApiData(): Collection
     {
         $data = CbsOpenDataApiService::getData();
-        $cbsAreaData = CbsOpenDataApiService::transformValues($data['value']);
-        return collect($cbsAreaData)
-            ->unique('Code_4')
-            ->map(fn ($entry) => [
-                'code' => $entry['Code_4'],
-                'name' => $entry['Naam_5'],
-                'slug' => (string) Str::slug($entry['Naam_5']),
-                'color' => static::getRegionColor($entry['Code_4']),
-            ])
-            ->values();
+        $data = CbsOpenDataApiService::getRegionsFromData($data);
+        return collect(CbsOpenDataApiService::getFormattedRegionData($data))->values();
+    }
+
+    public static function fetchData(): Collection
+    {
+        $data = CbsOpenDataApiService::getData(false, true);
+        $data = CbsOpenDataApiService::getRegionsFromData($data);
+        return collect(CbsOpenDataApiService::getFormattedRegionData($data))->values();
     }
 
     public static function createBasicGeoModelFromDataEntry(array $entry): BasicRegionModel

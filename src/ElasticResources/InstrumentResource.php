@@ -39,7 +39,6 @@ class InstrumentResource extends ElasticResource
             'additional_information' => $this->additional_information,
 
             // practical information
-            'location_description' => $this->location_description,
             'work_agreements' => $this->work_agreements,
             'application_instructions' => $this->application_instructions,
             'intensity_hours_per_week' => $this->intensity_hours_per_week,
@@ -47,6 +46,7 @@ class InstrumentResource extends ElasticResource
             'total_duration_unit' => $this->total_duration_unit,
             'total_duration_unit_key' => $this->raw_total_duration_unit,
             'total_costs' => $this->total_costs,
+            'total_costs_whole_number' => (int) round($this->total_costs),
             'costs_description' => $this->costs_description,
             'duration_description' => $this->duration_description,
             'intensity_description' => $this->intensity_description,
@@ -78,7 +78,6 @@ class InstrumentResource extends ElasticResource
             'downloads' => DownloadResource::many($this->downloads),
 
             'provider' => ProviderResource::one($this->provider),
-            'addresses' => AddressResource::many($this->addresses),
             'contacts' => ContactResource::many($this->contacts),
 
             'available_areas' => AreaInterfaceResource::many($this->availableAreas),
@@ -89,26 +88,6 @@ class InstrumentResource extends ElasticResource
             'available_regions' => RegionResource::many($this->availableRegions),
             'available_townships' => TownshipResource::many($this->availableTownships),
             'available_neighbourhoods' => NeighbourhoodResource::many($this->availableNeighbourhoods),
-
-
-
-//             // v1
-//
-//             // descriptions
-//            'short_description' => $this->short_description,
-//            'description' => $this->description,
-//            'conditions' => $this->conditions,
-//
-//            'location' => $this->location,
-//
-//            // info section
-//            'duration' => $this->duration,
-//            'duration_unit' => $this->duration_unit,
-//            'costs' => $this->costs,
-//            'costs_unit' => $this->costs_unit,
-//
-//            // relations
-//            'themes' => ThemeResource::many($this->themes),
         ];
     }
 }

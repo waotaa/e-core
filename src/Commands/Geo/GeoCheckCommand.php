@@ -20,7 +20,7 @@ abstract class GeoCheckCommand extends Command
         $count = $comparisonService->getItemCountCollectionA();
         $this->output->writeln('Item count collection [' . $this->labelCollectionA . '] ' . $count);
         $missingItems = $comparisonService->findItemsNotInCollectionA();
-        $this->outputMissingItems($missingItems, $this->labelCollectionB);
+        $this->outputMissingItems($missingItems, $this->labelCollectionA);
         return $missingItems;
     }
 
@@ -29,7 +29,7 @@ abstract class GeoCheckCommand extends Command
         $count = $comparisonService->getItemCountCollectionB();
         $this->output->writeln('Item count collection [' . $this->labelCollectionB . '] ' . $count);
         $missingItems = $comparisonService->findItemsNotInCollectionB();
-        $this->outputMissingItems($missingItems, $this->labelCollectionA);
+        $this->outputMissingItems($missingItems, $this->labelCollectionB);
         return $missingItems;
     }
 
@@ -56,15 +56,20 @@ abstract class GeoCheckCommand extends Command
         });
     }
 
-    public function checkDeviatingItems(GeoDataComparisonService $comparisonService, callable $handleDeviation = null)
-    {
-        $this->showDeviationSummary($comparisonService);
-        $this->walkTroughDeviations($comparisonService, $handleDeviation);
+    public function checkDeviatingItems(
+        GeoDataComparisonService $comparisonService,
+        callable $handleDeviation = null,
+        array $attributes = null
+    ) {
+        $this->showDeviationSummary($comparisonService, $attributes);
+        $this->walkTroughDeviations($comparisonService, $handleDeviation, $attributes);
     }
 
-    private function showDeviationSummary(GeoDataComparisonService $comparisonService)
-    {
-        $deviatingItems = $comparisonService->getDeviations();
+    private function showDeviationSummary(
+        GeoDataComparisonService $comparisonService,
+        array $attributes = null
+    ) {
+        $deviatingItems = $comparisonService->getDeviations($attributes);
         if ($deviatingItems->count() === 0) {
             $this->output->info('No deviations found');
             return;
@@ -82,9 +87,12 @@ abstract class GeoCheckCommand extends Command
         );
     }
 
-    private function walkTroughDeviations(GeoDataComparisonService $comparisonService, callable $handleDeviation = null)
-    {
-        $deviatingItems = $comparisonService->getDeviations();
+    private function walkTroughDeviations(
+        GeoDataComparisonService $comparisonService,
+        callable $handleDeviation = null,
+        array $attributes = null
+    ) {
+        $deviatingItems = $comparisonService->getDeviations($attributes);
         if ($deviatingItems->count() === 0
             || !($this->yesToAll || $this->confirm('Walk through deviations?', true))) {
             return;

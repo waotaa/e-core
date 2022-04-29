@@ -25,7 +25,6 @@ class NewFormatRemoveFromInstrumentsTable extends Migration
             $table->longText('description')->nullable();
             $table->longText('conditions')->nullable();
             $table->string('duration')->nullable();
-            $table->string('duration_unit')->nullable();
             $table->decimal('costs')->nullable();
             $table->string('costs_unit')->nullable();
         });

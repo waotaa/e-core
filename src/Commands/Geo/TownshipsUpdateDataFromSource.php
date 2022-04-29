@@ -29,7 +29,7 @@ class TownshipsUpdateDataFromSource extends GeoCheckCommand
         $this->output->writeln('updating townships');
         $this->output->writeln('');
 
-        $data = TownshipDataService::loadData();
+        $data = TownshipDataService::loadSourceData();
         $this->sourceData = TownshipDataService::createBasicGeoCollectionFromData($data);
 
         $this->call('geo:integrity');

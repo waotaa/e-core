@@ -5,13 +5,15 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Vng\EvaCore\ElasticResources\ProfessionalResource;
 use Vng\EvaCore\Observers\ProfessionalObserver;
 
-class Professional extends Model implements CanResetPasswordContract
+class Professional extends SearchableModel implements CanResetPasswordContract
 {
     use HasFactory, CanResetPassword;
+
+    protected string $elasticResource = ProfessionalResource::class;
 
     const STATUSSES = [
         'UNCONFIRMED' => 'Niet bevestigd',

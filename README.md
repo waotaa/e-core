@@ -1,3 +1,4 @@
+
 ## Eva Laravel core
 
 ## Environments files
@@ -85,13 +86,13 @@ Once you have your data established you want to monitor for changes.
 To do this you can run the following commands. These will only show
 the missing items between multiple API's and the data source.
 
-The checks do not check for content changes!
-
+#### Check for deviations between API and Source
 ```
 php artisan geo:townships-check-source-from-api
 php artisan geo:regions-check-source-from-api
 ``` 
 
+#### Snapshot creation for manually checking source set
 We currently use the Cbs Open Data Api to create the source file.
 When checking for changes in the various API results, look for that one.
 
@@ -101,6 +102,7 @@ php artisan geo:townships-create-dataset
 php artisan geo:regions-create-dataset
 ```
 
+#### Update the Source file with the data from the API
 When your happy with the snapshot, run it again with the `update-source`
 option.
 ```
@@ -108,6 +110,7 @@ php artisan geo:townships-create-dataset --update-source
 php artisan geo:regions-create-dataset --update-source
 ```
 
+#### Check for deviations between Source file and Database
 You can also check if the database is up to date with the source data.
 The following commands will check for missing items and content
 deviations.
@@ -117,6 +120,7 @@ php artisan geo:townships-check-data-from-source
 php artisan geo:regions-check-data-from-source
 ```
 
+#### Update the Database with the data from the Source file
 When you decide to update the database with the source data you can run
 the update commands. These commands will show you each deviation and
 offers you the choice to update the data.
@@ -130,6 +134,14 @@ php artisan geo:townships-update-data-from-source
 php artisan geo:regions-update-data-from-source
 ```
 
+> **_NOTE:_** Some deployment methods might not allow for interaction. In that
+case you can run the commands with the yes-to-all flag. Do make sure to
+check the deviations before running the command
+
+```
+php artisan geo:townships-update-data-from-source --yes-to-all
+php artisan geo:regions-update-data-from-source --yes-to-all
+```
 
 ## Professionals
 

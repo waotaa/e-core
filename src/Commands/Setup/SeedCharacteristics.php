@@ -17,7 +17,7 @@ class SeedCharacteristics extends Command
         $this->call('db:seed', ['--class' => 'Database\Seeders\InstrumentProps\ClientCharacteristicSeeder', '--force' => true]);
         $this->call('db:seed', ['--class' => 'Database\Seeders\InstrumentProps\GroupFormSeeder', '--force' => true]);
         $this->call('db:seed', ['--class' => 'Database\Seeders\InstrumentProps\ImplementationSeeder', '--force' => true]);
-        $this->call('db:seed', ['--class' => 'Database\Seeders\InstrumentProps\LocationSeeder', '--force' => true]);
+        $this->call('db:seed', ['--class' => 'Database\Seeders\InstrumentProps\LocationTypeSeeder', '--force' => true]);
         $this->call('db:seed', ['--class' => 'Database\Seeders\InstrumentProps\TargetGroupSeeder', '--force' => true]);
 
         $this->output->writeln('seed characteristics finished!');
