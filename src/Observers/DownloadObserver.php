@@ -28,11 +28,6 @@ class DownloadObserver
         $this->syncConnectedElasticResources($download);
     }
 
-    public function forceDeleted(Download $download): void
-    {
-        $this->syncConnectedElasticResources($download);
-    }
-
     private function syncConnectedElasticResources(Download $download): void
     {
         if (!is_null($download->instrument)) {

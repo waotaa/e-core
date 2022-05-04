@@ -28,11 +28,6 @@ class ContactablesObserver
         $this->attachConnectedElasticResources($contactables);
     }
 
-    public function forceDeleted(Contactables $contactables): void
-    {
-        $this->detachConnectedElasticResources($contactables);
-    }
-
     private function attachConnectedElasticResources(Contactables $contactables): void
     {
         ContactAttachedEvent::dispatch($contactables->contact, $contactables->findContactable());

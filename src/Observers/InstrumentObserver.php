@@ -33,12 +33,6 @@ class InstrumentObserver
         $this->syncConnectedElasticResources($instrument);
     }
 
-    public function forceDeleted(Instrument $instrument): void
-    {
-        InstrumentRemoved::dispatch($instrument);
-        $this->syncConnectedElasticResources($instrument);
-    }
-
     private function syncConnectedElasticResources(Instrument $instrument): void
     {
         if ($instrument->provider) {

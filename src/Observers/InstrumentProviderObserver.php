@@ -30,11 +30,6 @@ class InstrumentProviderObserver
         $this->attachConnectedElasticResources($instrumentProvider);
     }
 
-    public function forceDeleted(InstrumentProvider $instrumentProvider): void
-    {
-        $this->detachConnectedElasticResources($instrumentProvider);
-    }
-
     private function attachConnectedElasticResources(InstrumentProvider $instrumentProvider): void
     {
         InstrumentAttachedEvent::dispatch($instrumentProvider);

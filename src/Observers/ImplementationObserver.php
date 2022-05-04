@@ -28,11 +28,6 @@ class ImplementationObserver
         $this->syncConnectedElasticResources($implementation);
     }
 
-    public function forceDeleted(Implementation $implementation): void
-    {
-        $this->syncConnectedElasticResources($implementation);
-    }
-
     private function syncConnectedElasticResources(Implementation $implementation): void
     {
         $implementation->instruments->each(

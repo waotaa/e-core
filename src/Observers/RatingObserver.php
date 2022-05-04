@@ -27,11 +27,6 @@ class RatingObserver
         $this->syncConnectedElasticResources($rating);
     }
 
-    public function forceDeleted(Rating $rating): void
-    {
-        $this->syncConnectedElasticResources($rating);
-    }
-
     private function syncConnectedElasticResources(Rating $rating): void
     {
         if (!is_null($rating->instrument)) {

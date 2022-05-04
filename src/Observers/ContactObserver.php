@@ -27,11 +27,6 @@ class ContactObserver
         $this->syncConnectedElasticResources($contact);
     }
 
-    public function forceDeleted(Contact $contact): void
-    {
-        $this->syncConnectedElasticResources($contact);
-    }
-
     private function syncConnectedElasticResources(Contact $contact): void
     {
         $contact->instruments->each(

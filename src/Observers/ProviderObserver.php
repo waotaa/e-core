@@ -28,11 +28,6 @@ class ProviderObserver
         $this->syncConnectedElasticResources($provider);
     }
 
-    public function forceDeleted(Provider $provider): void
-    {
-        $this->syncConnectedElasticResources($provider);
-    }
-
     private function syncConnectedElasticResources(Provider $provider): void
     {
         $provider->instruments->each(

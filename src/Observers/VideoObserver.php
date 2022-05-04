@@ -28,11 +28,6 @@ class VideoObserver
         $this->syncConnectedElasticResources($video);
     }
 
-    public function forceDeleted(Video $video): void
-    {
-        $this->syncConnectedElasticResources($video);
-    }
-
     private function syncConnectedElasticResources(Video $video): void
     {
         if (!is_null($video->instrument)) {

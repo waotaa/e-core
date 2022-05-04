@@ -28,11 +28,6 @@ class LocationObserver
         $this->syncConnectedElasticResources($location);
     }
 
-    public function forceDeleted(Location $location): void
-    {
-        $this->syncConnectedElasticResources($location);
-    }
-
     private function syncConnectedElasticResources(Location $location): void
     {
         if (!is_null($location->instrument)) {

@@ -27,9 +27,4 @@ class ElasticsearchObserver
     {
         ElasticResourceSaved::dispatch($model);
     }
-
-    public function forceDeleted(SearchableModel $model): void
-    {
-        ElasticResourceRemoved::dispatch($model);
-    }
 }

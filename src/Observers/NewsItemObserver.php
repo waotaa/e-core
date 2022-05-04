@@ -27,11 +27,6 @@ class NewsItemObserver
         $this->syncConnectedElasticResources($newsItem);
     }
 
-    public function forceDeleted(NewsItem $newsItem): void
-    {
-        $this->syncConnectedElasticResources($newsItem);
-    }
-
     private function syncConnectedElasticResources(NewsItem $newsItem): void
     {
         if (!is_null($newsItem->environment)) {

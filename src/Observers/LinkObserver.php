@@ -28,11 +28,6 @@ class LinkObserver
         $this->syncConnectedElasticResources($link);
     }
 
-    public function forceDeleted(Link $link): void
-    {
-        $this->syncConnectedElasticResources($link);
-    }
-
     private function syncConnectedElasticResources(Link $link): void
     {
         if (!is_null($link->instrument)) {

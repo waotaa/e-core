@@ -28,11 +28,6 @@ class RegistrationCodeObserver
         $this->syncConnectedElasticResources($registrationCode);
     }
 
-    public function forceDeleted(RegistrationCode $registrationCode): void
-    {
-        $this->syncConnectedElasticResources($registrationCode);
-    }
-
     private function syncConnectedElasticResources(RegistrationCode $registrationCode): void
     {
         if (!is_null($registrationCode->instrument)) {

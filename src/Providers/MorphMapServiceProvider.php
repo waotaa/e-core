@@ -10,6 +10,7 @@ use Vng\EvaCore\Models\NationalParty;
 use Vng\EvaCore\Models\Partnership;
 use Vng\EvaCore\Models\Provider;
 use Vng\EvaCore\Models\Region;
+use Vng\EvaCore\Models\Tile;
 use Vng\EvaCore\Models\Township;
 
 class MorphMapServiceProvider extends ServiceProvider
@@ -21,6 +22,7 @@ class MorphMapServiceProvider extends ServiceProvider
         'partnership' => Partnership::class,
         'provider' => Provider::class,
         'region' => Region::class,
+        'tile' => Tile::class,
         'township' => Township::class,
     ];
 

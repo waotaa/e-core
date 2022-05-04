@@ -27,11 +27,6 @@ class AddressObserver
         $this->syncConnectedElasticResources($address);
     }
 
-    public function forceDeleted(Address $address): void
-    {
-        $this->syncConnectedElasticResources($address);
-    }
-
     private function syncConnectedElasticResources(Address $address): void
     {
         $addressable = $address->addressable;
