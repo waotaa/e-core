@@ -15,9 +15,6 @@ class Setup extends Command
 
         $this->call('key:generate');
 
-//        Temp disable because this is an install command, not for setup
-//        $this->publishPackage();
-
         $this->setupDatabase();
         if (!$this->option('lean')) {
             $this->setupUtilities();
