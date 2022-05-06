@@ -68,6 +68,6 @@ class MorphMapServiceProvider extends ServiceProvider
 
     private function setMorphMap()
     {
-        Relation::enforceMorphMap(static::MORPH_MAP);
+        Relation::morphMap(static::MORPH_MAP);
     }
 }

@@ -136,7 +136,7 @@ class Instrument extends SearchableModel
 
     public function getRawTotalDurationUnitAttribute(): ?string
     {
-        return $this->attributes['total_duration_unit'];
+        return $this->attributes['total_duration_unit'] ?? null;
     }
 
     public function availableRegions(): BelongsToMany
