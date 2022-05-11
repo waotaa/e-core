@@ -26,7 +26,7 @@ class Neighbourhood extends Model implements AreaInterface
 
     public function instruments(): BelongsToMany
     {
-        return $this->belongsToMany(Instrument::class, 'available_township_part_instrument')
+        return $this->belongsToMany(Instrument::class, 'available_neighbourhood_instrument')
             ->withTimestamps()
             ->using(AvailableNeighbourhoodInstrument::class);
     }
