@@ -62,7 +62,7 @@ class UserPoolService
 //            'UserMigration' => '<string>',
 //            'VerifyAuthChallengeResponse' => '<string>',
 //        ],
-        'MfaConfiguration' => 'OPTIONAL',
+        'MfaConfiguration' => 'OFF', //'OPTIONAL', (Can't be set to optional right away)
         'Policies' => [
             'PasswordPolicy' => [
                 'MinimumLength' => 8,
@@ -115,6 +115,7 @@ class UserPoolService
             static::ensureUserPoolSchema($userPool);
         } else {
             static::createUserPool();
+            $userPool = static::getUserPool();
         }
         static::setupMfaConfig($userPool->getId());
     }
@@ -149,7 +150,7 @@ class UserPoolService
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         return $cognitoClient->setUserPoolMfaConfig([
-            "MfaConfiguration" => static::DEFAULT_POOL_SETTINGS['MfaConfiguration'],
+            "MfaConfiguration" => 'OPTIONAL',
 //            "SmsMfaConfiguration" => [
 //                "SmsAuthenticationMessage" => "a message with the token: {####}",
 //                "SmsConfiguration" => [
