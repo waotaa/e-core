@@ -13,10 +13,4 @@ class SyncResourceToPublicElasticJob extends SyncResourceToElasticJob
     {
         parent::__construct($model, $index, $resourceClass, $attempt);
     }
-
-//    At this time we do prefix the public indexes as well
-//    protected function getFullIndex(): string
-//    {
-//        return $this->index;
-//    }
 }
