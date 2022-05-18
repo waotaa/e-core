@@ -5,7 +5,7 @@ namespace Vng\EvaCore\Commands;
 use Vng\EvaCore\ElasticResources\FormerStructure\InstrumentResource;
 use Vng\EvaCore\Models\Former\Instrument;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
+use Vng\EvaCore\Services\StorageService;
 
 class ExportOldInstruments extends Command
 {
@@ -29,7 +29,7 @@ class ExportOldInstruments extends Command
             $filename = $name_prefix . '-' . $this->argument('mark') . '-instruments';
         }
 
-        Storage::disk('local')->put("exports/old-{$filename}.json", $instrumentsJson);
+        StorageService::getStorage()->put("exports/old-{$filename}.json", $instrumentsJson);
 
         $this->output->writeln('finished');
         return 0;
