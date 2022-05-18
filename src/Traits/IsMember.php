@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
+use Vng\EvaCore\Interfaces\HasMembersInterface;
 use Vng\EvaCore\Models\Instrument;
 
 trait IsMember
@@ -32,6 +33,11 @@ trait IsMember
     public function hasAnyAssociation(): bool
     {
         return !is_null($this->associateables()->get()) && $this->associateables()->count();
+    }
+
+    public function hasAssociation(HasMembersInterface $association): bool
+    {
+        return $this->hasAnyAssociation() && $this->getAssociations()->contains($association);
     }
 
     public function usersShareAssociation(EvaUserInterface $user): bool

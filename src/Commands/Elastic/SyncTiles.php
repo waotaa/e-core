@@ -2,8 +2,9 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
-use Vng\EvaCore\Jobs\RemoveResourceFromElastic;
-use Vng\EvaCore\Jobs\SyncResourceToElastic;
+use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
+use Vng\EvaCore\Jobs\SyncResourceToElasticJob;
+use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Tile;
 use Illuminate\Console\Command;
 
@@ -25,11 +26,11 @@ class SyncTiles extends Command
         foreach (Tile::all() as $tile) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $tile->name);
-            dispatch(new SyncResourceToElastic($tile));
+            dispatch(new SyncSearchableModelToElasticJob($tile));
         }
 
         foreach (Tile::onlyTrashed()->get() as $tile) {
-            dispatch(new RemoveResourceFromElastic($tile->getSearchIndex(), $tile->getSearchId()));
+            dispatch(new RemoveResourceFromElasticJob($tile->getSearchIndex(), $tile->getSearchId()));
         }
 
         $this->getOutput()->writeln('');

@@ -32,6 +32,6 @@ class Tile extends SearchableModel
 
     public function instruments(): BelongsToMany
     {
-        return $this->belongsToMany(Instrument::class, 'instrument_tile')->using(TileInstrument::class);
+        return $this->belongsToMany(Instrument::class, 'instrument_tile')->using(InstrumentTile::class);
     }
 }

@@ -1,10 +1,25 @@
 <?php
 
-namespace Vng\EvaCore\ElasticResources;
+namespace Vng\EvaCore\ElasticResources\Shared;
 
+use Vng\EvaCore\ElasticResources\AreaInterfaceResource;
+use Vng\EvaCore\ElasticResources\ClientCharacteristicResource;
+use Vng\EvaCore\ElasticResources\DownloadResource;
+use Vng\EvaCore\ElasticResources\ElasticResource;
+use Vng\EvaCore\ElasticResources\GroupFormResource;
+use Vng\EvaCore\ElasticResources\ImplementationResource;
+use Vng\EvaCore\ElasticResources\LinkResource;
+use Vng\EvaCore\ElasticResources\LocationResource;
+use Vng\EvaCore\ElasticResources\NeighbourhoodResource;
+use Vng\EvaCore\ElasticResources\OwnerResource;
+use Vng\EvaCore\ElasticResources\RegistrationCodeResource;
+use Vng\EvaCore\ElasticResources\TargetGroupResource;
+use Vng\EvaCore\ElasticResources\TileResource;
+use Vng\EvaCore\ElasticResources\TownshipResource;
+use Vng\EvaCore\ElasticResources\VideoResource;
+use Illuminate\Support\Str;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Services\ModelHelpers\InstrumentHelper;
-use Illuminate\Support\Str;
 
 class InstrumentResource extends ElasticResource
 {
@@ -39,6 +54,7 @@ class InstrumentResource extends ElasticResource
             'additional_information' => $this->additional_information,
 
             // practical information
+//            'location_description' => $this->location_description,
             'work_agreements' => $this->work_agreements,
             'application_instructions' => $this->application_instructions,
             'intensity_hours_per_week' => $this->intensity_hours_per_week,
@@ -47,7 +63,6 @@ class InstrumentResource extends ElasticResource
             'total_duration_unit_key' => $this->raw_total_duration_unit,
             'total_duration_hours' => $this->total_duration_hours, // calculated value
             'total_costs' => $this->total_costs,
-            'total_costs_whole_number' => (int) round($this->total_costs),
             'costs_description' => $this->costs_description,
             'duration_description' => $this->duration_description,
             'intensity_description' => $this->intensity_description,
@@ -82,7 +97,6 @@ class InstrumentResource extends ElasticResource
             'downloads' => DownloadResource::many($this->downloads),
 
             'provider' => ProviderResource::one($this->provider),
-            'contacts' => ContactResource::many($this->contacts),
 
             'available_areas' => AreaInterfaceResource::many($this->availableAreas),
             'available_areas_all' => AreaInterfaceResource::many($this->allAvailableAreas),

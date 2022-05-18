@@ -2,8 +2,8 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
-use Vng\EvaCore\Jobs\RemoveResourceFromElastic;
-use Vng\EvaCore\Jobs\SyncResourceToElastic;
+use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
+use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Models\SyncAttempt;
@@ -35,11 +35,11 @@ class SyncInstruments extends Command
             $attempt->resource()->associate($instrument);
             $attempt->save();
 
-            dispatch(new SyncResourceToElastic($instrument, $attempt));
+            dispatch(new SyncSearchableModelToElasticJob($instrument, $attempt));
         }
 
         foreach (Instrument::onlyTrashed()->get() as $instrument) {
-            dispatch(new RemoveResourceFromElastic($instrument->getSearchIndex(), $instrument->getSearchId()));
+            dispatch(new RemoveResourceFromElasticJob($instrument->getSearchIndex(), $instrument->getSearchId()));
         }
 
         $this->output->newLine(2);

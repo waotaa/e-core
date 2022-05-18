@@ -7,42 +7,32 @@ use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Professional;
 use Vng\EvaCore\Models\Rating;
 use DateTime;
-use Elasticsearch\Client;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\App;
 
-class FetchNewInstrumentRatings implements ShouldQueue
+class FetchNewInstrumentRatingsJob extends ElasticJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     private Instrument $instrument;
 
     public function __construct(Instrument $instrument)
     {
+        parent::__construct();
         $this->instrument = $instrument;
     }
 
     public function handle(): void
     {
-        /** @var Client $elasticsearch */
-        $elasticsearch = App::make('elasticsearch');
+        $elasticSearchClient = $this->getClient();
 
-        $prefix = config('elastic.prefix');
         $index = 'instruments';
-        $prefixedIndex = $prefix ? $prefix . '-' . $index : $index;
+        $prefixedIndex = $this::prefixIndex($index);
 
-        $indexExists = $elasticsearch->indices()->exists([
+        $indexExists = $elasticSearchClient->indices()->exists([
             'index' => $prefixedIndex
         ]);
         if (!$indexExists) {
             return;
         }
 
-        $exists = $elasticsearch->exists([
+        $exists = $elasticSearchClient->exists([
             'index' => $prefixedIndex,
             'id' => $this->instrument->uuid,
         ]);
@@ -50,7 +40,7 @@ class FetchNewInstrumentRatings implements ShouldQueue
             return;
         }
 
-        $instrumentDoc = $elasticsearch->get([
+        $instrumentDoc = $elasticSearchClient->get([
             'index' => $prefixedIndex,
             'id' => $this->instrument->uuid,
         ]);
@@ -85,7 +75,7 @@ class FetchNewInstrumentRatings implements ShouldQueue
             });
 
             // Update the ratings field on the instrument document
-            $elasticsearch->update([
+            $elasticSearchClient->update([
                 'index' => $prefixedIndex,
                 'id' => $this->instrument->uuid,
                 'body' => [

@@ -2,7 +2,7 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
-use Vng\EvaCore\Jobs\SyncResourceToElastic;
+use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\NewsItem;
 use Illuminate\Console\Command;
 
@@ -24,7 +24,7 @@ class SyncNewsItems extends Command
         foreach (NewsItem::all() as $newsItem) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $newsItem->name);
-            dispatch(new SyncResourceToElastic($newsItem));
+            dispatch(new SyncSearchableModelToElasticJob($newsItem));
         }
 
         $this->output->writeln('');

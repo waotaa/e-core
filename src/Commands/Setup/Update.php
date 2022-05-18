@@ -23,6 +23,7 @@ class Update extends Command
         }
 
         $this->call('migrate', ['--force' => true]);
+        $this->call('format:clean-actions');
         $this->call(SeedCharacteristics::class);
 
         $this->call('professionals:setup', ['--silent' => true]);

@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Commands\Elastic;
 use Elasticsearch\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
+use Vng\EvaCore\Services\ElasticSearch\ElasticClientBuilder;
 
 class GetMapping extends Command
 {
@@ -21,8 +22,7 @@ class GetMapping extends Command
             $index = $prefix . '-' . $index;
         }
 
-        /** @var Client $elasticsearch */
-        $elasticsearch = App::make('elasticsearch');
+        $elasticsearch = ElasticClientBuilder::make();
 
         $params = ['index' => $index];
         $exists = $elasticsearch->indices()->exists($params);

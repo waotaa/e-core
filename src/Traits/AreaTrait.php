@@ -32,11 +32,8 @@ trait AreaTrait
 
     public function getAreasLocatedIn(): Collection
     {
-        // A township part is located in
-        // It's own area
         $areasLocatedIn = $this->getOwnAreas();
 
-        // It's parent township
         if ($this->getParentAreas()) {
             $this->getParentAreas()
                 ->filter()
@@ -50,11 +47,8 @@ trait AreaTrait
 
     public function getContainingAreas(): Collection
     {
-        // A township is containing
-        // It's own areas
         $containingAreas = $this->getOwnAreas();
 
-        // The containing areas of it's townships
         if ($this->getChildAreas()) {
             $this->getChildAreas()
                 ->filter()

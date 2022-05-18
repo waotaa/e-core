@@ -2,9 +2,8 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
-use Elasticsearch\Client;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\App;
+use Vng\EvaCore\Services\ElasticSearch\ElasticClientBuilder;
 
 class DeleteIndex extends Command
 {
@@ -24,8 +23,7 @@ class DeleteIndex extends Command
         $force = $this->option('force');
         $confirmation = $force || $this->confirm('The index to delete is: '. $index . '. Is this correct?');
         if ($confirmation) {
-            /** @var Client $elasticsearch */
-            $elasticsearch = App::make('elasticsearch');
+            $elasticsearch = ElasticClientBuilder::make();
 
             $params = ['index' => $index];
             $exists = $elasticsearch->indices()->exists($params);

@@ -10,6 +10,10 @@ class Download extends Model
 {
     protected $table = 'downloads';
 
+    protected $fillable = [
+        'label',
+    ];
+
     protected static function boot()
     {
         parent::boot();

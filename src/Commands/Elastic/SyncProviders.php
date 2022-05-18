@@ -2,8 +2,8 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
-use Vng\EvaCore\Jobs\RemoveResourceFromElastic;
-use Vng\EvaCore\Jobs\SyncResourceToElastic;
+use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
+use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Provider;
 use Illuminate\Console\Command;
 
@@ -25,11 +25,11 @@ class SyncProviders extends Command
         foreach (Provider::all() as $provider) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $provider->name);
-            dispatch(new SyncResourceToElastic($provider));
+            dispatch(new SyncSearchableModelToElasticJob($provider));
         }
 
         foreach (Provider::onlyTrashed()->get() as $provider) {
-            dispatch(new RemoveResourceFromElastic($provider->getSearchIndex(), $provider->getSearchId()));
+            dispatch(new RemoveResourceFromElasticJob($provider->getSearchIndex(), $provider->getSearchId()));
         }
 
         $this->output->writeln('');

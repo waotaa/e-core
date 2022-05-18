@@ -6,7 +6,7 @@ use Vng\EvaCore\Events\InstrumentAttachedEvent;
 use Vng\EvaCore\Events\InstrumentDetachedEvent;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class TileInstrument extends Pivot
+class InstrumentTile extends Pivot
 {
     protected $table = 'instrument_tile';
     public $incrementing = true;

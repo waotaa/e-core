@@ -30,6 +30,11 @@ abstract class SearchableModel extends Model implements SearchableInterface
         return $this->getTable();
     }
 
+    public function getResourceClass()
+    {
+        return $this->elasticResource;
+    }
+
     public function getSearchId()
     {
         return $this->getKey();

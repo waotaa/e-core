@@ -2,8 +2,8 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
-use Vng\EvaCore\Jobs\RemoveResourceFromElastic;
-use Vng\EvaCore\Jobs\SyncResourceToElastic;
+use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
+use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Region;
 use Illuminate\Console\Command;
 
@@ -25,11 +25,11 @@ class SyncRegions extends Command
         foreach (Region::all() as $region) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $region->name);
-            dispatch(new SyncResourceToElastic($region));
+            dispatch(new SyncSearchableModelToElasticJob($region));
         }
 
         foreach (Region::onlyTrashed()->get() as $region) {
-            dispatch(new RemoveResourceFromElastic($region->getSearchIndex(), $region->getSearchId()));
+            dispatch(new RemoveResourceFromElasticJob($region->getSearchIndex(), $region->getSearchId()));
         }
 
         $this->getOutput()->writeln('');

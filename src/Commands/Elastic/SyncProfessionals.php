@@ -3,7 +3,7 @@
 namespace Vng\EvaCore\Commands\Elastic;
 
 use Illuminate\Console\Command;
-use Vng\EvaCore\Jobs\SyncResourceToElastic;
+use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Professional;
 
 class SyncProfessionals extends Command
@@ -24,7 +24,7 @@ class SyncProfessionals extends Command
         foreach (Professional::all() as $professional) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $professional->name);
-            dispatch(new SyncResourceToElastic($professional));
+            dispatch(new SyncSearchableModelToElasticJob($professional));
         }
 
         $this->getOutput()->writeln('');

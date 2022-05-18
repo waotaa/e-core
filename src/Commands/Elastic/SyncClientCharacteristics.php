@@ -1,9 +1,10 @@
 <?php
 
 namespace Vng\EvaCore\Commands\Elastic;
+
 use Illuminate\Console\Command;
-use Vng\EvaCore\Jobs\RemoveResourceFromElastic;
-use Vng\EvaCore\Jobs\SyncResourceToElastic;
+use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
+use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\SyncAttempt;
 
@@ -31,11 +32,11 @@ class SyncClientCharacteristics extends Command
             $attempt->resource()->associate($clientCharacteristic);
             $attempt->save();
 
-            dispatch(new SyncResourceToElastic($clientCharacteristic, $attempt));
+            dispatch(new SyncSearchableModelToElasticJob($clientCharacteristic, $attempt));
         }
 
         foreach (ClientCharacteristic::onlyTrashed()->get() as $clientCharacteristic) {
-            dispatch(new RemoveResourceFromElastic($clientCharacteristic->getSearchIndex(), $clientCharacteristic->getSearchId()));
+            dispatch(new RemoveResourceFromElasticJob($clientCharacteristic->getSearchIndex(), $clientCharacteristic->getSearchId()));
         }
 
         $this->output->newLine(2);

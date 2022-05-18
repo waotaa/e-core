@@ -139,6 +139,29 @@ class Instrument extends SearchableModel
         return $this->attributes['total_duration_unit'] ?? null;
     }
 
+    public function getTotalDurationHoursAttribute()
+    {
+        if (DurationUnitEnum::hour()->equals($this->total_duration_unit)) {
+            return $this->total_duration_value;
+        }
+
+        $hoursPerWeek = $this->intensity_hours_per_week;
+        if (DurationUnitEnum::day()->equals($this->total_duration_unit)) {
+            $totalDurationWeeks = ceil($this->total_duration_value / 7);
+            return $hoursPerWeek * $totalDurationWeeks;
+        }
+        if (DurationUnitEnum::week()->equals($this->total_duration_unit)) {
+            return $hoursPerWeek * $this->total_duration_value;
+        }
+        if (DurationUnitEnum::month()->equals($this->total_duration_unit)) {
+            $weeksPerMonth = 52/12;
+            $totalDurationWeeks = $this->total_duration_value * $weeksPerMonth;
+            return $hoursPerWeek * $totalDurationWeeks;
+        }
+
+        return null;
+    }
+
     public function availableRegions(): BelongsToMany
     {
         return $this->belongsToMany(Region::class, 'available_region_instrument')
@@ -168,11 +191,13 @@ class Instrument extends SearchableModel
      */
     public function getSpecifiedAvailableAreasAttribute(): ?Collection
     {
-        if ($this->availableRegions()->count() === 0) {
-            return null;
-        }
+        $areas = collect([]);
 
-        $areas = collect($this->availableRegions);
+        if ($this->availableRegions()->count() > 0) {
+            $this->availableRegions()->each(function (Region $region) use ($areas) {
+                $areas->add($region);
+            });
+        }
 
         if ($this->availableTownships()->count() > 0) {
             $this->availableTownships()->each(function (Township $township) use ($areas) {
@@ -259,11 +284,6 @@ class Instrument extends SearchableModel
         return $this->belongsTo(Provider::class);
     }
 
-    public function addresses(): MorphToMany
-    {
-        return $this->morphToMany(Address::class, 'addressable');
-    }
-
     public function ratings(): HasMany
     {
         return $this->hasMany(Rating::class);
@@ -293,7 +313,7 @@ class Instrument extends SearchableModel
             ->using(GroupFormInstrument::class);
     }
 
-    public function location_types(): BelongsToMany
+    public function locationTypes(): BelongsToMany
     {
         return $this->belongsToMany(LocationType::class, 'instrument_location_type')
             ->withTimestamps()
@@ -311,7 +331,7 @@ class Instrument extends SearchableModel
     {
         return $this->belongsToMany(Tile::class, 'instrument_tile')
             ->withTimestamps()
-            ->using(TileInstrument::class);
+            ->using(InstrumentTile::class);
     }
 
     public function clientCharacteristics(): BelongsToMany

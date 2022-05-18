@@ -33,6 +33,8 @@ class InstrumentDuplicationService
             $instrument->tiles()->attach($instrumentToCopy->tiles);
             $instrument->clientCharacteristics()->attach($instrumentToCopy->clientCharacteristics);
 
+            $instrument->contacts()->attach($instrumentToCopy->contacts);
+
             // Duplicate the content
             foreach ($instrumentToCopy->links as $link) {
                 $instrument->links()->save($link->replicate());

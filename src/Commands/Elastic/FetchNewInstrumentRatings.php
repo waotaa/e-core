@@ -2,7 +2,7 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
-use Vng\EvaCore\Jobs\FetchNewInstrumentRatings as FetchNewInstrumentRatingsJob;
+use Vng\EvaCore\Jobs\FetchNewInstrumentRatingsJob;
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
 

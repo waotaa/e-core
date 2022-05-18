@@ -37,7 +37,9 @@ class ElasticResource
         if (is_null($collection)) {
             return null;
         }
-        return static::collection($collection)->map(fn (ElasticResource $resource) => $resource->toArray())->toArray();
+        return static::collection($collection)
+            ->map(fn (ElasticResource $resource) => $resource->toArray())
+            ->toArray();
     }
 
     public function toArray()

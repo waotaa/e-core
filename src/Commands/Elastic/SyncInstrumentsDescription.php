@@ -3,8 +3,8 @@
 namespace Vng\EvaCore\Commands\Elastic;
 
 use Vng\EvaCore\ElasticResources\Instrument\InstrumentDescriptionResource;
-use Vng\EvaCore\Jobs\RemoveResourceFromElastic;
-use Vng\EvaCore\Jobs\SyncCustomResourceToElastic;
+use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
+use Vng\EvaCore\Jobs\SyncResourceToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
 
@@ -25,15 +25,15 @@ class SyncInstrumentsDescription extends Command
         $this->output->writeln('');
         foreach (Instrument::all() as $instrument) {
             $this->getOutput()->write('.');
-            dispatch(new SyncCustomResourceToElastic(
+            dispatch(new SyncResourceToElasticJob(
                 $instrument,
                 'instruments_description',
-                InstrumentDescriptionResource::make($instrument),
+                InstrumentDescriptionResource::class,
             ));
         }
 
         foreach (Instrument::onlyTrashed()->get() as $instrument) {
-            dispatch(new RemoveResourceFromElastic('instruments_description', $instrument->getSearchId()));
+            dispatch(new RemoveResourceFromElasticJob('instruments_description', $instrument->getSearchId()));
         }
 
         $this->output->writeln('');

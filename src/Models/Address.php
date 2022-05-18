@@ -5,8 +5,6 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Vng\EvaCore\Observers\AddressObserver;
 
 class Address extends Model
@@ -14,8 +12,6 @@ class Address extends Model
     use HasFactory;
 
     protected $fillable = [
-        'addressable_id',
-        'addressable_type',
         'name',
         'straatnaam',
         'huisnummer',
@@ -53,18 +49,13 @@ class Address extends Model
         return $result;
     }
 
-    public function addressable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    public function instruments(): MorphToMany
-    {
-        return $this->morphedByMany(Instrument::class, 'addressable');
-    }
-
     public function providers(): HasMany
     {
         return $this->hasMany(Provider::class);
+    }
+
+    public function locations(): HasMany
+    {
+        return $this->hasMany(Location::class);
     }
 }

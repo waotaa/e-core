@@ -7,12 +7,13 @@ use Illuminate\Console\Command;
 
 class CognitoSyncProfessionals extends Command
 {
-    protected $signature = 'professionals:sync';
+    protected $signature = 'professionals:sync {--d|destructive}';
     protected $description = 'Sync the professionals with the AWS user pool';
 
     public function handle(): int
     {
-        CognitoService::syncProfessionals();
+        $destructive = $this->option('destructive');
+        CognitoService::syncProfessionals($destructive);
         return 0;
     }
 }

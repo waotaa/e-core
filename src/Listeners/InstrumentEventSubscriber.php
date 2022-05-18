@@ -7,9 +7,9 @@ use Vng\EvaCore\ElasticResources\Instrument\InstrumentDescriptionResource;
 use Vng\EvaCore\Events\InstrumentRemoved;
 use Vng\EvaCore\Events\InstrumentSaved;
 use Vng\EvaCore\Jobs\PruneSyncAttempts;
-use Vng\EvaCore\Jobs\RemoveResourceFromElastic;
-use Vng\EvaCore\Jobs\SyncCustomResourceToElastic;
+use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
 use Illuminate\Events\Dispatcher;
+use Vng\EvaCore\Jobs\SyncResourceToElasticJob;
 use Vng\EvaCore\Services\ElasticSearch\SyncService;
 
 class InstrumentEventSubscriber
@@ -20,10 +20,10 @@ class InstrumentEventSubscriber
         $attempt = SyncService::createSyncAttempt($instrument, 'save_description');
 
         Bus::chain([
-            new SyncCustomResourceToElastic(
+            new SyncResourceToElasticJob(
                 $instrument,
                 'instruments_description',
-                InstrumentDescriptionResource::make($instrument),
+                InstrumentDescriptionResource::class,
                 $attempt
             ),
             new PruneSyncAttempts()
@@ -36,7 +36,7 @@ class InstrumentEventSubscriber
         $attempt = SyncService::createSyncAttempt($instrument, 'remove_description');
 
         Bus::chain([
-            new RemoveResourceFromElastic(
+            new RemoveResourceFromElasticJob(
                 'instruments_description',
                 $event->instrument->getSearchId(),
                 $attempt

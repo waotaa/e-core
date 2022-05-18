@@ -12,10 +12,10 @@ use Vng\EvaCore\Events\InstrumentAttachedEvent;
 use Vng\EvaCore\Events\InstrumentDetachedEvent;
 use Vng\EvaCore\Events\ProviderAttachedEvent;
 use Vng\EvaCore\Events\ProviderDetachedEvent;
-use Vng\EvaCore\Jobs\FetchNewInstrumentRatings;
+use Vng\EvaCore\Jobs\FetchNewInstrumentRatingsJob;
 use Vng\EvaCore\Jobs\PruneSyncAttempts;
-use Vng\EvaCore\Jobs\RemoveResourceFromElastic;
-use Vng\EvaCore\Jobs\SyncResourceToElastic;
+use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
+use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Provider;
 use Vng\EvaCore\Models\Region;
@@ -27,16 +27,17 @@ class ElasticResourceEventSubscriber
 {
     public function handleRelatedResourceChanged(ElasticRelatedResourceChanged $event)
     {
-        $attempt = SyncService::createSyncAttempt($event->model, 'save', 'created');
+        $relatedModel = $event->model;
+        $attempt = SyncService::createSyncAttempt($relatedModel, 'save', 'created');
         $attempt = SyncService::addRelatedModel($attempt, $event->relatedModel);
 
         $jobs = [
-            new SyncResourceToElastic($event->model, $attempt),
+            new SyncSearchableModelToElasticJob($relatedModel, $attempt),
             new PruneSyncAttempts()
         ];
 
-        if (get_class($event->model) === Instrument::class) {
-            array_unshift($jobs, new FetchNewInstrumentRatings($event->model));
+        if (get_class($relatedModel) === Instrument::class) {
+            array_unshift($jobs, new FetchNewInstrumentRatingsJob($relatedModel));
         }
 
         Bus::chain($jobs)->dispatch();
@@ -56,8 +57,8 @@ class ElasticResourceEventSubscriber
         $attempt = SyncService::addRelatedModel($attempt, $event->pivot);
 
         Bus::chain([
-            new FetchNewInstrumentRatings($instrument),
-            new SyncResourceToElastic($instrument, $attempt),
+            new FetchNewInstrumentRatingsJob($instrument),
+            new SyncSearchableModelToElasticJob($instrument, $attempt),
             new PruneSyncAttempts()
         ])->dispatch();
     }
@@ -76,8 +77,8 @@ class ElasticResourceEventSubscriber
         $attempt = SyncService::addRelatedModel($attempt, $event->pivot);
 
         Bus::chain([
-            new FetchNewInstrumentRatings($instrument),
-            new SyncResourceToElastic($instrument, $attempt),
+            new FetchNewInstrumentRatingsJob($instrument),
+            new SyncSearchableModelToElasticJob($instrument, $attempt),
             new PruneSyncAttempts()
         ])->dispatch();
     }
@@ -91,7 +92,7 @@ class ElasticResourceEventSubscriber
         $attempt = SyncService::addRelatedModel($attempt, $event->pivot);
 
         Bus::chain([
-            new SyncResourceToElastic($provider, $attempt),
+            new SyncSearchableModelToElasticJob($provider, $attempt),
             new PruneSyncAttempts()
         ])->dispatch();
     }
@@ -105,7 +106,7 @@ class ElasticResourceEventSubscriber
         $attempt = SyncService::addRelatedModel($attempt, $event->pivot);
 
         Bus::chain([
-            new SyncResourceToElastic($provider, $attempt),
+            new SyncSearchableModelToElasticJob($provider, $attempt),
             new PruneSyncAttempts()
         ])->dispatch();
     }
@@ -121,12 +122,12 @@ class ElasticResourceEventSubscriber
         $attempt = SyncService::addRelatedModel($attempt, $contact);
 
         $jobs = [
-            new SyncResourceToElastic($attached, $attempt),
+            new SyncSearchableModelToElasticJob($attached, $attempt),
             new PruneSyncAttempts()
         ];
 
         if (get_class($attached) === Instrument::class) {
-            array_unshift($jobs, new FetchNewInstrumentRatings($attached));
+            array_unshift($jobs, new FetchNewInstrumentRatingsJob($attached));
         }
 
         Bus::chain($jobs)->dispatch();
@@ -143,12 +144,12 @@ class ElasticResourceEventSubscriber
         $attempt = SyncService::addRelatedModel($attempt, $contact);
 
         $jobs = [
-            new SyncResourceToElastic($detached, $attempt),
+            new SyncSearchableModelToElasticJob($detached, $attempt),
             new PruneSyncAttempts()
         ];
 
         if (get_class($detached) === Instrument::class) {
-            array_unshift($jobs, new FetchNewInstrumentRatings($detached));
+            array_unshift($jobs, new FetchNewInstrumentRatingsJob($detached));
         }
 
         Bus::chain($jobs)->dispatch();
@@ -160,12 +161,12 @@ class ElasticResourceEventSubscriber
         $attempt = SyncService::createSyncAttempt($searchableModel, 'remove', 'created');
 
         $jobs = [
-            new RemoveResourceFromElastic($searchableModel->getSearchIndex(), $searchableModel->getSearchId(), $attempt),
+            new RemoveResourceFromElasticJob($searchableModel->getSearchIndex(), $searchableModel->getSearchId(), $attempt),
             new PruneSyncAttempts()
         ];
 
         if (get_class($searchableModel) === Instrument::class) {
-            array_unshift($jobs, new FetchNewInstrumentRatings($searchableModel));
+            array_unshift($jobs, new FetchNewInstrumentRatingsJob($searchableModel));
         }
 
         Bus::chain($jobs)->dispatch();
@@ -177,12 +178,12 @@ class ElasticResourceEventSubscriber
         $attempt = SyncService::createSyncAttempt($searchableModel, 'save', 'created');
 
         $jobs = [
-            new SyncResourceToElastic($searchableModel, $attempt),
+            new SyncSearchableModelToElasticJob($searchableModel, $attempt),
             new PruneSyncAttempts()
         ];
 
         if (get_class($searchableModel) === Instrument::class) {
-            array_unshift($jobs, new FetchNewInstrumentRatings($searchableModel));
+            array_unshift($jobs, new FetchNewInstrumentRatingsJob($searchableModel));
         }
 
         Bus::chain($jobs)->dispatch();

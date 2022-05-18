@@ -44,7 +44,7 @@ class AddNewsItem extends Command
 
             $newsItem->environment()->associate($environment);
             $newsItem->fill([
-                'body' => '<p>Eva wordt met jullie hulp steeds beter en completer. De handleidingen voor klantmanagers en cms waren daarom toe aan een update. Ook maakte VNG een nieuwe handreiking speciaal voor instrumentbeheerders en omgevingsbeheerders.&nbsp;</p><p>&nbsp;</p><p><strong>Geüpdatet</strong></p><ul><li>Eva Handleiding cms</li><li>Eva Handleiding klantmanager</li></ul><p>&nbsp;</p><p><strong>Nieuw</strong></p><ul><li>Eva Handreiking instrumentbeheerder</li></ul><p>&nbsp;</p><p>Je vindt de handleidingen en handreiking op de website van VNG onderaan de pagina onder <strong>downloads</strong>.</p>',
+                'body' => '<p>Eva wordt met jullie hulp steeds beter en completer. De handleidingen voor klantmanagers en cms waren daarom toe aan een update. Ook maakte VNG een nieuwe handreiking speciaal voor instrumentbeheerders en omgevingsbeheerders.&nbsp;</p><p>&nbsp;</p><p><strong>Geüpdatet</strong></p><ul><li>Eva Handleiding cms</li><li>Eva Handleiding klantmanager</li></ul><p>&nbsp;</p><p><strong>Nieuw</strong></p><ul><li>Eva Handreiking instrumentbeheerder</li></ul><p>&nbsp;</p><p>Je vindt de handleidingen en handreiking op de <a href="https://vng.nl/projecten/instrumentengidsen-dennis-en-eva" target="_blank">website van VNG onderaan de pagina onder <strong>downloads</strong></a>.</p>',
                 'teaser' => 'De Handleiding klantmanager en Handleiding cms hebben een update gekregen. Ook is er een nieuwe handreiking beschikbaar voor instrumentbeheerders.'
             ])->save();
         }
