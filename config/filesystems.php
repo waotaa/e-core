@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('FILESYSTEM_DRIVER', 's3'),
+    'geo' => env('FILESYSTEM_GEO', 'geo-local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -40,19 +41,33 @@ return [
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
+            'throw' => true
         ],
 
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
+            'region' => env('AWS_REGION', 'eu-central-1'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+//            'endpoint' => env('AWS_ENDPOINT'),
+//            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
-
+        'geo-local' => [
+            'driver' => 'local',
+            'root' => storage_path('app/fixed/geo'),
+        ],
+        'geo' => [
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_REGION', 'eu-central-1'),
+            'bucket' => env('AWS_BUCKET_GEO'),
+            'url' => env('AWS_URL'),
+//            'endpoint' => env('AWS_ENDPOINT'),
+//            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+        ]
     ],
 
     /*

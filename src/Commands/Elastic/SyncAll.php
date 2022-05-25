@@ -26,6 +26,7 @@ class SyncAll extends Command
         $this->call('elastic:sync-regions', ['--fresh' => $this->option('fresh')]);
 //        $this->call('elastic:sync-themes', ['--fresh' => $this->option('fresh')]);
         $this->call('elastic:sync-tiles', ['--fresh' => $this->option('fresh')]);
+        $this->call('elastic:sync-townships', ['--fresh' => $this->option('fresh')]);
 
         return 0;
     }
