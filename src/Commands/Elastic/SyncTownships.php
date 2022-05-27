@@ -4,6 +4,7 @@ namespace Vng\EvaCore\Commands\Elastic;
 
 use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
 use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
+use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Models\Township;
 use Illuminate\Console\Command;
 
@@ -25,7 +26,13 @@ class SyncTownships extends Command
         foreach (Township::all() as $township) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $township->name);
-            dispatch(new SyncSearchableModelToElasticJob($township));
+
+            $attempt = new SyncAttempt();
+            $attempt->action = 'sync';
+            $attempt->resource()->associate($township);
+            $attempt->save();
+
+            dispatch(new SyncSearchableModelToElasticJob($township, $attempt));
         }
 
         foreach (Township::onlyTrashed()->get() as $township) {

@@ -13,8 +13,12 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 's3'),
+    'default' => env('FILESYSTEM_DRIVER', 'local'),
     'geo' => env('FILESYSTEM_GEO', 'geo-local'),
+
+    'directory_paths' => [
+        'downloads' => env('FILESYSTEM_DIRECTORY_PATH_DOWNLOADS', env('ENVIRONMENT_DOWNLOAD_PATH', ''))
+    ],
 
     /*
     |--------------------------------------------------------------------------

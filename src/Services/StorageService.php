@@ -15,15 +15,17 @@ class StorageService
         return self::getStorage($disk)->exists($path);
     }
 
+    public static function getDisk(): string
+    {
+        return App::environment('local') ? 'local' : 's3';
+    }
+
     public static function getStorage($disk = null): Filesystem
     {
         if ($disk) {
             return Storage::disk($disk);
         }
-        if (App::environment('local')) {
-            return Storage::disk('local');
-        }
-        return Storage::disk('s3');
+        return Storage::disk(static::getDisk());
     }
 
     /**
