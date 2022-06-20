@@ -31,9 +31,17 @@ class NationalParty extends SearchableModel implements IsOwnerInterface, AreaInt
         return null;
     }
 
-    public function getChildAreas(): ?Collection
+    public function getOwnAreas(): Collection
     {
         return AreaService::getNationalAreas();
+    }
+
+    public function getChildAreas(): ?Collection
+    {
+        return $this->getOwnAreas()
+            ->map(fn (AreaInterface $area) => $area->getChildAreas())
+            ->flatten()
+            ->unique(fn (AreaInterface $area) => $area->getAreaIdentifier());
     }
 }
 

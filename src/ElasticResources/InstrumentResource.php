@@ -59,6 +59,7 @@ class InstrumentResource extends ElasticResource
             'is_national' => $this->resource->isNational(),
             'is_regional' => $this->resource->isRegional(),
             'is_local' => $this->resource->isLocal(),
+            'reach' => $this->resource->getReach(),
 
             // relations
             'owner' => OwnerResource::one($this->owner),

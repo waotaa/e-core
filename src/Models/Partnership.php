@@ -56,6 +56,9 @@ class Partnership extends Model implements IsOwnerInterface, AreaInterface
 
     public function getChildAreas(): ?Collection
     {
-        return $this->townships;
+        return $this->getOwnAreas()
+            ->map(fn (AreaInterface $area) => $area->getChildAreas())
+            ->flatten()
+            ->unique(fn (AreaInterface $area) => $area->getAreaIdentifier());
     }
 }

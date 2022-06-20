@@ -5,7 +5,6 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Vng\EvaCore\Casts\CleanedHtml;
 use Vng\EvaCore\ElasticResources\InstrumentResource;
-use Vng\EvaCore\Enums\CostsUnitEnum;
 use Vng\EvaCore\Enums\DurationUnitEnum;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Interfaces\IsMemberInterface;
@@ -19,7 +18,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Webpatser\Uuid\Uuid;
@@ -27,6 +25,10 @@ use Webpatser\Uuid\Uuid;
 class Instrument extends SearchableModel
 {
     use SoftDeletes, HasOwner, HasFactory, CanSaveQuietly, HasContacts;
+
+    const REACH_LOCAL = 'local';
+    const REACH_REGIONAL = 'regional';
+    const REACH_NATIONAL = 'national';
 
     protected $table = 'instruments';
     protected string $elasticResource = InstrumentResource::class;
@@ -277,6 +279,17 @@ class Instrument extends SearchableModel
     public function isLocal(): bool
     {
         return !$this->isNational() && !$this->isRegional();
+    }
+
+    public function getReach()
+    {
+        if ($this->isLocal()) {
+            return static::REACH_LOCAL;
+        }
+        if ($this->isRegional()) {
+            return static::REACH_REGIONAL;
+        }
+        return static::REACH_NATIONAL;
     }
 
     public function provider(): BelongsTo
