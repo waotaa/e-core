@@ -2,7 +2,6 @@
 
 namespace Vng\EvaCore\Providers;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\AggregateServiceProvider;
 use Vng\EvaCore\Commands\AssignRegions;
 use Vng\EvaCore\Commands\Dev\PasswordGenerationTest;
@@ -25,7 +24,6 @@ use Vng\EvaCore\Commands\ExportInstrumentsCosts;
 use Vng\EvaCore\Commands\ExportOldInstruments;
 use Vng\EvaCore\Commands\ExtractGeoData;
 use Vng\EvaCore\Commands\Format\ApplyMorphMap;
-use Vng\EvaCore\Commands\Format\CleanupActionLog;
 use Vng\EvaCore\Commands\Geo\GeoClearApiCaches;
 use Vng\EvaCore\Commands\Geo\GeoEnsureIntegrity;
 use Vng\EvaCore\Commands\Geo\GeoSourceGenerate;
@@ -90,7 +88,6 @@ class EvaServiceProvider extends AggregateServiceProvider
         SyncTiles::class,
 
         ApplyMorphMap::class,
-        CleanupActionLog::class,
         MigrateToFormat2::class,
 
         GeoClearApiCaches::class,
