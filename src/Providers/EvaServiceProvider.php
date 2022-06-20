@@ -19,6 +19,7 @@ use Vng\EvaCore\Commands\Elastic\SyncProfessionals;
 use Vng\EvaCore\Commands\Elastic\SyncProviders;
 use Vng\EvaCore\Commands\Elastic\SyncPublicInstruments;
 use Vng\EvaCore\Commands\Elastic\SyncRegions;
+use Vng\EvaCore\Commands\Elastic\SyncTownships;
 use Vng\EvaCore\Commands\ExportInstruments;
 use Vng\EvaCore\Commands\ExportInstrumentsCosts;
 use Vng\EvaCore\Commands\ExportOldInstruments;
@@ -86,6 +87,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         SyncPublicInstruments::class,
         SyncRegions::class,
         SyncTiles::class,
+        SyncTownships::class,
 
         ApplyMorphMap::class,
         MigrateToFormat2::class,
