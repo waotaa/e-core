@@ -13,6 +13,7 @@ use Vng\EvaCore\Repositories\Eloquent\InstrumentRepository;
 use Vng\EvaCore\Services\AreaService;
 use Vng\EvaCore\Traits\CanSaveQuietly;
 use Vng\EvaCore\Traits\HasContacts;
+use Vng\EvaCore\Traits\HasInstrumentTrackers;
 use Vng\EvaCore\Traits\HasOwner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

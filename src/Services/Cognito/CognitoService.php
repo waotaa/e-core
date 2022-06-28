@@ -135,6 +135,9 @@ class CognitoService
     public static function resetExpiredPasswords()
     {
         $users = static::getUsers();
+        if (is_null($users)) {
+            return;
+        }
         $users->each(function (UserModel $user) {
             static::checkPasswordExpiration($user);
         });
@@ -194,20 +197,25 @@ class CognitoService
         return UserModel::create($user);
     }
 
-    protected static function getUsers(string $paginationToken = null): ?Collection
+    protected static function getUsers(): ?Collection
     {
         $userPool = UserPoolService::getUserPool();
         if (is_null($userPool)) {
             return null;
         }
 
+        return static::getUsersForUserpool($userPool);
+    }
+
+    protected static function getUsersForUserpool(UserPoolModel $userPool, string $paginationToken = null): ?Collection
+    {
         $listUsersResponse = static::listUsers($userPool, $paginationToken);
-        $users = collect($listUsersResponse['Users'])->map(fn ($user) => UserModel::create($user));
+        $users = collect($listUsersResponse['Users'])->map(fn($user) => UserModel::create($user));
 
         if ($listUsersResponse['PaginationToken']) {
+            static::sleepForRateLimit(30);
             $users->merge(static::getUsers($listUsersResponse['PaginationToken']));
         }
-
         return $users;
     }
 
@@ -358,6 +366,13 @@ class CognitoService
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         $args['UserPoolId'] = $userPool->getId();
         return $cognitoClient->adminDeleteUser($args);
+    }
+
+    private static function sleepForRateLimit($requestPerSecond, $tolerance = 100)
+    {
+        $milliseconds = ceil(1 / $requestPerSecond * 1000) + $tolerance;
+        $microseconds = $milliseconds * 1000;
+        usleep($microseconds);
     }
 
     /**

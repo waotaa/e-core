@@ -7,7 +7,9 @@ use Elasticsearch\ClientBuilder;
 
 class ElasticClientBuilder extends ClientBuilder
 {
-    public function __construct()
+    private static $clientInstance = null;
+
+    private function __construct()
     {
         $this
             ->setElasticCloudId(config('elastic.instances.default.cloud_id'))
@@ -19,6 +21,9 @@ class ElasticClientBuilder extends ClientBuilder
 
     public static function make(): Client
     {
-        return (new self())->build();
+        if (is_null(self::$clientInstance)) {
+            self::$clientInstance = (new self())->build();
+        }
+        return self::$clientInstance;
     }
 }

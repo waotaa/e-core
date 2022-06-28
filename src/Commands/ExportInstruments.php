@@ -2,10 +2,8 @@
 
 namespace Vng\EvaCore\Commands;
 
-use Vng\EvaCore\ElasticResources\InstrumentResource;
-use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
-use Vng\EvaCore\Services\StorageService;
+use Vng\EvaCore\Services\Instrument\InstrumentExportService;
 
 class ExportInstruments extends Command
 {
@@ -16,20 +14,7 @@ class ExportInstruments extends Command
     {
         $this->output->writeln('exporting instruments');
 
-        $instruments = Instrument::all();
-        $instrumentResources = collect($instruments)->map(function(Instrument $instrument) {
-            return InstrumentResource::make($instrument)->toArray();
-        });
-
-        $instrumentsJson = json_encode($instrumentResources, JSON_PRETTY_PRINT);
-
-        $name_prefix = date('dmy');
-        $filename = $name_prefix . '-instruments';
-        if ($this->hasArgument('mark') && !empty($this->argument('mark'))) {
-            $filename = $name_prefix . '-' . $this->argument('mark') . '-instruments';
-        }
-
-        StorageService::getStorage()->put("exports/{$filename}.json", $instrumentsJson);
+        InstrumentExportService::exportAllInstruments($this->argument('mark'));
 
         $this->output->writeln('finished');
         return 0;

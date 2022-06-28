@@ -17,13 +17,18 @@ abstract class ElasticJob implements ElasticJobInterface, ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $tries = 2;
-    public $backoff = 3;
+//    public $backoff = 3;
 
     protected ?SyncAttempt $attempt;
 
     public function __construct(SyncAttempt $attempt = null)
     {
         $this->attempt = $attempt;
+    }
+
+    public function backoff()
+    {
+        return [1, 3];
     }
 
     public function getClient(): Client

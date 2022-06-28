@@ -21,6 +21,7 @@ class InstrumentHelper
         return new static($instrument);
     }
 
+    // Publication
     public function isPublished(): bool
     {
         $is_active = $this->instrument->getAttribute('is_active');
@@ -45,6 +46,7 @@ class InstrumentHelper
         return true;
     }
 
+    // Instrument completion
     public function isComplete(): bool
     {
         return $this->hasTile()
@@ -71,6 +73,7 @@ class InstrumentHelper
         return $this->instrument->clientCharacteristics()->count() > 0;
     }
 
+    // Ratings
     public function getAverageRatings(): array
     {
         return [
@@ -80,7 +83,7 @@ class InstrumentHelper
         ];
     }
 
-
+    // Query conditions
     public static function queryPublished(Builder $builder): Builder
     {
         return $builder->where(function (Builder $builder) {

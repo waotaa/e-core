@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Jobs;
 
+use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Illuminate\Database\Eloquent\Model;
 use Vng\EvaCore\ElasticResources\ElasticResource;
 use Vng\EvaCore\Models\SyncAttempt;
@@ -30,13 +31,17 @@ class SyncResourceToElasticJob extends ElasticJob
     protected function indexDocument()
     {
         $elasticSearchClient = $this->getClient();
-        $result = $elasticSearchClient->index([
-            'index' => $this->getFullIndex(),
-//            'type' => $this->model->getSearchType(),
-            'id' => $this->getId(),
-            'body' => $this->getResource()->toArray(),
-        ]);
-        $this->updateAttemptStatusWithResult($result);
+        try {
+            $result = $elasticSearchClient->index([
+                'index' => $this->getFullIndex(),
+    //            'type' => $this->model->getSearchType(),
+                'id' => $this->getId(),
+                'body' => $this->getResource()->toArray(),
+            ]);
+            $this->updateAttemptStatusWithResult($result);
+        } catch (NoNodesAvailableException $noNodesAvailableException) {
+            $this->release(20);
+        }
     }
 
     public function getClient(): Client

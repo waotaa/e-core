@@ -13,13 +13,11 @@ trait IsMember
 {
     abstract public function associateables(): HasMany;
 
-    abstract public function nationalParties(): MorphToMany;
-
-    abstract public function regions(): MorphToMany;
-
-    abstract public function partnerships(): MorphToMany;
-
     abstract public function townships(): MorphToMany;
+    abstract public function partnerships(): MorphToMany;
+    abstract public function regions(): MorphToMany;
+    abstract public function regionalParties(): MorphToMany;
+    abstract public function nationalParties(): MorphToMany;
 
     public function getAssociations(): ?Collection
     {

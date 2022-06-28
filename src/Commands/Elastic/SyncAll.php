@@ -13,8 +13,8 @@ class SyncAll extends Command
     {
         $this->getOutput()->writeln('syncing...');
 
-        $this->output->writeln('used elastic instance: ' . config('elastic.cloud_id'));
-        $this->output->writeln('used elastic username: ' . config('elastic.username'));
+        $this->output->writeln('used elastic instance: ' . config('elastic.instances.public.cloud_id'));
+        $this->output->writeln('used elastic username: ' . config('elastic.instances.public.username'));
 
         $this->call('elastic:sync-environments', ['--fresh' => $this->option('fresh')]);
         $this->call('elastic:sync-client-characteristics', ['--fresh' => $this->option('fresh')]);

@@ -20,6 +20,7 @@ class FetchNewInstrumentRatings extends Command
 
         foreach (Instrument::all() as $instrument) {
             $this->getOutput()->write('.');
+//            $this->getOutput()->writeln($instrument->name);
             dispatch(new FetchNewInstrumentRatingsJob($instrument));
         }
 

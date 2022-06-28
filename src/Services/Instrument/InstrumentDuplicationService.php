@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Vng\EvaCore\Services;
+namespace Vng\EvaCore\Services\Instrument;
 
 use Illuminate\Support\Facades\DB;
 use Vng\EvaCore\Models\Instrument;

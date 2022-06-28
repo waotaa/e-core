@@ -25,6 +25,7 @@ use Vng\EvaCore\Commands\ExportInstrumentsCosts;
 use Vng\EvaCore\Commands\ExportOldInstruments;
 use Vng\EvaCore\Commands\ExtractGeoData;
 use Vng\EvaCore\Commands\Format\ApplyMorphMap;
+use Vng\EvaCore\Commands\Format\CleanupSyncAttempts;
 use Vng\EvaCore\Commands\Geo\GeoClearApiCaches;
 use Vng\EvaCore\Commands\Geo\GeoEnsureIntegrity;
 use Vng\EvaCore\Commands\Geo\GeoSourceGenerate;
@@ -90,6 +91,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         SyncTownships::class,
 
         ApplyMorphMap::class,
+        CleanupSyncAttempts::class,
         MigrateToFormat2::class,
 
         GeoClearApiCaches::class,
@@ -166,8 +168,8 @@ class EvaServiceProvider extends AggregateServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'eva');
 
         $this->publishes([
-            __DIR__.'/../../resources/lang' => resource_path('lang/vendor/eva'),
-        ], 'eva-translations');
+            __DIR__.'/../../resources/lang' => lang_path('vendor/eva'),
+        ], 'eva-lang');
     }
 
     private function registerCommands(): void

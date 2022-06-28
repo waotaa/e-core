@@ -7,6 +7,7 @@ use Vng\EvaCore\Jobs\RemoveResourceFromPublicElasticJob;
 use Vng\EvaCore\Jobs\SyncResourceToPublicElasticJob;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Models\Instrument;
+use Vng\EvaCore\Services\ElasticSearch\ElasticPublicClientBuilder;
 
 class SyncPublicInstruments extends Command
 {
@@ -16,6 +17,11 @@ class SyncPublicInstruments extends Command
     public function handle(): int
     {
         $this->getOutput()->writeln('syncing public instruments');
+
+        if (!ElasticPublicClientBuilder::hasSettings()){
+            $this->output->writeln('public instance settings missing');
+            return 0;
+        }
 
         $this->output->writeln('');
         foreach (Instrument::all() as $instrument) {

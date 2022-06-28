@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Services\Cognito;
 
+use Illuminate\Support\Facades\Cache;
 use Vng\EvaCore\Models\Professional;
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
 use Aws\Laravel\AwsFacade;
@@ -212,7 +213,15 @@ class UserPoolService
 
     public static function getUserPool(): ?UserPoolModel
     {
-        return static::getUserPoolByName(static::getUserPoolName());
+        $userPoolId = Cache::get('userPoolId');
+        if (!is_null($userPoolId)) {
+            return static::getUserPoolById($userPoolId);
+        }
+        $userPool = static::getUserPoolByName(static::getUserPoolName());
+        $eightHoursInSeconds = 60 * 60 * 8;
+        Cache::put('userPoolId', $userPool->getId(), $eightHoursInSeconds);
+
+        return $userPool;
     }
 
     protected static function getUserPoolByName(string $name, string $nextToken = null): ?UserPoolModel
@@ -226,12 +235,19 @@ class UserPoolService
         $matchingPools = array_filter($userPools, fn ($pool) => $pool['Name'] === $name);
         if (empty($matchingPools)) {
             if ($result['NextToken']) {
+                static::sleepForRateLimit(15);
                 return static::getUserPoolByName($name, $result['NextToken']);
             }
             return null;
         }
 
         return UserPoolModel::create(reset($matchingPools));
+    }
+
+    protected static function getUserPoolById(string $userPoolId)
+    {
+        $userPoolDescription = self::describeUserPool($userPoolId);
+        return UserPoolModel::create($userPoolDescription['UserPool']);
     }
 
     protected static function listUserPools(string $nextToken = null): Result
@@ -248,12 +264,12 @@ class UserPoolService
         return $cognitoClient->ListUserPools($args);
     }
 
-    public static function describeUserPool(UserPoolModel $userPool): Result
+    public static function describeUserPool(string $userPoolId): Result
     {
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         return $cognitoClient->describeUserPool([
-            'UserPoolId' => $userPool->getId()
+            'UserPoolId' => $userPoolId
         ]);
     }
 
@@ -288,7 +304,7 @@ class UserPoolService
     {
         $args = static::getUserPoolArgs();
         $schema = $args['Schema'];
-        $userPoolDescription = static::describeUserPool($userPool);
+        $userPoolDescription = static::describeUserPool($userPool->getId());
         $attributes = $userPoolDescription['UserPool']['SchemaAttributes'];
         $attributeNames = collect($attributes)->map(fn ($a) => $a['Name'])->toArray();
         return array_filter($schema, function ($schemaAttribute) use ($attributeNames) {
@@ -304,5 +320,12 @@ class UserPoolService
             'UserPoolId' => $userPool->getId(),
             'CustomAttributes' => $attributesSchema
         ]);
+    }
+
+    private static function sleepForRateLimit($requestPerSecond, $tolerance = 100)
+    {
+        $milliseconds = ceil(1 / $requestPerSecond * 1000) + $tolerance;
+        $microseconds = $milliseconds * 1000;
+        usleep($microseconds);
     }
 }
