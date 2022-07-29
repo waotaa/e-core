@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('FILESYSTEM_DISK', 'local'),
     'geo' => env('FILESYSTEM_GEO', 'geo-local'),
 
-    'directory_paths' => [
+    'storage_paths' => [
         'downloads' => env('FILESYSTEM_DIRECTORY_PATH_DOWNLOADS', env('ENVIRONMENT_DOWNLOAD_PATH', ''))
     ],
 

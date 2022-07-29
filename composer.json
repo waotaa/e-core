@@ -11,7 +11,7 @@
     "keywords": ["vng", "instrumentengids", "eva", "core"],
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": "^8.0",
         "ext-dom": "*",
         "ext-json": "*",
         "aws/aws-sdk-php": "^3.176",
@@ -24,7 +24,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "myclabs/php-enum": "^1.7",
-        "webpatser/laravel-uuid": "^3.0"
+        "webpatser/laravel-uuid": "^4.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

@@ -26,6 +26,13 @@ use Vng\EvaCore\Commands\ExportOldInstruments;
 use Vng\EvaCore\Commands\ExtractGeoData;
 use Vng\EvaCore\Commands\Format\ApplyMorphMap;
 use Vng\EvaCore\Commands\Format\CleanupSyncAttempts;
+use Vng\EvaCore\Commands\Format\EnsureOrganisations;
+use Vng\EvaCore\Commands\Format\MigrateMembershipToPartyEntities;
+use Vng\EvaCore\Commands\Format\MigrateMembersToOrganisations;
+use Vng\EvaCore\Commands\Format\MigrateOwnershipToPartyEntities;
+use Vng\EvaCore\Commands\Format\MigrateToManagers;
+use Vng\EvaCore\Commands\Format\MigrateToOrganisations;
+use Vng\EvaCore\Commands\Format\SetOrganisationIdOnOwnedEntities;
 use Vng\EvaCore\Commands\Geo\GeoClearApiCaches;
 use Vng\EvaCore\Commands\Geo\GeoEnsureIntegrity;
 use Vng\EvaCore\Commands\Geo\GeoSourceGenerate;
@@ -62,6 +69,26 @@ use Vng\EvaCore\Commands\Setup\Setup;
 use Vng\EvaCore\Commands\Setup\Update;
 use Vng\EvaCore\Commands\Elastic\SyncTiles;
 use Vng\EvaCore\Commands\Format\MigrateToFormat2;
+use Vng\EvaCore\Repositories\AssociateableRepositoryInterface;
+use Vng\EvaCore\Repositories\DownloadRepositoryInterface;
+use Vng\EvaCore\Repositories\Eloquent\AssociateableRepository;
+use Vng\EvaCore\Repositories\Eloquent\DownloadRepository;
+use Vng\EvaCore\Repositories\Eloquent\InstrumentRepository;
+use Vng\EvaCore\Repositories\Eloquent\LocalPartyRepository;
+use Vng\EvaCore\Repositories\Eloquent\ManagerRepository;
+use Vng\EvaCore\Repositories\Eloquent\NationalPartyRepository;
+use Vng\EvaCore\Repositories\Eloquent\OrganisationRepository;
+use Vng\EvaCore\Repositories\Eloquent\PartnershipRepository;
+use Vng\EvaCore\Repositories\Eloquent\ProviderRepository;
+use Vng\EvaCore\Repositories\Eloquent\RegionalPartyRepository;
+use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
+use Vng\EvaCore\Repositories\LocalPartyRepositoryInterface;
+use Vng\EvaCore\Repositories\ManagerRepositoryInterface;
+use Vng\EvaCore\Repositories\NationalPartyRepositoryInterface;
+use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
+use Vng\EvaCore\Repositories\PartnershipRepositoryInterface;
+use Vng\EvaCore\Repositories\ProviderRepositoryInterface;
+use Vng\EvaCore\Repositories\RegionalPartyRepositoryInterface;
 
 class EvaServiceProvider extends AggregateServiceProvider
 {
@@ -92,7 +119,14 @@ class EvaServiceProvider extends AggregateServiceProvider
 
         ApplyMorphMap::class,
         CleanupSyncAttempts::class,
+        EnsureOrganisations::class,
+        MigrateMembershipToPartyEntities::class,
+        MigrateMembersToOrganisations::class,
+        MigrateOwnershipToPartyEntities::class,
         MigrateToFormat2::class,
+        MigrateToManagers::class,
+        MigrateToOrganisations::class,
+        SetOrganisationIdOnOwnedEntities::class,
 
         GeoClearApiCaches::class,
         GeoEnsureIntegrity::class,
@@ -143,6 +177,7 @@ class EvaServiceProvider extends AggregateServiceProvider
     public function register()
     {
         parent::register();
+        $this->bindRepositoryInterfaces();
     }
 
     public function boot()
@@ -177,5 +212,19 @@ class EvaServiceProvider extends AggregateServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands($this->commands);
         }
+    }
+
+    private function bindRepositoryInterfaces()
+    {
+        $this->app->bind(AssociateableRepositoryInterface::class, AssociateableRepository::class);
+        $this->app->bind(DownloadRepositoryInterface::class, DownloadRepository::class);
+        $this->app->bind(InstrumentRepositoryInterface::class, InstrumentRepository::class);
+        $this->app->bind(LocalPartyRepositoryInterface::class, LocalPartyRepository::class);
+        $this->app->bind(ManagerRepositoryInterface::class, ManagerRepository::class);
+        $this->app->bind(NationalPartyRepositoryInterface::class, NationalPartyRepository::class);
+        $this->app->bind(OrganisationRepositoryInterface::class, OrganisationRepository::class);
+        $this->app->bind(PartnershipRepositoryInterface::class, PartnershipRepository::class);
+        $this->app->bind(ProviderRepositoryInterface::class, ProviderRepository::class);
+        $this->app->bind(RegionalPartyRepositoryInterface::class, RegionalPartyRepository::class);
     }
 }

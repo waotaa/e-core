@@ -2,20 +2,38 @@
 
 namespace Vng\EvaCore\Repositories\Eloquent;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Vng\EvaCore\Repositories\EloquentRepositoryInterface;
+use Illuminate\Support\Collection;
+use Vng\EvaCore\Repositories\BaseRepositoryInterface;
 
-abstract class BaseRepository implements EloquentRepositoryInterface
+abstract class BaseRepository implements BaseRepositoryInterface
 {
-    protected Model $model;
+    protected string $model;
 
-    public function create(array $attributes): Model
+    public function builder(): Builder
     {
-        return $this->model->create($attributes);
+        return $this->model::query();
     }
 
-    public function find($id): ?Model
+    public function all(): Collection
     {
-        return $this->model->find($id);
+        return $this->model::all();
+    }
+
+    public function find(string $id): ?Model
+    {
+        return $this->model::find($id);
+    }
+
+    public function new(): Model
+    {
+        return new $this->model();
+    }
+
+    public function delete(string $id): ?bool
+    {
+        $model = $this->find($id);
+        return $model->delete();
     }
 }

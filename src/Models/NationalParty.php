@@ -7,15 +7,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Vng\EvaCore\ElasticResources\NationalPartyResource;
 use Vng\EvaCore\Interfaces\AreaInterface;
+use Vng\EvaCore\Interfaces\OrganisationEntityInterface;
 use Vng\EvaCore\Interfaces\IsOwnerInterface;
 use Vng\EvaCore\Services\AreaService;
 use Vng\EvaCore\Traits\AreaTrait;
 use Vng\EvaCore\Traits\HasDynamicSlug;
+use Vng\EvaCore\Traits\OrganisationEntity;
 use Vng\EvaCore\Traits\IsOwner;
 
-class NationalParty extends SearchableModel implements IsOwnerInterface, AreaInterface
+class NationalParty extends AbstractOrganisationBase implements AreaInterface
 {
-    use SoftDeletes, HasFactory, IsOwner, HasDynamicSlug, AreaTrait;
+    use HasFactory, AreaTrait;
 
     protected $table = 'national_parties';
 

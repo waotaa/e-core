@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Interfaces\IsOwnerInterface;
-use Vng\EvaCore\Repositories\OwnedEntityRepositoryInterface;
 
-abstract class OwnedEntityRepository extends BaseRepository implements OwnedEntityRepositoryInterface
+trait OwnedEntityRepository
 {
     public function addOwnerlessCondition(Builder $query): Builder
     {

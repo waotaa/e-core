@@ -4,18 +4,14 @@ namespace Vng\EvaCore\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Vng\EvaCore\ElasticResources\RegionalPartyResource;
 use Vng\EvaCore\Interfaces\AreaInterface;
-use Vng\EvaCore\Interfaces\IsOwnerInterface;
 use Vng\EvaCore\Traits\AreaTrait;
-use Vng\EvaCore\Traits\HasDynamicSlug;
-use Vng\EvaCore\Traits\IsOwner;
 
-class RegionalParty extends SearchableModel implements IsOwnerInterface, AreaInterface
+class RegionalParty extends AbstractOrganisationBase implements AreaInterface
 {
-    use SoftDeletes, HasFactory, IsOwner, HasDynamicSlug, AreaTrait;
+    use HasFactory, AreaTrait;
 
     protected $table = 'regional_parties';
 

@@ -22,12 +22,15 @@ class DownloadsService
 
     public static function getDownloadsDirectory(): string
     {
-        $downloadPath = config('filesystems.directory_paths.downloads');
+        $downloadPath = config('filesystems.storage_paths.downloads');
         return Util::normalizePath($downloadPath);
     }
 
-    public static function saveUploadedFile(UploadedFile $uploadedFile): Download
+    public static function saveUploadedFile(UploadedFile $uploadedFile, ?Download $download = null): Download
     {
+        if (is_null($download)) {
+            $download = new Download();
+        }
         $originalFileName = $uploadedFile->getClientOriginalName();
         $filePath = $uploadedFile->store(
             static::getDownloadsDirectory(),
@@ -37,7 +40,7 @@ class DownloadsService
             ]
         );
 
-        return new Download([
+        return $download->fill([
             'filename' => $originalFileName,
             'url' => $filePath
         ]);

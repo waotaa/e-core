@@ -3,13 +3,20 @@
 namespace Vng\EvaCore\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use ReflectionClass;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Vng\EvaCore\Interfaces\IsMemberInterface;
+use Vng\EvaCore\Models\Organisation;
 
 trait HasOwner
 {
+    public function organisation(): BelongsTo
+    {
+        return $this->belongsTo(Organisation::class);
+    }
+
     public function owner(): MorphTo
     {
         return $this->morphTo();

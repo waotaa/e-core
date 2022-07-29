@@ -3,13 +3,13 @@
 namespace Vng\EvaCore\Interfaces;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 interface HasMembersInterface
 {
-    public function members(): MorphToMany;
+    public function members(): BelongsToMany;
 
     public function hasMember(Model $user): bool;
 
-    public function join(Model $user);
+    public function join(Model $user): self;
 }

@@ -2,21 +2,19 @@
 
 namespace Vng\EvaCore\Models;
 
+use Vng\EvaCore\ElasticResources\PartnershipResource;
 use Vng\EvaCore\Interfaces\AreaInterface;
-use Vng\EvaCore\Interfaces\IsOwnerInterface;
 use Vng\EvaCore\Traits\AreaTrait;
-use Vng\EvaCore\Traits\HasDynamicSlug;
-use Vng\EvaCore\Traits\IsOwner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
-class Partnership extends Model implements IsOwnerInterface, AreaInterface
+class Partnership extends AbstractOrganisationBase implements AreaInterface
 {
-    use SoftDeletes, HasFactory, IsOwner, HasDynamicSlug, AreaTrait;
+    use HasFactory, AreaTrait;
+
+    protected string $elasticResource = PartnershipResource::class;
 
     protected $fillable = [
         'name',
