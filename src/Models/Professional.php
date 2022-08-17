@@ -11,7 +11,7 @@ use Vng\EvaCore\Observers\ProfessionalObserver;
 
 class Professional extends SearchableModel implements CanResetPasswordContract
 {
-    use HasFactory, CanResetPassword;
+    use HasFactory, CanResetPassword, MutationLog;
 
     protected string $elasticResource = ProfessionalResource::class;
 

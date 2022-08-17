@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Manager extends Model
 {
-    use HasFactory;
+    use HasFactory, MutationLog;
 
     public function organisations(): BelongsToMany
     {

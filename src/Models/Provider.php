@@ -17,7 +17,7 @@ use Webpatser\Uuid\Uuid;
 
 class Provider extends SearchableModel
 {
-    use SoftDeletes, HasOwner, HasFactory, HasContacts;
+    use SoftDeletes, HasOwner, HasFactory, HasContacts, MutationLog;
 
     protected $table = 'providers';
     protected string $elasticResource = ProviderResource::class;

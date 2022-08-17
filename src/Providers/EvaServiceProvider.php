@@ -25,6 +25,7 @@ use Vng\EvaCore\Commands\ExportInstrumentsCosts;
 use Vng\EvaCore\Commands\ExportOldInstruments;
 use Vng\EvaCore\Commands\ExtractGeoData;
 use Vng\EvaCore\Commands\Format\ApplyMorphMap;
+use Vng\EvaCore\Commands\Format\CleanupActionLog;
 use Vng\EvaCore\Commands\Format\CleanupSyncAttempts;
 use Vng\EvaCore\Commands\Format\EnsureOrganisations;
 use Vng\EvaCore\Commands\Format\MigrateMembershipToPartyEntities;
@@ -118,6 +119,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         SyncTownships::class,
 
         ApplyMorphMap::class,
+        CleanupActionLog::class,
         CleanupSyncAttempts::class,
         EnsureOrganisations::class,
         MigrateMembershipToPartyEntities::class,

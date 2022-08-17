@@ -24,7 +24,7 @@ use Webpatser\Uuid\Uuid;
 
 class Instrument extends SearchableModel
 {
-    use SoftDeletes, HasOwner, HasFactory, CanSaveQuietly, HasContacts;
+    use SoftDeletes, HasOwner, HasFactory, CanSaveQuietly, HasContacts, MutationLog;
 
     const REACH_LOCAL = 'local';
     const REACH_REGIONAL = 'regional';
