@@ -218,8 +218,10 @@ class UserPoolService
             return static::getUserPoolById($userPoolId);
         }
         $userPool = static::getUserPoolByName(static::getUserPoolName());
-        $eightHoursInSeconds = 60 * 60 * 8;
-        Cache::put('userPoolId', $userPool->getId(), $eightHoursInSeconds);
+        if (!is_null($userPool)) {
+            $eightHoursInSeconds = 60 * 60 * 8;
+            Cache::put('userPoolId', $userPool->getId(), $eightHoursInSeconds);
+        }
 
         return $userPool;
     }
