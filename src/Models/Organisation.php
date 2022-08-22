@@ -4,6 +4,7 @@ namespace Vng\EvaCore\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,16 @@ class Organisation extends Model
     protected $table = 'organisations';
 
     protected $fillable = [];
+
+    public function getIdentifierAttribute()
+    {
+        return $this->name . ' - ' . __($this->organisationable->getOwnerType());
+    }
+
+    public function getNameAttribute()
+    {
+        return $this->organisationable->name;
+    }
 
     public function managers(): BelongsToMany
     {
@@ -63,14 +74,14 @@ class Organisation extends Model
         return $this->morphTo();
     }
 
-    public function instruments(): BelongsToMany
+    public function instruments(): HasMany
     {
-        return $this->belongsToMany(Instrument::class);
+        return $this->hasMany(Instrument::class);
     }
 
-    public function providers(): BelongsToMany
+    public function providers(): HasMany
     {
-        return $this->belongsToMany(Provider::class);
+        return $this->hasMany(Provider::class);
     }
 
     public function ownsInstrument(Instrument $instrument): bool

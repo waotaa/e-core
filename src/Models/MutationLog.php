@@ -25,20 +25,18 @@ trait MutationLog
             Mutation::forResourceUpdate($user->manager, $model);
         });
 
-        static::deleted(function($model) {
-            if (in_array(SoftDeletes::class, class_uses($model))) {
+        if (in_array(SoftDeletes::class, class_uses(static::class))) {
+            static::deleted(function($model) {
                 /** @var User $user */
                 $user = Auth::user();
                 Mutation::forResourceDelete($user->manager, $model);
-            }
-        });
-
-        static::restored(function($model) {
-            if (in_array(SoftDeletes::class, class_uses($model))) {
+            });
+            static::restored(function($model) {
                 /** @var User $user */
                 $user = Auth::user();
                 Mutation::forResourceRestore($user->manager, $model);
-            }
-        });
+            });
+        }
+
     }
 }

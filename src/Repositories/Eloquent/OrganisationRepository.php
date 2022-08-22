@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Vng\EvaCore\Http\Requests\OrganisationCreateRequest;
 use Vng\EvaCore\Http\Requests\OrganisationUpdateRequest;
 use Vng\EvaCore\Interfaces\OrganisationEntityInterface;
+use Vng\EvaCore\Models\Manager;
 use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
 
@@ -50,6 +51,19 @@ class OrganisationRepository extends BaseRepository implements OrganisationRepos
             throw new \Exception('Model must belong to an organisation');
         }
         $organisation->organisationable()->associate($organisationEntity);
+        return $organisation;
+    }
+
+
+    public function attachManager(Organisation $organisation, Manager $manager): Organisation
+    {
+        $organisation->managers()->syncWithoutDetaching($manager->id);
+        return $organisation;
+    }
+
+    public function detachManager(Organisation $organisation, Manager $manager): Organisation
+    {
+        $organisation->managers()->detach($manager->id);
         return $organisation;
     }
 }
