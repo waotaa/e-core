@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Traits;
 
-use App\Models\Role;
+use Vng\EvaCore\Models\Role;
 use Tests\Fixtures\ModelWithHasOwnerTrait;
 use Tests\TestCase;
 
@@ -16,7 +16,7 @@ class HasOwnerTraitTest extends TestCase
 
     private function getTestUser()
     {
-        return $this->getUser(Role::ROLES['instrument-manager-association']);
+        return $this->getUser(Role::ROLES['instrument-manager-organisation']);
     }
 
     /** @test */

@@ -168,7 +168,7 @@ class UserPoolService
 
     public static function getUserPoolName()
     {
-        $userPoolName = config('eva.userpool.name');
+        $userPoolName = config('eva-core.userpool.name');
         if (is_null($userPoolName)) {
             throw new Exception('Userpool not setup in .env!');
         }
@@ -179,7 +179,7 @@ class UserPoolService
     {
         $message = "Beste professional, <br><br>Er is een account voor je aangemaakt voor instrumentengids Eva.<br>";
 
-        $url = config('eva.userpool.url');
+        $url = config('eva-core.userpool.url');
         if (!is_null($url)) {
             $message .= "Je kan inloggen op <a href='". $url ."'>" . $url . "</a> om de instrumentengids te raadplegen over jullie instrumentenaanbod.";
         }

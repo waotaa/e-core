@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Vng\EvaCore\Http\Requests\OrganisationCreateRequest;
 use Vng\EvaCore\Http\Requests\OrganisationUpdateRequest;
 use Vng\EvaCore\Interfaces\OrganisationEntityInterface;
+use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\Manager;
 use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
@@ -64,6 +65,18 @@ class OrganisationRepository extends BaseRepository implements OrganisationRepos
     public function detachManager(Organisation $organisation, Manager $manager): Organisation
     {
         $organisation->managers()->detach($manager->id);
+        return $organisation;
+    }
+
+    public function attachFeaturingEnvironments(Organisation $organisation, string|array $environmentIds): Organisation
+    {
+        $organisation->featuringEnvironments()->syncWithoutDetaching((array) $environmentIds);
+        return $organisation;
+    }
+
+    public function detachFeaturingEnvironments(Organisation $organisation, string|array $environmentIds): Organisation
+    {
+        $organisation->featuringEnvironments()->detach((array) $environmentIds);
         return $organisation;
     }
 }

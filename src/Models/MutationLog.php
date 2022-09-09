@@ -16,12 +16,18 @@ trait MutationLog
         static::created(function($model) {
             /** @var User $user */
             $user = Auth::user();
+            if (is_null($user)) {
+                return;
+            }
             Mutation::forResourceCreate($user->manager, $model);
         });
 
         static::updated(function($model) {
             /** @var User $user */
             $user = Auth::user();
+            if (is_null($user)) {
+                return;
+            }
             Mutation::forResourceUpdate($user->manager, $model);
         });
 
@@ -29,11 +35,17 @@ trait MutationLog
             static::deleted(function($model) {
                 /** @var User $user */
                 $user = Auth::user();
+                if (is_null($user)) {
+                    return;
+                }
                 Mutation::forResourceDelete($user->manager, $model);
             });
             static::restored(function($model) {
                 /** @var User $user */
                 $user = Auth::user();
+                if (is_null($user)) {
+                    return;
+                }
                 Mutation::forResourceRestore($user->manager, $model);
             });
         }

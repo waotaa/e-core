@@ -9,7 +9,7 @@ use Vng\EvaCore\Enums\DurationUnitEnum;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Interfaces\IsMemberInterface;
 use Vng\EvaCore\Observers\InstrumentObserver;
-use Vng\EvaCore\Repositories\Eloquent\InstrumentRepository;
+use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 use Vng\EvaCore\Services\AreaService;
 use Vng\EvaCore\Traits\CanSaveQuietly;
 use Vng\EvaCore\Traits\HasContacts;
@@ -32,11 +32,6 @@ class Instrument extends SearchableModel
 
     protected $table = 'instruments';
     protected string $elasticResource = InstrumentResource::class;
-    public function getSearchId()
-    {
-        return $this->uuid;
-    }
-
     protected $fillable = [
         'uuid',
         'name',
@@ -117,6 +112,11 @@ class Instrument extends SearchableModel
         });
 
         static::observe(InstrumentObserver::class);
+    }
+
+    public function getSearchId()
+    {
+        return $this->uuid;
     }
 
     public function setTotalDurationUnitAttribute($value): void
@@ -375,10 +375,20 @@ class Instrument extends SearchableModel
         return $this->hasMany(Download::class);
     }
 
+    public function instrumentTrackers(): HasMany
+    {
+        return $this->hasMany(InstrumentTracker::class);
+    }
+
+    public function watchingUsers()
+    {
+        return $this->belongsToMany(Manager::class, 'instrument_trackers')->using(InstrumentTracker::class);
+    }
+
 
     public function scopeOwnedBy(Builder $query, IsMemberInterface $user)
     {
-        $repo = new InstrumentRepository();
-        return $repo->addMultipleOwnerConditions($query, $user->getAssociations());
+        $instrumentRepository = $this->app->make(InstrumentRepositoryInterface::class);
+        return $instrumentRepository->addMultipleOwnerConditions($query, $user->getAssociations());
     }
 }

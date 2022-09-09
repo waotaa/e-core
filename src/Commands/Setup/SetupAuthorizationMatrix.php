@@ -1,0 +1,132 @@
+<?php
+
+namespace Vng\EvaCore\Commands\Setup;
+
+use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
+
+class SetupAuthorizationMatrix extends Command
+{
+    protected $signature = 'eva-core:setup-authorization';
+    protected $description = 'Setup or update the roles and permissions as defined in the authorization config';
+
+    public function handle(): int
+    {
+        $this->info("\n[ Setting up eva authorization matrix ]\n");
+
+        // Reset cached roles and permissions
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
+        $permissions = $this->createPermissions();
+        $this->deleteOutdatedPermissions($permissions);
+
+        $roles = $this->createRoles();
+        $this->deleteOutdatedRoles($roles);
+
+        $this->assignPermissionsToRoles();
+
+        $this->info("\n[ Setting up eva authorization matrix ] - finished!\n");
+        return 0;
+    }
+
+    private function getAllRoles(): Collection
+    {
+        return collect(config('authorization.roles'));
+    }
+
+    private function getAllPermissionNames()
+    {
+        $modelPermissions = $this->getModelPermissions();
+        $rolePermissions = $this->getRolePermissions();
+        return $modelPermissions
+            ->merge($rolePermissions)
+            ->unique()
+            ->sort()
+            ->values();
+    }
+
+    private function getRolePermissions()
+    {
+        $roles = $this->getAllRoles();
+        return $roles->keys()->map(function (string $roleName) {
+            return $this->getPermissionsForRoleKey($roleName);
+        })->flatten()->unique();
+    }
+
+    private function getModelPermissions()
+    {
+        $models = collect(config('authorization.model-permissions'));
+        return $models->map(function ($modelName) {
+            return [
+                $modelName.'.viewAny',
+                $modelName.'.view',
+                $modelName.'.update',
+                $modelName.'.delete',
+                $modelName.'.restore',
+                $modelName.'.forceDelete'
+            ];
+        })->flatten();
+    }
+
+    private function createPermissions(): Collection
+    {
+        $permissions = $this->getAllPermissionNames();
+        return $permissions->map(function ($permission) {
+            return $this->createPermission($permission);
+        });
+    }
+
+    private function createPermission($permission): Permission
+    {
+        return Permission::findOrCreate($permission);
+    }
+
+    private function deleteOutdatedPermissions(Collection $currentPermissions)
+    {
+        Permission::query()->whereNotIn('name', $currentPermissions->pluck('name'))->delete();
+    }
+
+    private function createRoles(): Collection
+    {
+        $roles = $this->getAllRoles();
+        return $roles->keys()->map(function ($role) {
+            return $this->createRole($role);
+        });
+    }
+
+    private function createRole($roleName): Role
+    {
+        /** @var Role $role */
+        $role = Role::findOrCreate($roleName);
+        return $role;
+    }
+
+    private function deleteOutdatedRoles(Collection $currentRoles)
+    {
+        Role::query()->whereNotIn('name', $currentRoles->pluck('name'))->delete();
+    }
+
+    private function assignPermissionsToRoles(): void
+    {
+        $roles = Role::all();
+        $roles->each(function (Role $role) {
+            $this->assignPermissionsToRole($role);
+        });
+    }
+
+    private function assignPermissionsToRole(Role $role): void
+    {
+        $permissions = $this->getPermissionsForRoleKey($role->getKey());
+        $permissionCollection = collect($permissions)
+            ->each(fn ($permissionName) => $this->createPermission($permissionName));
+        $role->syncPermissions($permissionCollection);
+    }
+
+    private function getPermissionsForRoleKey(string $role): array
+    {
+        return config('authorization.matrix.' . $role, []);
+    }
+}

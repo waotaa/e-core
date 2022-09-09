@@ -12,6 +12,9 @@ class RegistrationCodeValidation extends ModelValidation
             ],
             'code' => [
                 'required',
+            ],
+            'instrument_id' => [
+                'required'
             ]
         ];
     }

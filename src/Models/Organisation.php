@@ -21,12 +21,17 @@ class Organisation extends Model
 
     public function getIdentifierAttribute()
     {
-        return $this->name . ' - ' . __($this->organisationable->getOwnerType());
+        return $this->name . ' - ' . __($this->type);
     }
 
     public function getNameAttribute()
     {
         return $this->organisationable->name;
+    }
+
+    public function getTypeAttribute()
+    {
+        return $this->organisationable->type;
     }
 
     public function managers(): BelongsToMany
@@ -74,6 +79,11 @@ class Organisation extends Model
         return $this->morphTo();
     }
 
+    public function featuringEnvironments():  BelongsToMany
+    {
+        return $this->belongsToMany(Environment::class, 'featured_organisations');
+    }
+
     public function instruments(): HasMany
     {
         return $this->hasMany(Instrument::class);
@@ -88,5 +98,4 @@ class Organisation extends Model
     {
         return $this->instruments && $this->instruments->contains($instrument->id);
     }
-
 }

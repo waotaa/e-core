@@ -7,7 +7,7 @@ class InstrumentValidation extends ModelValidation
     public static function rules(): array
     {
         return [
-            'owner' => [
+            'organisation_id' => [
                 'required'
             ],
             'name' => [

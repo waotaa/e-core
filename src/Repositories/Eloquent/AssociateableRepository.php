@@ -8,6 +8,9 @@ use Vng\EvaCore\Http\Requests\AssociateableUpdateRequest;
 use Vng\EvaCore\Models\Associateable;
 use Vng\EvaCore\Repositories\AssociateableRepositoryInterface;
 
+/**
+ * @deprecated
+ */
 class AssociateableRepository extends BaseRepository implements AssociateableRepositoryInterface
 {
     protected string $model = Associateable::class;

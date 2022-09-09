@@ -7,9 +7,12 @@ class LocationValidation extends ModelValidation
     public static function rules(): array
     {
         return [
-            'address' => [
+            'address_id' => [
                 'required_if:type,Adres',
                 'prohibited_if:type,Klant thuis'
+            ],
+            'instrument_id' => [
+                'required'
             ]
         ];
     }

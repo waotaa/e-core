@@ -10,6 +10,8 @@ use Vng\EvaCore\Repositories\LocationRepositoryInterface;
 
 class LocationRepository extends BaseRepository implements LocationRepositoryInterface
 {
+    protected string $model = Location::class;
+
     public function all(): Collection
     {
         return Location::all();

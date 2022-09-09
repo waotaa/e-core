@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Vng\EvaCore\ElasticResources\EnvironmentResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -38,5 +39,10 @@ class Environment extends SearchableModel
     public function newsItems(): HasMany
     {
         return $this->hasMany(NewsItem::class);
+    }
+
+    public function featuredOrganisations(): BelongsToMany
+    {
+        return $this->belongsToMany(Organisation::class, 'featured_organisations');
     }
 }

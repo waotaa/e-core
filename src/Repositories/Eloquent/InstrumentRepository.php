@@ -74,22 +74,103 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
 
         $instrument->save();
 
-//        // Move to attach endpoint
-//        if ($request->input('group_form_ids')) {
-//            $instrument->groupForms()->syncWithoutDetaching($request->input('group_form_ids'));
-//        }
-//
-//        // Move to attach endpoint
-//        if ($request->input('available_region_ids')) {
-//            $instrument->availableRegions()->syncWithoutDetaching($request->input('available_region_ids'));
-//        }
-//        if ($request->input('available_township_ids')) {
-//            $instrument->availableTownships()->syncWithoutDetaching($request->input('available_township_ids'));
-//        }
-//        if ($request->input('available_neighbourhood_ids')) {
-//            $instrument->availableNeighbourhoods()->syncWithoutDetaching($request->input('available_neighbourhood_ids'));
-//        }
+        if ($request->input('group_form_ids')) {
+            $this->attachGroupForms($instrument, $request->input('group_form_ids'));
+        }
+        if ($request->input('available_region_ids')) {
+            $this->attachAvailableRegions($instrument, $request->input('available_region_ids'));
+        }
+        if ($request->input('available_township_ids')) {
+            $this->attachAvailableTownships($instrument, $request->input('available_township_ids'));
+        }
+        if ($request->input('available_neighbourhood_ids')) {
+            $this->attachAvailableNeighbourhoods($instrument, $request->input('available_neighbourhood_ids'));
+        }
 
+        return $instrument;
+    }
+
+    public function attachClientCharacteristics(Instrument $instrument, string|array $clientCharacteristicIds): Instrument
+    {
+        $instrument->clientCharacteristics()->syncWithoutDetaching((array) $clientCharacteristicIds);
+        return $instrument;
+    }
+
+    public function detachClientCharacteristics(Instrument $instrument, string|array $clientCharacteristicIds): Instrument
+    {
+        $instrument->clientCharacteristics()->detach((array) $clientCharacteristicIds);
+        return $instrument;
+    }
+
+    public function attachGroupForms(Instrument $instrument, string|array $groupFormIds): Instrument
+    {
+        $instrument->groupForms()->syncWithoutDetaching((array) $groupFormIds);
+        return $instrument;
+    }
+
+    public function detachGroupForms(Instrument $instrument, string|array $groupFormIds): Instrument
+    {
+        $instrument->groupForms()->detach((array) $groupFormIds);
+        return $instrument;
+    }
+
+    public function attachTargetGroups(Instrument $instrument, string|array $targetGroupIds): Instrument
+    {
+        $instrument->targetGroups()->syncWithoutDetaching((array) $targetGroupIds);
+        return $instrument;
+    }
+
+    public function detachTargetGroups(Instrument $instrument, string|array $targetGroupIds): Instrument
+    {
+        $instrument->targetGroups()->detach((array) $targetGroupIds);
+        return $instrument;
+    }
+
+    public function attachTiles(Instrument $instrument, string|array $tileIds): Instrument
+    {
+        $instrument->tiles()->syncWithoutDetaching((array) $tileIds);
+        return $instrument;
+    }
+
+    public function detachTiles(Instrument $instrument, string|array $tileIds): Instrument
+    {
+        $instrument->targetGroups()->detach((array) $tileIds);
+        return $instrument;
+    }
+
+    public function attachAvailableRegions(Instrument $instrument, string|array $regionIds): Instrument
+    {
+        $instrument->availableRegions()->syncWithoutDetaching((array) $regionIds);
+        return $instrument;
+    }
+
+    public function detachAvailableRegions(Instrument $instrument, string|array $regionIds): Instrument
+    {
+        $instrument->availableRegions()->detach((array) $regionIds);
+        return $instrument;
+    }
+
+    public function attachAvailableTownships(Instrument $instrument, string|array $townshipIds): Instrument
+    {
+        $instrument->availableTownships()->syncWithoutDetaching((array) $townshipIds);
+        return $instrument;
+    }
+
+    public function detachAvailableTownships(Instrument $instrument, string|array $townshipIds): Instrument
+    {
+        $instrument->availableTownships()->detach((array) $townshipIds);
+        return $instrument;
+    }
+
+    public function attachAvailableNeighbourhoods(Instrument $instrument, string|array $neighbourhoodIds): Instrument
+    {
+        $instrument->availableNeighbourhoods()->syncWithoutDetaching((array) $neighbourhoodIds);
+        return $instrument;
+    }
+
+    public function detachAvailableNeighbourhoods(Instrument $instrument, string|array $neighbourhoodIds): Instrument
+    {
+        $instrument->availableNeighbourhoods()->detach((array) $neighbourhoodIds);
         return $instrument;
     }
 }
