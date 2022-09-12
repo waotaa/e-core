@@ -38,12 +38,12 @@ class Setup extends Command
     {
         $this->call('migrate:fresh', ['--force' => true]);
         $this->call(SeedCharacteristics::class);
+        $this->call(SetupAuthorizationMatrix::class);
     }
 
     private function setupUtilities()
     {
         $this->call(SetupGeoData::class);
-        $this->call(SetupAuthorizationMatrix::class);
 
         $this->call(InitializeEnvironment::class);
         $this->call(CreateTestInstrument::class);

@@ -33,7 +33,7 @@ class MigrateToMultipleFeaturedOrganisations extends Command
             if (!is_null($featuredAssociation)) {
                 /** @var Organisation $organisation */
                 $organisation = $featuredAssociation->organisation;
-                $organisation->featuringEnvironments()->attach($environment);
+                $organisation->featuringEnvironments()->syncWithoutDetaching($environment);
             }
         });
     }
