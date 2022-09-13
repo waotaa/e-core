@@ -73,8 +73,10 @@ class SetupAuthorizationMatrix extends Command
 
     private function createPermissions(): Collection
     {
+        $this->output->info('ensuring permissions');
         $permissions = $this->getAllPermissionNames();
         return $permissions->map(function ($permission) {
+            $this->output->writeln($permission);
             return $this->createPermission($permission);
         });
     }

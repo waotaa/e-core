@@ -103,6 +103,7 @@ $environmentGeneralPermissions = [
 // General
 $generalPermissions = [
     ...$organisationGeneralPermissions,
+    ...$localPartyGeneralPermissions,
     ...$regionalPartyGeneralPermissions,
     ...$nationalPartyGeneralPermissions,
     ...$partnershipGeneralPermissions,
@@ -203,6 +204,12 @@ $environmentAdministratorPermissions = [
 
 // Instruments
 $instrumentPropertyPermissions = [
+    'address.viewAny',
+    'address.view',
+
+    'contact.viewAny',
+    'contact.view',
+
     'clientCharacteristic.viewAny',
     'clientCharacteristic.view',
 
@@ -220,6 +227,9 @@ $instrumentPropertyPermissions = [
 
     'targetGroup.viewAny',
     'targetGroup.view',
+
+    'tile.viewAny',
+    'tile.view',
 
     'neighbourhood.viewAny',
     'neighbourhood.view',
@@ -329,29 +339,38 @@ $globalProviderPermissions = [
 return [
     // Models that need policy permissions (viewAny, view, create, update, delete, restore, forceDelete)
     'model-permissions' => [
+        'address',
         'clientCharacteristic',
+        'download',
         'environment',
         'groupForm',
         'implementation',
         'instrument',
         'instrument.organisation',
         'instrumentType',
+        'link',
+        'localParty',
         'location',
         'manager',
+        'nationalParty',
         'newsItem',
         'partnership',
         'provider',
         'provider.organisation',
         'rating',
         'region',
+        'regionalParty',
         'targetGroup',
+        'tile',
         'township',
         'user',
+        'video',
     ],
     // Roles and their associated permissions
     'matrix' => [
         'administrator' => [
             ...$generalPermissions,
+            ...$localPartyAdministratorPermissions,
             ...$regionalPartyAdministratorPermissions,
             ...$nationalPartyAdministratorPermissions,
             ...$environmentAdministratorPermissions,
