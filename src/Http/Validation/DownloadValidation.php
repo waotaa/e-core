@@ -11,7 +11,7 @@ class DownloadValidation extends ModelValidation
                 'required',
                 'max:5000',
             ],
-            'instrument' => [
+            'instrument_id' => [
                 'required',
             ]
         ];

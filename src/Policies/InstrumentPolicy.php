@@ -16,6 +16,11 @@ class InstrumentPolicy extends BasePolicy
         return $user->managerCan('instrument.viewAny');
     }
 
+    public function viewAll(IsManagerInterface $user): bool
+    {
+        return $user->managerCan('instrument.viewAll');
+    }
+
     public function view(IsManagerInterface $user, Instrument $instrument): bool
     {
         return $user->managerCan('instrument.viewAny');

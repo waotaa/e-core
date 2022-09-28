@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\AggregateServiceProvider;
 use Vng\EvaCore\Commands\AssignRegions;
 use Vng\EvaCore\Commands\Dev\PasswordGenerationTest;
@@ -68,6 +69,8 @@ use Vng\EvaCore\Commands\Setup\SeedCharacteristics;
 use Vng\EvaCore\Commands\Setup\Setup;
 use Vng\EvaCore\Commands\Setup\SetupAuthorizationMatrix;
 use Vng\EvaCore\Commands\Setup\Update;
+use Vng\EvaCore\Models\Instrument;
+use Vng\EvaCore\Models\Provider;
 use Vng\EvaCore\Repositories\AddressRepositoryInterface;
 use Vng\EvaCore\Repositories\AssociateableRepositoryInterface;
 use Vng\EvaCore\Repositories\ClientCharacteristicRepositoryInterface;
@@ -83,9 +86,11 @@ use Vng\EvaCore\Repositories\Eloquent\GroupFormRepository;
 use Vng\EvaCore\Repositories\Eloquent\ImplementationRepository;
 use Vng\EvaCore\Repositories\Eloquent\InstrumentRepository;
 use Vng\EvaCore\Repositories\Eloquent\InstrumentTrackerRepository;
+use Vng\EvaCore\Repositories\Eloquent\LinkRepository;
 use Vng\EvaCore\Repositories\Eloquent\LocalPartyRepository;
 use Vng\EvaCore\Repositories\Eloquent\LocationRepository;
 use Vng\EvaCore\Repositories\Eloquent\ManagerRepository;
+use Vng\EvaCore\Repositories\Eloquent\MutationRepository;
 use Vng\EvaCore\Repositories\Eloquent\NationalPartyRepository;
 use Vng\EvaCore\Repositories\Eloquent\NeighbourhoodRepository;
 use Vng\EvaCore\Repositories\Eloquent\NewsItemRepository;
@@ -101,14 +106,17 @@ use Vng\EvaCore\Repositories\Eloquent\RoleRepository;
 use Vng\EvaCore\Repositories\Eloquent\TargetGroupRepository;
 use Vng\EvaCore\Repositories\Eloquent\TileRepository;
 use Vng\EvaCore\Repositories\Eloquent\TownshipRepository;
+use Vng\EvaCore\Repositories\Eloquent\VideoRepository;
 use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
 use Vng\EvaCore\Repositories\GroupFormRepositoryInterface;
 use Vng\EvaCore\Repositories\ImplementationRepositoryInterface;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 use Vng\EvaCore\Repositories\InstrumentTrackerRepositoryInterface;
+use Vng\EvaCore\Repositories\LinkRepositoryInterface;
 use Vng\EvaCore\Repositories\LocalPartyRepositoryInterface;
 use Vng\EvaCore\Repositories\LocationRepositoryInterface;
 use Vng\EvaCore\Repositories\ManagerRepositoryInterface;
+use Vng\EvaCore\Repositories\MutationRepositoryInterface;
 use Vng\EvaCore\Repositories\NationalPartyRepositoryInterface;
 use Vng\EvaCore\Repositories\NeighbourhoodRepositoryInterface;
 use Vng\EvaCore\Repositories\NewsItemRepositoryInterface;
@@ -124,6 +132,7 @@ use Vng\EvaCore\Repositories\RoleRepositoryInterface;
 use Vng\EvaCore\Repositories\TargetGroupRepositoryInterface;
 use Vng\EvaCore\Repositories\TileRepositoryInterface;
 use Vng\EvaCore\Repositories\TownshipRepositoryInterface;
+use Vng\EvaCore\Repositories\VideoRepositoryInterface;
 
 class EvaServiceProvider extends AggregateServiceProvider
 {
@@ -231,6 +240,11 @@ class EvaServiceProvider extends AggregateServiceProvider
         $this->publishConfig();
         $this->publishTranslations();
         $this->registerCommands();
+
+//        Relation::morphMap([
+//            'instrument' => 'App\Models\Instrument',
+//            'provider' => 'App\Models\Provider'
+//        ]);
     }
 
     private function publishConfig()
@@ -271,9 +285,11 @@ class EvaServiceProvider extends AggregateServiceProvider
         $this->app->bind(ImplementationRepositoryInterface::class, ImplementationRepository::class);
         $this->app->bind(InstrumentRepositoryInterface::class, InstrumentRepository::class);
         $this->app->bind(InstrumentTrackerRepositoryInterface::class, InstrumentTrackerRepository::class);
+        $this->app->bind(LinkRepositoryInterface::class, LinkRepository::class);
         $this->app->bind(LocalPartyRepositoryInterface::class, LocalPartyRepository::class);
         $this->app->bind(LocationRepositoryInterface::class, LocationRepository::class);
         $this->app->bind(ManagerRepositoryInterface::class, ManagerRepository::class);
+        $this->app->bind(MutationRepositoryInterface::class, MutationRepository::class);
         $this->app->bind(NationalPartyRepositoryInterface::class, NationalPartyRepository::class);
         $this->app->bind(NeighbourhoodRepositoryInterface::class, NeighbourhoodRepository::class);
         $this->app->bind(NewsItemRepositoryInterface::class, NewsItemRepository::class);
@@ -289,5 +305,6 @@ class EvaServiceProvider extends AggregateServiceProvider
         $this->app->bind(TargetGroupRepositoryInterface::class, TargetGroupRepository::class);
         $this->app->bind(TileRepositoryInterface::class, TileRepository::class);
         $this->app->bind(TownshipRepositoryInterface::class, TownshipRepository::class);
+        $this->app->bind(VideoRepositoryInterface::class, VideoRepository::class);
     }
 }

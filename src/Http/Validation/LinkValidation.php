@@ -10,7 +10,7 @@ class LinkValidation extends ModelValidation
             'url' => [
                 'url'
             ],
-            'instrument' => [
+            'instrument_id' => [
                 'required',
             ]
         ];

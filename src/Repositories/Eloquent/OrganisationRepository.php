@@ -56,15 +56,15 @@ class OrganisationRepository extends BaseRepository implements OrganisationRepos
     }
 
 
-    public function attachManager(Organisation $organisation, Manager $manager): Organisation
+    public function attachManagers(Organisation $organisation, string|array $managerIds): Organisation
     {
-        $organisation->managers()->syncWithoutDetaching($manager->id);
+        $organisation->managers()->syncWithoutDetaching($managerIds);
         return $organisation;
     }
 
-    public function detachManager(Organisation $organisation, Manager $manager): Organisation
+    public function detachManagers(Organisation $organisation, string|array $managerIds): Organisation
     {
-        $organisation->managers()->detach($manager->id);
+        $organisation->managers()->detach($managerIds);
         return $organisation;
     }
 
@@ -77,6 +77,18 @@ class OrganisationRepository extends BaseRepository implements OrganisationRepos
     public function detachFeaturingEnvironments(Organisation $organisation, string|array $environmentIds): Organisation
     {
         $organisation->featuringEnvironments()->detach((array) $environmentIds);
+        return $organisation;
+    }
+
+    public function attachContacts(Organisation $organisation, string|array $contactIds): Organisation
+    {
+        $organisation->contacts()->syncWithoutDetaching((array) $contactIds);
+        return $organisation;
+    }
+
+    public function detachContacts(Organisation $organisation, string|array $contactIds): Organisation
+    {
+        $organisation->contacts()->detach((array) $contactIds);
         return $organisation;
     }
 }

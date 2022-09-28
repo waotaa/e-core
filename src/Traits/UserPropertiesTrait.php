@@ -44,10 +44,6 @@ trait UserPropertiesTrait
     public static function bootUserPropertiesTrait()
     {
         static::observe(UserObserver::class);
-
-        self::creating(function (EvaUserInterface $user) {
-            $user->assignRandomPassword();
-        });
     }
 
     public function getName(): ?string

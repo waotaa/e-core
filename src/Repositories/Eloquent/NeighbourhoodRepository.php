@@ -27,6 +27,7 @@ class NeighbourhoodRepository extends BaseRepository implements NeighbourhoodRep
         $neighbourhood->fill([
             'name' => $request->input('name'),
         ]);
+        $neighbourhood->township()->associate($request->input('township_id'));
         $neighbourhood->save();
         return $neighbourhood;
     }

@@ -7,12 +7,14 @@ use Spatie\Permission\Models\Permission;
 use Vng\EvaCore\Models\Address;
 use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\Contact;
+use Vng\EvaCore\Models\Download;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\GroupForm;
 use Vng\EvaCore\Models\Implementation;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\InstrumentTracker;
 use Vng\EvaCore\Models\InstrumentType;
+use Vng\EvaCore\Models\Link;
 use Vng\EvaCore\Models\LocalParty;
 use Vng\EvaCore\Models\Location;
 use Vng\EvaCore\Models\Manager;
@@ -30,15 +32,18 @@ use Vng\EvaCore\Models\RegistrationCode;
 use Vng\EvaCore\Models\Role;
 use Vng\EvaCore\Models\TargetGroup;
 use Vng\EvaCore\Models\Township;
+use Vng\EvaCore\Models\Video;
 use Vng\EvaCore\Policies\AddressPolicy;
 use Vng\EvaCore\Policies\ClientCharacteristicPolicy;
 use Vng\EvaCore\Policies\ContactPolicy;
+use Vng\EvaCore\Policies\DownloadPolicy;
 use Vng\EvaCore\Policies\EnvironmentPolicy;
 use Vng\EvaCore\Policies\GroupFormPolicy;
 use Vng\EvaCore\Policies\ImplementationPolicy;
 use Vng\EvaCore\Policies\InstrumentPolicy;
 use Vng\EvaCore\Policies\InstrumentTrackerPolicy;
 use Vng\EvaCore\Policies\InstrumentTypePolicy;
+use Vng\EvaCore\Policies\LinkPolicy;
 use Vng\EvaCore\Policies\LocalPartyPolicy;
 use Vng\EvaCore\Policies\LocationPolicy;
 use Vng\EvaCore\Policies\ManagerPolicy;
@@ -57,6 +62,7 @@ use Vng\EvaCore\Policies\RegistrationCodePolicy;
 use Vng\EvaCore\Policies\RolePolicy;
 use Vng\EvaCore\Policies\TargetGroupPolicy;
 use Vng\EvaCore\Policies\TownshipPolicy;
+use Vng\EvaCore\Policies\VideoPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -69,12 +75,14 @@ class AuthServiceProvider extends ServiceProvider
         Address::class => AddressPolicy::class,
         ClientCharacteristic::class => ClientCharacteristicPolicy::class,
         Contact::class => ContactPolicy::class,
+        Download::class => DownloadPolicy::class,
         Environment::class => EnvironmentPolicy::class,
         GroupForm::class => GroupFormPolicy::class,
         Implementation::class => ImplementationPolicy::class,
         Instrument::class => InstrumentPolicy::class,
         InstrumentTracker::class => InstrumentTrackerPolicy::class,
         InstrumentType::class => InstrumentTypePolicy::class,
+        Link::class => LinkPolicy::class,
         LocalParty::class => LocalPartyPolicy::class,
         Location::class => LocationPolicy::class,
         Manager::class => ManagerPolicy::class,
@@ -93,6 +101,7 @@ class AuthServiceProvider extends ServiceProvider
         Role::class => RolePolicy::class,
         TargetGroup::class => TargetGroupPolicy::class,
         Township::class => TownshipPolicy::class,
+        Video::class => VideoPolicy::class
     ];
 
     /**

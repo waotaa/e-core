@@ -12,7 +12,10 @@ class NewsItemValidation extends ModelValidation
             ],
             'body' => [
                 'required',
-            ]
+            ],
+            'environment_id' => [
+                'required',
+            ],
         ];
     }
 }

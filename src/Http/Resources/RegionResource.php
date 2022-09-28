@@ -15,8 +15,7 @@ class RegionResource extends JsonResource
             'description' => $this->description,
             'color' => $this->color,
             'cooperation_partners' => $this->cooperation_partners,
-            'townships' => TownshipResource::collection($this->townships),
-            'contacts' => ContactResource::collection($this->contacts),
+            'townships' => TownshipResource::collection($this->whenLoaded('townships')),
         ];
     }
 }

@@ -29,6 +29,8 @@ class RegistrationCodeRepository extends BaseRepository implements RegistrationC
             'label' => $request->input('label'),
         ]);
 
+        $registrationCode->instrument()->associate($request->input('instrument_id'));
+
         $registrationCode->save();
         return $registrationCode;
     }

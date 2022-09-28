@@ -32,6 +32,9 @@ class NewsItemRepository extends BaseRepository implements NewsItemRepositoryInt
             'publish_from' => $request->input('publish_from'),
             'publish_to' => $request->input('publish_to'),
         ]);
+
+        $newsItem->environment()->associate($request->input('environment_id'));
+
         $newsItem->save();
         return $newsItem;
     }

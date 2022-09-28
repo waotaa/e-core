@@ -6,7 +6,7 @@ use Vng\EvaCore\Http\Requests\EnvironmentCreateRequest;
 use Vng\EvaCore\Http\Requests\EnvironmentUpdateRequest;
 use Vng\EvaCore\Models\Environment;
 
-interface EnvironmentRepositoryInterface extends BaseRepositoryInterface
+interface EnvironmentRepositoryInterface extends BaseRepositoryInterface, SoftDeletableRepositoryInterface
 {
     public function create(EnvironmentCreateRequest $request): Environment;
     public function update(Environment $environment, EnvironmentUpdateRequest $request): Environment;

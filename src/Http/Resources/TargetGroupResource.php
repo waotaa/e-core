@@ -12,6 +12,8 @@ class TargetGroupResource extends JsonResource
             'id' => $this->id,
             'description'  => $this->description,
             'custom'  => (bool) $this->custom,
+
+            'instruments' => InstrumentResource::collection($this->whenLoaded('instruments'))
         ];
     }
 }

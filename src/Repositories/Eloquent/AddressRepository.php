@@ -8,7 +8,7 @@ use Vng\EvaCore\Http\Requests\AddressUpdateRequest;
 use Vng\EvaCore\Models\Address;
 use Vng\EvaCore\Repositories\AddressRepositoryInterface;
 
-class AddressRepository extends BaseRepository implements AddressRepositoryInterface
+class  AddressRepository extends BaseRepository implements AddressRepositoryInterface
 {
     public string $model = Address::class;
 

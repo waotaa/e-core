@@ -16,10 +16,15 @@ class Manager extends Model implements IsInstrumentWatcherInterface
 
     protected $guard_name = 'web';
 
+    protected $attributes = [
+        'months_unupdated_limit' => 6
+    ];
+
     protected $fillable = [
         'givenName',
         'surName',
         'email',
+        'months_unupdated_limit',
     ];
 
     public function getFirstNameAttribute()

@@ -10,7 +10,7 @@ class VideoValidation extends ModelValidation
             'video_identifier' => [
                 'max:11',
             ],
-            'instrument' => [
+            'instrument_id' => [
                 'required',
             ]
         ];

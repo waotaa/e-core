@@ -6,11 +6,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Vng\EvaCore\Http\Requests\EnvironmentCreateRequest;
 use Vng\EvaCore\Http\Requests\EnvironmentUpdateRequest;
 use Vng\EvaCore\Models\Environment;
-use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
 
 class EnvironmentRepository extends BaseRepository implements EnvironmentRepositoryInterface
 {
+    use SoftDeletableRepository;
+
     public string $model = Environment::class;
 
     public function create(EnvironmentCreateRequest $request): Environment
@@ -32,7 +33,7 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
             'description' => $request->input('description'),
             'logo' => $request->input('logo'),
             'color_primary' => $request->input('color_primary'),
-            'color_secondairy' => $request->input('color_secondairy'),
+            'color_secondary' => $request->input('color_secondary'),
         ]);
         $environment->save();
         return $environment;

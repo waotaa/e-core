@@ -12,6 +12,10 @@ class EnvironmentResource extends JsonResource
 
         return [
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
+
             'name' => $this->name,
             'slug' => $this->slug,
 
@@ -21,9 +25,10 @@ class EnvironmentResource extends JsonResource
             'logo' => $this->logo,
             'color_primary' => $this->color_primary,
             'color_secondary' => $this->color_secondary,
-            'featured_association' => OwnerResource::make($this->featuredAssociation),
+//            'featured_association' => OwnerResource::make($this->featuredAssociation),
 
             'contact' => ContactResource::make($this->contact),
+            'featured_organisations' => OrganisationResource::collection($this->featuredOrganisations),
             'news_items' => NewsItemResource::collection($orderedNewsItems),
         ];
     }

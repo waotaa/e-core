@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 trait MutationLog
 {
-    public function actions()
+    public function mutations()
     {
         return $this->morphMany(Mutation::class, 'loggable');
     }

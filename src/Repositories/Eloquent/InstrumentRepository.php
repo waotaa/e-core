@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Repositories\Eloquent;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Vng\EvaCore\Enums\ContactTypeEnum;
 use Vng\EvaCore\Http\Requests\InstrumentCreateRequest;
 use Vng\EvaCore\Http\Requests\InstrumentUpdateRequest;
 use Vng\EvaCore\Models\Instrument;
@@ -90,6 +91,24 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
         return $instrument;
     }
 
+    public function attachContacts(Instrument $instrument, string|array $contactIds, ?string $type = null): Instrument
+    {
+        if (!is_null($type) && !ContactTypeEnum::search($type)) {
+            throw new \Exception('invalid type given ' . $type);
+        }
+        $pivotValues = [
+            'type' => $type
+        ];
+        $instrument->contacts()->syncWithPivotValues((array) $contactIds, $pivotValues, false);
+        return $instrument;
+    }
+
+    public function detachContacts(Instrument $instrument, string|array $contactIds): Instrument
+    {
+        $instrument->contacts()->detach((array) $contactIds);
+        return $instrument;
+    }
+
     public function attachClientCharacteristics(Instrument $instrument, string|array $clientCharacteristicIds): Instrument
     {
         $instrument->clientCharacteristics()->syncWithoutDetaching((array) $clientCharacteristicIds);
@@ -134,7 +153,7 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
 
     public function detachTiles(Instrument $instrument, string|array $tileIds): Instrument
     {
-        $instrument->targetGroups()->detach((array) $tileIds);
+        $instrument->tiles()->detach((array) $tileIds);
         return $instrument;
     }
 

@@ -6,10 +6,13 @@ use Vng\EvaCore\Http\Requests\InstrumentCreateRequest;
 use Vng\EvaCore\Http\Requests\InstrumentUpdateRequest;
 use Vng\EvaCore\Models\Instrument;
 
-interface InstrumentRepositoryInterface extends OwnedEntityRepositoryInterface
+interface InstrumentRepositoryInterface extends OwnedEntityRepositoryInterface, SoftDeletableRepositoryInterface
 {
     public function create(InstrumentCreateRequest $request): Instrument;
     public function update(Instrument $instrument, InstrumentUpdateRequest $request): Instrument;
+
+    public function attachContacts(Instrument $provider, string|array $contactIds, ?string $type = null): Instrument;
+    public function detachContacts(Instrument $provider, string|array $contactIds): Instrument;
 
     public function attachClientCharacteristics(Instrument $instrument, string|array $clientCharacteristicIds): Instrument;
     public function detachClientCharacteristics(Instrument $instrument, string|array $clientCharacteristicIds): Instrument;

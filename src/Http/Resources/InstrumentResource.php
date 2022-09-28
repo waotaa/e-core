@@ -11,6 +11,7 @@ class InstrumentResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'uuid' => $this->uuid,
             'name' => $this->name,
             'slug' => (string) Str::slug($this->name),
@@ -90,6 +91,8 @@ class InstrumentResource extends JsonResource
             'available_regions' => RegionResource::collection($this->availableRegions),
             'available_townships' => TownshipResource::collection($this->availableTownships),
             'available_neighbourhoods' => NeighbourhoodResource::collection($this->availableNeighbourhoods),
+
+            'mutations' => MutationResource::collection($this->mutations),
         ];
     }
 }

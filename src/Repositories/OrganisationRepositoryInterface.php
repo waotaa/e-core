@@ -13,9 +13,12 @@ interface OrganisationRepositoryInterface
     public function create(OrganisationCreateRequest $request): Organisation;
     public function update(Organisation $organisation, OrganisationUpdateRequest $request): Organisation;
 
-    public function attachManager(Organisation $organisation, Manager $manager): Organisation;
-    public function detachManager(Organisation $organisation, Manager $manager): Organisation;
+    public function attachManagers(Organisation $organisation, string|array $managerIds): Organisation;
+    public function detachManagers(Organisation $organisation, string|array $managerIds): Organisation;
 
     public function attachFeaturingEnvironments(Organisation $organisation, string|array $environmentIds): Organisation;
     public function detachFeaturingEnvironments(Organisation $organisation, string|array $environmentIds): Organisation;
+
+    public function attachContacts(Organisation $organisation, string|array $contactIds): Organisation;
+    public function detachContacts(Organisation $organisation, string|array $contactIds): Organisation;
 }
