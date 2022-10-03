@@ -23,6 +23,7 @@ class Environment extends SearchableModel
         'logo',
         'color_primary',
         'color_secondairy',
+        'user_pool_id',
     ];
 
     public function contact()
@@ -38,5 +39,10 @@ class Environment extends SearchableModel
     public function newsItems(): HasMany
     {
         return $this->hasMany(NewsItem::class);
+    }
+
+    public function deriveUserPoolName()
+    {
+        return $this->slug;
     }
 }
