@@ -20,6 +20,6 @@ class NeighbourhoodUpdateRequest extends FormRequest implements FormRequestInter
         if (!$neighbourhood instanceof Neighbourhood) {
             throw new \Exception('Cannot derive neighbourhood from route');
         }
-        return NeighbourhoodValidation::getUpdateRules($neighbourhood);
+        return NeighbourhoodValidation::make($this)->getUpdateRules($neighbourhood);
     }
 }

@@ -16,6 +16,6 @@ class RegionalPartyCreateRequest extends FormRequest implements FormRequestInter
 
     public function rules(): array
     {
-        return RegionalPartyValidation::getCreationRules();
+        return RegionalPartyValidation::make($this)->getCreationRules();
     }
 }

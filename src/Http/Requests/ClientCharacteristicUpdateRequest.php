@@ -20,6 +20,6 @@ class ClientCharacteristicUpdateRequest extends FormRequest implements FormReque
         if (!$clientCharacteristic instanceof ClientCharacteristic) {
             throw new \Exception('Cannot derive clientCharacteristic from route');
         }
-        return ClientCharacteristicValidation::getUpdateRules($clientCharacteristic);
+        return ClientCharacteristicValidation::make($this)->getUpdateRules($clientCharacteristic);
     }
 }

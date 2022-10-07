@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Services\Cognito;
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
 use Aws\CognitoIdentityProvider\Exception\CognitoIdentityProviderException;
 use Carbon\Carbon;
+use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\Professional;
 use Aws\Laravel\AwsFacade;
 use Aws\Result;
@@ -52,75 +53,92 @@ class CognitoService
      * Reset password -> invalidate current password
      */
 
-    public static function ensureSetup()
+    public function __construct(
+        protected Environment $environment
+    )
+    {}
+
+    public static function make(Environment $environment): static
     {
-        UserPoolService::ensureUserPool();
-        UserPoolClientService::ensureUserPoolClient();
+        return new static($environment);
     }
 
-    public static function fetchNewCognitoUsers()
+    public function ensureSetup(): Environment
     {
-        $users = static::findNewCognitoUsers();
+        $userPoolModel = UserPoolService::ensureUserPool($this->environment);
+        $this->environment->user_pool_id = $userPoolModel->getId();
+
+        $userPoolClientModel = UserPoolClientService::ensureUserPoolClient($this->environment);
+        $this->environment->user_pool_client_id = $userPoolClientModel->getClientId();
+
+        return $this->environment;
+    }
+
+    public function fetchNewCognitoUsers()
+    {
+        $users = $this->findNewCognitoUsers();
         $users->each(function (UserModel $user) {
-            static::updateOrCreateProfessionalQuietly($user);
+            $this->updateOrCreateProfessionalQuietly($user);
         });
     }
 
-    public static function findNewCognitoUsers()
+    public function findNewCognitoUsers()
     {
-        $users = static::getUsers();
+        $users = $this->getUsers();
         if (is_null($users)) {
             return null;
         }
         return $users->filter(function (UserModel $user) {
-            return is_null(static::findProfessional($user));
+            return is_null($this->findProfessional($user));
         });
     }
 
     /**
      * Gets all users from the idp and updates the database accordingly
      */
-    public static function syncProfessionals($destructive = true): void
+    public function syncProfessionals($destructive = true): void
     {
-        static::fetchNewCognitoUsers();
+        $this->fetchNewCognitoUsers();
 
-        $professionals = Professional::all();
+        $professionals = $this->environment->professionals()->get();
         if (is_null($professionals)) {
             return;
         }
 
-        $professionals->each(fn (Professional $p) => static::syncProfessional($p, $destructive));
+        $professionals->each(fn (Professional $p) => $this->syncProfessional($p, $destructive));
     }
 
     /**
      * Sync the given professional with the idp data
-     * Deletes the professsional when not present
+     * Deletes the professional when not present (if destructive is true)
      */
-    public static function syncProfessional(Professional $professional, $destructive = true): ?Professional
+    public function syncProfessional(Professional $professional, $destructive = true): ?Professional
     {
-        $user = static::getUser($professional);
+        $user = $this->getUser($professional);
         if (is_null($user)) {
             if ($destructive) {
                 $professional->delete();
             }
             return null;
         }
-        return static::updateOrCreateProfessionalQuietly($user);
+        return $this->updateOrCreateProfessionalQuietly($user);
     }
 
-    protected static function findProfessional(UserModel $user): ?Professional
+    protected function findProfessional(UserModel $user): ?Professional
     {
         /** @var Professional|object|static|null $professional */
         $professional = Professional::query()->where([
+            'environment_id' => $this->environment->id,
             'email' => $user->getEmail(),
         ])->first();
         return $professional;
     }
 
-    protected static function updateOrCreateProfessionalQuietly(UserModel $user): ?Professional
+    protected function updateOrCreateProfessionalQuietly(UserModel $user): ?Professional
     {
         return Professional::withoutEvents(function() use ($user) {
             return Professional::query()->updateOrCreate([
+                'environment_id' => $this->environment->id,
                 'email' => $user->getEmail(),
             ],[
                 'last_seen_at' => now(),
@@ -132,58 +150,64 @@ class CognitoService
         });
     }
 
-    public static function resetExpiredPasswords()
+    public function resetExpiredPasswords()
     {
-        $users = static::getUsers();
+        $users = $this->getUsers();
         if (is_null($users)) {
             return;
         }
         $users->each(function (UserModel $user) {
-            static::checkPasswordExpiration($user);
+            $this->checkPasswordExpiration($user);
         });
     }
 
-    public static function checkPasswordExpiration(UserModel $user)
+    public function checkPasswordExpiration(UserModel $user)
     {
         $pwUpdatedAt = $user->getPasswordUpdatedAtDate();
         if (is_null($pwUpdatedAt)){
             // set a password_updated_at date if no current data is available
-            $userPool = UserPoolService::getUserPool();
+            $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
             static::updatePasswordUpdatedAtAttribute($userPool, $user->getUsername());
         } elseif ($user->isPasswordExpired()){
-            static::resetPassword($user->getUsername());
+            $this->resetPassword($user->getUsername());
         }
     }
 
-    protected static function getProfessional(UserModel $user): ?Professional
-    {
-        /** @var Professional|null $professional */
-        $professional = Professional::query()->where('email', $user->getEmail())->first();
-        return $professional;
-    }
+//    protected static function getProfessional(UserModel $user): ?Professional
+//    {
+//        /** @var Professional|null $professional */
+//        $professional = Professional::query()->where('email', $user->getEmail())->first();
+//        return $professional;
+//    }
 
-    protected static function removeProfessionalsNotSeenNow()
+    protected function removeProfessionalsNotSeenNow()
     {
         Professional::withoutEvents(function() {
-            $missingProfessionals = Professional::query()->where('last_seen_at', '<', now())->get();
+            $missingProfessionals = Professional::query()
+                ->where('last_seen_at', '<', now())
+                ->where('environment_id', $this->environment->id)
+                ->get();
             $missingProfessionals->each(fn (Professional $prof) => $prof->delete());
         });
     }
 
-    protected static function removeProfessionalsNotSeenInLastIteration()
+    protected function removeProfessionalsNotSeenInLastIteration()
     {
         Professional::withoutEvents(function() {
             $latestSeenDate = Professional::query()->max('last_seen_at');
             if (!is_null($latestSeenDate)) {
-                $missingProfessionals = Professional::query()->where('last_seen_at', '<', $latestSeenDate)->get();
+                $missingProfessionals = Professional::query()
+                    ->where('last_seen_at', '<', $latestSeenDate)
+                    ->where('environment_id', $this->environment->id)
+                    ->get();
                 $missingProfessionals->each(fn (Professional $prof) => $prof->delete());
             }
         });
     }
 
-    public static function getUser(Professional $professional): ?UserModel
+    public function getUser(Professional $professional): ?UserModel
     {
-        $userPool = UserPoolService::getUserPool();
+        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
         if (is_null($userPool)) {
             return null;
         }
@@ -197,9 +221,9 @@ class CognitoService
         return UserModel::create($user);
     }
 
-    protected static function getUsers(): ?Collection
+    protected function getUsers(): ?Collection
     {
-        $userPool = UserPoolService::getUserPool();
+        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
         if (is_null($userPool)) {
             return null;
         }
@@ -214,7 +238,7 @@ class CognitoService
 
         if ($listUsersResponse['PaginationToken']) {
             static::sleepForRateLimit(30);
-            $users->merge(static::getUsers($listUsersResponse['PaginationToken']));
+            $users->merge(static::getUsersForUserpool($userPool, $listUsersResponse['PaginationToken']));
         }
         return $users;
     }
@@ -242,16 +266,16 @@ class CognitoService
         ]);
     }
 
-    public static function createProfessional(Professional $professional)
+    public function createProfessional(Professional $professional)
     {
-        $userPool = UserPoolService::getUserPool();
+        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
         $result = static::adminCreateUser($userPool, static::getDefaultAdminCreateUserArgs($professional));
         return static::updateOrCreateProfessionalQuietly(UserModel::create($result['User']));
     }
 
-    public static function resendInvitationNotification(Professional $professional)
+    public function resendInvitationNotification(Professional $professional)
     {
-        $userPool = UserPoolService::getUserPool();
+        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
         $args = static::getDefaultAdminCreateUserArgs($professional);
         $args['MessageAction'] = 'RESEND';
         $result = static::adminCreateUser($userPool, $args);
@@ -297,9 +321,9 @@ class CognitoService
      *
      * @param string $username
      */
-    public static function resetPassword(string $username): void
+    public function resetPassword(string $username): void
     {
-        $userPool = UserPoolService::getUserPool();
+        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
         static::adminResetUserPassword($userPool, $username);
         // Might be nice to update this field on pw reset in front-end
         static::updatePasswordUpdatedAtAttribute($userPool, $username);
@@ -331,9 +355,9 @@ class CognitoService
         );
     }
 
-    public static function confirmEmail(string $confirmationCode)
+    public function confirmEmail(string $confirmationCode)
     {
-        $userPool = UserPoolService::getUserPool();
+        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
         static::confirmSignUp($userPool, $confirmationCode);
     }
 
@@ -346,15 +370,15 @@ class CognitoService
         return $cognitoClient->confirmSignUp($args);
     }
 
-    public static function deleteProfessional(Professional $professional)
+    public function deleteProfessional(Professional $professional)
     {
-        $user = static::getUser($professional);
+        $user = $this->getUser($professional);
         if (is_null($user)) {
             // Professional not found so no need to delete here
             return null;
         }
 
-        $userPool = UserPoolService::getUserPool();
+        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
         static::adminDeleteUser($userPool, [
             'Username' => $professional->username,
         ]);

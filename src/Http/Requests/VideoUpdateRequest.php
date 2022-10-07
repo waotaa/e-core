@@ -20,6 +20,6 @@ class VideoUpdateRequest extends FormRequest implements FormRequestInterface
         if (!$video instanceof Video) {
             throw new \Exception('Cannot derive video from route');
         }
-        return VideoValidation::getUpdateRules($video);
+        return VideoValidation::make($this)->getUpdateRules($video);
     }
 }

@@ -25,6 +25,7 @@ class Environment extends SearchableModel
         'color_primary',
         'color_secondairy',
         'user_pool_id',
+        'url'
     ];
 
     public function contact()
@@ -35,6 +36,11 @@ class Environment extends SearchableModel
     public function featuredAssociation(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function professionals(): HasMany
+    {
+        return $this->hasMany(Professional::class);
     }
 
     public function newsItems(): HasMany
@@ -49,6 +55,7 @@ class Environment extends SearchableModel
 
     public function deriveUserPoolName()
     {
+        // heel misschien created_by erin verwerken om zeker te zijn van uniciteit
         return $this->slug;
     }
 }

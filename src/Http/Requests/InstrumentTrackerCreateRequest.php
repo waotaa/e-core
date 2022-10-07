@@ -16,6 +16,6 @@ class InstrumentTrackerCreateRequest extends FormRequest implements FormRequestI
 
     public function rules(): array
     {
-        return InstrumentTrackerValidation::getCreationRules();
+        return InstrumentTrackerValidation::make($this)->getCreationRules();
     }
 }

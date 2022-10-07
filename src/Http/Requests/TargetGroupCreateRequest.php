@@ -16,6 +16,6 @@ class TargetGroupCreateRequest extends FormRequest implements FormRequestInterfa
 
     public function rules(): array
     {
-        return TargetGroupValidation::getCreationRules();
+        return TargetGroupValidation::make($this)->getCreationRules();
     }
 }

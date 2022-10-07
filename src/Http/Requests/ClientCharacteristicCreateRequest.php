@@ -16,6 +16,6 @@ class ClientCharacteristicCreateRequest extends FormRequest implements FormReque
 
     public function rules(): array
     {
-        return ClientCharacteristicValidation::getCreationRules();
+        return ClientCharacteristicValidation::make($this)->getCreationRules();
     }
 }

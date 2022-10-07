@@ -4,7 +4,7 @@ namespace Vng\EvaCore\Http\Validation;
 
 class LocationValidation extends ModelValidation
 {
-    public static function rules(): array
+    public function rules(): array
     {
         return [
             'address_id' => [

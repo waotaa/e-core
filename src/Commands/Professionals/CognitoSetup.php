@@ -2,22 +2,40 @@
 
 namespace Vng\EvaCore\Commands\Professionals;
 
+use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Services\Cognito\CognitoService;
 use Illuminate\Console\Command;
-use Vng\EvaCore\Services\Cognito\UserPoolService;
 
 class CognitoSetup extends Command
 {
-    protected $signature = 'professionals:setup {--n|no-interaction}';
+    protected $signature = 'professionals:setup {environmentSlug?} {--n|no-interaction}';
     protected $description = 'Make sure the userpool and it\'s client are setup';
 
     public function handle(): int
     {
-        $this->output->writeln('Userpool name: ' . UserPoolService::getUserPoolName());
-        CognitoService::ensureSetup();
-        $this->call('professionals:get-config', [
-            '--no-interaction' => $this->option('no-interaction')
-        ]);
+        $this->getOutput()->writeln('setting up user pools...');
+
+        $slug = $this->argument('environmentSlug');
+        if (!is_null($slug)) {
+            $this->output->writeln('* for specified environment: ' . $slug);
+            /** @var Environment $environment */
+            $environment = Environment::query()->where('slug', $slug)->firstOrFail();
+            $this->setupUserPool($environment);
+        } else {
+            $environments = Environment::all();
+            $environments->each(function (Environment $environment) {
+                $this->setupUserPool($environment);
+            });
+        }
+
+        $this->getOutput()->writeln('setting up user pools finished');
         return 0;
+    }
+
+    public function setupUserPool(Environment $environment)
+    {
+        $this->output->writeln('handling environment ' . $environment->name . ' with userpool name ' . $environment->deriveUserPoolName());
+        $environment = CognitoService::make($environment)->ensureSetup();
+        $environment->saveQuietly();
     }
 }

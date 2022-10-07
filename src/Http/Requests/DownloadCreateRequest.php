@@ -16,6 +16,6 @@ class DownloadCreateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return DownloadValidation::getCreationRules();
+        return DownloadValidation::make($this)->getCreationRules();
     }
 }

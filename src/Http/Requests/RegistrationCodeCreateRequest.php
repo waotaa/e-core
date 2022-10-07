@@ -16,6 +16,6 @@ class RegistrationCodeCreateRequest extends FormRequest implements FormRequestIn
 
     public function rules(): array
     {
-        return RegistrationCodeValidation::getCreationRules();
+        return RegistrationCodeValidation::make($this)->getCreationRules();
     }
 }

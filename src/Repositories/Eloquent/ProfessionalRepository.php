@@ -32,6 +32,9 @@ class ProfessionalRepository extends BaseRepository implements ProfessionalRepos
             'enabled' => $request->input('enabled'),
             'user_status' => $request->input('user_status'),
         ]);
+
+        $professional->environment()->associate($request->input('environment_id'));
+
         $professional->save();
         return $professional;
     }

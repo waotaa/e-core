@@ -16,6 +16,6 @@ class NeighbourhoodCreateRequest extends FormRequest implements FormRequestInter
 
     public function rules(): array
     {
-        return NeighbourhoodValidation::getCreationRules();
+        return NeighbourhoodValidation::make($this)->getCreationRules();
     }
 }

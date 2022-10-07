@@ -20,6 +20,6 @@ class ContactUpdateRequest extends FormRequest implements FormRequestInterface
         if (!$contact instanceof Contact) {
             throw new \Exception('Cannot derive contact from route');
         }
-        return ContactValidation::getUpdateRules($contact);
+        return ContactValidation::make($this)->getUpdateRules($contact);
     }
 }

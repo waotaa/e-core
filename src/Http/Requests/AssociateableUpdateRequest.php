@@ -23,6 +23,6 @@ class AssociateableUpdateRequest extends FormRequest implements FormRequestInter
         if (!$associateable instanceof Associateable) {
             throw new \Exception('Cannot derive associateable from route');
         }
-        return AssociateableValidation::getUpdateRules($associateable);
+        return AssociateableValidation::make($this)->getUpdateRules($associateable);
     }
 }

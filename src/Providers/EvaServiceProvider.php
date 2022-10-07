@@ -2,10 +2,10 @@
 
 namespace Vng\EvaCore\Providers;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\AggregateServiceProvider;
 use Vng\EvaCore\Commands\AssignRegions;
 use Vng\EvaCore\Commands\Dev\PasswordGenerationTest;
+use Vng\EvaCore\Commands\Dev\Test;
 use Vng\EvaCore\Commands\Elastic\DeleteIndex;
 use Vng\EvaCore\Commands\Elastic\DeletePublicIndex;
 use Vng\EvaCore\Commands\Elastic\FetchNewInstrumentRatings;
@@ -144,6 +144,7 @@ class EvaServiceProvider extends AggregateServiceProvider
 
     protected $commands = [
         PasswordGenerationTest::class,
+        Test::class,
 
         DeleteIndex::class,
         DeletePublicIndex::class,

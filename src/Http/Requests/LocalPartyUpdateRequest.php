@@ -20,6 +20,6 @@ class LocalPartyUpdateRequest extends FormRequest implements FormRequestInterfac
         if (!$localParty instanceof LocalParty) {
             throw new \Exception('Cannot derive localParty from route');
         }
-        return LocalPartyValidation::getUpdateRules($localParty);
+        return LocalPartyValidation::make($this)->getUpdateRules($localParty);
     }
 }

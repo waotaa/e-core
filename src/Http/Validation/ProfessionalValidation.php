@@ -3,10 +3,11 @@
 namespace Vng\EvaCore\Http\Validation;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\Rule;
 
 class ProfessionalValidation extends ModelValidation
 {
-    public static function rules(): array
+    public function rules(): array
     {
         return [
             'email' => [
@@ -14,29 +15,35 @@ class ProfessionalValidation extends ModelValidation
                 'email',
                 'max:254'
             ],
+            'environment_id' => [
+                'required'
+            ]
         ];
     }
 
-    public static function creationRules(): array
+    protected function creationRules(): array
     {
         return [
             'email' => [
                 'required',
                 'email',
                 'max:254',
-                'unique:professionals,email'
+                Rule::unique('professionals', 'email')
+                    ->where('environment_id', $this->request->input('environment_id'))
             ],
         ];
     }
 
-    public static function updateRules(Model $model): array
+    protected function updateRules(Model $model): array
     {
         return [
             'email' => [
                 'required',
                 'email',
                 'max:254',
-                'unique:professionals,email,' . $model->id,
+                Rule::unique('professionals', 'email')
+                    ->where('environment_id', $this->request->input('environment_id'))
+                    ->ignore($model->id)
             ],
         ];
     }

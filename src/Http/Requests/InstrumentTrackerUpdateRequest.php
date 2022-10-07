@@ -20,6 +20,6 @@ class InstrumentTrackerUpdateRequest extends FormRequest implements FormRequestI
         if (!$instrumentTracker instanceof InstrumentTracker) {
             throw new \Exception('Cannot derive instrumentTracker from route');
         }
-        return InstrumentTrackerValidation::getUpdateRules($instrumentTracker);
+        return InstrumentTrackerValidation::make($this)->getUpdateRules($instrumentTracker);
     }
 }

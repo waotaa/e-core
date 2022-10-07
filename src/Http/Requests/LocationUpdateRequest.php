@@ -20,6 +20,6 @@ class LocationUpdateRequest extends FormRequest implements FormRequestInterface
         if (!$location instanceof Location) {
             throw new \Exception('Cannot derive location from route');
         }
-        return LocationValidation::getUpdateRules($location);
+        return LocationValidation::make($this)->getUpdateRules($location);
     }
 }

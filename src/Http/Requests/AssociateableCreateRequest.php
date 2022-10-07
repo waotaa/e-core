@@ -19,6 +19,6 @@ class AssociateableCreateRequest extends FormRequest implements FormRequestInter
 
     public function rules(): array
     {
-        return AssociateableValidation::getCreationRules();
+        return AssociateableValidation::make($this)->getCreationRules();
     }
 }

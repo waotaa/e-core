@@ -16,6 +16,6 @@ class RatingCreateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return RatingValidation::getCreationRules();
+        return RatingValidation::make($this)->getCreationRules();
     }
 }

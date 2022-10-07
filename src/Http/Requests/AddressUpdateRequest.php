@@ -20,6 +20,6 @@ class AddressUpdateRequest extends FormRequest implements FormRequestInterface
         if (!$address instanceof Address) {
             throw new \Exception('Cannot derive address from route');
         }
-        return AddressValidation::getUpdateRules($address);
+        return AddressValidation::make($this)->getUpdateRules($address);
     }
 }

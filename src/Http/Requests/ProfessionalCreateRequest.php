@@ -16,6 +16,6 @@ class ProfessionalCreateRequest extends FormRequest implements FormRequestInterf
 
     public function rules(): array
     {
-        return ProfessionalValidation::getCreationRules();
+        return ProfessionalValidation::make($this)->getCreationRules();
     }
 }

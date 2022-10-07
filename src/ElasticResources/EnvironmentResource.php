@@ -18,7 +18,11 @@ class EnvironmentResource extends ElasticResource
             'logo' => $this->logo,
             'color_primary' => $this->color_primary,
             'color_secondary' => $this->color_secondary,
+            'user_pool_id' => $this->user_pool_id,
+            'user_pool_client_id' => $this->user_pool_client_id,
+            'url' => $this->url,
 
+            'professionals' => ProfessionalResource::many($this->professionals),
             'featured_organisations' => OrganisationResource::many($this->featuredOrganisations),
 
             'contact' => ContactResource::one($this->contact),

@@ -20,6 +20,6 @@ class NewsItemUpdateRequest extends FormRequest implements FormRequestInterface
         if (!$newsItem instanceof NewsItem) {
             throw new \Exception('Cannot derive newsItem from route');
         }
-        return NewsItemValidation::getUpdateRules($newsItem);
+        return NewsItemValidation::make($this)->getUpdateRules($newsItem);
     }
 }

@@ -16,6 +16,6 @@ class LocalPartyCreateRequest extends FormRequest implements FormRequestInterfac
 
     public function rules(): array
     {
-        return LocalPartyValidation::getCreationRules();
+        return LocalPartyValidation::make($this)->getCreationRules();
     }
 }

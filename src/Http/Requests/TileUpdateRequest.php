@@ -20,6 +20,6 @@ class TileUpdateRequest extends FormRequest implements FormRequestInterface
         if (!$tile instanceof RegistrationCode) {
             throw new \Exception('Cannot derive tile from route');
         }
-        return TileValidation::getUpdateRules($tile);
+        return TileValidation::make($this)->getUpdateRules($tile);
     }
 }

@@ -20,6 +20,6 @@ class RegistrationCodeUpdateRequest extends FormRequest implements FormRequestIn
         if (!$registrationCode instanceof RegistrationCode) {
             throw new \Exception('Cannot derive registrationCode from route');
         }
-        return RegistrationCodeValidation::getUpdateRules($registrationCode);
+        return RegistrationCodeValidation::make($this)->getUpdateRules($registrationCode);
     }
 }

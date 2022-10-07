@@ -6,7 +6,7 @@ use Vng\EvaCore\Enums\FollowerRoleEnum;
 
 class InstrumentTrackerValidation extends ModelValidation
 {
-    public static function rules(): array
+    public function rules(): array
     {
         return [
             'role' => [

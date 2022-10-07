@@ -3,29 +3,40 @@
 namespace Vng\EvaCore\Http\Validation;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 abstract class ModelValidation implements ValidationInterface
 {
-    abstract public static function rules(): array;
-    public static function creationRules(): array
+    public function __construct(
+        protected Request $request
+    )
+    {}
+
+    public static function make(Request $request): static
+    {
+        return new static($request);
+    }
+
+    abstract public function rules(): array;
+    protected function creationRules(): array
     {
         return [];
     }
 
-    public static function updateRules(Model $model): array
+    protected function updateRules(Model $model): array
     {
         return [];
     }
 
-    public static function getCreationRules($field = null): ?array
+    public function getCreationRules($field = null): ?array
     {
-        $rules = array_merge(static::rules(), static::creationRules());
+        $rules = array_merge($this->rules(), $this->creationRules());
         return static::selectRule($rules, $field);
     }
 
-    public static function getUpdateRules(Model $model, $field = null): ?array
+    public function getUpdateRules(Model $model, $field = null): ?array
     {
-        $rules = array_merge(static::rules(), static::updateRules($model));
+        $rules = array_merge($this->rules(), $this->updateRules($model));
         return static::selectRule($rules, $field);
     }
 

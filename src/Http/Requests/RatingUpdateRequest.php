@@ -20,6 +20,6 @@ class RatingUpdateRequest extends FormRequest implements FormRequestInterface
         if (!$rating instanceof Rating) {
             throw new \Exception('Cannot derive rating from route');
         }
-        return RatingValidation::getUpdateRules($rating);
+        return RatingValidation::make($this)->getUpdateRules($rating);
     }
 }

@@ -20,6 +20,6 @@ class ProfessionalUpdateRequest extends FormRequest implements FormRequestInterf
         if (!$professional instanceof Professional) {
             throw new \Exception('Cannot derive professional from route');
         }
-        return ProfessionalValidation::getUpdateRules($professional);
+        return ProfessionalValidation::make($this)->getUpdateRules($professional);
     }
 }

@@ -20,6 +20,6 @@ class OrganisationUpdateRequest extends FormRequest implements FormRequestInterf
         if (!$organisation instanceof Organisation) {
             throw new \Exception('Cannot derive organisation from route');
         }
-        return OrganisationValidation::getUpdateRules($organisation);
+        return OrganisationValidation::make($this)->getUpdateRules($organisation);
     }
 }

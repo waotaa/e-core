@@ -16,6 +16,6 @@ class LocationCreateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return LocationValidation::getCreationRules();
+        return LocationValidation::make($this)->getCreationRules();
     }
 }

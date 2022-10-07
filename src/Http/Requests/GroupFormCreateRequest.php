@@ -16,6 +16,6 @@ class GroupFormCreateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return GroupFormValidation::getCreationRules();
+        return GroupFormValidation::make($this)->getCreationRules();
     }
 }

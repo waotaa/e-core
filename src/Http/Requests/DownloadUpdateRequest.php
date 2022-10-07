@@ -20,6 +20,6 @@ class DownloadUpdateRequest extends FormRequest implements FormRequestInterface
         if (!$download instanceof Download) {
             throw new \Exception('Cannot derive download from route');
         }
-        return DownloadValidation::getUpdateRules($download);
+        return DownloadValidation::make($this)->getUpdateRules($download);
     }
 }

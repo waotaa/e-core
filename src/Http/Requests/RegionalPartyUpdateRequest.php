@@ -20,6 +20,6 @@ class RegionalPartyUpdateRequest extends FormRequest implements FormRequestInter
         if (!$regionalParty instanceof RegionalParty) {
             throw new \Exception('Cannot derive regionalParty from route');
         }
-        return RegionalPartyValidation::getUpdateRules($regionalParty);
+        return RegionalPartyValidation::make($this)->getUpdateRules($regionalParty);
     }
 }

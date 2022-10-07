@@ -16,6 +16,6 @@ class EnvironmentCreateRequest extends FormRequest implements FormRequestInterfa
 
     public function rules(): array
     {
-        return EnvironmentValidation::getCreationRules();
+        return EnvironmentValidation::make($this)->getCreationRules();
     }
 }

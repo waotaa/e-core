@@ -20,6 +20,6 @@ class ProviderUpdateRequest extends FormRequest implements FormRequestInterface
         if (!$provider instanceof Provider) {
             throw new \Exception('Cannot derive provider from route');
         }
-        return ProviderValidation::getUpdateRules($provider);
+        return ProviderValidation::make($this)->getUpdateRules($provider);
     }
 }

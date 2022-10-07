@@ -20,6 +20,6 @@ class PartnershipUpdateRequest extends FormRequest implements FormRequestInterfa
         if (!$partnership instanceof Partnership) {
             throw new \Exception('Cannot derive partnership from route');
         }
-        return PartnershipValidation::getUpdateRules($partnership);
+        return PartnershipValidation::make($this)->getUpdateRules($partnership);
     }
 }

@@ -20,6 +20,6 @@ class UserUpdateRequest extends FormRequest implements FormRequestInterface
         if (!$user instanceof User) {
             throw new \Exception('Cannot derive user from route');
         }
-        return UserValidation::getUpdateRules($user);
+        return UserValidation::make($this)->getUpdateRules($user);
     }
 }

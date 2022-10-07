@@ -16,6 +16,6 @@ class ProviderCreateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return ProviderValidation::getCreationRules();
+        return ProviderValidation::make($this)->getCreationRules();
     }
 }

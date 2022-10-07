@@ -20,6 +20,6 @@ class TargetGroupUpdateRequest extends FormRequest implements FormRequestInterfa
         if (!$targetGroup instanceof TargetGroup) {
             throw new \Exception('Cannot derive targetGroup from route');
         }
-        return TargetGroupValidation::getUpdateRules($targetGroup);
+        return TargetGroupValidation::make($this)->getUpdateRules($targetGroup);
     }
 }

@@ -20,6 +20,6 @@ class EnvironmentUpdateRequest extends FormRequest implements FormRequestInterfa
         if (!$environment instanceof Environment) {
             throw new \Exception('Cannot derive environment from route');
         }
-        return EnvironmentValidation::getUpdateRules($environment);
+        return EnvironmentValidation::make($this)->getUpdateRules($environment);
     }
 }

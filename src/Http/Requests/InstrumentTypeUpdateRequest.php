@@ -20,6 +20,6 @@ class InstrumentTypeUpdateRequest extends FormRequest implements FormRequestInte
         if (!$instrumentType instanceof InstrumentType) {
             throw new \Exception('Cannot derive instrumentType from route');
         }
-        return InstrumentTypeValidation::getUpdateRules($instrumentType);
+        return InstrumentTypeValidation::make($this)->getUpdateRules($instrumentType);
     }
 }

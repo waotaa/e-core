@@ -20,6 +20,6 @@ class InstrumentUpdateRequest extends FormRequest implements FormRequestInterfac
         if (!$instrument instanceof Instrument) {
             throw new \Exception('Cannot derive instrument from route');
         }
-        return InstrumentValidation::getUpdateRules($instrument);
+        return InstrumentValidation::make($this)->getUpdateRules($instrument);
     }
 }

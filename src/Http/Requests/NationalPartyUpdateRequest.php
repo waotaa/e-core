@@ -20,6 +20,6 @@ class NationalPartyUpdateRequest extends FormRequest implements FormRequestInter
         if (!$nationalParty instanceof NationalParty) {
             throw new \Exception('Cannot derive nationalParty from route');
         }
-        return NationalPartyValidation::getUpdateRules($nationalParty);
+        return NationalPartyValidation::make($this)->getUpdateRules($nationalParty);
     }
 }

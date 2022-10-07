@@ -20,6 +20,6 @@ class LinkUpdateRequest extends FormRequest implements FormRequestInterface
         if (!$link instanceof Link) {
             throw new \Exception('Cannot derive link from route');
         }
-        return LinkValidation::getUpdateRules($link);
+        return LinkValidation::make($this)->getUpdateRules($link);
     }
 }

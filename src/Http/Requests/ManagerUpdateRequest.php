@@ -15,6 +15,6 @@ class ManagerUpdateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return ManagerValidation::getCreationRules();
+        return ManagerValidation::make($this)->getCreationRules();
     }
 }

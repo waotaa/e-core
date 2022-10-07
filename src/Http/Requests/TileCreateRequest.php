@@ -16,6 +16,6 @@ class TileCreateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return TileValidation::getCreationRules();
+        return TileValidation::make($this)->getCreationRules();
     }
 }

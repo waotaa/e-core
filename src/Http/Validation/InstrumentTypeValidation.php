@@ -4,7 +4,7 @@ namespace Vng\EvaCore\Http\Validation;
 
 class InstrumentTypeValidation extends ModelValidation
 {
-    public static function rules(): array
+    public function rules(): array
     {
         return [
             'name' => [

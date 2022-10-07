@@ -20,6 +20,6 @@ class GroupFormUpdateRequest extends FormRequest implements FormRequestInterface
         if (!$groupForm instanceof GroupForm) {
             throw new \Exception('Cannot derive groupForm from route');
         }
-        return GroupFormValidation::getUpdateRules($groupForm);
+        return GroupFormValidation::make($this)->getUpdateRules($groupForm);
     }
 }

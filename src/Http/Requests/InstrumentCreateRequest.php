@@ -16,6 +16,6 @@ class InstrumentCreateRequest extends FormRequest implements FormRequestInterfac
 
     public function rules(): array
     {
-        return InstrumentValidation::getCreationRules();
+        return InstrumentValidation::make($this)->getCreationRules();
     }
 }
