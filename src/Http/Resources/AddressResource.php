@@ -12,13 +12,15 @@ class AddressResource extends JsonResource
             'id' => $this->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+
+            'name' => $this->name,
+
             'straatnaam' => $this->straatnaam,
             'huisnummer' => $this->huisnummer,
             'postbusnummer' => $this->postbusnummer,
             'antwoordnummer' => $this->antwoordnummer,
             'postcode' => $this->postcode,
             'woonplaats' => $this->woonplaats,
-            'name' => $this->name,
 
             'postcode_digits' => (int) substr($this->postcode, 0, 4),
         ];

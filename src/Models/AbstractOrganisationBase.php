@@ -2,27 +2,21 @@
 
 namespace Vng\EvaCore\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
-use Vng\EvaCore\ElasticResources\LocalPartyResource;
-use Vng\EvaCore\Interfaces\AreaInterface;
+use ReflectionClass;
 use Vng\EvaCore\Interfaces\OrganisationEntityInterface;
-use Vng\EvaCore\Interfaces\IsOwnerInterface;
 use Vng\EvaCore\Observers\OrganisationEntityObserver;
-use Vng\EvaCore\Traits\AreaTrait;
 use Vng\EvaCore\Traits\HasDynamicSlug;
-use Vng\EvaCore\Traits\OrganisationEntity;
-use Vng\EvaCore\Traits\IsOwner;
 
-abstract class AbstractOrganisationBase extends SearchableModel implements IsOwnerInterface, OrganisationEntityInterface
+abstract class AbstractOrganisationBase extends SearchableModel implements OrganisationEntityInterface
 {
     use SoftDeletes {
-        restore as softDeleteRestore;
-        forceDelete as softDeleteForceDelete;
+        SoftDeletes::restore as softDeleteRestore;
+        SoftDeletes::forceDelete as softDeleteForceDelete;
     }
-    use IsOwner, HasDynamicSlug;
+    use HasDynamicSlug;
 
     protected static function boot()
     {
@@ -30,9 +24,19 @@ abstract class AbstractOrganisationBase extends SearchableModel implements IsOwn
         static::observe(OrganisationEntityObserver::class);
     }
 
+    public function getTypeAttribute(): string
+    {
+        return (new ReflectionClass($this))->getShortName();
+    }
+
     public function organisation(): BelongsTo
     {
         return $this->belongsTo(Organisation::class);
+    }
+
+    public function hasMember(Model $user): bool
+    {
+        return $this->organisation->hasMember($user);
     }
 
     public function delete()

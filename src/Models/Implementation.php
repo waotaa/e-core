@@ -18,6 +18,10 @@ class Implementation extends Model
         'custom'
     ];
 
+    protected $attributes = [
+        'custom' => true,
+    ];
+
     protected static function boot()
     {
         parent::boot();

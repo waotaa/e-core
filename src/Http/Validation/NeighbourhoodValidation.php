@@ -10,7 +10,7 @@ class NeighbourhoodValidation extends ModelValidation
             'name' => [
                 'required',
             ],
-            'township' => [
+            'township_id' => [
                 'required',
             ],
         ];

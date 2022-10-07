@@ -10,6 +10,9 @@ class ProviderValidation extends ModelValidation
             'organisation_id' => [
                 'required',
             ],
+            'name' => [
+                'required',
+            ],
         ];
     }
 }

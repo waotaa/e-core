@@ -8,6 +8,7 @@ class AddressResource extends ElasticResource
     {
         return [
             'id' => $this->id,
+            'name' => $this->name,
             'straatnaam' => $this->straatnaam,
             'huisnummer' => $this->huisnummer,
             'postbusnummer' => $this->postbusnummer,

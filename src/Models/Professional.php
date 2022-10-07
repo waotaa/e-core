@@ -26,10 +26,10 @@ class Professional extends SearchableModel implements CanResetPasswordContract
     ];
 
     protected $fillable = [
-        'last_seen_at',
         'username',
         'email',
         'email_verified',
+        'last_seen_at',
         'enabled',
         'user_status',
     ];

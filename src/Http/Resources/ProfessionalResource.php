@@ -11,6 +11,9 @@ class ProfessionalResource extends JsonResource
         return [
             'username' => $this->username,
             'ratings_count' => $this->ratings->count(),
+
+            'ratings' => RatingResource::collection($this->whenLoaded('ratings')),
+            'mutations' => MutationResource::collection($this->mutations),
         ];
     }
 }

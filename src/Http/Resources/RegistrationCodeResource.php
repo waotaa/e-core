@@ -12,6 +12,8 @@ class RegistrationCodeResource extends JsonResource
             'id' => $this->id,
             'code' => $this->code,
             'label' => $this->label,
+
+            'instrument' => InstrumentResource::make($this->instrument)
         ];
     }
 }

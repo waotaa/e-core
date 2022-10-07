@@ -17,6 +17,10 @@ class TargetGroup extends Model
         'custom',
     ];
 
+    protected $attributes = [
+        'custom' => true,
+    ];
+
     protected $casts = [
         'custom' => 'boolean',
     ];
@@ -28,7 +32,7 @@ class TargetGroup extends Model
 
     public function getOwningInstrumentAttribute(): ?Instrument
     {
-        if (!$this->custom) {
+        if (!$this->getAttribute('custom')) {
             return null;
         }
         return $this->instruments()->orderByPivot('created_at', 'asc')->first();

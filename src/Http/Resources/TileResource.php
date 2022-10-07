@@ -19,6 +19,8 @@ class TileResource extends JsonResource
             'list'  => $this->list,
             'key'  => $this->key,
             'position'  => $this->position,
+
+            'instruments' => InstrumentResource::collection($this->whenLoaded('instruments'))
         ];
     }
 }

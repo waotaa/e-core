@@ -27,6 +27,7 @@ class Provider extends SearchableModel
     ];
 
     protected $fillable = [
+        'uuid',
         'name',
         'is_fixed',
         'email',

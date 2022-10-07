@@ -59,7 +59,7 @@ class SetupCommandTest extends TestCase
 
     private function assertAdminUser()
     {
-        $superAdminEmail = config('eva.admin.email');
+        $superAdminEmail = config('eva-core.admin.email');
         $userExists = User::query()->where('email', $superAdminEmail)->exists();
         $this->assertTrue($userExists);
     }

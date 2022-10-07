@@ -7,7 +7,7 @@ class RatingValidation extends ModelValidation
     public static function rules(): array
     {
         return [
-            'instrument' => [
+            'instrument_id' => [
                 'required',
             ],
             'email' => [

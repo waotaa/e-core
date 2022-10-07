@@ -9,17 +9,18 @@ class RegionService
 {
     public static function createRegion(BasicRegionModel $regionData): Region
     {
-        /** @var Region $region */
-        $region = Region::query()->updateOrCreate([
-            'code' => $regionData->getCode(),
-        ], [
-            'name' => $regionData->getName(),
-            'color' => $regionData->getColor(),
-        ]);
+        return Region::withoutEvents(function() use ($regionData) {
+            /** @var Region $region */
+            $region = Region::query()->updateOrCreate([
+                'code' => $regionData->getCode(),
+            ], [
+                'name' => $regionData->getName(),
+                'color' => $regionData->getColor(),
+            ]);
 
-        static::connectTownshipsToRegion($region);
-
-        return $region;
+            static::connectTownshipsToRegion($region);
+            return $region;
+        });
     }
 
     public static function updateRegion(BasicRegionModel $regionData): Region

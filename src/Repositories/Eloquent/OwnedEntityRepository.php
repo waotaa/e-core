@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Interfaces\IsOwnerInterface;
+use Vng\EvaCore\Models\Instrument;
 
 trait OwnedEntityRepository
 {
@@ -33,14 +34,11 @@ trait OwnedEntityRepository
 
     public function addForUserConditions(Builder $query, EvaUserInterface $user)
     {
-        $instrumentsQuery = $this->addMultipleOwnerConditions($query, $user->getAssociations());
 
-        if ($user->isSuperAdmin()) {
-            $instrumentsQuery = $query->orWhere(function($query) {
-                return $this->addOwnerlessCondition($query);
-            });
+        if (!$user->can('viewAll', Instrument::class)) {
+            $query = $this->addMultipleOwnerConditions($query, $user->getAssociations());
         }
 
-        return $instrumentsQuery;
+        return $query;
     }
 }

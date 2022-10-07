@@ -3,8 +3,10 @@
 namespace Vng\EvaCore\Repositories\Eloquent;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Vng\EvaCore\Enums\ContactTypeEnum;
 use Vng\EvaCore\Http\Requests\ProviderCreateRequest;
 use Vng\EvaCore\Http\Requests\ProviderUpdateRequest;
+use Vng\EvaCore\Models\Contact;
 use Vng\EvaCore\Models\Provider;
 use Vng\EvaCore\Repositories\ProviderRepositoryInterface;
 
@@ -47,6 +49,24 @@ class ProviderRepository extends BaseRepository implements ProviderRepositoryInt
 
         $provider->save();
 
+        return $provider;
+    }
+
+    public function attachContacts(Provider $provider, string|array $contactIds, ?string $type = null): Provider
+    {
+        if (!is_null($type) && !ContactTypeEnum::search($type)) {
+            throw new \Exception('invalid type given ' . $type);
+        }
+        $pivotValues = [
+            'type' => $type
+        ];
+        $provider->contacts()->syncWithPivotValues((array) $contactIds, $pivotValues, false);
+        return $provider;
+    }
+
+    public function detachContacts(Provider $provider, string|array $contactIds): Provider
+    {
+        $provider->contacts()->detach((array) $contactIds);
         return $provider;
     }
 }

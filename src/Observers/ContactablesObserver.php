@@ -18,9 +18,10 @@ class ContactablesObserver
         $this->attachConnectedElasticResources($contactables);
     }
 
-    public function deleted(Contactables $contactables): void
+    public function deleting(Contactables $contactables): void
     {
-        $this->detachConnectedElasticResources($contactables);
+        $contactables = $contactables->fresh();
+        ContactDetachedEvent::dispatch($contactables->contact, $contactables->contactable);
     }
 
     public function restored(Contactables $contactables): void
@@ -30,11 +31,6 @@ class ContactablesObserver
 
     private function attachConnectedElasticResources(Contactables $contactables): void
     {
-        ContactAttachedEvent::dispatch($contactables->contact, $contactables->findContactable());
-    }
-
-    private function detachConnectedElasticResources(Contactables $contactables): void
-    {
-        ContactDetachedEvent::dispatch($contactables->contact, $contactables->findContactable());
+        ContactAttachedEvent::dispatch($contactables->contact, $contactables->contactable);
     }
 }

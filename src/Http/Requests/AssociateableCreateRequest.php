@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\AssociateableValidation;
 use Vng\EvaCore\Models\Associateable;
 
+/**
+ * @deprecated
+ */
 class AssociateableCreateRequest extends FormRequest implements FormRequestInterface
 {
     public function authorize(): bool

@@ -12,6 +12,8 @@ class VideoResource extends JsonResource
             'id' => $this->id,
             'provider' => $this->provider,
             'video_identifier' => $this->video_identifier,
+
+            'instrument' => InstrumentResource::make($this->instrument)
         ];
     }
 }

@@ -9,6 +9,7 @@ class ImplementationResource extends ElasticResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'custom' => $this->custom,
         ];
     }
 }

@@ -17,6 +17,7 @@ class NationalPartyResource extends JsonResource
 
             'name' => $this->name,
             'slug' => $this->slug,
+
             'organisation' => OrganisationResource::make($this->organisation)
         ];
     }

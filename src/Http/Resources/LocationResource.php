@@ -19,6 +19,7 @@ class LocationResource extends JsonResource
             'description' => $this->description,
 
             'address' => AddressResource::make($this->address),
+            'instrument' => InstrumentResource::make($this->instrument),
         ];
     }
 }

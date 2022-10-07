@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Commands\Setup;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Vng\EvaCore\Commands\Format\CleanupSyncAttempts;
+use Vng\EvaCore\Commands\Professionals\CognitoSetup;
 
 class Update extends Command
 {
@@ -26,9 +27,8 @@ class Update extends Command
         $this->call('migrate', ['--force' => true]);
         $this->call(CleanupSyncAttempts::class);
         $this->call(SeedCharacteristics::class);
-
-        $this->call('professionals:setup', ['--silent' => true]);
-//        $this->call('elastic:sync-all', ['--fresh' => false]);
+        $this->call(SetupAuthorizationMatrix::class);
+        $this->call(CognitoSetup::class, ['--silent' => true]);
         return 0;
     }
 }

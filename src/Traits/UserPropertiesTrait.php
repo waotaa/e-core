@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Date;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Notifications\AccountCreationEmail;
 use Vng\EvaCore\Notifications\ResetPassword;
+use Vng\EvaCore\Observers\UserObserver;
 use Vng\EvaCore\Services\PasswordService;
 use DateTime;
 use Illuminate\Notifications\Notifiable;
@@ -42,9 +43,38 @@ trait UserPropertiesTrait
 
     public static function bootUserPropertiesTrait()
     {
-        self::creating(function (EvaUserInterface $user) {
-            $user->assignRandomPassword();
-        });
+        static::observe(UserObserver::class);
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function getGivenName(): ?string
+    {
+        [$givenName] = $this->dissectName();
+        return $givenName;
+    }
+
+    public function getSurName(): ?string
+    {
+        $names = $this->dissectName();
+        return $names[1] ?? null;
+    }
+
+    public function dissectName()
+    {
+        $name = $this->getName();
+        if (is_null($name)) {
+            return null;
+        }
+        return explode(' ', $name, 2);
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
     }
 
     public abstract function isSuperAdmin();

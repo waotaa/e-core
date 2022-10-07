@@ -22,6 +22,8 @@ class NewsItemResource extends JsonResource
             'sub_title' => $this->sub_title,
             'body' => $this->body,
             'teaser' => $this->teaser,
+
+            'environment' => EnvironmentResource::make($this->whenLoaded('environment'))
         ];
     }
 }

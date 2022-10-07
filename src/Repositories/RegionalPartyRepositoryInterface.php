@@ -6,7 +6,7 @@ use Vng\EvaCore\Http\Requests\RegionalPartyCreateRequest;
 use Vng\EvaCore\Http\Requests\RegionalPartyUpdateRequest;
 use Vng\EvaCore\Models\RegionalParty;
 
-interface RegionalPartyRepositoryInterface extends BaseRepositoryInterface
+interface RegionalPartyRepositoryInterface extends BaseRepositoryInterface, SoftDeletableRepositoryInterface
 {
     public function create(RegionalPartyCreateRequest $request): RegionalParty;
     public function update(RegionalParty $regionalParty, RegionalPartyUpdateRequest $request): RegionalParty;

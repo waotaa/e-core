@@ -12,8 +12,6 @@ use Vng\EvaCore\Services\DownloadsService;
 
 class DownloadRepository extends BaseRepository implements DownloadRepositoryInterface
 {
-    use OwnedEntityRepository;
-
     public string $model = Download::class;
 
     public function create(DownloadCreateRequest $request): Download
@@ -29,12 +27,12 @@ class DownloadRepository extends BaseRepository implements DownloadRepositoryInt
     public function saveFromRequest(Download $download, FormRequest $request): Download
     {
         /** @var UploadedFile $uploadedFile */
-        $uploadedFile = $request->input('file');
+        $uploadedFile = $request->file('file');
         $download = DownloadsService::saveUploadedFile($uploadedFile, $download);
         $download->fill([
             'label' => $request->input('label'),
         ]);
-        $download->instrument()->associate($request->input('instrument'));
+        $download->instrument()->associate($request->input('instrument_id'));
         $download->save();
         return $download;
     }

@@ -10,7 +10,20 @@ class ManagerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'organisations' => OrganisationResource::collection($this->organisations)
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+
+            'name' => $this->name,
+            'givenName' => $this->givenName,
+            'surName' => $this->surName,
+            'email' => $this->email,
+
+            'created_by' => ManagerResource::make($this->created_by),
+            'instrumentTrackers' => InstrumentTrackerResource::collection($this->instrumentTrackers),
+            'organisations' => OrganisationResource::collection($this->organisations),
+            'roles' => RoleResource::collection($this->roles),
+
+            'mutations' => MutationResource::collection($this->mutations),
         ];
     }
 }

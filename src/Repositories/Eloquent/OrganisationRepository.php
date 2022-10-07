@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Vng\EvaCore\Http\Requests\OrganisationCreateRequest;
 use Vng\EvaCore\Http\Requests\OrganisationUpdateRequest;
 use Vng\EvaCore\Interfaces\OrganisationEntityInterface;
+use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\Manager;
 use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
@@ -55,15 +56,39 @@ class OrganisationRepository extends BaseRepository implements OrganisationRepos
     }
 
 
-    public function attachManager(Organisation $organisation, Manager $manager): Organisation
+    public function attachManagers(Organisation $organisation, string|array $managerIds): Organisation
     {
-        $organisation->managers()->syncWithoutDetaching($manager->id);
+        $organisation->managers()->syncWithoutDetaching($managerIds);
         return $organisation;
     }
 
-    public function detachManager(Organisation $organisation, Manager $manager): Organisation
+    public function detachManagers(Organisation $organisation, string|array $managerIds): Organisation
     {
-        $organisation->managers()->detach($manager->id);
+        $organisation->managers()->detach($managerIds);
+        return $organisation;
+    }
+
+    public function attachFeaturingEnvironments(Organisation $organisation, string|array $environmentIds): Organisation
+    {
+        $organisation->featuringEnvironments()->syncWithoutDetaching((array) $environmentIds);
+        return $organisation;
+    }
+
+    public function detachFeaturingEnvironments(Organisation $organisation, string|array $environmentIds): Organisation
+    {
+        $organisation->featuringEnvironments()->detach((array) $environmentIds);
+        return $organisation;
+    }
+
+    public function attachContacts(Organisation $organisation, string|array $contactIds): Organisation
+    {
+        $organisation->contacts()->syncWithoutDetaching((array) $contactIds);
+        return $organisation;
+    }
+
+    public function detachContacts(Organisation $organisation, string|array $contactIds): Organisation
+    {
+        $organisation->contacts()->detach((array) $contactIds);
         return $organisation;
     }
 }

@@ -11,7 +11,14 @@ class OrganisationResource extends JsonResource
         return [
             'id' => $this->id,
             'organisationable_type' => $this->organisationable_type,
-            'organisationable_id' =>$this->organisationable_id,
+            'organisationable_id' => $this->organisationable_id,
+
+            'name' => $this->name,
+            'type' => $this->type,
+
+            'managers' => ManagerResource::collection($this->whenLoaded('managers')),
+            'featuringEnvironments' => EnvironmentResource::collection($this->whenLoaded('featuringEnvironments')),
+            'contacts' => ContactResource::collection($this->whenLoaded('contacts')),
         ];
     }
 }

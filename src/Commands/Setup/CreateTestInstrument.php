@@ -22,7 +22,7 @@ class CreateTestInstrument extends Command
             'method' => 'werkwijze',
         ]))
             ->implementation()->associate(Implementation::query()->first())
-            ->save();
+            ->saveQuietly();
 
         $this->getOutput()->writeln('creating test instrument finished!');
         return 0;

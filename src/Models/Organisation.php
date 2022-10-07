@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Vng\EvaCore\Traits\HasContacts;
 
 class Organisation extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasContacts;
 
     protected $table = 'organisations';
 
@@ -21,12 +22,17 @@ class Organisation extends Model
 
     public function getIdentifierAttribute()
     {
-        return $this->name . ' - ' . __($this->organisationable->getOwnerType());
+        return $this->name . ' - ' . __($this->type);
     }
 
     public function getNameAttribute()
     {
         return $this->organisationable->name;
+    }
+
+    public function getTypeAttribute()
+    {
+        return $this->organisationable->type;
     }
 
     public function managers(): BelongsToMany
@@ -74,6 +80,11 @@ class Organisation extends Model
         return $this->morphTo();
     }
 
+    public function featuringEnvironments():  BelongsToMany
+    {
+        return $this->belongsToMany(Environment::class, 'featured_organisations');
+    }
+
     public function instruments(): HasMany
     {
         return $this->hasMany(Instrument::class);
@@ -88,5 +99,4 @@ class Organisation extends Model
     {
         return $this->instruments && $this->instruments->contains($instrument->id);
     }
-
 }

@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 
 class CognitoGetConfig extends Command
 {
-    protected $signature = 'professionals:get-config {--s|silent}';
+    protected $signature = 'professionals:get-config {--n|no-interaction}';
     protected $description = 'Get the id of the userpool and client';
 
     public function handle(): int
@@ -27,7 +27,7 @@ class CognitoGetConfig extends Command
             $this->output->warning('UserPoolClient not found');
         }
 
-        if (!$this->option('silent') && $this->confirm('See configuration?')) {
+        if (!$this->option('no-interaction') && $this->confirm('See configuration?')) {
             $config = UserPoolService::describeUserPool($userpool);
             $mfaConfig = UserPoolService::getUserPoolMfaConfig($userpool->getId());
             dd([
