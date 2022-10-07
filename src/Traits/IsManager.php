@@ -21,8 +21,7 @@ trait IsManager
 
     public function managerCan($permission): bool
     {
-        /** @var Manager $manager */
-        $manager = $this->manager;
+        $manager = $this->getManager();
         if (is_null($manager)) {
             throw new \Exception('No manager found on user');
         }

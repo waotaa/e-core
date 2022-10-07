@@ -17,15 +17,16 @@ class ApplyMorphMap extends Command
     {
         $this->getOutput()->writeln('starting applying morph map...');
 
-        $this->applyMorphMap();
+        $this->applyMorphMap($this->getMorphMap());
+        $this->applyMorphMap($this->getMorphMapAppVariant());
 
         $this->getOutput()->writeln('applying morph map finished!');
         return 0;
     }
 
-    public function applyMorphMap()
+    public function applyMorphMap($map)
     {
-        foreach ($this->getMorphMap() as $label => $mappedClass) {
+        foreach ($map as $label => $mappedClass) {
             $this->updateAddressables($label, $mappedClass);
             $this->updateAssociateables($label, $mappedClass);
             $this->updateContactables($label, $mappedClass);
@@ -92,11 +93,14 @@ class ApplyMorphMap extends Command
 
     private function getMorphMap()
     {
+        return MorphMapServiceProvider::MORPH_MAP;
+    }
+
+    private function getMorphMapAppVariant()
+    {
         $map = MorphMapServiceProvider::MORPH_MAP;
-        // temporary additions
-        return array_merge($map, [
-            'instrument' => 'App\\Models\\Instrument',
-            'township' => 'App\\Models\\Township',
-        ]);
+        return array_map(function ($entry){
+            return str_replace('Vng\\EvaCore', 'App', $entry);
+        }, $map);
     }
 }

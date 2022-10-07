@@ -18,9 +18,9 @@ class SetupGeoData extends Command
             '--download' => $this->option('download'),
         ]);
         $this->call('geo:regions-assign');
-        $this->call('elastic:sync-regions', [
-            '--fresh' => true,
-        ]);
+//        $this->call('elastic:sync-regions', [
+//            '--fresh' => true,
+//        ]);
         return 0;
     }
 }

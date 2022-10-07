@@ -35,6 +35,13 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
             'color_primary' => $request->input('color_primary'),
             'color_secondary' => $request->input('color_secondary'),
         ]);
+
+        $environment->contact()->disassociate();
+        if ($request->has('contact_id'))
+        {
+            $environment->contact()->associate($request->input('contact_id'));
+        }
+
         $environment->save();
         return $environment;
     }

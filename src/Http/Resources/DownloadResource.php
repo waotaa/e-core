@@ -15,8 +15,9 @@ class DownloadResource extends JsonResource
 
             'label' => $this->label,
             'url' => $this->url,
+            'filename' => $this->filename,
 
-            'instrument' => InstrumentResource::make($this->instrument)
+            'instrument' => InstrumentResource::make($this->whenLoaded('instrument'))
         ];
     }
 }
