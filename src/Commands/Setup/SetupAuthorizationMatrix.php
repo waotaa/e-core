@@ -76,12 +76,12 @@ class SetupAuthorizationMatrix extends Command
         $this->output->info('ensuring permissions');
         $permissions = $this->getAllPermissionNames();
         return $permissions->map(function ($permission) {
-            $this->output->writeln($permission);
+//            $this->output->writeln($permission);
             return $this->createPermission($permission);
         });
     }
 
-    private function createPermission($permission): Permission
+    private function createPermission($permission): \Spatie\Permission\Contracts\Permission
     {
         return Permission::findOrCreate($permission);
     }
@@ -99,11 +99,9 @@ class SetupAuthorizationMatrix extends Command
         });
     }
 
-    private function createRole($roleName): Role
+    private function createRole($roleName): \Spatie\Permission\Contracts\Role
     {
-        /** @var Role $role */
-        $role = Role::findOrCreate($roleName);
-        return $role;
+        return Role::findOrCreate($roleName);
     }
 
     private function deleteOutdatedRoles(Collection $currentRoles)

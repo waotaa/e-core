@@ -21,6 +21,9 @@ class MigrateToOrchid extends Command
         $this->output->writeln('migrating managers');
         $this->call(MigrateToManagers::class);
 
+        $this->output->writeln('applying morph map');
+        $this->call(ApplyMorphMap::class);
+
         $this->getOutput()->writeln('migrating to orchid finished!');
         return 0;
     }

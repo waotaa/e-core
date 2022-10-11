@@ -7,6 +7,9 @@ class TargetGroupValidation extends ModelValidation
     public static function rules(): array
     {
         return [
+            'description' => [
+                'required'
+            ]
         ];
     }
 }

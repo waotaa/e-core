@@ -11,9 +11,10 @@ class NewsItemResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'environment_slug' => $this->environment->slug,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'environment_slug' => $this->environment->slug,
+
             'publish_from' => $this->publish_from,
             'publish_to' => $this->publish_to,
             'publication_date' => $this->publish_from ?: $this->created_at,

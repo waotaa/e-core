@@ -14,6 +14,9 @@ class ProfessionalValidation extends ModelValidation
                 'email',
                 'max:254'
             ],
+            'environment_id' => [
+                'required'
+            ]
         ];
     }
 

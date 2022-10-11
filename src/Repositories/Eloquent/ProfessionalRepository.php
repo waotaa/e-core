@@ -25,13 +25,14 @@ class ProfessionalRepository extends BaseRepository implements ProfessionalRepos
     public function saveFromRequest(Professional $professional, FormRequest $request): Professional
     {
         $professional->fill([
-            'username' => $request->input('username'),
+//            'username' => $request->input('username'),
             'email' => $request->input('email'),
-            'email_verified' => $request->input('email_verified'),
-            'last_seen_at' => $request->input('last_seen_at'),
-            'enabled' => $request->input('enabled'),
-            'user_status' => $request->input('user_status'),
+//            'email_verified' => $request->input('email_verified'),
+//            'last_seen_at' => $request->input('last_seen_at'),
+//            'enabled' => $request->input('enabled'),
+//            'user_status' => $request->input('user_status'),
         ]);
+        $professional->environment()->associate($request->input('environment_id'));
         $professional->save();
         return $professional;
     }

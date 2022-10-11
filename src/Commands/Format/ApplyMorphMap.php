@@ -3,9 +3,7 @@
 namespace Vng\EvaCore\Commands\Format;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
-use Vng\EvaCore\Providers\EvaServiceProvider;
 use Vng\EvaCore\Providers\MorphMapServiceProvider;
 
 class ApplyMorphMap extends Command
@@ -34,6 +32,7 @@ class ApplyMorphMap extends Command
             $this->updateInstruments($label, $mappedClass);
             $this->updateProviders($label, $mappedClass);
             $this->updateSyncAttempts($label, $mappedClass);
+            $this->updateManagerRoles($label, $mappedClass);
         }
     }
 
@@ -75,6 +74,16 @@ class ApplyMorphMap extends Command
         ];
         foreach ($fields as $field) {
             $this->updateField('sync_attempts', $field, $label, $mappedClass);
+        }
+    }
+
+    public function updateManagerRoles($label, $mappedClass)
+    {
+        $fields = [
+            'model_type',
+        ];
+        foreach ($fields as $field) {
+            $this->updateField('core_manager_has_roles', $field, $label, $mappedClass);
         }
     }
 

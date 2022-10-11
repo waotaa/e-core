@@ -23,16 +23,15 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
         return $this->saveFromRequest($download, $request);
     }
 
-    public function saveFromRequest(Contact $address, FormRequest $request): Contact
+    public function saveFromRequest(Contact $contact, FormRequest $request): Contact
     {
-        $address->fill([
+        $contact->fill([
             'name' => $request->input('name'),
             'phone' => $request->input('phone'),
             'email' => $request->input('email'),
-            'type' => $request->input('type'),
         ]);
-        $address->save();
-        return $address;
+        $contact->save();
+        return $contact;
     }
 
     public function attachInstruments(Contact $contact, array|string $instrumentIds, ?string $type = null): Contact
