@@ -10,12 +10,17 @@ class RegionResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
+
             'name' => $this->name,
             'slug' => $this->slug,
-            'description' => $this->description,
-            'color' => $this->color,
-            'cooperation_partners' => $this->cooperation_partners,
-            'townships' => $this->townships->pluck('name'),
+            'code' => $this->code,
+//            'description' => $this->description,
+//            'color' => $this->color,
+//            'cooperation_partners' => $this->cooperation_partners,
+//            'townships' => $this->townships->pluck('name'),
         ];
     }
 }

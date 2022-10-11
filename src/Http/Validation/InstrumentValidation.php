@@ -7,9 +7,6 @@ class InstrumentValidation extends ModelValidation
     public function rules(): array
     {
         return [
-            'organisation_id' => [
-                'required'
-            ],
             'name' => [
                 'required'
             ],
@@ -17,13 +14,7 @@ class InstrumentValidation extends ModelValidation
                 'required',
                 'max:500'
             ],
-            'provider_id' => [
-                'required',
-            ],
             'aim' => [
-                'required',
-            ],
-            'implementation_id' => [
                 'required',
             ],
             'method' => [
@@ -33,6 +24,15 @@ class InstrumentValidation extends ModelValidation
                 'nullable',
                 'numeric',
                 'min:0'
+            ],
+            'organisation_id' => [
+                'required'
+            ],
+            'provider_id' => [
+                'required',
+            ],
+            'implementation_id' => [
+                'required',
             ],
         ];
     }

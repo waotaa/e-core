@@ -43,6 +43,7 @@ class ProviderRepository extends BaseRepository implements ProviderRepositoryInt
 
         $provider->organisation()->associate($organisation);
 
+        $provider->address()->disassociate();
         if ($request->has('address_id')) {
             $provider->address()->associate($request->input('address_id'));
         }

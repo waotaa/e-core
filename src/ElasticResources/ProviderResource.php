@@ -17,11 +17,12 @@ class ProviderResource extends ElasticResource
             'import_mark' => $this->import_mark,
 
             // relations
-            'owner' => OwnerResource::one($this->owner), // depricated
             'organisation' => OrganisationResource::one($this->organisation),
 
             'address' => AddressResource::one($this->address),
             'contact' => ContactResource::one($this->contact),
+
+//            'owner' => OwnerResource::one($this->owner), // depricated
         ];
     }
 }
