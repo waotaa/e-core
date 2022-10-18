@@ -24,6 +24,7 @@ class MigrateToOrganisations extends Command
 
         // Region owners to Regional Parties
         // Local owners to Local Parties
+        $this->output->writeln('migrate ownership to organisations');
         $this->call(MigrateOwnershipToPartyEntities::class);
 
         // set organisation_id on owned entities

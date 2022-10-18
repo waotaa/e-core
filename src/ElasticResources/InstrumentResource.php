@@ -62,7 +62,7 @@ class InstrumentResource extends ElasticResource
             'reach' => $this->resource->getReach(),
 
             // relations
-            'owner' => OwnerResource::one($this->owner), // depricated
+//            'owner' => OwnerResource::one($this->owner), // depricated
             'organisation' => OrganisationResource::one($this->organisation),
             'implementation' => ImplementationResource::one($this->implementation),
             'group_forms' => GroupFormResource::many($this->groupForms),

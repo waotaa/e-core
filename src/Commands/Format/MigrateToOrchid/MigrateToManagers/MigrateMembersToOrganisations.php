@@ -6,6 +6,8 @@ use Vng\EvaCore\Commands\Format\MigrateToOrchid\AbstractMigrateToPartyEntities;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Models\Associateable;
 use Vng\EvaCore\Models\Manager;
+use Vng\EvaCore\Models\Region;
+use Vng\EvaCore\Models\Township;
 use Vng\EvaCore\Repositories\UserRepositoryInterface;
 
 class MigrateMembersToOrganisations extends AbstractMigrateToPartyEntities
@@ -28,7 +30,18 @@ class MigrateMembersToOrganisations extends AbstractMigrateToPartyEntities
         $users = $this->userRepository->all();
         $users->each(function (EvaUserInterface $user) {
             if($user->associateables->count()) {
-                $organisations = $user->associateables->map(fn (Associateable $associateable) => $associateable->association->organisation);
+                $organisations = $user->associateables
+                    ->map(function (Associateable $associateable) {
+                        $association = $associateable->association;
+                        if ($association instanceof Township) {
+                            $association = $this->findOrCreateLocalParty($association);
+                        }
+                        if ($association instanceof Region) {
+                            $association = $this->findOrCreateRegionalParty($association);
+                        }
+                        return $association->organisation;
+                    })
+                    ->filter();
 
                 /** @var Manager $manager */
                 $manager = $user->manager;

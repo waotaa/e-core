@@ -25,6 +25,7 @@ class Environment extends SearchableModel
         'color_primary',
         'color_secondairy',
         'user_pool_id',
+        'user_pool_client_id',
         'url'
     ];
 

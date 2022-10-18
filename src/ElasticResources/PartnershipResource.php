@@ -9,7 +9,9 @@ class PartnershipResource extends ElasticResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'slug' => $this->slug
+            'slug' => $this->slug,
+
+            'townships' => TownshipResource::many($this->townships),
         ];
     }
 }

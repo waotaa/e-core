@@ -15,7 +15,9 @@ class EnsureManagers extends Command
     protected UserRepositoryInterface $userRepository;
     protected ManagerRepositoryInterface $managerRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository, ManagerRepositoryInterface $managerRepository)
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        ManagerRepositoryInterface $managerRepository)
     {
         $this->userRepository = $userRepository;
         $this->managerRepository = $managerRepository;

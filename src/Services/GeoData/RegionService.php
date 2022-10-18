@@ -11,13 +11,14 @@ class RegionService
     {
         return Region::withoutEvents(function() use ($regionData) {
             /** @var Region $region */
-            $region = Region::query()->updateOrCreate([
+            $region = Region::query()->firstOrNew([
                 'code' => $regionData->getCode(),
             ], [
                 'name' => $regionData->getName(),
+                'slug' => $regionData->getSlug(),
                 'color' => $regionData->getColor(),
             ]);
-
+            $region->saveQuietly();
             static::connectTownshipsToRegion($region);
             return $region;
         });
@@ -31,10 +32,8 @@ class RegionService
             'name' => $regionData->getName(),
             'slug' => $regionData->getSlug(),
             'color' => $regionData->getColor(),
-        ])->save();
-
+        ])->saveQuietly();
         static::connectTownshipsToRegion($region);
-
         return $region;
     }
 

@@ -2,6 +2,8 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
+use Vng\EvaCore\ElasticResources\Professional\EnvironmentResource;
+
 class ProfessionalResource extends ElasticResource
 {
     public function toArray()
@@ -16,6 +18,8 @@ class ProfessionalResource extends ElasticResource
             'status' => $this->status,
 
             'ratings_count' => $this->ratings->count(),
+
+            'environment' => EnvironmentResource::one($this->environment)
         ];
     }
 }

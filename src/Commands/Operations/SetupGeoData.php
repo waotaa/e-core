@@ -3,6 +3,9 @@
 namespace Vng\EvaCore\Commands\Operations;
 
 use Illuminate\Console\Command;
+use Vng\EvaCore\Commands\Geo\RegionsAssign;
+use Vng\EvaCore\Commands\Geo\RegionsCreateDataFromSource;
+use Vng\EvaCore\Commands\Geo\TownshipsCreateDataFromSource;
 
 class SetupGeoData extends Command
 {
@@ -11,13 +14,13 @@ class SetupGeoData extends Command
 
     public function handle(): int
     {
-        $this->call('geo:townships-create', [
+        $this->call(TownshipsCreateDataFromSource::class, [
             '--download' => $this->option('download'),
         ]);
-        $this->call('geo:regions-create', [
+        $this->call(RegionsCreateDataFromSource::class, [
             '--download' => $this->option('download'),
         ]);
-        $this->call('geo:regions-assign');
+        $this->call(RegionsAssign::class);
 //        $this->call('elastic:sync-regions', [
 //            '--fresh' => true,
 //        ]);

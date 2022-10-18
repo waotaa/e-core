@@ -34,6 +34,11 @@ abstract class AbstractOrganisationBase extends SearchableModel implements Organ
         return $this->belongsTo(Organisation::class);
     }
 
+    public function getOrganisation(): ?Organisation
+    {
+        return $this->organisation;
+    }
+
     public function hasMember(Model $user): bool
     {
         return $this->organisation->hasMember($user);

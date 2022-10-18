@@ -5,7 +5,6 @@ namespace Vng\EvaCore\Commands\Format\MigrateToOrchid\MigrateToOrganisations;
 use Vng\EvaCore\Interfaces\OrganisationEntityInterface;
 use Vng\EvaCore\Models\Environment;
 use Illuminate\Console\Command;
-use Vng\EvaCore\Models\Organisation;
 
 class MigrateToMultipleFeaturedOrganisations extends Command
 {
@@ -30,9 +29,8 @@ class MigrateToMultipleFeaturedOrganisations extends Command
         $environments->each(function (Environment $environment) {
             /** @var OrganisationEntityInterface $featuredAssociation */
             $featuredAssociation = $environment->featuredAssociation;
-            if (!is_null($featuredAssociation)) {
-                /** @var Organisation $organisation */
-                $organisation = $featuredAssociation->organisation;
+            if ($featuredAssociation instanceof OrganisationEntityInterface) {
+                $organisation = $featuredAssociation->getOrganisation();
                 $organisation->featuringEnvironments()->syncWithoutDetaching($environment);
             }
         });

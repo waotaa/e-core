@@ -43,14 +43,14 @@ class UserPoolClientService
 
     public static function ensureUserPoolClient(Environment $environment): ?UserPoolClientModel
     {
-        $userPool = static::getUserPoolClientByEnvironment($environment);
-        if (!is_null($userPool)) {
-            return null;
+        $userPoolClient = static::getUserPoolClientByEnvironment($environment);
+        if (!is_null($userPoolClient)) {
+            return $userPoolClient;
         }
         $result = static::createUserPoolClient($environment);
         $userPoolId = $result['UserPoolClient']['UserPoolId'];
         $userPoolClientId = $result['UserPoolClient']['ClientId'];
-        return static::getUserPoolByIds($userPoolId, $userPoolClientId);
+        return static::getUserPoolClientByIds($userPoolId, $userPoolClientId);
     }
 
     protected static function createUserPoolClient(Environment $environment): Result
@@ -80,7 +80,7 @@ class UserPoolClientService
         if (is_null($environment->user_pool_id) || is_null($environment->user_pool_client_id)){
             return null;
         }
-        return self::getUserPoolByIds($environment->user_pool_id, $environment->user_pool_client_id);
+        return self::getUserPoolClientByIds($environment->user_pool_id, $environment->user_pool_client_id);
     }
 
 //    protected static function getUserPoolClientByName($name, string $nextToken = null): ?UserPoolClientModel
@@ -117,7 +117,7 @@ class UserPoolClientService
 //        return $cognitoClient->ListUserPoolClients($args);
 //    }
 
-    protected static function getUserPoolByIds(string $userPoolId, string $userPoolClientId)
+    protected static function getUserPoolClientByIds(string $userPoolId, string $userPoolClientId)
     {
         $userPoolClientDescription = self::describeUserPoolClient($userPoolId, $userPoolClientId);
         return UserPoolClientModel::create($userPoolClientDescription['UserPoolClient']);

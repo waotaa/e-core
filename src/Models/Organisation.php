@@ -27,12 +27,17 @@ class Organisation extends Model
 
     public function getNameAttribute()
     {
-        return $this->organisationable->name;
+        return $this->organisationable?->name;
+    }
+
+    public function getSlugAttribute()
+    {
+        return $this->organisationable?->slug;
     }
 
     public function getTypeAttribute()
     {
-        return $this->organisationable->type;
+        return $this->organisationable?->type;
     }
 
     public function managers(): BelongsToMany

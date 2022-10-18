@@ -11,13 +11,14 @@ class TownshipService
     {
         return Township::withoutEvents(function() use ($townshipData) {
             /** @var Township $township */
-            $township = Township::query()->updateOrCreate([
+            $township = Township::query()->firstOrNew([
                 'code' => $townshipData->getCode(),
             ], [
                 'name' => $townshipData->getName(),
+                'slug' => $townshipData->getSlug(),
                 'region_code' => $townshipData->getRegionCode(),
             ]);
-
+            $township->saveQuietly();
             static::connectTownshipToRegion($township);
             return $township;
         });

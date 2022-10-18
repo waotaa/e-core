@@ -9,7 +9,9 @@ class AddEnvironmentIdToProfessionalsTable extends Migration
     public function up(): void
     {
         Schema::table('professionals', function (Blueprint $table) {
-            $table->foreignId('environment_id')->after('last_seen_at')->constrained()->cascadeOnDelete();
+            // Needs to be nullable in able to migrate existing professionals
+            $table->foreignId('environment_id')->nullable()->after('last_seen_at')->constrained()->nullOnDelete();
+//            $table->foreignId('environment_id')->after('last_seen_at')->constrained()->cascadeOnDelete();
         });
     }
 

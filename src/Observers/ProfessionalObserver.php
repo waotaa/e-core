@@ -14,7 +14,11 @@ class ProfessionalObserver
 
     public function created(Professional $professional): void
     {
-        CognitoService::make($professional->environment)->createProfessional($professional);
+        $cognitoService = CognitoService::make($professional->environment);
+        $profModel = $cognitoService->getUser($professional);
+        if (is_null($profModel)) {
+            $cognitoService->createProfessional($professional);
+        }
     }
 
     public function deleted(Professional $professional): void
