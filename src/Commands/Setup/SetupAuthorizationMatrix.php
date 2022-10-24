@@ -20,12 +20,15 @@ class SetupAuthorizationMatrix extends Command
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
+        $this->output->writeln('creating permissions');
         $permissions = $this->createPermissions();
         $this->deleteOutdatedPermissions($permissions);
 
+        $this->output->writeln('creating roles');
         $roles = $this->createRoles();
         $this->deleteOutdatedRoles($roles);
 
+        $this->output->writeln('assigning permissions to roles');
         $this->assignPermissionsToRoles();
 
         $this->info("\n[ Setting up eva authorization matrix ] - finished!\n");
@@ -113,15 +116,16 @@ class SetupAuthorizationMatrix extends Command
     {
         $roles = Role::all();
         $roles->each(function (Role $role) {
+            $this->output->writeln('handling role ' . $role->name);
             $this->assignPermissionsToRole($role);
         });
     }
 
     private function assignPermissionsToRole(Role $role): void
     {
-        $permissions = $this->getPermissionsForRoleKey($role->getKey());
+        $permissions = $this->getPermissionsForRoleKey($role->getAttribute('name'));
         $permissionCollection = collect($permissions)
-            ->each(fn ($permissionName) => $this->createPermission($permissionName));
+            ->map(fn ($permissionName) => $this->createPermission($permissionName));
         $role->syncPermissions($permissionCollection);
     }
 

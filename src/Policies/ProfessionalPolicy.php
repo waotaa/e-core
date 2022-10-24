@@ -12,26 +12,26 @@ class ProfessionalPolicy extends BasePolicy
 
     public function viewAny(IsManagerInterface $user): bool
     {
-        return $user->managerCan('viewAny professional');
+        return $user->managerCan('professional.viewAny');
     }
 
     public function view(IsManagerInterface $user, Professional $professional): bool
     {
-        return $user->managerCan('view professional');
+        return $user->managerCan('professional.view');
     }
 
     public function create(IsManagerInterface $user): bool
     {
-        return $user->managerCan('create professional');
+        return $user->managerCan('professional.create');
     }
 
     public function update(IsManagerInterface $user, Professional $professional): bool
     {
-        return $user->managerCan('update professional');
+        return $user->managerCan('professional.update');
     }
 
     public function delete(IsManagerInterface $user, Professional $professional): bool
     {
-        return $user->managerCan('delete professional');
+        return $user->managerCan('professional.delete');
     }
 }

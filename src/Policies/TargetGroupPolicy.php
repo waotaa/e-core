@@ -75,7 +75,7 @@ class TargetGroupPolicy extends BasePolicy
 
     public function create(IsManagerInterface $user): bool
     {
-        if ($user->managerCan('create targetGroup')) {
+        if ($user->managerCan('targetGroup.create')) {
             return true;
         }
         if ($user->managerCan('targetGroup.custom.create')) {
@@ -90,7 +90,7 @@ class TargetGroupPolicy extends BasePolicy
         if ($this->userOwnsTargetGroup($user, $targetGroup) && $user->managerCan('targetGroup.custom.update')) {
             return true;
         }
-        return $user->managerCan('update targetGroup');
+        return $user->managerCan('targetGroup.update');
     }
 
     public function delete(IsManagerInterface $user, TargetGroup $targetGroup): bool
@@ -98,7 +98,7 @@ class TargetGroupPolicy extends BasePolicy
         if ($this->userOwnsTargetGroup($user, $targetGroup) && $user->managerCan('targetGroup.custom.delete')) {
             return true;
         }
-        return $user->managerCan('delete targetGroup');
+        return $user->managerCan('targetGroup.delete');
     }
 
     public function restore(IsManagerInterface $user, TargetGroup $targetGroup): bool
@@ -106,7 +106,7 @@ class TargetGroupPolicy extends BasePolicy
         if ($this->userOwnsTargetGroup($user, $targetGroup) && $user->managerCan('targetGroup.custom.restore')) {
             return true;
         }
-        return $user->managerCan('restore targetGroup');
+        return $user->managerCan('targetGroup.restore');
     }
 
     public function forceDelete(IsManagerInterface $user, TargetGroup $targetGroup): bool
@@ -114,7 +114,7 @@ class TargetGroupPolicy extends BasePolicy
         if ($this->userOwnsTargetGroup($user, $targetGroup) && $user->managerCan('targetGroup.custom.forceDelete')) {
             return true;
         }
-        return $user->managerCan('forceDelete targetGroup');
+        return $user->managerCan('targetGroup.forceDelete');
     }
 
 

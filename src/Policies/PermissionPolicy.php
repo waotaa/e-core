@@ -12,12 +12,12 @@ class PermissionPolicy extends BasePolicy
 
     public function viewAny(IsManagerInterface $user): bool
     {
-        return $user->managerCan('viewAny permission');
+        return $user->managerCan('permission.viewAny');
     }
 
     public function view(IsManagerInterface $user, Permission $permission): bool
     {
-        return $user->managerCan('view permission');
+        return $user->managerCan('permission.view');
     }
 
     public function create(IsManagerInterface $user): bool

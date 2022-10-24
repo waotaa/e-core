@@ -12,7 +12,7 @@ class LocalPartyPolicy extends BaseOrganisationPolicy
 
     public function viewAny(IsManagerInterface $user)
     {
-        return $user->managerCan('viewAny localParty');
+        return $user->managerCan('localParty.viewAny');
     }
 
     public function view(IsManagerInterface $user, LocalParty $localParty)
@@ -20,47 +20,47 @@ class LocalPartyPolicy extends BaseOrganisationPolicy
         if($localParty->hasMember($user)){
             return true;
         }
-        return $user->managerCan('view localParty');
+        return $user->managerCan('localParty.view');
     }
 
     public function create(IsManagerInterface $user)
     {
-        return $user->managerCan('create localParty');
+        return $user->managerCan('localParty.create');
     }
 
     public function update(IsManagerInterface $user, LocalParty $localParty)
     {
         if($localParty->hasMember($user)
-            && $user->managerCan('update association')) {
+            && $user->managerCan('organisation.update')) {
             return true;
         }
-        return $user->managerCan('update localParty');
+        return $user->managerCan('localParty.update');
     }
 
     public function delete(IsManagerInterface $user, LocalParty $localParty)
     {
         if($localParty->hasMember($user)
-            && $user->managerCan('delete association')) {
+            && $user->managerCan('organisation.delete')) {
             return true;
         }
-        return $user->managerCan('delete localParty');
+        return $user->managerCan('localParty.delete');
     }
 
     public function restore(IsManagerInterface $user, LocalParty $localParty)
     {
         if($localParty->hasMember($user)
-            && $user->managerCan('restore association')) {
+            && $user->managerCan('organisation.restore')) {
             return true;
         }
-        return $user->managerCan('restore localParty');
+        return $user->managerCan('localParty.restore');
     }
 
     public function forceDelete(IsManagerInterface $user, LocalParty $localParty)
     {
         if($localParty->hasMember($user)
-            && $user->managerCan('forceDelete association')) {
+            && $user->managerCan('organisation.forceDelete')) {
             return true;
         }
-        return $user->managerCan('forceDelete localParty');
+        return $user->managerCan('localParty.forceDelete');
     }
 }

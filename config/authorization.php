@@ -354,6 +354,7 @@ return [
         'manager',
         'nationalParty',
         'newsItem',
+        'organisation',
         'partnership',
         'provider',
         'provider.organisation',

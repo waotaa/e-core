@@ -25,27 +25,27 @@ class ClientCharacteristicPolicy extends BasePolicy
 
     public function create(IsManagerInterface $user)
     {
-        return $user->managerCan('create clientCharacteristic');
+        return $user->managerCan('clientCharacteristic.create');
     }
 
     public function update(IsManagerInterface $user)
     {
-        return $user->managerCan('update clientCharacteristic');
+        return $user->managerCan('clientCharacteristic.update');
     }
 
     public function delete(IsManagerInterface $user)
     {
-        return $user->managerCan('delete clientCharacteristic');
+        return $user->managerCan('clientCharacteristic.delete');
     }
 
     public function restore(IsManagerInterface $user)
     {
-        return $user->managerCan('restore clientCharacteristic');
+        return $user->managerCan('clientCharacteristic.restore');
     }
 
     public function forceDelete(IsManagerInterface $user)
     {
-        return $user->managerCan('forceDelete clientCharacteristic');
+        return $user->managerCan('clientCharacteristic.forceDelete');
     }
 
 

@@ -19,10 +19,14 @@ class InstrumentTypeSeeder extends Seeder
         ], [
             'name' => 'Werkgevers-dienstverlening'
         ]);
-        InstrumentType::query()->updateOrCreate([
+
+//        InstrumentType::query()->updateOrCreate([
+//            'key' => 'IT-3',
+//        ], [
+//            'name' => 'Mobiliteits-dienstverleninig'
+//        ]);
+        InstrumentType::query()->where([
             'key' => 'IT-3',
-        ], [
-            'name' => 'Mobiliteits-dienstverleninig'
-        ]);
+        ])->delete();
     }
 }

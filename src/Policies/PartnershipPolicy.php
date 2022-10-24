@@ -32,7 +32,7 @@ class PartnershipPolicy extends BaseOrganisationPolicy
     public function update(IsManagerInterface $user, Partnership $partnership): bool
     {
         if($partnership->hasMember($user)
-            && $user->managerCan('update association')) {
+            && $user->managerCan('organisation.update')) {
             return true;
         }
         return $user->managerCan('partnership.update');
@@ -41,7 +41,7 @@ class PartnershipPolicy extends BaseOrganisationPolicy
     public function delete(IsManagerInterface $user, Partnership $partnership): bool
     {
         if($partnership->hasMember($user)
-            && $user->managerCan('delete association')) {
+            && $user->managerCan('organisation.delete')) {
             return true;
         }
         return $user->managerCan('partnership.delete');
@@ -50,7 +50,7 @@ class PartnershipPolicy extends BaseOrganisationPolicy
     public function restore(IsManagerInterface $user, Partnership $partnership): bool
     {
         if($partnership->hasMember($user)
-            && $user->managerCan('restore association')) {
+            && $user->managerCan('organisation.restore')) {
             return true;
         }
         return $user->managerCan('partnership.restore');
@@ -59,7 +59,7 @@ class PartnershipPolicy extends BaseOrganisationPolicy
     public function forceDelete(IsManagerInterface $user, Partnership $partnership): bool
     {
         if($partnership->hasMember($user)
-            && $user->managerCan('forceDelete association')) {
+            && $user->managerCan('organisation.forceDelete')) {
             return true;
         }
         return $user->managerCan('partnership.forceDelete');

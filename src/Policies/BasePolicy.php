@@ -14,13 +14,15 @@ abstract class BasePolicy
 
     public function before(IsManagerInterface $user)
     {
-        return $this->getManager($user)->isSuperAdmin();
+        if ($this->getManager($user)->isSuperAdmin()) {
+            return true;
+        }
+        return null;
     }
 
     protected function getManager(IsManagerInterface $user): Manager
     {
-        /** @var Manager $manager */
-        $manager = $user->manager;
+        $manager = $user->getManager();
         if (is_null($manager)) {
             throw new \Exception('No manager found on user');
         }

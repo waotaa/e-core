@@ -12,12 +12,12 @@ class RolePolicy extends BasePolicy
 
     public function viewAny(IsManagerInterface $user): bool
     {
-        return $user->managerCan('viewAny role');
+        return $user->managerCan('role.viewAny');
     }
 
     public function view(IsManagerInterface $user, Role $model): bool
     {
-        return $user->managerCan('view role');
+        return $user->managerCan('role.view');
     }
 
     public function create(IsManagerInterface $user): bool

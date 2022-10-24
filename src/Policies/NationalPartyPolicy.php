@@ -42,7 +42,7 @@ class NationalPartyPolicy extends BaseOrganisationPolicy
     public function update(IsManagerInterface $user, NationalParty $nationalParty)
     {
         if($nationalParty->hasMember($user)
-            && $user->managerCan('update association')) {
+            && $user->managerCan('organisation.update')) {
             return true;
         }
         return $user->managerCan('nationalParty.update');
@@ -56,7 +56,7 @@ class NationalPartyPolicy extends BaseOrganisationPolicy
     public function delete(IsManagerInterface $user, NationalParty $nationalParty)
     {
         if($nationalParty->hasMember($user)
-            && $user->managerCan('delete association')) {
+            && $user->managerCan('association.delete')) {
             return true;
         }
         return $user->managerCan('nationalParty.delete');
@@ -70,7 +70,7 @@ class NationalPartyPolicy extends BaseOrganisationPolicy
     public function restore(IsManagerInterface $user, NationalParty $nationalParty)
     {
         if($nationalParty->hasMember($user)
-            && $user->managerCan('restore association')) {
+            && $user->managerCan('organisation.restore')) {
             return true;
         }
         return $user->managerCan('nationalParty.restore');
@@ -84,7 +84,7 @@ class NationalPartyPolicy extends BaseOrganisationPolicy
     public function forceDelete(IsManagerInterface $user, NationalParty $nationalParty)
     {
         if($nationalParty->hasMember($user)
-            && $user->managerCan('forceDelete association')) {
+            && $user->managerCan('organisation.forceDelete')) {
             return true;
         }
         return $user->managerCan('nationalParty.forceDelete');

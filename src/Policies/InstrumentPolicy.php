@@ -41,8 +41,7 @@ class InstrumentPolicy extends BasePolicy
 
     public function create(IsManagerInterface $user): bool
     {
-        return $user->managerCan('create national instrument')
-            || $user->managerCan('instrument.organisation.create')
+        return $user->managerCan('instrument.organisation.create')
             || $user->managerCan('instrument.create');
     }
 
@@ -53,11 +52,6 @@ class InstrumentPolicy extends BasePolicy
      */
     public function update(IsManagerInterface $user, Instrument $instrument): bool
     {
-        if (!$instrument->hasOwner()
-            && $user->managerCan('update national instrument')
-        ) {
-            return true;
-        }
         if ($instrument->hasOwner()
             && $user->managerCan('instrument.organisation.update')
             && $instrument->isUserMemberOfOwner($user)
@@ -74,11 +68,6 @@ class InstrumentPolicy extends BasePolicy
      */
     public function delete(IsManagerInterface $user, Instrument $instrument): bool
     {
-        if (!$instrument->hasOwner()
-            && $user->managerCan('delete national instrument')
-        ) {
-            return true;
-        }
         if ($instrument->hasOwner()
             && $user->managerCan('instrument.organisation.delete')
             && $instrument->isUserMemberOfOwner($user)
@@ -95,11 +84,6 @@ class InstrumentPolicy extends BasePolicy
      */
     public function restore(IsManagerInterface $user, Instrument $instrument): bool
     {
-        if (!$instrument->hasOwner()
-            && $user->managerCan('restore national instrument')
-        ) {
-            return true;
-        }
         if ($instrument->hasOwner()
             && $user->managerCan('instrument.organisation.restore')
             && $instrument->isUserMemberOfOwner($user)
@@ -116,11 +100,6 @@ class InstrumentPolicy extends BasePolicy
      */
     public function forceDelete(IsManagerInterface $user, Instrument $instrument): bool
     {
-        if (!$instrument->hasOwner()
-            && $user->managerCan('forceDelete national instrument')
-        ) {
-            return true;
-        }
         if ($instrument->hasOwner()
             && $user->managerCan('instrument.organisation.forceDelete')
             && $instrument->isUserMemberOfOwner($user)

@@ -25,27 +25,27 @@ class GroupFormPolicy extends BasePolicy
 
     public function create(IsManagerInterface $user)
     {
-        return $user->managerCan('create groupForm');
+        return $user->managerCan('groupForm.create');
     }
 
     public function update(IsManagerInterface $user, GroupForm $groupForm)
     {
-        return $user->managerCan('update groupForm');
+        return $user->managerCan('groupForm.update');
     }
 
     public function delete(IsManagerInterface $user, GroupForm $groupForm)
     {
-        return $user->managerCan('delete groupForm');
+        return $user->managerCan('groupForm.delete');
     }
 
     public function restore(IsManagerInterface $user, GroupForm $groupForm)
     {
-        return $user->managerCan('restore groupForm');
+        return $user->managerCan('groupForm.restore');
     }
 
     public function forceDelete(IsManagerInterface $user, GroupForm $groupForm)
     {
-        return $user->managerCan('forceDelete groupForm');
+        return $user->managerCan('groupForm.forceDelete');
     }
 
 

@@ -33,6 +33,11 @@ class ManagerPolicy extends BasePolicy
             && $user->managerCan('manager.organisation.view')) {
             return true;
         }
+        return $user->can('viewAll', Manager::class);
+    }
+
+    public function viewAll(IsManagerInterface $user)
+    {
         return $user->managerCan('manager.view');
     }
 

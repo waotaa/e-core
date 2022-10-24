@@ -36,8 +36,7 @@ class ProviderPolicy extends BasePolicy
 
     public function create(IsManagerInterface $user): bool
     {
-        return $user->managerCan('create national provider')
-            || $user->managerCan('provider.organisation.create')
+        return $user->managerCan('provider.organisation.create')
             || $user->managerCan('provider.create');
     }
 
@@ -48,11 +47,6 @@ class ProviderPolicy extends BasePolicy
      */
     public function update(IsManagerInterface $user, Provider $provider): bool
     {
-        if(!$provider->hasOwner()
-            && $user->managerCan('update national provider')
-        ){
-            return true;
-        }
         if ($provider->hasOwner()
             && $user->managerCan('provider.organisation.update')
             && $provider->isUserMemberOfOwner($user)
@@ -69,11 +63,6 @@ class ProviderPolicy extends BasePolicy
      */
     public function delete(IsManagerInterface $user, Provider $provider): bool
     {
-        if(!$provider->hasOwner()
-            && $user->managerCan('delete national provider')
-        ){
-            return true;
-        }
         if ($provider->hasOwner()
             && $user->managerCan('provider.organisation.delete')
             && $provider->isUserMemberOfOwner($user)
@@ -90,11 +79,6 @@ class ProviderPolicy extends BasePolicy
      */
     public function restore(IsManagerInterface $user, Provider $provider): bool
     {
-        if(!$provider->hasOwner()
-            && $user->managerCan('restore national provider')
-        ){
-            return true;
-        }
         if ($provider->hasOwner()
             && $user->managerCan('provider.organisation.restore')
             && $provider->isUserMemberOfOwner($user)
@@ -111,11 +95,6 @@ class ProviderPolicy extends BasePolicy
      */
     public function forceDelete(IsManagerInterface $user, Provider $provider): bool
     {
-        if(!$provider->hasOwner()
-            && $user->managerCan('forceDelete national provider')
-        ){
-            return true;
-        }
         if ($provider->hasOwner()
             && $user->managerCan('provider.organisation.forceDelete')
             && $provider->isUserMemberOfOwner($user)

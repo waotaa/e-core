@@ -31,7 +31,7 @@ class RegionalPartyPolicy extends BaseOrganisationPolicy
     public function update(IsManagerInterface $user, RegionalParty $regionalParty): bool
     {
         if($regionalParty->hasMember($user)
-            && $user->managerCan('update association')) {
+            && $user->managerCan('organisation.update')) {
             return true;
         }
         return $user->managerCan('regionalParty.update');
@@ -40,7 +40,7 @@ class RegionalPartyPolicy extends BaseOrganisationPolicy
     public function delete(IsManagerInterface $user, RegionalParty $regionalParty): bool
     {
         if($regionalParty->hasMember($user)
-            && $user->managerCan('delete association')) {
+            && $user->managerCan('organisation.delete')) {
             return true;
         }
         return $user->managerCan('regionalParty.delete');
@@ -49,7 +49,7 @@ class RegionalPartyPolicy extends BaseOrganisationPolicy
     public function restore(IsManagerInterface $user, RegionalParty $regionalParty): bool
     {
         if($regionalParty->hasMember($user)
-            && $user->managerCan('restore association')) {
+            && $user->managerCan('organisation.restore')) {
             return true;
         }
         return $user->managerCan('regionalParty.restore');
@@ -58,7 +58,7 @@ class RegionalPartyPolicy extends BaseOrganisationPolicy
     public function forceDelete(IsManagerInterface $user, RegionalParty $regionalParty): bool
     {
         if($regionalParty->hasMember($user)
-            && $user->managerCan('forceDelete association')) {
+            && $user->managerCan('organisation.forceDelete')) {
             return true;
         }
         return $user->managerCan('regionalParty.forceDelete');

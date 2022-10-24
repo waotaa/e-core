@@ -25,6 +25,7 @@ trait IsManager
         if (is_null($manager)) {
             throw new \Exception('No manager found on user');
         }
+
         return $manager->hasPermissionTo($permission);
     }
 

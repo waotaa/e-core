@@ -52,6 +52,7 @@ use Vng\EvaCore\Commands\Geo\TownshipsCreateDataSetFromApi;
 use Vng\EvaCore\Commands\Geo\TownshipsUpdateDataFromSource;
 use Vng\EvaCore\Commands\ImportInstruments;
 use Vng\EvaCore\Commands\ImportOldFormatInstruments;
+use Vng\EvaCore\Commands\Instruments\AssignInstrumentTypes;
 use Vng\EvaCore\Commands\Instruments\InstrumentSignalingCheck;
 use Vng\EvaCore\Commands\Operations\AddNewsItem;
 use Vng\EvaCore\Commands\Operations\CleanContacts;
@@ -203,6 +204,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         CleanContacts::class,
         SetupGeoData::class,
 
+        AssignInstrumentTypes::class,
         InstrumentSignalingCheck::class,
 
         CognitoFetchProfessionals::class,

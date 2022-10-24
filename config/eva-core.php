@@ -17,6 +17,10 @@ return [
         'url' => env('APP_URL_GUIDE', null),
     ],
 
+    'instrument' => [
+        'dedicatedType' => env('APP_DEDICATED_INSTRUMENT_TYPE')
+    ],
+
     'userpool' => [
         'name' => env('AWS_COGNITO_USER_POOL', null),
         'url' => env('AWS_COGNITO_APP_URL_GUIDE', null),

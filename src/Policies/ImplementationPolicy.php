@@ -46,7 +46,7 @@ class ImplementationPolicy extends BasePolicy
 
     public function create(IsManagerInterface $user): bool
     {
-        return $user->managerCan('create implementation') || $user->managerCan('implementation.custom.create');
+        return $user->managerCan('implementation.create') || $user->managerCan('implementation.custom.create');
     }
 
     /**
@@ -59,7 +59,7 @@ class ImplementationPolicy extends BasePolicy
         if ($this->userOwnsImplementation($user, $implementation) && $user->managerCan('implementation.custom.update')) {
             return true;
         }
-        return $user->managerCan('update implementation');
+        return $user->managerCan('implementation.update');
     }
 
     /**
@@ -72,7 +72,7 @@ class ImplementationPolicy extends BasePolicy
         if ($this->userOwnsImplementation($user, $implementation) && $user->managerCan('implementation.custom.delete')) {
             return true;
         }
-        return $user->managerCan('delete implementation');
+        return $user->managerCan('implementation.delete');
     }
 
     /**
@@ -85,7 +85,7 @@ class ImplementationPolicy extends BasePolicy
         if ($this->userOwnsImplementation($user, $implementation) && $user->managerCan('implementation.custom.restore')) {
             return true;
         }
-        return $user->managerCan('restore implementation');
+        return $user->managerCan('implementation.restore');
     }
 
     /**
@@ -98,6 +98,6 @@ class ImplementationPolicy extends BasePolicy
         if ($this->userOwnsImplementation($user, $implementation) && $user->managerCan('implementation.custom.forceDelete')) {
             return true;
         }
-        return $user->managerCan('forceDelete implementation');
+        return $user->managerCan('implementation.forceDelete');
     }
 }
