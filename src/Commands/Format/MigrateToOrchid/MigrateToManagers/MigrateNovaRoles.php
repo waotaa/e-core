@@ -37,6 +37,10 @@ class MigrateNovaRoles extends Command
 
     private function migrateRoles()
     {
+        if (!DB::table('nova_model_has_roles')->exists()) {
+            $this->output->writeln('nova_model_has_roles table does not exists - skippinig');
+        }
+
         $records = DB::table('nova_model_has_roles')->get(['model_id', 'role_id']);
         $records->each(function ($record) {
             /** @var IsManagerInterface $user */
@@ -64,6 +68,10 @@ class MigrateNovaRoles extends Command
 
     private function migrateToOrganisationRoles()
     {
+        if (!DB::table('nova_roles')->exists()) {
+            $this->output->writeln('nova_roles table does not exists - skippinig');
+        }
+
         $instrumentManagerRoles = DB::table('nova_roles')
             ->where('name', 'instrument-manager-association')
             ->orWhere('name', 'instrument-manager-national')
