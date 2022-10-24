@@ -40,6 +40,7 @@ class MigrateNovaRoles extends Command
     {
         if (!Schema::hasTable('nova_model_has_roles')) {
             $this->output->writeln('nova_model_has_roles table does not exists - skippinig');
+            return;
         }
 
         $records = DB::table('nova_model_has_roles')->get(['model_id', 'role_id']);
@@ -71,6 +72,7 @@ class MigrateNovaRoles extends Command
     {
         if (!Schema::hasTable('nova_roles')) {
             $this->output->writeln('nova_roles table does not exists - skippinig');
+            return;
         }
 
         $instrumentManagerRoles = DB::table('nova_roles')
