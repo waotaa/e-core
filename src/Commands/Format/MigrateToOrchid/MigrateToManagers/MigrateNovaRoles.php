@@ -4,6 +4,7 @@ namespace Vng\EvaCore\Commands\Format\MigrateToOrchid\MigrateToManagers;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Manager;
 use Vng\EvaCore\Repositories\ManagerRepositoryInterface;
@@ -37,7 +38,7 @@ class MigrateNovaRoles extends Command
 
     private function migrateRoles()
     {
-        if (!DB::table('nova_model_has_roles')->exists()) {
+        if (!Schema::hasTable('nova_model_has_roles')) {
             $this->output->writeln('nova_model_has_roles table does not exists - skippinig');
         }
 
@@ -68,7 +69,7 @@ class MigrateNovaRoles extends Command
 
     private function migrateToOrganisationRoles()
     {
-        if (!DB::table('nova_roles')->exists()) {
+        if (!Schema::hasTable('nova_roles')) {
             $this->output->writeln('nova_roles table does not exists - skippinig');
         }
 
