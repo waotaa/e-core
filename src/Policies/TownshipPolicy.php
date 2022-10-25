@@ -17,10 +17,6 @@ class TownshipPolicy extends BasePolicy
 
     public function view(IsManagerInterface $user, Township $township): bool
     {
-        if ($township->hasMember($user)) {
-            return true;
-        }
-
         return $user->managerCan('township.view');
     }
 

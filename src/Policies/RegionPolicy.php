@@ -17,10 +17,6 @@ class RegionPolicy extends BasePolicy
 
     public function view(IsManagerInterface $user, Region $region): bool
     {
-        if ($region->hasMember($user)) {
-            return true;
-        }
-
         return $user->managerCan('region.view');
     }
 

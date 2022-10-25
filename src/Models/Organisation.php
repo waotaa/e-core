@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Traits\HasContacts;
 
 class Organisation extends Model
@@ -45,9 +46,10 @@ class Organisation extends Model
         return $this->belongsToMany(Manager::class);
     }
 
-    public function hasMember(Model $user): bool
+    public function hasMember(IsManagerInterface $user): bool
     {
-        return $this->managers && $this->managers->contains($user->id);
+        $manager = $user->getManager();
+        return $this->managers && $this->managers->contains($manager->id);
     }
 
     public function scopeIsMember(Builder $query, Manager $manager): Builder

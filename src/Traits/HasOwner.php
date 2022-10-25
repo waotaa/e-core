@@ -17,14 +17,9 @@ trait HasOwner
         return $this->belongsTo(Organisation::class);
     }
 
-    public function owner(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
     public function hasOwner(): bool
     {
-        return $this->owner !== null;
+        return $this->organisation !== null;
     }
 
     public function getOwnerClass(): ?string
@@ -32,7 +27,7 @@ trait HasOwner
         if (!$this->hasOwner()) {
             return null;
         }
-        return get_class($this->owner);
+        return get_class($this->organisation);
     }
 
     public function getOwnerType(): ?string
@@ -40,11 +35,19 @@ trait HasOwner
         if (!$this->hasOwner()) {
             return null;
         }
-        return (new ReflectionClass($this->owner))->getShortName();
+        return (new ReflectionClass($this->organisation))->getShortName();
     }
 
     public function isUserMemberOfOwner(EvaUserInterface $user): bool
     {
-        return $this->hasOwner() && $this->owner->hasMember($user);
+        return $this->hasOwner() && $this->organisation->hasMember($user);
+    }
+
+    /**
+     * @deprecated
+     */
+    public function owner(): MorphTo
+    {
+        return $this->morphTo();
     }
 }
