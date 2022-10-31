@@ -11,7 +11,6 @@ class ProfessionalResource extends ElasticResource
         return [
             'username' => $this->username,
 
-            'email' => $this->email,
             'enabled' => $this->enabled,
             'last_seen_at' => $this->last_seen_at,
             'email_verified' => $this->email_verified,
@@ -19,7 +18,10 @@ class ProfessionalResource extends ElasticResource
 
             'ratings_count' => $this->ratings->count(),
 
-            'environment' => EnvironmentResource::one($this->environment)
+            'environment' => EnvironmentResource::one($this->environment),
+
+            // keep private
+//            'email' => $this->email,
         ];
     }
 }
