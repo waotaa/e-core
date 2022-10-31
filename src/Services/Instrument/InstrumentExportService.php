@@ -10,13 +10,13 @@ class InstrumentExportService extends AbstractEntityExportService
 {
     protected string $entity = 'instrument';
 
-    public function handle()
+    public function handle(): string
     {
         $instruments = Instrument::all()
             ->map(function(Instrument $instrument) {
                 $instrument->import_mark = $this->importMark;
                 return InstrumentResource::make($instrument)->toArray();
             });
-        $this->createExportJson($instruments);
+        return $this->createExportJson($instruments);
     }
 }

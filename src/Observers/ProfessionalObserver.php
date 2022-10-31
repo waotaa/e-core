@@ -12,7 +12,7 @@ class ProfessionalObserver
         $professional->username = $professional->email;
     }
 
-    public function created(Professional $professional): void
+    public function saved(Professional $professional): void
     {
         $cognitoService = CognitoService::make($professional->environment);
         $profModel = $cognitoService->getUser($professional);

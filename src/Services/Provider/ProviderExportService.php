@@ -10,13 +10,13 @@ class ProviderExportService extends AbstractEntityExportService
 {
     protected string $entity = 'provider';
 
-    public function handle()
+    public function handle(): string
     {
         $providers = Provider::all()
             ->map(function(Provider $provider) {
                 $provider->import_mark = $this->importMark;
                 return ProviderResource::make($provider)->toArray();
             });
-        $this->createExportJson($providers);
+        return $this->createExportJson($providers);
     }
 }

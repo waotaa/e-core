@@ -10,12 +10,12 @@ class EnvironmentExportService extends AbstractEntityExportService
 {
     protected string $entity = 'environment';
 
-    public function handle()
+    public function handle(): string
     {
         $environments = Environment::all()
             ->map(function(Environment $environment) {
                 return EnvironmentResource::make($environment)->toArray();
             });
-        $this->createExportJson($environments);
+        return $this->createExportJson($environments);
     }
 }

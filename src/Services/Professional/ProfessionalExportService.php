@@ -10,12 +10,12 @@ class ProfessionalExportService extends AbstractEntityExportService
 {
     protected string $entity = 'professional';
 
-    public function handle()
+    public function handle(): string
     {
         $professionals = Professional::all()
             ->map(function(Professional $professional) {
                 return ProfessionalResource::make($professional)->toArray();
             });
-        $this->createExportJson($professionals);
+        return $this->createExportJson($professionals);
     }
 }

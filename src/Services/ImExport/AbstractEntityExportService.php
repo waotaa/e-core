@@ -16,25 +16,38 @@ abstract class AbstractEntityExportService
         $this->importMark = $importMark;
     }
 
-    public static function export($importMark)
+    public static function make($importMark = null): self
     {
-        $import = new static($importMark);
-        $import->handle();
+        return new static($importMark);
     }
 
-    abstract public function handle();
+    public static function export($importMark = null)
+    {
+        $service = static::make($importMark);
+        return $service->handle();
+    }
 
-    protected function createExportJson(Collection $dataCollection)
+    abstract public function handle(): string;
+
+    public function dateMarkFileName(): self
+    {
+        $this->dateMark = true;
+        return $this;
+    }
+
+    protected function createExportJson(Collection $dataCollection): string
     {
         $json = json_encode($dataCollection, JSON_PRETTY_PRINT);
         $filePath = static::getFilePath();
         StorageService::getStorage()
             ->put($filePath, $json);
+        return $filePath;
     }
 
     protected function getFilePath(): string
     {
-        $filename = $this->importMark . '-' . $this->entity;
+        $filename = $this->entity;
+        $filename = !is_null($this->importMark) ? $this->importMark . '-' . $filename : $filename;
         $filename = $this->dateMark ? date('dmy') . '-' . $filename : $filename;
         return $this->getDirectory() . $filename.'.json';
     }
