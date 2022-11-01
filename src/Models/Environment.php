@@ -51,7 +51,7 @@ class Environment extends SearchableModel
 
     public function featuredOrganisations(): BelongsToMany
     {
-        return $this->belongsToMany(Organisation::class, 'featured_organisations');
+        return $this->belongsToMany(Organisation::class, 'featured_organisations')->using(FeaturedOrganisation::class);
     }
 
     public function deriveUserPoolName()

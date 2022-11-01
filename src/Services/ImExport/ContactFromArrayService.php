@@ -10,11 +10,27 @@ class ContactFromArrayService extends BaseFromArrayService
     public function handle(): Model
     {
         $data = $this->data;
-        $contact = Contact::query()->firstOrNew([
+
+        $organisation = null;
+        if (!is_null($data['organisation'])) {
+            $organisation = OrganisationFromArrayService::create($data['organisation']);
+        }
+
+        $q = Contact::query();
+        if (!is_null($organisation)) {
+            $q = $q->where('organisation_id', $organisation->id);
+        }
+
+        $contact = $q->firstOrNew([
             'name' => $data['name'],
             'phone' => $data['phone'],
             'email' => $data['email']
         ]);
+
+        if (!is_null($organisation)) {
+            $contact->organisation()->associate($organisation);
+        }
+
         $contact->saveQuietly();
         return $contact;
     }

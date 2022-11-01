@@ -89,7 +89,7 @@ class Organisation extends Model
 
     public function featuringEnvironments():  BelongsToMany
     {
-        return $this->belongsToMany(Environment::class, 'featured_organisations');
+        return $this->belongsToMany(Environment::class, 'featured_organisations')->using(FeaturedOrganisation::class);
     }
 
     public function instruments(): HasMany

@@ -45,6 +45,7 @@ trait HasOwner
 
     /**
      * @deprecated
+     * @see organisation()
      */
     public function owner(): MorphTo
     {

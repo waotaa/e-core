@@ -33,6 +33,9 @@ class ProviderFromArrayService extends BaseFromArrayService
         }
 
         if (isset($data['address'])) {
+            // apply the organisation of the provider to the address
+            $data['address']['organisation'] = $data['organisation'];
+
             $address = AddressFromArrayService::create($data['address']);
             $provider->address()->associate($address);
         }
@@ -40,6 +43,9 @@ class ProviderFromArrayService extends BaseFromArrayService
         $provider->saveQuietly();
 
         if (isset($data['contacts'])) {
+            // apply the organisation of the instrument to all contacts
+            $data = static::addOrganisationDataToChildProperty($data, 'contacts');
+
             /** @var Provider $provider */
             $provider = ContactFromArrayService::attachToContactableModel($provider, $data['contacts']);
         }

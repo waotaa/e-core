@@ -25,11 +25,19 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
 
     public function saveFromRequest(Contact $contact, FormRequest $request): Contact
     {
+        $organisationRepository = new OrganisationRepository();
+        $organisation = $organisationRepository->find($request->input('organisation_id'));
+        if (is_null($organisation)) {
+            throw new \Exception('invalid organisation provided');
+        }
+
         $contact->fill([
             'name' => $request->input('name'),
             'phone' => $request->input('phone'),
             'email' => $request->input('email'),
         ]);
+        $contact->organisation()->associate($organisation);
+
         $contact->save();
         return $contact;
     }

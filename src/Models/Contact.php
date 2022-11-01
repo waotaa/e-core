@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Vng\EvaCore\Enums\ContactTypeEnum;
 use Vng\EvaCore\Observers\ContactObserver;
+use Vng\EvaCore\Traits\HasOwner;
 
 class Contact extends Model
 {
-    use HasFactory;
+    use HasFactory, HasOwner;
 
     protected $fillable = [
         'name',

@@ -3,11 +3,18 @@
 namespace Vng\EvaCore\Models;
 
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Vng\EvaCore\Observers\FeaturedOrganisationObserver;
 
 class FeaturedOrganisation extends MorphPivot
 {
     public $incrementing = true;
     protected $table = 'featured_organisations';
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(FeaturedOrganisationObserver::class);
+    }
 
     public function organisation()
     {

@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Vng\EvaCore\Observers\AddressObserver;
+use Vng\EvaCore\Traits\HasOwner;
 
 class Address extends Model
 {
-    use HasFactory;
+    use HasFactory, HasOwner;
 
     protected $fillable = [
         'name',

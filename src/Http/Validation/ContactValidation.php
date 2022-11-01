@@ -16,7 +16,10 @@ class ContactValidation extends ModelValidation
             ],
             'email' => [
                 'email'
-            ]
+            ],
+            'organisation_id' => [
+                'required'
+            ],
         ];
     }
 }

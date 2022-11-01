@@ -69,4 +69,19 @@ abstract class BaseFromArrayService
                 throw new Exception('no owner found');
         }
     }
+
+    public static function addOrganisationDataToChildProperty($data, $property)
+    {
+        $organisation = $data['organisation'];
+        if (is_null($organisation)) {
+            return $data;
+        }
+
+        $data[$property] = array_map(function ($child) use ($organisation) {
+            $child['organisation'] = $organisation;
+            return $child;
+        }, $data[$property]);
+
+        return $data;
+    }
 }

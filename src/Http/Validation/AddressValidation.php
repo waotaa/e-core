@@ -16,7 +16,10 @@ class AddressValidation extends ModelValidation
             ],
             'woonplaats' => [
                 'required'
-            ]
+            ],
+            'organisation_id' => [
+                'required'
+            ],
         ];
     }
 

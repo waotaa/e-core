@@ -24,6 +24,12 @@ class  AddressRepository extends BaseRepository implements AddressRepositoryInte
 
     public function saveFromRequest(Address $address, FormRequest $request): Address
     {
+        $organisationRepository = new OrganisationRepository();
+        $organisation = $organisationRepository->find($request->input('organisation_id'));
+        if (is_null($organisation)) {
+            throw new \Exception('invalid organisation provided');
+        }
+
         $address->fill([
             'name' => $request->input('name'),
             'straatnaam' => $request->input('straatnaam'),
@@ -33,6 +39,8 @@ class  AddressRepository extends BaseRepository implements AddressRepositoryInte
             'postcode' => $request->input('postcode'),
             'woonplaats' => $request->input('woonplaats'),
         ]);
+        $address->organisation()->associate($organisation);
+
         $address->save();
         return $address;
     }

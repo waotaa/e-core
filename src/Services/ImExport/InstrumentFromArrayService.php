@@ -113,10 +113,12 @@ class InstrumentFromArrayService extends BaseFromArrayService
         if (!isset($instrumentData['contacts'])) {
             return $instrument;
         }
-        $contactsData = $instrumentData['contacts'];
+
+        // apply the organisation of the instrument to all contacts
+        $instrumentData = static::addOrganisationDataToChildProperty($instrumentData, 'contacts');
 
         /** @var Instrument $instrument */
-        $instrument = ContactFromArrayService::attachToContactableModel($instrument, $contactsData);
+        $instrument = ContactFromArrayService::attachToContactableModel($instrument, $instrumentData['contacts']);
         return $instrument;
     }
 
@@ -158,6 +160,7 @@ class InstrumentFromArrayService extends BaseFromArrayService
     {
         $field = 'locations';
         foreach ($instrumentData[$field] as $locationData) {
+            $locationData['organisation'] = $instrumentData['organisation'];
             $this->addLocation($instrument, $locationData);
         }
     }
@@ -175,6 +178,9 @@ class InstrumentFromArrayService extends BaseFromArrayService
         $location = $location->fill($locationData);
 
         if (isset($locationData['address'])) {
+            // apply the organisation of the location (instrument) to the address
+            $locationData['address']['organisation'] = $locationData['organisation'];
+
             $address = AddressFromArrayService::create($locationData['address']);
             $location->address()->associate($address);
         }
