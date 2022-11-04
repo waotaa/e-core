@@ -23,6 +23,8 @@ class ContactResource extends JsonResource
                 ];
             }),
 
+            'organisation' => OrganisationResource::make($this->organisation),
+
             'instruments' => InstrumentResource::collection($this->whenLoaded('instruments')),
             'providers' => ProviderResource::collection($this->whenLoaded('providers'))
         ];

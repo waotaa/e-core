@@ -71,8 +71,6 @@ use Vng\EvaCore\Commands\Setup\SeedCharacteristics;
 use Vng\EvaCore\Commands\Setup\Setup;
 use Vng\EvaCore\Commands\Setup\SetupAuthorizationMatrix;
 use Vng\EvaCore\Commands\Setup\Update;
-use Vng\EvaCore\Models\Instrument;
-use Vng\EvaCore\Models\Provider;
 use Vng\EvaCore\Repositories\AddressRepositoryInterface;
 use Vng\EvaCore\Repositories\AssociateableRepositoryInterface;
 use Vng\EvaCore\Repositories\ClientCharacteristicRepositoryInterface;
