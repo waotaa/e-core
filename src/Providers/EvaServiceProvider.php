@@ -257,6 +257,7 @@ class EvaServiceProvider extends AggregateServiceProvider
             __DIR__ . '/../../config/authorization.php' => config_path('authorization.php'),
             __DIR__.'/../../config/eva-core.php' => config_path('eva-core.php'),
             __DIR__ . '/../../config/elastic.php' => config_path('elastic.php'),
+            __DIR__ . '/../../config/filesystems.php' => config_path('filesystems.php'),
             __DIR__ . '/../../config/permission.php' => config_path('permission.php'),
         ], 'eva-config');
     }

@@ -4,7 +4,6 @@ namespace Vng\EvaCore\Services\GeoData;
 
 use Vng\EvaCore\Services\GeoApi\CbsOpenDataApiService;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 class RegionDataService extends GeoDataService
 {

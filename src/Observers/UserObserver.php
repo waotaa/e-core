@@ -18,9 +18,14 @@ class UserObserver
         $user->assignRandomPassword();
     }
 
-    public function created(IsManagerInterface $user): void
+    /**
+     * @param EvaUserInterface&IsManagerInterface $user
+     * @return void
+     */
+    public function created(EvaUserInterface $user): void
     {
         $this->managerRepository->createForUser($user);
+        $user->sendAccountCreationNotification();
     }
 
     public function deleted(IsManagerInterface $user): void

@@ -27,7 +27,9 @@ class TargetGroup extends Model
 
     public function instruments(): BelongsToMany
     {
-        return $this->belongsToMany(Instrument::class, 'instrument_target_group')->withTimestamps()->using(InstrumentTargetGroup::class);
+        return $this->belongsToMany(Instrument::class, 'instrument_target_group')
+            ->withTimestamps()
+            ->using(InstrumentTargetGroup::class);
     }
 
     public function getOwningInstrumentAttribute(): ?Instrument

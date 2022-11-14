@@ -19,6 +19,11 @@ trait IsManager
         return $manager;
     }
 
+    public function isSuperAdmin()
+    {
+        return $this->getManager()->isSuperAdmin();
+    }
+
     public function managerCan($permission): bool
     {
         $manager = $this->getManager();
@@ -46,6 +51,6 @@ trait IsManager
 
     public function managerCannot($permission): bool
     {
-        $this->managerCant($permission);
+        return $this->managerCant($permission);
     }
 }

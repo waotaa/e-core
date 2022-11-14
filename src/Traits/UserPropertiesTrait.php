@@ -84,6 +84,8 @@ trait UserPropertiesTrait
         $password = PasswordService::generatePassword();
         $this->password = Hash::make($password);
         $this->generatedPassword = $password;
+
+        $this->setPasswordUpdatedAtToNow();
     }
 
     /**
