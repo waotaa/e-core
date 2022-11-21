@@ -25,6 +25,8 @@ class ProviderResource extends JsonResource
 
 //            'owner' => OwnerResource::make($this->owner),
             'mutations' => MutationResource::collection($this->mutations),
+
+            'instrument' => InstrumentResource::make($this->whenLoaded('instrument'))
         ];
     }
 }

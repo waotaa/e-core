@@ -14,7 +14,6 @@ abstract class AbstractOrganisationBase extends SearchableModel implements Organ
 {
     use SoftDeletes {
         SoftDeletes::restore as softDeleteRestore;
-        SoftDeletes::forceDelete as softDeleteForceDelete;
     }
     use HasDynamicSlug;
 
@@ -46,20 +45,18 @@ abstract class AbstractOrganisationBase extends SearchableModel implements Organ
 
     public function delete()
     {
-        $this->organisation->delete();
+        if ($this->isForceDeleting()) {
+            $this->organisation()->withTrashed()->forceDelete();
+        } else {
+            $this->organisation()->delete();
+        }
         parent::delete();
     }
 
     public function restore()
     {
-        $this->organisation->restore();
+        $this->organisation()->withTrashed()->restore();
         $this->softDeleteRestore();
-    }
-
-    public function forceDelete()
-    {
-        $this->organisation->forceDelete();
-        $this->softDeleteForceDelete();
     }
 }
 

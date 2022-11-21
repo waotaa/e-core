@@ -17,7 +17,7 @@ class InstrumentTracker extends Pivot
 
     protected $attributes = [
         'voluntary' => true,
-        'on_modification' => true,
+        'on_modification' => false,
         'on_expiration' => true,
     ];
 

@@ -47,7 +47,7 @@ class OrganisationRepository extends BaseRepository implements OrganisationRepos
             throw new \Exception('Model must implement OrganisationEntityInterface');
         }
         /** @var Organisation $organisation */
-        $organisation = $organisationEntity->organisation;
+        $organisation = $organisationEntity->organisation()->first();
         if (is_null($organisation)) {
             throw new \Exception('Model must belong to an organisation');
         }

@@ -22,9 +22,7 @@ class RatingResource extends JsonResource
             'execution_score' => $this->execution_score,
             'execution_explanation' => $this->execution_explanation,
 
-            'instrument_id' => $this->instrument->id,
-            'professional_email' => $this->professional ? $this->professional->email : null,
-
+            'instrument_id' => $this->instrument_id,
 
             // relations
             'instrument' => InstrumentResource::make($this->whenLoaded('instrument')),

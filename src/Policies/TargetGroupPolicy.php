@@ -67,9 +67,6 @@ class TargetGroupPolicy extends BasePolicy
 
     public function view(IsManagerInterface $user, TargetGroup $targetGroup): bool
     {
-        if ($this->userOwnsTargetGroup($user, $targetGroup) && $user->managerCan('view my targetGroup')) {
-            return true;
-        }
         return $user->managerCan('targetGroup.view');
     }
 

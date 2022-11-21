@@ -13,7 +13,6 @@ class NewsItemResource extends JsonResource
             'id' => $this->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'environment_slug' => $this->environment->slug,
 
             'publish_from' => $this->publish_from,
             'publish_to' => $this->publish_to,
@@ -24,6 +23,7 @@ class NewsItemResource extends JsonResource
             'body' => $this->body,
             'teaser' => $this->teaser,
 
+            'environment_slug' => $this->whenLoaded('environment', fn() => $this->environment->slug),
             'environment' => EnvironmentResource::make($this->whenLoaded('environment'))
         ];
     }

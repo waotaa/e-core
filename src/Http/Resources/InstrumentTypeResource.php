@@ -4,7 +4,7 @@ namespace Vng\EvaCore\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VideoResource extends JsonResource
+class InstrumentTypeResource extends JsonResource
 {
     public function toArray($request)
     {
@@ -12,11 +12,12 @@ class VideoResource extends JsonResource
             'id' => $this->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
 
-            'provider' => $this->provider,
-            'video_identifier' => $this->video_identifier,
+            'name' => $this->name,
+            'key' => $this->key,
 
-            'instrument' => InstrumentResource::make($this->whenLoaded('instrument'))
+            'instruments' => InstrumentResource::collection($this->whenLoaded('instruments'))
         ];
     }
 }

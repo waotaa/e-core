@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Vng\EvaCore\Observers\EnvironmentObserver;
 use Vng\EvaCore\Traits\HasPermanentSlug;
 
 class Environment extends SearchableModel
@@ -28,6 +29,12 @@ class Environment extends SearchableModel
         'user_pool_client_id',
         'url'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(EnvironmentObserver::class);
+    }
 
     public function contact()
     {

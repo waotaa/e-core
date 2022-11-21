@@ -45,7 +45,7 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
     public function attachInstruments(Contact $contact, array|string $instrumentIds, ?string $type = null): Contact
     {
         if (!is_null($type) && !ContactTypeEnum::search($type)) {
-            throw new \Exception('invalid type given ' . $type);
+            throw new \Exception('invalid type [' .$type. '] given. Allowed types are: ' . implode(', ', ContactTypeEnum::toArray()));
         }
         $pivotValues = [
             'type' => $type

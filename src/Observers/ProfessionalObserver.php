@@ -7,8 +7,9 @@ use Vng\EvaCore\Services\Cognito\CognitoService;
 
 class ProfessionalObserver
 {
-    public function saving(Professional $professional): void
+    public function creating(Professional $professional): void
     {
+        // temporary; will be overwritten on saved
         $professional->username = $professional->email;
     }
 

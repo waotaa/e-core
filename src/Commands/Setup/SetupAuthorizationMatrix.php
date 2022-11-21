@@ -67,6 +67,7 @@ class SetupAuthorizationMatrix extends Command
                 $modelName.'.viewAny',
                 $modelName.'.view',
                 $modelName.'.viewAll',
+                $modelName.'.create',
                 $modelName.'.update',
                 $modelName.'.delete',
                 $modelName.'.restore',

@@ -62,7 +62,7 @@ class InstrumentResource extends JsonResource
             'reach' => $this->resource->getReach(),
 
             // relations
-//            'owner' => OwnerResource::make($this->owner),
+            'owner' => OwnerResource::make($this->owner),
             'organisation' => OrganisationResource::make($this->organisation),
             'implementation' => ImplementationResource::make($this->implementation),
             'group_forms' => GroupFormResource::collection($this->groupForms),

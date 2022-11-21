@@ -28,6 +28,7 @@ class TargetGroupRepository extends BaseRepository implements TargetGroupReposit
             'description' => $request->input('description'),
             'custom' => $request->input('custom'),
         ]);
+
         $targetGroup->save();
         return $targetGroup;
     }

@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Repositories\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 
 trait SoftDeletableRepository
@@ -25,6 +26,9 @@ trait SoftDeletableRepository
     public function restore(string $id): ?Model
     {
         $model = $this->findInTrashed($id);
+        if (is_null($model)) {
+            throw new ModelNotFoundException('Model with id [' . $id . '] not found in trash');
+        }
         $model->restore();
         return $model;
     }
@@ -32,6 +36,9 @@ trait SoftDeletableRepository
     public function forceDelete(string $id): ?bool
     {
         $model = $this->findWithTrashed($id);
+        if (is_null($model)) {
+            throw new ModelNotFoundException('Model with id [' . $id . '] not found anywhere');
+        }
         return $model->forceDelete();
     }
 }

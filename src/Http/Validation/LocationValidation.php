@@ -10,7 +10,7 @@ class LocationValidation extends ModelValidation
     {
         return [
             'type' => [
-                'in:' . implode(',', LocationEnum::keys()),
+                'in:' . implode(',', LocationEnum::values()),
                 'nullable'
             ],
             'is_active' => [

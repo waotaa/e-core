@@ -20,9 +20,12 @@ class ProfessionalResource extends JsonResource
             'last_seen_at' => $this->last_seen_at,
             'email_verified' => $this->email_verified,
             'status' => $this->status,
-            'ratings_count' => $this->ratings->count(),
 
+            'ratings_count' => $this->whenLoaded('ratings', fn() => $this->ratings->count()),
             'ratings' => RatingResource::collection($this->whenLoaded('ratings')),
+
+            'environment' => EnvironmentResource::make($this->whenLoaded('environment')),
+
             'mutations' => MutationResource::collection($this->mutations),
         ];
     }
