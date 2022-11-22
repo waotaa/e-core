@@ -7,6 +7,8 @@ use Vng\EvaCore\Models\Organisation;
 
 interface OrganisationEntityInterface
 {
+    public function getOrganisationType(): string;
+    public function getOrganisationClass(): string;
     public function organisation(): BelongsTo;
     public function getOrganisation(): ?Organisation;
 }

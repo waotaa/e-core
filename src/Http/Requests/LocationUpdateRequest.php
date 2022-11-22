@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\LocationValidation;
 use Vng\EvaCore\Models\Location;
 use Vng\EvaCore\Repositories\LocationRepositoryInterface;
 
-class LocationUpdateRequest extends FormRequest implements FormRequestInterface
+class LocationUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'location';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getLocation());
@@ -29,6 +30,6 @@ class LocationUpdateRequest extends FormRequest implements FormRequestInterface
     {
         /** @var LocationRepositoryInterface $locationRepository */
         $locationRepository = App::make(LocationRepositoryInterface::class);
-        return $locationRepository->find($this->route('locationId'));
+        return $locationRepository->find($this->getModelId());
     }
 }

@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Vng\EvaCore\Observers\EnvironmentObserver;
+use Vng\EvaCore\Traits\HasOwner;
 use Vng\EvaCore\Traits\HasPermanentSlug;
 
 class Environment extends SearchableModel
 {
-    use HasFactory, SoftDeletes, HasPermanentSlug;
+    use HasFactory, HasOwner, SoftDeletes, HasPermanentSlug;
 
     protected string $elasticResource = EnvironmentResource::class;
 

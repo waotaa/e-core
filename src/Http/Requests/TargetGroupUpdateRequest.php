@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\TargetGroupValidation;
 use Vng\EvaCore\Models\TargetGroup;
 use Vng\EvaCore\Repositories\TargetGroupRepositoryInterface;
 
-class TargetGroupUpdateRequest extends FormRequest implements FormRequestInterface
+class TargetGroupUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'targetGroup';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getTargetGroup());
@@ -29,6 +30,6 @@ class TargetGroupUpdateRequest extends FormRequest implements FormRequestInterfa
     {
         /** @var TargetGroupRepositoryInterface $targetGroupRepository */
         $targetGroupRepository = App::make(TargetGroupRepositoryInterface::class);
-        return $targetGroupRepository->find($this->route('targetGroupId'));
+        return $targetGroupRepository->find($this->getModelId());
     }
 }

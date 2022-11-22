@@ -11,6 +11,8 @@ use Vng\EvaCore\Repositories\ContactRepositoryInterface;
 
 class ContactRepository extends BaseRepository implements ContactRepositoryInterface
 {
+    use OwnedEntityRepository;
+
     public string $model = Contact::class;
 
     public function create(ContactCreateRequest $request): Contact

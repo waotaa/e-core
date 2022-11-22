@@ -9,8 +9,10 @@ use Vng\EvaCore\Http\Validation\NationalPartyValidation;
 use Vng\EvaCore\Models\NationalParty;
 use Vng\EvaCore\Repositories\NationalPartyRepositoryInterface;
 
-class NationalPartyUpdateRequest extends FormRequest implements FormRequestInterface
+class NationalPartyUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'nationalParty';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getNationalParty());
@@ -29,6 +31,6 @@ class NationalPartyUpdateRequest extends FormRequest implements FormRequestInter
     {
         /** @var NationalPartyRepositoryInterface $nationalPartyRepository */
         $nationalPartyRepository = App::make(NationalPartyRepositoryInterface::class);
-        return $nationalPartyRepository->find($this->route('nationalPartyId'));
+        return $nationalPartyRepository->find($this->getModelId());
     }
 }

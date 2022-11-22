@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\NeighbourhoodValidation;
 use Vng\EvaCore\Models\Neighbourhood;
 use Vng\EvaCore\Repositories\NeighbourhoodRepositoryInterface;
 
-class NeighbourhoodUpdateRequest extends FormRequest implements FormRequestInterface
+class NeighbourhoodUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'neighbourhood';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getNeighbourhood());
@@ -29,6 +30,6 @@ class NeighbourhoodUpdateRequest extends FormRequest implements FormRequestInter
     {
         /** @var NeighbourhoodRepositoryInterface $neighbourhoodRepository */
         $neighbourhoodRepository = App::make(NeighbourhoodRepositoryInterface::class);
-        return $neighbourhoodRepository->find($this->route('neighbourhoodId'));
+        return $neighbourhoodRepository->find($this->getModelId());
     }
 }

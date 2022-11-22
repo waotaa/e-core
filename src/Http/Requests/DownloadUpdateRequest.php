@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\DownloadValidation;
 use Vng\EvaCore\Models\Download;
 use Vng\EvaCore\Repositories\DownloadRepositoryInterface;
 
-class DownloadUpdateRequest extends FormRequest implements FormRequestInterface
+class DownloadUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'download';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getDownload());
@@ -29,6 +30,6 @@ class DownloadUpdateRequest extends FormRequest implements FormRequestInterface
     {
         /** @var DownloadRepositoryInterface $downloadRepository */
         $downloadRepository = App::make(DownloadRepositoryInterface::class);
-        return $downloadRepository->find($this->route('downloadId'));
+        return $downloadRepository->find($this->getModelId());
     }
 }

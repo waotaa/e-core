@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use ReflectionClass;
+use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Interfaces\OrganisationEntityInterface;
 use Vng\EvaCore\Observers\OrganisationEntityObserver;
 use Vng\EvaCore\Traits\HasDynamicSlug;
@@ -28,6 +29,21 @@ abstract class AbstractOrganisationBase extends SearchableModel implements Organ
         return (new ReflectionClass($this))->getShortName();
     }
 
+    public function getOrganisationType(): string
+    {
+        return $this->getTypeAttribute();
+    }
+
+    public function getOrganisationClass(): string
+    {
+        return get_class($this);
+    }
+
+    public function getOwnerType(): string
+    {
+        return (new ReflectionClass($this))->getShortName();
+    }
+
     public function organisation(): BelongsTo
     {
         return $this->belongsTo(Organisation::class);
@@ -38,9 +54,12 @@ abstract class AbstractOrganisationBase extends SearchableModel implements Organ
         return $this->organisation;
     }
 
-    public function hasMember(Model $user): bool
+    public function hasMember(Model $manager): bool
     {
-        return $this->organisation->hasMember($user);
+        if ($manager instanceof IsManagerInterface) {
+            $manager = $manager->getManager();
+        }
+        return $this->getOrganisation()->hasMember($manager);
     }
 
     public function delete()

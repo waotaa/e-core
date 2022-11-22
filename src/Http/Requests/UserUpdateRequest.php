@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\UserValidation;
 use Vng\EvaCore\Models\User;
 use Vng\EvaCore\Repositories\UserRepositoryInterface;
 
-class UserUpdateRequest extends FormRequest implements FormRequestInterface
+class UserUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'user';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getUserModel());
@@ -29,6 +30,6 @@ class UserUpdateRequest extends FormRequest implements FormRequestInterface
     {
         /** @var UserRepositoryInterface $userRepository */
         $userRepository = App::make(UserRepositoryInterface::class);
-        return $userRepository->find($this->route('userId'));
+        return $userRepository->find($this->getModelId());
     }
 }

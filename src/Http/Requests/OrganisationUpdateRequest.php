@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\OrganisationValidation;
 use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
 
-class OrganisationUpdateRequest extends FormRequest implements FormRequestInterface
+class OrganisationUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'organisation';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getOrganisation());
@@ -29,6 +30,6 @@ class OrganisationUpdateRequest extends FormRequest implements FormRequestInterf
     {
         /** @var OrganisationRepositoryInterface $organisationRepository */
         $organisationRepository = App::make(OrganisationRepositoryInterface::class);
-        return $organisationRepository->find($this->route('organisationId'));
+        return $organisationRepository->find($this->getModelId());
     }
 }

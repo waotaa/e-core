@@ -10,7 +10,7 @@ use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
 
 class EnvironmentRepository extends BaseRepository implements EnvironmentRepositoryInterface
 {
-    use SoftDeletableRepository;
+    use OwnedEntityRepository, SoftDeletableRepository;
 
     public string $model = Environment::class;
 
@@ -26,6 +26,12 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
 
     public function saveFromRequest(Environment $environment, FormRequest $request): Environment
     {
+        $organisationRepository = new OrganisationRepository();
+        $organisation = $organisationRepository->find($request->input('organisation_id'));
+        if (is_null($organisation)) {
+            throw new \Exception('invalid organisation provided');
+        }
+
         $environment->fill([
             'name' => $request->input('name'),
             'slug' => $request->input('slug'),
@@ -35,6 +41,8 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
             'color_primary' => $request->input('color_primary'),
             'color_secondary' => $request->input('color_secondary'),
         ]);
+
+        $environment->organisation()->associate($organisation);
 
         $environment->contact()->disassociate();
         if ($request->has('contact_id'))

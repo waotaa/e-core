@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\ImplementationValidation;
 use Vng\EvaCore\Models\Implementation;
 use Vng\EvaCore\Repositories\ImplementationRepositoryInterface;
 
-class ImplementationUpdateRequest extends FormRequest implements FormRequestInterface
+class ImplementationUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'implementation';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getImplementation());
@@ -29,6 +30,6 @@ class ImplementationUpdateRequest extends FormRequest implements FormRequestInte
     {
         /** @var ImplementationRepositoryInterface $implementationRepository */
         $implementationRepository = App::make(ImplementationRepositoryInterface::class);
-        return $implementationRepository->find($this->route('implementationId'));
+        return $implementationRepository->find($this->getModelId());
     }
 }

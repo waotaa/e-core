@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\ProviderValidation;
 use Vng\EvaCore\Models\Provider;
 use Vng\EvaCore\Repositories\ProviderRepositoryInterface;
 
-class ProviderUpdateRequest extends FormRequest implements FormRequestInterface
+class ProviderUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'provider';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getProvider());
@@ -29,6 +30,6 @@ class ProviderUpdateRequest extends FormRequest implements FormRequestInterface
     {
         /** @var ProviderRepositoryInterface $providerRepository */
         $providerRepository = App::make(ProviderRepositoryInterface::class);
-        return $providerRepository->find($this->route('providerId'));
+        return $providerRepository->find($this->getModelId());
     }
 }

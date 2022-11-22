@@ -46,9 +46,8 @@ class Organisation extends Model
         return $this->belongsToMany(Manager::class);
     }
 
-    public function hasMember(IsManagerInterface $user): bool
+    public function hasMember(Manager $manager): bool
     {
-        $manager = $user->getManager();
         return $this->managers && $this->managers->contains($manager->id);
     }
 

@@ -23,7 +23,7 @@ class NationalPartyPolicy extends BaseOrganisationPolicy
      */
     public function view(IsManagerInterface $user, NationalParty $nationalParty)
     {
-        if($nationalParty->hasMember($user)){
+        if($nationalParty->hasMember($user)) {
             return true;
         }
         return $user->managerCan('nationalParty.view');

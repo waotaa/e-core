@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\InstrumentTypeValidation;
 use Vng\EvaCore\Models\InstrumentType;
 use Vng\EvaCore\Repositories\InstrumentTypeRepositoryInterface;
 
-class InstrumentTypeUpdateRequest extends FormRequest implements FormRequestInterface
+class InstrumentTypeUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'instrumentType';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getInstrumentType());
@@ -29,6 +30,6 @@ class InstrumentTypeUpdateRequest extends FormRequest implements FormRequestInte
     {
         /** @var InstrumentTypeRepositoryInterface $instrumentTypeRepository */
         $instrumentTypeRepository = App::make(InstrumentTypeRepositoryInterface::class);
-        return $instrumentTypeRepository->find($this->route('instrumentTypeId'));
+        return $instrumentTypeRepository->find($this->getModelId());
     }
 }

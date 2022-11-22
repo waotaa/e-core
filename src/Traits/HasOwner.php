@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use ReflectionClass;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Interfaces\IsMemberInterface;
 use Vng\EvaCore\Models\Organisation;
 
@@ -38,9 +39,9 @@ trait HasOwner
         return (new ReflectionClass($this->organisation))->getShortName();
     }
 
-    public function isUserMemberOfOwner(EvaUserInterface $user): bool
+    public function isUserMemberOfOwner(IsManagerInterface $user): bool
     {
-        return $this->hasOwner() && $this->organisation->hasMember($user);
+        return $this->hasOwner() && $this->organisation->hasMember($user->getManager());
     }
 
     /**

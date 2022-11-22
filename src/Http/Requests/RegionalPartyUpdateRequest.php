@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\RegionalPartyValidation;
 use Vng\EvaCore\Models\RegionalParty;
 use Vng\EvaCore\Repositories\RegionalPartyRepositoryInterface;
 
-class RegionalPartyUpdateRequest extends FormRequest implements FormRequestInterface
+class RegionalPartyUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'regionalParty';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getRegionalParty());
@@ -29,6 +30,6 @@ class RegionalPartyUpdateRequest extends FormRequest implements FormRequestInter
     {
         /** @var RegionalPartyRepositoryInterface $regionalPartyRepository */
         $regionalPartyRepository = App::make(RegionalPartyRepositoryInterface::class);
-        return $regionalPartyRepository->find($this->route('regionalPartyId'));
+        return $regionalPartyRepository->find($this->getModelId());
     }
 }

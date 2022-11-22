@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\EnvironmentValidation;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
 
-class EnvironmentUpdateRequest extends FormRequest implements FormRequestInterface
+class EnvironmentUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'environment';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getEnvironment());
@@ -29,6 +30,6 @@ class EnvironmentUpdateRequest extends FormRequest implements FormRequestInterfa
     {
         /** @var EnvironmentRepositoryInterface $environmentRepository */
         $environmentRepository = App::make(EnvironmentRepositoryInterface::class);
-        return $environmentRepository->find($this->route('environmentId'));
+        return $environmentRepository->find($this->getModelId());
     }
 }

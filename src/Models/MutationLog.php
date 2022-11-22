@@ -19,7 +19,8 @@ trait MutationLog
             if (is_null($user)) {
                 return;
             }
-            Mutation::forResourceCreate($user->manager, $model);
+            $mutation = Mutation::forResourceCreate($user->manager, $model);
+            $mutation->save();
         });
 
         static::updated(function($model) {
@@ -28,7 +29,8 @@ trait MutationLog
             if (is_null($user)) {
                 return;
             }
-            Mutation::forResourceUpdate($user->manager, $model);
+            $mutation = Mutation::forResourceUpdate($user->manager, $model);
+            $mutation->save();
         });
 
         if (in_array(SoftDeletes::class, class_uses(static::class))) {
@@ -38,7 +40,8 @@ trait MutationLog
                 if (is_null($user)) {
                     return;
                 }
-                Mutation::forResourceDelete($user->manager, $model);
+                $mutation = Mutation::forResourceDelete($user->manager, $model);
+                $mutation->save();
             });
             static::restored(function($model) {
                 /** @var User $user */
@@ -46,7 +49,8 @@ trait MutationLog
                 if (is_null($user)) {
                     return;
                 }
-                Mutation::forResourceRestore($user->manager, $model);
+                $mutation = Mutation::forResourceRestore($user->manager, $model);
+                $mutation->save();
             });
         }
 

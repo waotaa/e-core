@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\RatingValidation;
 use Vng\EvaCore\Models\Rating;
 use Vng\EvaCore\Repositories\RatingRepositoryInterface;
 
-class RatingUpdateRequest extends FormRequest implements FormRequestInterface
+class RatingUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'rating';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getRating());
@@ -29,6 +30,6 @@ class RatingUpdateRequest extends FormRequest implements FormRequestInterface
     {
         /** @var RatingRepositoryInterface $ratingRepository */
         $ratingRepository = App::make(RatingRepositoryInterface::class);
-        return $ratingRepository->find($this->route('ratingId'));
+        return $ratingRepository->find($this->getModelId());
     }
 }

@@ -5,6 +5,9 @@ namespace Vng\EvaCore\Interfaces;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @deprecated
+ */
 interface HasMembersInterface
 {
     public function members(): BelongsToMany;

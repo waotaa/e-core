@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\LinkValidation;
 use Vng\EvaCore\Models\Link;
 use Vng\EvaCore\Repositories\LinkRepositoryInterface;
 
-class LinkUpdateRequest extends FormRequest implements FormRequestInterface
+class LinkUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'link';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getLink());
@@ -29,6 +30,6 @@ class LinkUpdateRequest extends FormRequest implements FormRequestInterface
     {
         /** @var LinkRepositoryInterface $linkRepository */
         $linkRepository = App::make(LinkRepositoryInterface::class);
-        return $linkRepository->find($this->route('linkId'));
+        return $linkRepository->find($this->getModelId());
     }
 }

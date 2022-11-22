@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\ManagerValidation;
 use Vng\EvaCore\Models\Manager;
 use Vng\EvaCore\Repositories\ManagerRepositoryInterface;
 
-class ManagerUpdateRequest extends FormRequest implements FormRequestInterface
+class ManagerUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'manager';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getManager());
@@ -29,6 +30,6 @@ class ManagerUpdateRequest extends FormRequest implements FormRequestInterface
     {
         /** @var ManagerRepositoryInterface $managerRepository */
         $managerRepository = App::make(ManagerRepositoryInterface::class);
-        return $managerRepository->find($this->route('managerId'));
+        return $managerRepository->find($this->getModelId());
     }
 }

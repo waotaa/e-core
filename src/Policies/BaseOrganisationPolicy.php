@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Interfaces\HasMembersInterface;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
+use Vng\EvaCore\Interfaces\OrganisationEntityInterface;
 
 abstract class BaseOrganisationPolicy extends BasePolicy
 {
@@ -14,13 +15,13 @@ abstract class BaseOrganisationPolicy extends BasePolicy
 
     /**
      * @param Model&IsManagerInterface $user
-     * @param HasMembersInterface $organisation
+     * @param OrganisationEntityInterface $organisationEntity
      * @return bool
      */
-    public function addUser(IsManagerInterface $user, HasMembersInterface $organisation): bool
+    public function addUser(IsManagerInterface $user, OrganisationEntityInterface $organisationEntity): bool
     {
         if ($user->managerCan('manager.organisation.create')
-            && $organisation->hasMember($user)
+            && $organisationEntity->hasMember($user)
         ) {
             return true;
         }
@@ -29,13 +30,13 @@ abstract class BaseOrganisationPolicy extends BasePolicy
 
     /**
      * @param Model&IsManagerInterface $user
-     * @param HasMembersInterface $organisation
+     * @param OrganisationEntityInterface $organisationEntity
      * @return bool
      */
-    public function addInstrument(IsManagerInterface $user, HasMembersInterface $organisation): bool
+    public function addInstrument(IsManagerInterface $user, OrganisationEntityInterface $organisationEntity): bool
     {
         if ($user->managerCan('instrument.organisation.create')
-            && $organisation->hasMember($user)
+            && $organisationEntity->hasMember($user)
         ) {
             return true;
         }
@@ -44,13 +45,13 @@ abstract class BaseOrganisationPolicy extends BasePolicy
 
     /**
      * @param Model&IsManagerInterface $user
-     * @param HasMembersInterface $organisation
+     * @param OrganisationEntityInterface $organisationEntity
      * @return bool
      */
-    public function addProvider(IsManagerInterface $user, HasMembersInterface $organisation): bool
+    public function addProvider(IsManagerInterface $user, OrganisationEntityInterface $organisationEntity): bool
     {
         if ($user->managerCan('provider.organisation.create')
-            && $organisation->hasMember($user)
+            && $organisationEntity->hasMember($user)
         ) {
             return true;
         }
@@ -59,13 +60,13 @@ abstract class BaseOrganisationPolicy extends BasePolicy
 
     /**
      * @param Model&IsManagerInterface $user
-     * @param HasMembersInterface $organisation
+     * @param OrganisationEntityInterface $organisationEntity
      * @return bool
      */
-    public function addContact(IsManagerInterface $user, HasMembersInterface $organisation): bool
+    public function addContact(IsManagerInterface $user, OrganisationEntityInterface $organisationEntity): bool
     {
         if ($user->managerCan('contact.organisation.create')
-            && $organisation->hasMember($user)
+            && $organisationEntity->hasMember($user)
         ) {
             return true;
         }

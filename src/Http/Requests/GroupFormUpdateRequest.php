@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\GroupFormValidation;
 use Vng\EvaCore\Models\GroupForm;
 use Vng\EvaCore\Repositories\GroupFormRepositoryInterface;
 
-class GroupFormUpdateRequest extends FormRequest implements FormRequestInterface
+class GroupFormUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'groupForm';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getGroupForm());
@@ -29,6 +30,6 @@ class GroupFormUpdateRequest extends FormRequest implements FormRequestInterface
     {
         /** @var GroupFormRepositoryInterface $groupFormRepository */
         $groupFormRepository = App::make(GroupFormRepositoryInterface::class);
-        return $groupFormRepository->find($this->route('groupFormId'));
+        return $groupFormRepository->find($this->getModelId());
     }
 }

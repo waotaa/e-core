@@ -9,8 +9,10 @@ use Vng\EvaCore\Http\Validation\ClientCharacteristicValidation;
 use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Repositories\ClientCharacteristicRepositoryInterface;
 
-class ClientCharacteristicUpdateRequest extends FormRequest implements FormRequestInterface
+class ClientCharacteristicUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'clientCharacteristic';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getClientCharacteristic());
@@ -29,6 +31,6 @@ class ClientCharacteristicUpdateRequest extends FormRequest implements FormReque
     {
         /** @var ClientCharacteristicRepositoryInterface $clientCharacteristicsRepository */
         $clientCharacteristicsRepository = App::make(ClientCharacteristicRepositoryInterface::class);
-        return $clientCharacteristicsRepository->find($this->route('clientCharacteristicId'));
+        return $clientCharacteristicsRepository->find($this->getModelId());
     }
 }

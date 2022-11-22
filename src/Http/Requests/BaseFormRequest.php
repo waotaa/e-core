@@ -3,14 +3,21 @@
 namespace Vng\EvaCore\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
 
 abstract class BaseFormRequest extends FormRequest
 {
-    public function withValidator(Validator $validator): void
+    protected function getModelId()
     {
-        if (method_exists($this, 'after')) {
-            $validator->after([$this, 'after']);
+        if (isset($this->modelName)) {
+            if ($this->route()->hasParameter($this->modelName)) {
+                return $this->route()->originalParameter($this->modelName);
+            }
+            if ($this->route()->hasParameter($this->modelName . 'Id')) {
+                return $this->route()->originalParameter($this->modelName . 'Id');
+            }
         }
+        // return the first parameter
+        $parameters = $this->route()->originalParameters();
+        return reset($parameters);
     }
 }

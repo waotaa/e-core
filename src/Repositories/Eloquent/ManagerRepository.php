@@ -47,6 +47,12 @@ class ManagerRepository extends BaseRepository implements ManagerRepositoryInter
         return $manager;
     }
 
+    public function associateCreatedBy(Manager $manager, Manager $createdByManager)
+    {
+        $manager->createdBy()->associate($createdByManager);
+        $manager->save();
+    }
+
     public function attachOrganisations(Manager $manager, string|array $organisationIds): Manager
     {
         $manager->organisations()->syncWithoutDetaching($organisationIds);

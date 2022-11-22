@@ -87,7 +87,8 @@ class Manager extends Model implements IsInstrumentWatcherInterface
         if (!$this->hasAnyOrganisations()) {
             return false;
         }
-        $sharedOrganisations = $this->organisations->filter(fn (Organisation $organisation) => $organisation->hasMember($manager));
+        $sharedOrganisations = $this->organisations
+            ->filter(fn (Organisation $organisation) => $organisation->hasMember($manager));
         return $sharedOrganisations->count() > 0;
     }
 

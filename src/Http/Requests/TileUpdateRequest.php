@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\TileValidation;
 use Vng\EvaCore\Models\RegistrationCode;
 use Vng\EvaCore\Repositories\TileRepositoryInterface;
 
-class TileUpdateRequest extends FormRequest implements FormRequestInterface
+class TileUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'tile';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getTile());
@@ -29,6 +30,6 @@ class TileUpdateRequest extends FormRequest implements FormRequestInterface
     {
         /** @var TileRepositoryInterface $tileRepository */
         $tileRepository = App::make(TileRepositoryInterface::class);
-        return $tileRepository->find($this->route('tileId'));
+        return $tileRepository->find($this->getModelId());
     }
 }

@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\RegistrationCodeValidation;
 use Vng\EvaCore\Models\RegistrationCode;
 use Vng\EvaCore\Repositories\RegistrationCodeRepositoryInterface;
 
-class RegistrationCodeUpdateRequest extends FormRequest implements FormRequestInterface
+class RegistrationCodeUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'registrationCode';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getRegistrationCode());
@@ -29,6 +30,6 @@ class RegistrationCodeUpdateRequest extends FormRequest implements FormRequestIn
     {
         /** @var RegistrationCodeRepositoryInterface $registrationCodeRepository */
         $registrationCodeRepository = App::make(RegistrationCodeRepositoryInterface::class);
-        return $registrationCodeRepository->find($this->route('registrationCodeId'));
+        return $registrationCodeRepository->find($this->getModelId());
     }
 }

@@ -2,11 +2,12 @@
 
 namespace Vng\EvaCore\Repositories\Eloquent;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Vng\EvaCore\Enums\ContactTypeEnum;
 use Vng\EvaCore\Http\Requests\ProviderCreateRequest;
 use Vng\EvaCore\Http\Requests\ProviderUpdateRequest;
-use Vng\EvaCore\Models\Contact;
+use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Models\Provider;
 use Vng\EvaCore\Repositories\ProviderRepositoryInterface;
 

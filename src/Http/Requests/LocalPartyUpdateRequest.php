@@ -2,15 +2,16 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\LocalPartyValidation;
 use Vng\EvaCore\Models\LocalParty;
 use Vng\EvaCore\Repositories\LocalPartyRepositoryInterface;
 
-class LocalPartyUpdateRequest extends FormRequest implements FormRequestInterface
+class LocalPartyUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'localParty';
+
     public function authorize(): bool
     {
         return Auth::user()->can('update', $this->getLocalParty());
@@ -29,6 +30,6 @@ class LocalPartyUpdateRequest extends FormRequest implements FormRequestInterfac
     {
         /** @var LocalPartyRepositoryInterface $localPartyRepository */
         $localPartyRepository = App::make(LocalPartyRepositoryInterface::class);
-        return $localPartyRepository->find($this->route('localPartyId'));
+        return $localPartyRepository->find($this->getModelId());
     }
 }

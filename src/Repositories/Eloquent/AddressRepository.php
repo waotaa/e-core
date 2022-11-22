@@ -10,6 +10,8 @@ use Vng\EvaCore\Repositories\AddressRepositoryInterface;
 
 class  AddressRepository extends BaseRepository implements AddressRepositoryInterface
 {
+    use OwnedEntityRepository;
+
     public string $model = Address::class;
 
     public function create(AddressCreateRequest $request): Address
