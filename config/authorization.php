@@ -109,7 +109,6 @@ $generalPermissions = [
     ...$partnershipGeneralPermissions,
     ...$regionGeneralPermissions,
     ...$townshipGeneralPermissions,
-    ...$environmentGeneralPermissions,
 ];
 
 // User
@@ -371,6 +370,8 @@ return [
     'matrix' => [
         'administrator' => [
             ...$generalPermissions,
+            ...$environmentGeneralPermissions,
+
             ...$localPartyAdministratorPermissions,
             ...$regionalPartyAdministratorPermissions,
             ...$nationalPartyAdministratorPermissions,
@@ -395,26 +396,30 @@ return [
         ],
         'environment-manager' => [
             ...$generalPermissions,
+            ...$environmentGeneralPermissions,
             ...$instrumentPropertyManagementPermissions,
-            ...$environmentManagerPermissions,
 
+            ...$environmentManagerPermissions,
             ...$environmentContentPermissions,
             ...$environmentStylingPermissions,
-            ...$organisationUserPermissions,
 
+            ...$organisationUserPermissions,
             ...$organisationInstrumentPermissions,
             ...$organisationProviderPermissions,
         ],
         'environment-content-manager' => [
             ...$generalPermissions,
+            ...$environmentGeneralPermissions,
             ...$environmentContentPermissions,
         ],
         'environment-theme-manager' => [
             ...$generalPermissions,
+            ...$environmentGeneralPermissions,
             ...$environmentStylingPermissions,
         ],
         'user-manager-organisation' => [
             ...$generalPermissions,
+            ...$environmentGeneralPermissions,
             ...$organisationUserPermissions,
         ],
     ],
