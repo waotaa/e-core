@@ -1,5 +1,5 @@
+# Eva Laravel core
 
-## Eva Laravel core
 
 ## Environments files
 ```
@@ -9,8 +9,15 @@
 .env.testing (unit tests)
 ```
 
-## Setup
+## Installation
 `php artisan eva-core:setup {--n|no-interaction} {--l|lean}`
+
+### Publishing
+Config, Translations, API
+
+## Updating
+`php artisan eva-core:update`
+
 
 ## Force data sync with elastic
 ```angular2html

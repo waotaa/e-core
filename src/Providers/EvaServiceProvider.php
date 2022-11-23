@@ -245,6 +245,7 @@ class EvaServiceProvider extends AggregateServiceProvider
 
         $this->publishConfig();
         $this->publishTranslations();
+        $this->publishApiSpecs();
         $this->registerCommands();
 
 //        Relation::morphMap([
@@ -271,6 +272,13 @@ class EvaServiceProvider extends AggregateServiceProvider
         $this->publishes([
             __DIR__.'/../../resources/lang' => lang_path('vendor/eva'),
         ], 'eva-lang');
+    }
+
+    private function publishApiSpecs()
+    {
+        $this->publishes([
+            __DIR__.'/../../resources/openapi' => resource_path('openapi'),
+        ], 'eva-api');
     }
 
     private function registerCommands(): void

@@ -19,9 +19,9 @@ class ManagerResource extends JsonResource
             'email' => $this->email,
             'months_unupdated_limit' => $this->months_unupdated_limit,
 
-            'created_by' => ManagerResource::make($this->created_by),
-            'instrumentTrackers' => InstrumentTrackerResource::collection($this->instrumentTrackers),
-            'organisations' => OrganisationResource::collection($this->organisations),
+            'created_by' => ManagerResource::make($this->createdBy),
+            'instrumentTrackers' => InstrumentTrackerResource::collection($this->whenLoaded('instrumentTrackers')),
+            'organisations' => OrganisationResource::collection($this->whenLoaded('organisations')),
             'roles' => RoleResource::collection($this->roles),
 
             'mutations' => MutationResource::collection($this->mutations),
