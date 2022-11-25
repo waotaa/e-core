@@ -10,8 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Traits\HasRoles;
 use Vng\EvaCore\Traits\IsInstrumentWatcher;
 
-class
-Manager extends Model implements IsInstrumentWatcherInterface
+class Manager extends Model implements IsInstrumentWatcherInterface
 {
     use HasRoles, HasFactory, MutationLog, IsInstrumentWatcher;
 

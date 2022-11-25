@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AddressFactory extends Factory
 {
+    use OrganisationOwnedTrait;
+
     /**
      * @var string
      */
