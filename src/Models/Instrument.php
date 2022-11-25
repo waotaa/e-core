@@ -292,6 +292,11 @@ class Instrument extends SearchableModel
         return static::REACH_NATIONAL;
     }
 
+    public function parentInstrument(): BelongsTo
+    {
+        return $this->belongsTo(Instrument::class);
+    }
+
     public function instrumentType(): BelongsTo
     {
         return $this->belongsTo(InstrumentType::class);
