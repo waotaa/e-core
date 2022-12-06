@@ -13,6 +13,7 @@ use Vng\EvaCore\Models\GroupForm;
 use Vng\EvaCore\Models\Implementation;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\InstrumentTracker;
+use Vng\EvaCore\Models\InstrumentType;
 use Vng\EvaCore\Models\Link;
 use Vng\EvaCore\Models\LocalParty;
 use Vng\EvaCore\Models\Location;
@@ -45,6 +46,7 @@ class MorphMapServiceProvider extends ServiceProvider
         'group-form' => GroupForm::class,
         'implementation' => Implementation::class,
         'instrument' => Instrument::class,
+        'instrument-type' => InstrumentType::class,
         'instrument-tracker' => InstrumentTracker::class,
         'link' => Link::class,
         'local-party' => LocalParty::class,

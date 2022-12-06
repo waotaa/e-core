@@ -45,6 +45,8 @@ trait HasOwner
     }
 
     /**
+     * Remove after fully migrated to Orchid
+     *
      * @deprecated
      * @see organisation()
      */

@@ -19,6 +19,10 @@ use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Services\ModelHelpers\InstrumentHelper;
 use Illuminate\Support\Str;
 
+/**
+ * An Instrument Resource with some properties withheld.
+ * Used for sharing instruments
+ */
 class InstrumentDescriptionResource extends ElasticResource
 {
     /** @var Instrument */
@@ -51,7 +55,6 @@ class InstrumentDescriptionResource extends ElasticResource
             'additional_information' => $this->additional_information,
 
             // practical information
-            'location_description' => $this->location_description,
             'work_agreements' => $this->work_agreements,
             'application_instructions' => $this->application_instructions,
             'intensity_hours_per_week' => $this->intensity_hours_per_week,
@@ -65,21 +68,32 @@ class InstrumentDescriptionResource extends ElasticResource
 //            'duration_description' => $this->duration_description,
 //            'intensity_description' => $this->intensity_description,
 
+            // auxilary
+            'import_mark' => $this->import_mark,
+
+            // computed
+            'is_national' => $this->resource->isNational(),
+            'is_regional' => $this->resource->isRegional(),
+            'is_local' => $this->resource->isLocal(),
+            'reach' => $this->resource->getReach(),
+
             // relations
             'implementation' => ImplementationResource::one($this->implementation),
             'group_forms' => GroupFormResource::many($this->groupForms),
             'locations' => LocationResource::many($this->locations),
 
             'tiles' => TileResource::many($this->tiles),
+            'tiles_count' => count($this->tiles),
             'target_groups' => TargetGroupResource::many($this->targetGroups),
+            'target_groups_count' => count($this->targetGroups),
             'client_characteristics' => ClientCharacteristicResource::many($this->clientCharacteristics),
+            'client_characteristics_count' => count($this->clientCharacteristics),
 
             'links' => LinkResource::many($this->links),
             'videos' => VideoResource::many($this->videos),
             'downloads' => DownloadResource::many($this->downloads),
 
             'provider' => ProviderResource::one($this->provider),
-            'addresses' => AddressResource::many($this->addresses),
             'contacts' => ContactResource::many($this->contacts),
         ];
     }

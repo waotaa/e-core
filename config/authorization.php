@@ -200,6 +200,49 @@ $environmentAdministratorPermissions = [
 ];
 
 
+// Address
+$organisationAddressPermissions = [
+    'address.viewAny',
+    'address.organisation.view',
+    'address.organisation.create',
+    'address.organisation.update',
+    'address.organisation.delete',
+    'address.organisation.restore',
+    'address.organisation.forceDelete',
+];
+
+$globalAddressPermissions = [
+    ...$organisationAddressPermissions,
+    'address.viewAny',
+    'address.view',
+    'address.create',
+    'address.update',
+    'address.delete',
+    'address.restore',
+    'address.forceDelete'
+];
+
+// Contact
+$organisationContactPermissions = [
+    'contact.viewAny',
+    'contact.organisation.view',
+    'contact.organisation.create',
+    'contact.organisation.update',
+    'contact.organisation.delete',
+    'contact.organisation.restore',
+    'contact.organisation.forceDelete',
+];
+
+$globalContactPermissions = [
+    ...$organisationContactPermissions,
+    'contact.viewAny',
+    'contact.view',
+    'contact.create',
+    'contact.update',
+    'contact.delete',
+    'contact.restore',
+    'contact.forceDelete'
+];
 
 // Instruments
 $instrumentPropertyPermissions = [
