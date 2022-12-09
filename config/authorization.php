@@ -383,6 +383,7 @@ return [
     'model-permissions' => [
         'address',
         'clientCharacteristic',
+        'contact',
         'download',
         'environment',
         'groupForm',
@@ -421,6 +422,8 @@ return [
             ...$environmentAdministratorPermissions,
             ...$partnershipAdministratorPermissions,
 
+            ...$globalAddressPermissions,
+            ...$globalContactPermissions,
             ...$globalInstrumentPermissions,
             ...$globalProviderPermissions,
             ...$instrumentAdminRatingPermissions,
@@ -429,11 +432,15 @@ return [
         ],
         'instrument-manager' => [
             ...$generalPermissions,
+            ...$globalAddressPermissions,
+            ...$globalContactPermissions,
             ...$globalInstrumentPermissions,
             ...$globalProviderPermissions,
         ],
         'instrument-manager-organisation' => [
             ...$generalPermissions,
+            ...$organisationAddressPermissions,
+            ...$organisationContactPermissions,
             ...$organisationInstrumentPermissions,
             ...$organisationProviderPermissions,
         ],
@@ -447,6 +454,8 @@ return [
             ...$environmentStylingPermissions,
 
             ...$organisationUserPermissions,
+            ...$organisationAddressPermissions,
+            ...$organisationContactPermissions,
             ...$organisationInstrumentPermissions,
             ...$organisationProviderPermissions,
         ],

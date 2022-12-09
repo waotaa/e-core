@@ -16,7 +16,8 @@ class RatingResource extends ElasticResource
             'execution_score' => $this->execution_score,
             'execution_explanation' => $this->execution_explanation,
 
-            'instrument_id' => $this->instrument->id,
+            'instrument_id' => $this->instrument_id,
+//            'instrument_id' => $this->instrument->id,
 
             'created_at' => $this->created_at,
 
@@ -24,8 +25,8 @@ class RatingResource extends ElasticResource
             'professional' => ProfessionalResource::one($this->professional),
 
             // keep private
-//            'email' => $this->email,
-//            'professional_email' => $this->professional ? $this->professional->email : null,
+            'email' => $this->email,
+            'professional_email' => $this->professional ? $this->professional->email : null,
         ];
     }
 }

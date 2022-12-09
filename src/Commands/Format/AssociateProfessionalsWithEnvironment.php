@@ -3,8 +3,6 @@
 namespace Vng\EvaCore\Commands\Format;
 
 use Illuminate\Console\Command;
-use Vng\EvaCore\Commands\Format\MigrateToOrchid\MigrateToManagers;
-use Vng\EvaCore\Commands\Format\MigrateToOrchid\MigrateToOrganisations;
 use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
 use Vng\EvaCore\Repositories\ProfessionalRepositoryInterface;
 

@@ -31,9 +31,6 @@ use Vng\EvaCore\Commands\Format\AssociateProfessionalsWithEnvironment;
 use Vng\EvaCore\Commands\Format\CleanupActionLog;
 use Vng\EvaCore\Commands\Format\CleanupSyncAttempts;
 use Vng\EvaCore\Commands\Format\MigrateToFormat2;
-use Vng\EvaCore\Commands\Format\MigrateToOrchid;
-use Vng\EvaCore\Commands\Format\MigrateToOrchid\MigrateToManagers\MigrateNovaRoles;
-use Vng\EvaCore\Commands\Format\MigrateToOrchid\MigrateToOrganisations\SetOrganisationIdOnOwnedEntities;
 use Vng\EvaCore\Commands\Geo\GeoClearApiCaches;
 use Vng\EvaCore\Commands\Geo\GeoEnsureIntegrity;
 use Vng\EvaCore\Commands\Geo\GeoSourceGenerate;
@@ -169,19 +166,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         AssociateProfessionalsWithEnvironment::class,
         CleanupActionLog::class,
         CleanupSyncAttempts::class,
-//        DeductManagerDataFromUser::class,
-//        EnsureManagers::class,
-//        EnsureOrganisations::class,
-//        MigrateMembershipToPartyEntities::class,
-//        MigrateMembersToOrganisations::class,
-//        MigrateOwnershipToPartyEntities::class,
-        MigrateToOrchid\MigrateToOrganisations\MigrateOwnershipToPartyEntities::class,
-        MigrateNovaRoles::class,
         MigrateToFormat2::class,
-        MigrateToOrchid::class,
-//        MigrateToManagers::class,
-//        MigrateToOrganisations::class,
-        SetOrganisationIdOnOwnedEntities::class,
 
         GeoClearApiCaches::class,
         GeoEnsureIntegrity::class,

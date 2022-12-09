@@ -9,6 +9,7 @@ use Vng\EvaCore\Models\Provider;
 
 class ProviderPolicy extends BasePolicy
 {
+
     use HandlesAuthorization;
 
     public function viewAny(IsManagerInterface $user): bool
@@ -16,22 +17,22 @@ class ProviderPolicy extends BasePolicy
         return $user->managerCan('provider.viewAny');
     }
 
+    public function viewAll(IsManagerInterface $user)
+    {
+        return $user->managerCan('provider.viewAll');
+    }
+
     public function view(IsManagerInterface $user, Provider $provider): bool
     {
-        return $user->managerCan('provider.viewAny');
+//        return $user->managerCan('provider.viewAny');
 
-//        if(!$provider->hasOwner()
-//            && $user->can('view national provider')
-//        ){
-//            return true;
-//        }
-//        if ($provider->hasOwner()
-//            && $user->can('provider.organisation.view')
-//            && $provider->isUserMemberOfOwner($user)
-//        ) {
-//            return true;
-//        }
-//        return $user->can('provider.view');
+        if ($provider->hasOwner()
+            && $user->managerCan('provider.organisation.view')
+            && $provider->isUserMemberOfOwner($user)
+        ) {
+            return true;
+        }
+        return $user->managerCan('provider.view');
     }
 
     public function create(IsManagerInterface $user): bool

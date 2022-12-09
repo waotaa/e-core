@@ -6,7 +6,7 @@ use Vng\EvaCore\Http\Requests\LinkCreateRequest;
 use Vng\EvaCore\Http\Requests\LinkUpdateRequest;
 use Vng\EvaCore\Models\Link;
 
-interface LinkRepositoryInterface extends BaseRepositoryInterface
+interface LinkRepositoryInterface extends InstrumentOwnedEntityRepositoryInterface
 {
     public function create(LinkCreateRequest $request): Link;
     public function update(Link $download, LinkUpdateRequest $request): Link;

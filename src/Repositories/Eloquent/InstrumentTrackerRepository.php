@@ -14,6 +14,8 @@ use Vng\EvaCore\Repositories\LocalPartyRepositoryInterface;
 
 class InstrumentTrackerRepository extends BaseRepository implements InstrumentTrackerRepositoryInterface
 {
+    use InstrumentOwnedEntityRepository;
+
     protected string $model = InstrumentTracker::class;
 
     public function new(): InstrumentTracker

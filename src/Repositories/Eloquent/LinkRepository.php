@@ -10,6 +10,8 @@ use Vng\EvaCore\Repositories\LinkRepositoryInterface;
 
 class LinkRepository extends BaseRepository implements LinkRepositoryInterface
 {
+    use InstrumentOwnedEntityRepository;
+
     public string $model = Link::class;
 
     public function create(LinkCreateRequest $request): Link

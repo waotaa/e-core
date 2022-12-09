@@ -12,7 +12,7 @@ class ContactFromArrayService extends BaseFromArrayService
         $data = $this->data;
 
         $organisation = null;
-        if (!is_null($data['organisation'])) {
+        if (isset($data['organisation']) && !is_null($data['organisation'])) {
             $organisation = OrganisationFromArrayService::create($data['organisation']);
         }
 

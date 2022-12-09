@@ -11,6 +11,8 @@ use Vng\EvaCore\Repositories\LocationRepositoryInterface;
 
 class LocationRepository extends BaseRepository implements LocationRepositoryInterface
 {
+    use InstrumentOwnedEntityRepository;
+
     protected string $model = Location::class;
 
     public function create(LocationCreateRequest $request): Location

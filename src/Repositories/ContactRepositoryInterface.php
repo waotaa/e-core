@@ -7,7 +7,7 @@ use Vng\EvaCore\Http\Requests\ContactUpdateRequest;
 use Vng\EvaCore\Models\Contact;
 use Vng\EvaCore\Models\Instrument;
 
-interface ContactRepositoryInterface extends BaseRepositoryInterface
+interface ContactRepositoryInterface extends OwnedEntityRepositoryInterface
 {
     public function create(ContactCreateRequest $request): Contact;
     public function update(Contact $download, ContactUpdateRequest $request): Contact;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Vng\EvaCore\Commands\Format\MigrateToOrchid\MigrateToOrganisations;
+namespace Vng\EvaCore\Commands\Format;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;

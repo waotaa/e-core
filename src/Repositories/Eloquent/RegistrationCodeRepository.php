@@ -10,6 +10,8 @@ use Vng\EvaCore\Repositories\RegistrationCodeRepositoryInterface;
 
 class RegistrationCodeRepository extends BaseRepository implements RegistrationCodeRepositoryInterface
 {
+    use InstrumentOwnedEntityRepository;
+
     public string $model = RegistrationCode::class;
 
     public function create(RegistrationCodeCreateRequest $request): RegistrationCode

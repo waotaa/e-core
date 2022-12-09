@@ -239,12 +239,11 @@ class InstrumentFromArrayService extends BaseFromArrayService
         $rating = new Rating($ratingData);
 
         // temporarily neccesary since email was missing from rating resource
-        $rating->email = $ratingData['professional']['email'];
+        $rating->email = $ratingData['email'];
 
         $rating->instrument()->associate($instrument);
         $professional = Professional::query()->where('email', $rating->email)->first();
-        if (!is_null($professional))
-        {
+        if (!is_null($professional)) {
             $rating->professional()->associate($professional);
         }
 

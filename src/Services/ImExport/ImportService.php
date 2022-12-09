@@ -11,8 +11,8 @@ class ImportService
 {
     public static function import($filenameBase)
     {
-//        EnvironmentImportService::import($filenameBase);
-//        ProfessionalImportService::import($filenameBase);
+        EnvironmentImportService::import($filenameBase);
+        ProfessionalImportService::import($filenameBase);
         InstrumentImportService::import($filenameBase);
         ProviderImportService::import($filenameBase);
     }

@@ -12,27 +12,51 @@ class ContactPolicy
 
     public function viewAny(IsManagerInterface $user)
     {
-        return true;
+        return $user->managerCan('contact.viewAny');
     }
 
-    public function view(IsManagerInterface $user, Contact $address)
+    public function viewAll(IsManagerInterface $user)
     {
-        return true;
+        return $user->managerCan('contact.viewAll');
+    }
+
+    public function view(IsManagerInterface $user, Contact $contact)
+    {
+        if ($contact->hasOwner()
+            && $user->managerCan('contact.organisation.view')
+            && $contact->isUserMemberOfOwner($user)
+        ) {
+            return true;
+        }
+        return $this->viewAll($user);
     }
 
     public function create(IsManagerInterface $user)
     {
-        return true;
+        return $user->managerCan('contact.organisation.create')
+            || $user->managerCan('contact.create');
     }
 
-    public function update(IsManagerInterface $user, Contact $address)
+    public function update(IsManagerInterface $user, Contact $contact)
     {
-        return true;
+        if ($contact->hasOwner()
+            && $user->managerCan('contact.organisation.update')
+            && $contact->isUserMemberOfOwner($user)
+        ) {
+            return true;
+        }
+        return $user->managerCan('contact.update');
     }
 
-    public function delete(IsManagerInterface $user, Contact $address)
+    public function delete(IsManagerInterface $user, Contact $contact)
     {
-        return true;
+        if ($contact->hasOwner()
+            && $user->managerCan('contact.organisation.delete')
+            && $contact->isUserMemberOfOwner($user)
+        ) {
+            return true;
+        }
+        return $user->managerCan('contact.delete');
     }
 
     // attach instrument

@@ -1,6 +1,6 @@
 <?php
 
-namespace Vng\EvaCore\Commands\Format\MigrateToOrchid\MigrateToManagers;
+namespace Vng\EvaCore\Commands\Format;
 
 use Illuminate\Console\Command;
 use Vng\EvaCore\Interfaces\IsManagerInterface;

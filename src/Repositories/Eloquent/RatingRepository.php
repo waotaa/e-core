@@ -10,6 +10,8 @@ use Vng\EvaCore\Repositories\RatingRepositoryInterface;
 
 class RatingRepository extends BaseRepository implements RatingRepositoryInterface
 {
+    use InstrumentOwnedEntityRepository;
+
     public string $model = Rating::class;
 
     public function create(RatingCreateRequest $request): Rating

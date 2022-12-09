@@ -15,6 +15,7 @@ class ManagerFromArrayService extends BaseFromArrayService
             'email' => $data['email'],
         ]);
         $manager->fill([
+            'name' => $data['name'],
             'givenName' => $data['givenName'],
             'surName' => $data['surName'],
             'months_unupdated_limit' => $data['months_unupdated_limit'] ?? 6,
@@ -22,6 +23,7 @@ class ManagerFromArrayService extends BaseFromArrayService
 
         $manager->saveQuietly();
 
+        $manager = $this->attachToRoles($manager);
         return $this->attachToOrganisations($manager);
     }
 
@@ -34,6 +36,14 @@ class ManagerFromArrayService extends BaseFromArrayService
         }
 
         $manager->organisations()->syncWithoutDetaching($organisationIds);
+        return $manager;
+    }
+
+    public function attachToRoles(Manager $manager)
+    {
+        foreach ($this->data['roles'] as $roleData) {
+            $manager->assignRole($roleData['name']);
+        }
         return $manager;
     }
 }

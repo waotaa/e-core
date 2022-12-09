@@ -12,6 +12,8 @@ use Vng\EvaCore\Services\DownloadsService;
 
 class DownloadRepository extends BaseRepository implements DownloadRepositoryInterface
 {
+    use InstrumentOwnedEntityRepository;
+
     public string $model = Download::class;
 
     public function create(DownloadCreateRequest $request): Download

@@ -23,20 +23,15 @@ class InstrumentPolicy extends BasePolicy
 
     public function view(IsManagerInterface $user, Instrument $instrument): bool
     {
-        return $user->managerCan('instrument.viewAny');
+//        return $user->managerCan('instrument.viewAny');
 
-//        if (!$instrument->hasOwner()
-//            && $user->can('view national instrument')
-//        ) {
-//            return true;
-//        }
-//        if ($instrument->hasOwner()
-//            && $user->can('instrument.organisation.view')
-//            && $instrument->isUserMemberOfOwner($user)
-//        ) {
-//            return true;
-//        }
-//        return $user->can('instrument.view');
+        if ($instrument->hasOwner()
+            && $user->managerCan('instrument.organisation.view')
+            && $instrument->isUserMemberOfOwner($user)
+        ) {
+            return true;
+        }
+        return $this->viewAll($user);
     }
 
     public function create(IsManagerInterface $user): bool
