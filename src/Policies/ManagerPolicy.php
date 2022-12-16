@@ -93,6 +93,9 @@ class ManagerPolicy extends BasePolicy
 
     public function attachAnyRole(IsManagerInterface $user, Manager $targetManager)
     {
+        if ($user->id === $targetUser->id || $targetUser->isCreatedBy($user)) {
+            return true;
+        }
         $manager = $user->getManager();
         if ($manager->managersShareOrganisation($targetManager)
             && $user->managerCan('manager.organisation.role.manage')) {
