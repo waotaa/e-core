@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 use Vng\EvaCore\ElasticResources\EnvironmentResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -64,7 +65,6 @@ class Environment extends SearchableModel
 
     public function deriveUserPoolName()
     {
-        // heel misschien created_by erin verwerken om zeker te zijn van uniciteit
-        return $this->slug;
+        return Str::slug($this->name);
     }
 }
