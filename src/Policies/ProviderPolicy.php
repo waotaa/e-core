@@ -32,7 +32,7 @@ class ProviderPolicy extends BasePolicy
         ) {
             return true;
         }
-        return $user->managerCan('provider.view');
+        return $user->managerCan('provider.view') || $this->viewAll($user);
     }
 
     public function create(IsManagerInterface $user): bool

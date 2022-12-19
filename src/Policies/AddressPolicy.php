@@ -28,7 +28,7 @@ class AddressPolicy extends BasePolicy
         ) {
             return true;
         }
-        return $this->viewAll($user);
+        return $user->managerCan('address.view') || $this->viewAll($user);
     }
 
     public function create(IsManagerInterface $user)

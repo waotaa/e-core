@@ -28,7 +28,7 @@ class ContactPolicy extends BasePolicy
         ) {
             return true;
         }
-        return $this->viewAll($user);
+        return $user->managerCan('contact.view') || $this->viewAll($user);
     }
 
     public function create(IsManagerInterface $user)
