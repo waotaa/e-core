@@ -10,6 +10,9 @@ class EnvironmentValidation extends ModelValidation
             'name' => [
                 'required'
             ],
+            'url' => [
+                'url'
+            ],
             'organisation_id' => [
                 'required'
             ],

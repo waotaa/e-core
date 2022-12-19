@@ -6,7 +6,7 @@ use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Contact;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ContactPolicy
+class ContactPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 

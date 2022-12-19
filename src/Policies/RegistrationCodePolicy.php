@@ -7,7 +7,7 @@ use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\RegistrationCode;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class RegistrationCodePolicy
+class RegistrationCodePolicy extends BasePolicy
 {
     use HandlesAuthorization;
 

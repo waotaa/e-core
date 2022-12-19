@@ -214,7 +214,7 @@ $organisationAddressPermissions = [
 $globalAddressPermissions = [
     ...$organisationAddressPermissions,
     'address.viewAny',
-    'address.view',
+    'address.viewAll',
     'address.create',
     'address.update',
     'address.delete',
@@ -236,7 +236,7 @@ $organisationContactPermissions = [
 $globalContactPermissions = [
     ...$organisationContactPermissions,
     'contact.viewAny',
-    'contact.view',
+    'contact.viewAll',
     'contact.create',
     'contact.update',
     'contact.delete',
@@ -347,7 +347,7 @@ $globalInstrumentPermissions = [
     ...$instrumentPropertyPermissions,
     ...$instrumentRatingPermissions,
     'instrument.viewAny',
-    'instrument.view',
+    'instrument.viewAll',
     'instrument.create',
     'instrument.update',
     'instrument.delete',
@@ -368,7 +368,7 @@ $organisationProviderPermissions = [
 $globalProviderPermissions = [
     ...$organisationProviderPermissions,
     'provider.viewAny',
-    'provider.view',
+    'provider.viewAll',
     'provider.create',
     'provider.update',
     'provider.delete',

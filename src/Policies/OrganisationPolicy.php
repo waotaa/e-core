@@ -6,7 +6,7 @@ use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Address;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class OrganisationPolicy
+class OrganisationPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 

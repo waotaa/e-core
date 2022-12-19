@@ -2,18 +2,12 @@
 
 namespace Vng\EvaCore\ElasticResources\Shared;
 
-use Illuminate\Support\Str;
-use Vng\EvaCore\ElasticResources\AddressResource;
-use Vng\EvaCore\ElasticResources\ElasticResource;
-
-class ProviderResource extends ElasticResource
+class ProviderResource extends \Vng\EvaCore\ElasticResources\ProviderResource
 {
-    public function toArray()
+    public function toArray(): array
     {
-        return [
-            'name' => $this->name,
-            'slug' => (string) Str::slug($this->name),
-            'address' => AddressResource::one($this->address),
-        ];
+        $resource = parent::toArray();
+        unset($resource['contacts']);
+        return $resource;
     }
 }

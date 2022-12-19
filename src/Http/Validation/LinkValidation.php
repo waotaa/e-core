@@ -2,7 +2,8 @@
 
 namespace Vng\EvaCore\Http\Validation;
 
-class LinkValidation extends ModelValidation
+class
+LinkValidation extends ModelValidation
 {
     public function rules(): array
     {

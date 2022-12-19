@@ -7,7 +7,7 @@ use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Download;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class DownloadPolicy
+class DownloadPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 

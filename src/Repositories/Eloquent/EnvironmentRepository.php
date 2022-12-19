@@ -16,6 +16,7 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
 
     public function create(EnvironmentCreateRequest $request): Environment
     {
+
         return $this->saveFromRequest(new $this->model(), $request);
     }
 
@@ -35,6 +36,7 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
         $environment->fill([
             'name' => $request->input('name'),
             'slug' => $request->input('slug'),
+            'url' => $request->input('url'),
             'description_header' => $request->input('description_header'),
             'description' => $request->input('description'),
             'logo' => $request->input('logo'),

@@ -7,7 +7,7 @@ use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Location;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class LocationPolicy
+class LocationPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 

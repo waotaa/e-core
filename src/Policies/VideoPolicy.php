@@ -7,7 +7,7 @@ use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Video;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class VideoPolicy
+class VideoPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 

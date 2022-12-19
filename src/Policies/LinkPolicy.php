@@ -7,7 +7,7 @@ use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Link;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class LinkPolicy
+class LinkPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
