@@ -17,5 +17,5 @@ interface OwnedEntityRepositoryInterface extends BaseRepositoryInterface
 
     public function addForUserConditions(Builder $query, IsManagerInterface $user): Builder;
 
-    public function getQueryInstrumentsManagedByUser(IsManagerInterface $user): Builder;
+    public function getQueryItemsManagedByUser(IsManagerInterface $user): Builder;
 }

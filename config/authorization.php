@@ -248,9 +248,10 @@ $globalContactPermissions = [
 
 // Instruments
 $instrumentPropertyPermissions = [
+    // moet weg. AddressPolicyTest test verwachtingen ook aanpassen
     'address.viewAny',
     'address.view',
-
+    // moet weg. ContactPolicyTest test verwachtingen ook aanpassen`z
     'contact.viewAny',
     'contact.view',
 

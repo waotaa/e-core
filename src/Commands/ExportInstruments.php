@@ -14,7 +14,7 @@ class ExportInstruments extends Command
     {
         $this->output->writeln('exporting instruments');
 
-        InstrumentExportService::exportAllInstruments($this->argument('mark'));
+        InstrumentExportService::export($this->argument('mark'));
 
         $this->output->writeln('finished');
         return 0;

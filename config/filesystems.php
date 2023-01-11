@@ -81,6 +81,9 @@ return [
         ]
     ],
 
-    'storage' => env('STORAGE', 's3')
+    'storage' => env('STORAGE', 's3'),
 
+    'storage_paths' => [
+        'downloads' => env('FILESYSTEM_STORAGE_PATH_DOWNLOADS', 'downloads')
+    ]
 ];

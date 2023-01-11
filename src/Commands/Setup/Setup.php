@@ -26,14 +26,6 @@ class Setup extends Command
         return 0;
     }
 
-    private function publishPackage()
-    {
-        $this->call('vendor:publish', [
-            '--provider' => 'Vng\EvaCore\Providers\EvaServiceProvider',
-            '--force' => true,
-        ]);
-    }
-
     private function setupDatabase()
     {
         $this->call('migrate:fresh', ['--force' => true]);

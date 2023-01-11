@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Repositories\Eloquent;
 
+use Illuminate\Contracts\Auth\Access\Authorizable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
@@ -29,9 +30,14 @@ trait OwnedEntityRepository
         return $query->where('organisation_id', $organisation->id);
     }
 
+    /**
+     * @param Builder $query
+     * @param \Vng\EvaCore\Interfaces\IsManagerInterface&Authorizable $user
+     * @return Builder
+     */
     public function addForUserConditions(Builder $query, IsManagerInterface $user): Builder
     {
-        if ($user->cannot('viewAll', $this->model)) {
+        if (!$user->can('viewAll', $this->model)) {
             $query = $query->whereNull('organisation_id');
             $query = $this->addMultipleOwnerConditions($query, $user->getManager()->organisations);
         }
@@ -39,7 +45,7 @@ trait OwnedEntityRepository
         return $query;
     }
 
-    public function getQueryInstrumentsManagedByUser(IsManagerInterface $user): Builder
+    public function getQueryItemsManagedByUser(IsManagerInterface $user): Builder
     {
         return $this->addForUserConditions($this->builder(), $user);
     }

@@ -7,6 +7,7 @@ use Vng\EvaCore\Http\Requests\AddressCreateRequest;
 use Vng\EvaCore\Http\Requests\AddressUpdateRequest;
 use Vng\EvaCore\Models\Address;
 use Vng\EvaCore\Repositories\AddressRepositoryInterface;
+use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
 
 class  AddressRepository extends BaseRepository implements AddressRepositoryInterface
 {
@@ -26,7 +27,7 @@ class  AddressRepository extends BaseRepository implements AddressRepositoryInte
 
     public function saveFromRequest(Address $address, FormRequest $request): Address
     {
-        $organisationRepository = new OrganisationRepository();
+        $organisationRepository = app(OrganisationRepositoryInterface::class);
         $organisation = $organisationRepository->find($request->input('organisation_id'));
         if (is_null($organisation)) {
             throw new \Exception('invalid organisation provided');
