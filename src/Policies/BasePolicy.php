@@ -28,4 +28,14 @@ abstract class BasePolicy
         }
         return $manager;
     }
+
+    public function viewAny(IsManagerInterface $user)
+    {
+        return false;
+    }
+
+    public function viewAll(IsManagerInterface $user)
+    {
+        return false;
+    }
 }

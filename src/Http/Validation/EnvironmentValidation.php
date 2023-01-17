@@ -11,7 +11,8 @@ class EnvironmentValidation extends ModelValidation
                 'required'
             ],
             'url' => [
-                'url'
+                'url',
+                'nullable'
             ],
             'organisation_id' => [
                 'required'
