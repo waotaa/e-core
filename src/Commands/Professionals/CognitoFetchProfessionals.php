@@ -15,8 +15,8 @@ class CognitoFetchProfessionals extends Command
     {
         $this->getOutput()->writeln('fetching professionals...');
 
-        if ($this->hasArgument('environmentSlug')) {
-            $slug = $this->argument('environmentSlug');
+        $slug = $this->argument('environmentSlug');
+        if (!is_null($slug)) {
             $this->output->writeln('* for specified environment: ' . $slug);
             /** @var Environment $environment */
             $environment = Environment::query()->where('slug', $slug)->firstOrFail();
