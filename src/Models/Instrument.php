@@ -33,8 +33,12 @@ class Instrument extends SearchableModel
     protected $table = 'instruments';
     protected string $elasticResource = InstrumentResource::class;
     protected $fillable = [
+        'created_at',
+        'updated_at',
+
         'uuid',
         'name',
+        
         'is_active',
         'publish_from',
         'publish_to',

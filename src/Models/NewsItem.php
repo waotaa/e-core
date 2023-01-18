@@ -16,6 +16,9 @@ class NewsItem extends SearchableModel
     protected string $elasticResource = NewsItemResource::class;
 
     protected $fillable = [
+        'created_at',
+        'updated_at',
+
         'title',
         'sub_title',
         'body',

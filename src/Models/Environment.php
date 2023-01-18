@@ -20,6 +20,9 @@ class Environment extends SearchableModel
     protected string $elasticResource = EnvironmentResource::class;
 
     protected $fillable = [
+        'created_at',
+        'updated_at',
+
         'name',
         'slug',
         'description_header',

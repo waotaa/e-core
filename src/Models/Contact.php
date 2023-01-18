@@ -15,6 +15,9 @@ class Contact extends Model
     use HasFactory, HasOwner;
 
     protected $fillable = [
+        'created_at',
+        'updated_at',
+
         'name',
         'phone',
         'email',

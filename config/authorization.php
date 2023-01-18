@@ -392,6 +392,7 @@ return [
         'newsItem',
         'organisation',
         'partnership',
+        'professional',
         'provider',
         'provider.organisation',
         'rating',
