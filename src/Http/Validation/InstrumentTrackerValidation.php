@@ -10,7 +10,7 @@ class InstrumentTrackerValidation extends ModelValidation
     {
         return [
             'role' => [
-                'in:' . implode(',', FollowerRoleEnum::keys()),
+                'in:' . implode(',', FollowerRoleEnum::values()),
             ],
             'instrument_id' => [
                 'required',

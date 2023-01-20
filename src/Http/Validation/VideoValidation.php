@@ -10,7 +10,7 @@ class VideoValidation extends ModelValidation
     {
         return [
             'provider' => [
-                'in:' . implode(',', VideoProviderEnum::keys()),
+                'in:' . implode(',', VideoProviderEnum::values()),
             ],
             'video_identifier' => [
                 'max:11',
