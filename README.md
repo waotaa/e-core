@@ -1,5 +1,30 @@
 # Eva Laravel core
 
+## Setup
+
+### Installation
+To use this package in your own project run:\
+`php artisan eva-core:install {--n|no-interaction}`
+
+Make sure you publish the config this package provides with: 
+`php artisan vendor:publish`
+
+Besides config this package also offers translations and Open API specs
+
+### Fresh instance
+Before setting up a new instance first make sure your .env file is setup. See .env 
+variable descriptions below.\
+When setting up a new instance of the project run:
+
+`php artisan eva-core:setup {--n|no-interaction}`\
+This will freshly migrate the database and sets up some other services like the geo data.
+I recommend you create your own setup script which executes this script.
+
+### Updating an existing instance
+When updating an existing instance of the project run:\
+`php artisan eva-core:update {--n|no-interaction}`
+This will run missing migrations.
+I recommend you create your own update script which executes this script.
 
 ## Environments files
 ```
@@ -9,45 +34,67 @@
 .env.testing (unit tests)
 ```
 
-## Installation
-`php artisan eva-core:setup {--n|no-interaction} {--l|lean}`
+### Environment variables
+All these variables are found in `.env.example`. Make sure to copy them to your own project
 
-### Publishing
-Config, Translations, API
+ELASTIC_INDEX_PREFIX
+: The prefix used to prefix all elastic indeces
 
-## Updating
-`php artisan eva-core:update`
+ELASTIC_CLOUD_ID
+: The cloud id of the elastic search instance
+
+ELASTIC_USERNAME
+: The username of the elastic search instance
+
+ELASTIC_PASSWORD
+: The password of the elastic search instance
+
+ELASTIC_PUBLIC_CLOUD_ID
+: The cloud id of the **public** elastic search instance - used to store data shared on kibana boards
+
+ELASTIC_PUBLIC_USERNAME
+: The username of the **public** elastic search instance - used to store data shared on kibana boards
+
+ELASTIC_PUBLIC_PASSWORD
+: The password of the **public** elastic search instance - used to store data shared on kibana boards
+
+FILESYSTEM_STORAGE_PATH_DOWNLOADS
+FILESYSTEM_DIRECTORY_PATH_DOWNLOADS
+: The directory where all files from the download entities are stored
+
+AWS_ACCESS_KEY_ID
+: AWS Access key for S3 filesystem settings
+
+AWS_SECRET_ACCESS_KEY
+: AWS Secret access key for S3 filesystem settings
+
+AWS_REGION
+: AWS region for S3 filesystem settings - defaults to `eu-central-1`
+
+AWS_URL
+: AWS url for S3 filesystem settings
+
+AWS_BUCKET
+: AWS bucket name for S3 filesystem settings
+
+AWS_BUCKET_GEO
+: AWS bucket name for storing geo data on S3 filesystem settings
+
+AWS_SDK_ACCESS_KEY_ID
+: Thw AWS acces key id for AWS cognito service API calls
+
+AWS_SDK_SECRET_ACCESS_KEY
+: Thw AWS acces key for AWS cognito service API calls
+
+AWS_SDK_REGION
+: defaults to `eu-central-1`
 
 
-## Force data sync with elastic
-```angular2html
-php artisan elastic:sync-all -f
-php artisan elastic:sync-environments
-```
 
-## Tests
-Make sure you setup your testing .env's before running the tests.
-You probably want to use a different database for running the tests.
+## CLI Commands
+This package offers a number of CLI commands. You can find their description in
+their classes 
 
-### Browser tests
-We use laravel dusk for browser tests. It uses a .env.dusk.[env] environment file. If your test fails due to a chrome
-driver failure, you first should try to update it.
-
-Running the tests:
-```
-php artisan dusk:chrome-driver
-php artisan dusk
-```
-
-### Unit tests
-For unit testing we use phpunit. In phpunit.xml the .env.testing environment isset as the used environment file. Laravel
-doesn't use the .env directly. It loads it in the config. Therefor you need to clear your config before running a test.
-
-Running the tests:
-```
-php artisan config:clear
-php artisan test
-```
 
 ## Geo Data
 Eva uses geo data from townships and labor market regions.\
@@ -55,9 +102,8 @@ There are various API's that can be used as the source for this data.\
 We use the API data to generate a source file. This source file is the
 single point of truth we use to create our database entries.
 
-There are various commands to check if the source file or database is up
-to date and other commands to update them if they're not.
-
+There are various commands to check if the source file or database is up-to-date
+and other commands to update them if they're not.
 
 ### New source and new data set
 To generate a new township and region source run
@@ -150,18 +196,44 @@ php artisan geo:townships-update-data-from-source --yes-to-all
 php artisan geo:regions-update-data-from-source --yes-to-all
 ```
 
-## Professionals
+# Package contents
 
-The data from the id provider is leading
-The data in the professionals table is a copy of the data in the
-id-provider. To sync the data in the database with the data from the
-id-provider you can run the following command.
+- Casts which can be used to cast model properties to a format
+- CLI Commands
+- Elastic resources for mapping database data to elastic documents
+- Enums which provide static options for some model properties
+- Events which are mostly used to trigger data to elastic search synchronisation
+- Http requests used in the repositories to enforce validation rules
+- Http resources which can be used in API reponses
+- Http validation rules which are used in the requests to enforce correct user input
+- Interfaces
+- Jobs, mostly used for elastic synchronisation / management tasks
+- Listeners for the events
+- Models
+- Notification messages
+- Observers
+- Policies
+- Providers
+- Repositories which can be used for storing / retrieving model entities
+- Services, various business logic services
+- Traits
+
+## Professionals
+When creating a professional, a user is created in Amazone Cognito.
+These are users for the instrument catalog.
+
+The data in the professionals' table is a copy of the users in
+the cognito user pool. The data from the id-provider is leading
+
+To sync the data in the database with the data from the id-provider
+you can run the following command.
 
 ```
-professionals:sync
+professionals:sync {environmentSlug?} {--d|destructive}
 ```
 
 The commands updates the last_seen_date of all the professionals it
 found. Naturally the last_seen_date of professionals missing from the
 id-provider will not update. You might want to remove those from
-professionals from the database. There are methods in place to do so
+professionals from the database. You can use the destructive option to
+do so
