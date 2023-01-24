@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContactFromArrayService extends BaseFromArrayService
 {
-    public function handle(): Model
+    public function handle(): ?Model
     {
         $data = $this->data;
 

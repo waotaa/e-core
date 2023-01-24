@@ -7,7 +7,7 @@ use Vng\EvaCore\Models\Provider;
 
 class ProviderFromArrayService extends BaseFromArrayService
 {
-    public function handle(): Model
+    public function handle(): ?Model
     {
         $data = $this->data;
 

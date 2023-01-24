@@ -8,7 +8,7 @@ use Vng\EvaCore\Models\Township;
 
 class LocalPartyFromArrayService extends BaseFromArrayService
 {
-    public function handle(): Model
+    public function handle(): ?Model
     {
         $data = $this->data;
 

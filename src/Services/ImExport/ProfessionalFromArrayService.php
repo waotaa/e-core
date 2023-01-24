@@ -9,9 +9,13 @@ use Vng\EvaCore\Services\Cognito\CognitoService;
 
 class ProfessionalFromArrayService extends BaseFromArrayService
 {
-    public function handle(): Model
+    public function handle(): ?Model
     {
         $data = $this->data;
+
+        if (!isset($data['environment'])) {
+            return null;
+        }
 
         /** @var Environment $environment */
         $environment = EnvironmentFromArrayService::create($data['environment']);

@@ -20,13 +20,13 @@ abstract class BaseFromArrayService
         $this->data = $data;
     }
 
-    public static function create(array $data): Model
+    public static function create(array $data): ?Model
     {
         $service = new static($data);
         return $service->handle();
     }
 
-    abstract public function handle(): Model;
+    abstract public function handle(): ?Model;
 
     public static function findOwner($ownerData)
     {

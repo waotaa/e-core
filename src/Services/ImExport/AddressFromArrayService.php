@@ -7,7 +7,7 @@ use Vng\EvaCore\Models\Address;
 
 class AddressFromArrayService extends BaseFromArrayService
 {
-    public function handle(): Model
+    public function handle(): ?Model
     {
         $data = $this->data;
 
