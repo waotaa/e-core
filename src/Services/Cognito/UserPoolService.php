@@ -137,6 +137,7 @@ class UserPoolService
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         $args = static::getUserPoolArgs($environment);
         $args['UserPoolId'] = $userPoolModel->getId();
+        // 15 requests per second
         return $cognitoClient->updateUserPool($args);
     }
 
@@ -257,6 +258,7 @@ class UserPoolService
     {
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
+        // max 15 requests per second
         return $cognitoClient->describeUserPool([
             'UserPoolId' => $userPoolId
         ]);

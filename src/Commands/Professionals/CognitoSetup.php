@@ -2,8 +2,8 @@
 
 namespace Vng\EvaCore\Commands\Professionals;
 
+use Vng\EvaCore\Jobs\EnsureCognitoSetup;
 use Vng\EvaCore\Models\Environment;
-use Vng\EvaCore\Services\Cognito\CognitoService;
 use Illuminate\Console\Command;
 
 class CognitoSetup extends Command
@@ -35,7 +35,8 @@ class CognitoSetup extends Command
     public function setupUserPool(Environment $environment)
     {
         $this->output->writeln('handling environment ' . $environment->name . ' with userpool name ' . $environment->deriveUserPoolName());
-        $environment = CognitoService::make($environment)->ensureSetup();
-        $environment->saveQuietly();
+        EnsureCognitoSetup::dispatch($environment);
+//        $environment = CognitoService::make($environment)->ensureSetup();
+//        $environment->saveQuietly();
     }
 }
