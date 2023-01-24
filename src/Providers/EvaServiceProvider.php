@@ -59,6 +59,7 @@ use Vng\EvaCore\Commands\Professionals\CognitoGetConfig;
 use Vng\EvaCore\Commands\Professionals\CognitoSetup;
 use Vng\EvaCore\Commands\Professionals\CognitoSyncProfessionals;
 use Vng\EvaCore\Commands\Professionals\ProfessionalPasswordExpirationCheck;
+use Vng\EvaCore\Commands\Ratings\MatchInstrumentRatingsWithProfessionals;
 use Vng\EvaCore\Commands\Reallocation\DuplicateOwnedItems;
 use Vng\EvaCore\Commands\Reallocation\MoveOwnedItems;
 use Vng\EvaCore\Commands\Setup\CreateTestInstrument;
@@ -197,6 +198,8 @@ class EvaServiceProvider extends AggregateServiceProvider
         CognitoSetup::class,
         CognitoSyncProfessionals::class,
         ProfessionalPasswordExpirationCheck::class,
+
+        MatchInstrumentRatingsWithProfessionals::class,
 
         DuplicateOwnedItems::class,
         MoveOwnedItems::class,

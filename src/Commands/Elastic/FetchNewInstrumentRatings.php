@@ -16,8 +16,6 @@ class FetchNewInstrumentRatings extends Command
         $this->output->writeln('fetching ratings...');
         $this->output->writeln('used index-prefix: ' . config('elastic.prefix'));
 
-        $this->call('professionals:sync');
-
         foreach (Instrument::all() as $instrument) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->writeln($instrument->name);

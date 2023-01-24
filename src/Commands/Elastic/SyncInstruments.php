@@ -16,7 +16,7 @@ class SyncInstruments extends Command
     public function handle(): int
     {
         $this->output->info('fetch ratings first');
-        $this->call('elastic:fetch-ratings');
+        $this->call(FetchNewInstrumentRatings::class);
 
         $this->output->writeln('syncing instruments...');
         $this->output->writeln('used index-prefix: ' . config('elastic.prefix'));
