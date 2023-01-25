@@ -91,9 +91,34 @@ class Organisation extends Model
         return $this->belongsToMany(Environment::class, 'featured_organisations')->using(FeaturedOrganisation::class);
     }
 
+    public function ownedAddresses(): HasMany
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    public function ownedContacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function ownedEnvironments(): HasMany
+    {
+        return $this->hasMany(Environment::class);
+    }
+
+    public function ownedInstruments(): HasMany
+    {
+        return $this->instruments();
+    }
+
     public function instruments(): HasMany
     {
         return $this->hasMany(Instrument::class);
+    }
+
+    public function ownedProviders(): HasMany
+    {
+        return $this->providers();
     }
 
     public function providers(): HasMany

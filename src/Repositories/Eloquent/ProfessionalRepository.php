@@ -2,10 +2,13 @@
 
 namespace Vng\EvaCore\Repositories\Eloquent;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Vng\EvaCore\Http\Requests\ProfessionalCreateRequest;
 use Vng\EvaCore\Http\Requests\ProfessionalUpdateRequest;
+use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Professional;
+use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
 use Vng\EvaCore\Repositories\ProfessionalRepositoryInterface;
 
 class ProfessionalRepository extends BaseRepository implements ProfessionalRepositoryInterface
@@ -35,5 +38,22 @@ class ProfessionalRepository extends BaseRepository implements ProfessionalRepos
         $professional->environment()->associate($request->input('environment_id'));
         $professional->save();
         return $professional;
+    }
+
+    public function addForUserConditions(Builder $query, IsManagerInterface $user)
+    {
+        /** @var EnvironmentRepositoryInterface $environmentRepository */
+        $environmentRepository = app(EnvironmentRepositoryInterface::class);
+
+        // return professionals with an environment...
+        return $query->whereHas('environment', function (Builder $query) use ($environmentRepository, $user) {
+            // ...managed by the user
+            $environmentRepository->addForUserConditions($query, $user);
+        });
+    }
+
+    public function getQueryItemsManagedByUser(IsManagerInterface $user): Builder
+    {
+        return $this->addForUserConditions($this->builder(), $user);
     }
 }
