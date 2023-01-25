@@ -31,6 +31,7 @@ use Vng\EvaCore\Models\RegionalParty;
 use Vng\EvaCore\Models\RegistrationCode;
 use Vng\EvaCore\Models\Role;
 use Vng\EvaCore\Models\TargetGroup;
+use Vng\EvaCore\Models\Tile;
 use Vng\EvaCore\Models\Township;
 use Vng\EvaCore\Models\Video;
 use Vng\EvaCore\Policies\AddressPolicy;
@@ -61,6 +62,7 @@ use Vng\EvaCore\Policies\RegionPolicy;
 use Vng\EvaCore\Policies\RegistrationCodePolicy;
 use Vng\EvaCore\Policies\RolePolicy;
 use Vng\EvaCore\Policies\TargetGroupPolicy;
+use Vng\EvaCore\Policies\TilePolicy;
 use Vng\EvaCore\Policies\TownshipPolicy;
 use Vng\EvaCore\Policies\VideoPolicy;
 
@@ -100,6 +102,7 @@ class AuthServiceProvider extends ServiceProvider
         RegistrationCode::class => RegistrationCodePolicy::class,
         Role::class => RolePolicy::class,
         TargetGroup::class => TargetGroupPolicy::class,
+        Tile::class => TilePolicy::class,
         Township::class => TownshipPolicy::class,
         Video::class => VideoPolicy::class
     ];
