@@ -219,7 +219,7 @@ class Instrument extends SearchableModel
             });
         }
 
-        return $areas->values();
+        return !$areas->isEmpty() ? $areas->values() : null;
     }
 
     /**
@@ -234,14 +234,14 @@ class Instrument extends SearchableModel
             return $this->specifiedAvailableAreas;
         }
 
-        if (is_null($this->owner)) {
+        if (is_null($this->organisation)) {
             return AreaService::getNationalAreas();
         }
 
         // Has owner: Return owner areas
-        /** @var Partnership|Region|Township $owner */
-        $owner = $this->owner;
-        return $owner->getOwnAreas();
+        /** @var AreaInterface $organisationEntity */
+        $organisationEntity = $this->organisation->organisationable;
+        return $organisationEntity->getOwnAreas();
     }
 
     /**
