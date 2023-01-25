@@ -16,7 +16,7 @@ class EnvironmentObserver
     public function created(Environment $environment): void
     {
         $nationalParties = $this->nationalPartyRepository->all();
-        $environment->featuredOrganisations()->syncWithoutDetaching($nationalParties->pluck('id'));
+        $environment->featuredOrganisations()->syncWithoutDetaching($nationalParties->pluck('organisation.id'));
         $environment->save();
     }
 
