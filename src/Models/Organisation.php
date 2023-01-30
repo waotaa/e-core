@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Vng\EvaCore\Interfaces\IsManagerInterface;
+use Illuminate\Support\Collection;
 use Vng\EvaCore\Traits\HasContacts;
 
 class Organisation extends Model
@@ -129,5 +129,44 @@ class Organisation extends Model
     public function ownsInstrument(Instrument $instrument): bool
     {
         return $this->instruments && $this->instruments->contains($instrument->id);
+    }
+
+    public function getOverarchingOrganisations(): Collection
+    {
+        // include this organisation
+        $organisations = collect([$this]);
+
+        if (!is_null($this->localParty)){
+            /** @var LocalParty $localParty */
+            $localParty = $this->localParty;
+            // add overarching regional party organisations
+            $regionalParties = $localParty->township->region->regionalParties;
+            $regionalParties->each(fn (RegionalParty $rp) => $organisations->add($rp->organisation));
+
+            // add overarching partnership organisations
+            $partnerships = $localParty->township->partnerships;
+            $partnerships->each(fn (Partnership $p) => $organisations->add($p->organisation));
+        }
+
+        // we include all national parties
+        $nationalOrganisations = Organisation::query()->whereHasMorph('organisationable', [NationalParty::class])->get();
+        $organisations = $organisations->merge($nationalOrganisations);
+
+        return $organisations;
+
+        // Query only attempt
+//        $q = Organisation::query()->whereHasMorph('organisationable', [NationalParty::class]);
+//        if (!is_null($this->localParty)) {
+//            $q->orWhereHasMorph('organisationable', [RegionalParty::class], function (Builder $query) {
+//                $query->whereHas('region', function (Builder $query) {
+//                    $query->whereHas('townships', function (Builder $query) {
+//                        $query->whereHas('localParties', function (Builder $query) {
+//                            $query->where('id', $this->localParty);
+//                        });
+//                    });
+//                });
+//            });
+//        }
+
     }
 }
