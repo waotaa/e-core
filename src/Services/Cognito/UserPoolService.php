@@ -100,10 +100,10 @@ class UserPoolService
 //        'UserPoolTags' => ['<string>', ...],
         'VerificationMessageTemplate' => [
             'DefaultEmailOption' => 'CONFIRM_WITH_CODE',
-            'EmailMessage' => 'Uw verificatiecode is {####}.',
+            'EmailMessage' => 'Uw herstelcode is {####}.',
             'EmailMessageByLink' => 'Klik op de onderstaande link om uw e-mailadres te verifiëren. {##Verifieer Email##}',
-            'EmailSubject' => 'Verificatiecode Instrumentengids Eva',
-            'EmailSubjectByLink' => 'Verificatielink Instrumentengids Eva',
+            'EmailSubject' => 'Herstelcode Instrumentengids Eva',
+            'EmailSubjectByLink' => 'Herstellink Instrumentengids Eva',
 //            'SmsMessage' => 'SMS Bericht voor wat?',
         ]
     ];
@@ -146,7 +146,7 @@ class UserPoolService
         $args = static::DEFAULT_POOL_SETTINGS;
         $args['PoolName'] = $environment->deriveUserPoolName();
         $args['AdminCreateUserConfig']['InviteMessageTemplate']['EmailMessage'] = static::getInvitationEmail($environment->url);
-        $args['VerificationMessageTemplate']['EmailMessage'] = static::getValidationMessage();
+        $args['VerificationMessageTemplate']['EmailMessage'] = static::getValidationMessage($environment);
         return $args;
     }
 
@@ -184,25 +184,50 @@ class UserPoolService
             <br>
             Na de eerste keer inloggen wordt je meteen gevraagd je wachtwoord te wijzigen, daarna kan je al aan de slag! Neem voor vragen contact op met je teamleider of de contactpersoon voor Eva binnen jullie gemeente.<br>
             <br>
-            Let op: dit tijdelijke wachtwoord is slechts 24 uur geldig. Als je tijdelijke wachtwoord verlopen is zal de beheerder van jullie instrumentengids je opnieuw moeten uitnodigen. Stem indien nodig een handig moment af.<br>
+            Let op: dit tijdelijke wachtwoord is slechts 1 uur geldig. Als je tijdelijke wachtwoord verlopen is zal de beheerder van jullie instrumentengids je opnieuw moeten uitnodigen. Stem indien nodig een handig moment af.<br>
             <br>
             Veel succes met Eva!";
         return $message;
     }
 
-    public static function getValidationMessage()
+    public static function getValidationMessage(Environment $environment)
     {
-        return "
+        $url = $environment->url;
+
+        $message = "
         Beste professional,<br>
         <br>
-        Er is een herstelcode om uw nieuwe wachtwoord in te stellen aangevraagd, deze heeft u nodig om uw wachtwoord te wijzigen: {####}<br>
+        U ontvangt deze mail omdat het wachtwoord van uw Eva account (opnieuw) ingesteld dient te worden.<br>
+        Dit komt omdat:<br>
+        <ul>
+            <li>Uzelf of uw beheerder een wachtwoord herstel voor uw account heeft aangevraagd.</li>
+        </ul>
+        Of
+        <ul>
+            <li>Uw wachtwoord al zes maanden ongewijzigd is, en daardoor automatisch gereset wordt.</li>
+        </ul>
         <br>
+        U kunt uw wachtwoord opnieuw instellen met herstelcode: {####}<br>";
+
+        if (!is_null($url)) {
+            $message .= "
+            Ga naar <a href='". $url ."'>" . $url . "</a><br>
+            ";
+        }
+
+        $message .= "
         Klik op “Stel wachtwoord opnieuw in” en vervolgens op “Ik heb al een herstelcode en wil mijn wachtwoord wijzigen”.<br>
+        <br>
+        <b>Let op;</b> de herstelcode is 1 uur geldig. Mocht deze verlopen zijn dan kunt u een nieuwe aanvragen.
+        Klik op “Stel wachtwoord opnieuw in” en vul vervolgens uw e-mailadres in waarop uw account geregistreerd is.<br>
+        <br>
         <br>
         Neem voor vragen contact op met je teamleider of de contactpersoon voor Eva binnen jullie gemeente.<br>
         <br>
         Veel succes met Eva!
         ";
+
+        return $message;
     }
 
     public static function getUserPoolByEnvironment(Environment $environment): ?UserPoolModel
