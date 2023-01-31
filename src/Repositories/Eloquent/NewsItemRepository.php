@@ -2,7 +2,9 @@
 
 namespace Vng\EvaCore\Repositories\Eloquent;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Collection;
 use Vng\EvaCore\Http\Requests\NewsItemCreateRequest;
 use Vng\EvaCore\Http\Requests\NewsItemUpdateRequest;
 use Vng\EvaCore\Models\NewsItem;
@@ -37,5 +39,15 @@ class NewsItemRepository extends BaseRepository implements NewsItemRepositoryInt
 
         $newsItem->save();
         return $newsItem;
+    }
+
+    public function addRelatedEnvironmentsConditions(Builder $query, Collection $environments)
+    {
+        return $query->whereIn('environment_id', $environments->pluck('id'));
+    }
+
+    public function getQueryOwnedByEnvironments(Collection $environments): Builder
+    {
+        return $this->addRelatedEnvironmentsConditions($this->builder(), $environments);
     }
 }

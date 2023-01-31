@@ -172,28 +172,36 @@ $userAdministratorPermissions = [
 
 
 // Environment
-$environmentContentPermissions = [
+$newsItemPermissions = [
     'newsItem.viewAny',
     'newsItem.view',
     'newsItem.create',
     'newsItem.update',
     'newsItem.delete',
-    'newsItem.restore',
-    'newsItem.forceDelete',
-];
-$environmentStylingPermissions = [
-    'environment.style',
 ];
 
-$environmentManagerPermissions = [
-    'environment.update',
+$organisationEnvironmentPermissions = [
+    ...$newsItemPermissions,
+    'environment.viewAny',
+    'environment.organisation.view',
+//    'environment.organisation.create',
+    'environment.organisation.update',
+//    'environment.organisation.delete',
+//    'environment.organisation.restore',
+//    'environment.organisation.forceDelete',
 ];
 
-$environmentAdministratorPermissions = [
-    ...$environmentContentPermissions,
-    ...$environmentStylingPermissions,
-    ...$environmentManagerPermissions,
+$newsItemGlobalPermissions = [
+    'newsItem.viewAll',
+];
+
+$globalEnvironmentPermissions = [
+    ...$organisationEnvironmentPermissions,
+    ...$newsItemGlobalPermissions,
+    'environment.view',
+    'environment.viewAll',
     'environment.create',
+    'environment.update',
     'environment.delete',
     'environment.restore',
     'environment.forceDelete'
@@ -378,6 +386,7 @@ return [
         'clientCharacteristic',
         'contact',
         'download',
+        'environment.organisation',
         'environment',
         'groupForm',
         'implementation',
@@ -413,7 +422,7 @@ return [
             ...$localPartyAdministratorPermissions,
             ...$regionalPartyAdministratorPermissions,
             ...$nationalPartyAdministratorPermissions,
-            ...$environmentAdministratorPermissions,
+            ...$globalEnvironmentPermissions,
             ...$partnershipAdministratorPermissions,
 
             ...$globalAddressPermissions,
@@ -443,25 +452,13 @@ return [
             ...$environmentGeneralPermissions,
             ...$instrumentPropertyManagementPermissions,
 
-            ...$environmentManagerPermissions,
-            ...$environmentContentPermissions,
-            ...$environmentStylingPermissions,
+            ...$organisationEnvironmentPermissions,
 
             ...$organisationUserPermissions,
             ...$organisationAddressPermissions,
             ...$organisationContactPermissions,
             ...$organisationInstrumentPermissions,
             ...$organisationProviderPermissions,
-        ],
-        'environment-content-manager' => [
-            ...$generalPermissions,
-            ...$environmentGeneralPermissions,
-            ...$environmentContentPermissions,
-        ],
-        'environment-theme-manager' => [
-            ...$generalPermissions,
-            ...$environmentGeneralPermissions,
-            ...$environmentStylingPermissions,
         ],
         'user-manager-organisation' => [
             ...$generalPermissions,
@@ -487,10 +484,8 @@ return [
         'administrator' => [
             'administrator',
             'instrument-manager',
-            'environment-manager-national',
             'instrument-manager-organisation',
-            'environment-content-manager',
-            'environment-theme-manager',
+            'environment-manager',
             'user-manager-organisation'
         ],
         'instrument-manager' => [],
@@ -498,11 +493,7 @@ return [
         'environment-manager' => [
             'instrument-manager-organisation',
             'environment-manager',
-            'environment-content-manager',
-            'environment-theme-manager',
         ],
-        'environment-content-manager' => [],
-        'environment-theme-manager' => [],
         'user-manager-organisation' => [
             'instrument-manager-organisation',
             'user-manager-organisation',
