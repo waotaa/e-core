@@ -184,7 +184,7 @@ class UserPoolService
             <br>
             Na de eerste keer inloggen wordt je meteen gevraagd je wachtwoord te wijzigen, daarna kan je al aan de slag! Neem voor vragen contact op met je teamleider of de contactpersoon voor Eva binnen jullie gemeente.<br>
             <br>
-            Let op: dit tijdelijke wachtwoord is slechts 1 uur geldig. Als je tijdelijke wachtwoord verlopen is zal de beheerder van jullie instrumentengids je opnieuw moeten uitnodigen. Stem indien nodig een handig moment af.<br>
+            Let op: dit tijdelijke wachtwoord is slechts 24 uur geldig. Als je tijdelijke wachtwoord verlopen is zal de beheerder van jullie instrumentengids je opnieuw moeten uitnodigen. Stem indien nodig een handig moment af.<br>
             <br>
             Veel succes met Eva!";
         return $message;
