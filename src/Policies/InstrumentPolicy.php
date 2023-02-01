@@ -213,41 +213,41 @@ class InstrumentPolicy extends BasePolicy
         return $this->update($user, $instrument);
     }
 
-    public function attachAnyRegion(IsManagerInterface $user, Instrument $instrument): bool
+    public function attachAnyAvailableRegion(IsManagerInterface $user, Instrument $instrument): bool
     {
         return $this->update($user, $instrument);
     }
-    public function attachRegion(IsManagerInterface $user, Instrument $instrument): bool
+    public function attachAvailableRegion(IsManagerInterface $user, Instrument $instrument): bool
     {
         return $this->update($user, $instrument);
     }
-    public function detachRegion(IsManagerInterface $user, Instrument $instrument): bool
-    {
-        return $this->update($user, $instrument);
-    }
-
-    public function attachAnyTownship(IsManagerInterface $user, Instrument $instrument): bool
-    {
-        return $this->update($user, $instrument);
-    }
-    public function attachTownship(IsManagerInterface $user, Instrument $instrument): bool
-    {
-        return $this->update($user, $instrument);
-    }
-    public function detachTownship(IsManagerInterface $user, Instrument $instrument): bool
+    public function detachAvailableRegion(IsManagerInterface $user, Instrument $instrument): bool
     {
         return $this->update($user, $instrument);
     }
 
-    public function attachAnyNeighbourhood(IsManagerInterface $user, Instrument $instrument): bool
+    public function attachAnyAvailableTownship(IsManagerInterface $user, Instrument $instrument): bool
     {
         return $this->update($user, $instrument);
     }
-    public function attachNeighbourhood(IsManagerInterface $user, Instrument $instrument): bool
+    public function attachAvailableTownship(IsManagerInterface $user, Instrument $instrument): bool
     {
         return $this->update($user, $instrument);
     }
-    public function detachNeighbourhood(IsManagerInterface $user, Instrument $instrument): bool
+    public function detachAvailableTownship(IsManagerInterface $user, Instrument $instrument): bool
+    {
+        return $this->update($user, $instrument);
+    }
+
+    public function attachAnyAvailableNeighbourhood(IsManagerInterface $user, Instrument $instrument): bool
+    {
+        return $this->update($user, $instrument);
+    }
+    public function attachAvailableNeighbourhood(IsManagerInterface $user, Instrument $instrument): bool
+    {
+        return $this->update($user, $instrument);
+    }
+    public function detachAvailableNeighbourhood(IsManagerInterface $user, Instrument $instrument): bool
     {
         return $this->update($user, $instrument);
     }
