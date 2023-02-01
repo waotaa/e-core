@@ -17,9 +17,11 @@ trait OwnedEntityRepository
 
     public function addMultipleOwnerConditions(Builder $query, Collection $organisations): Builder
     {
-        $organisations->each(function (Organisation $organisation) use (&$query) {
-            $query->orWhere(function($query) use ($organisation) {
-                return $this->addOrganisationCondition($query, $organisation);
+        $query->where(function(Builder $query) use ($organisations) {
+            $organisations->each(function (Organisation $organisation) use (&$query) {
+                $query->orWhere(function(Builder $query) use ($organisation) {
+                    return $this->addOrganisationCondition($query, $organisation);
+                });
             });
         });
         return $query;
@@ -38,8 +40,11 @@ trait OwnedEntityRepository
     public function addForUserConditions(Builder $query, IsManagerInterface $user): Builder
     {
         if (!$user->can('viewAll', $this->model)) {
-            $query = $query->whereNull('organisation_id');
-            $query = $this->addMultipleOwnerConditions($query, $user->getManager()->organisations);
+            $query->where(function(Builder $query) use ($user) {
+                $this
+                    ->addMultipleOwnerConditions($query, $user->getManager()->organisations)
+                    ->orWhereNull('organisation_id');
+            });
         }
 
         return $query;
