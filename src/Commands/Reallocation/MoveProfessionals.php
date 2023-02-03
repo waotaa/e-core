@@ -11,7 +11,7 @@ use Vng\EvaCore\Repositories\ProfessionalRepositoryInterface;
 class MoveProfessionals extends Command
 {
     // php artisan reallocate:clone-professionals gooi-en-vechtstreek-rmt gooi-vechtstreek
-    protected $signature = 'reallocate:clone-professionals {currentEnvironmentSlug} {newEnvironmentSlug} {--f|force}';
+    protected $signature = 'reallocate:clone-professionals {currentEnvironmentSlug} {newEnvironmentSlug}';
     protected $description = 'clones professionals of one environment to an other one';
 
     public function __construct(
