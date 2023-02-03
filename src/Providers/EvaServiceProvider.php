@@ -62,6 +62,7 @@ use Vng\EvaCore\Commands\Professionals\ProfessionalPasswordExpirationCheck;
 use Vng\EvaCore\Commands\Ratings\MatchInstrumentRatingsWithProfessionals;
 use Vng\EvaCore\Commands\Reallocation\DuplicateOwnedItems;
 use Vng\EvaCore\Commands\Reallocation\MoveOwnedItems;
+use Vng\EvaCore\Commands\Reallocation\MoveProfessionals;
 use Vng\EvaCore\Commands\Setup\CreateTestInstrument;
 use Vng\EvaCore\Commands\Setup\InitializeEnvironment;
 use Vng\EvaCore\Commands\Setup\Install;
@@ -203,6 +204,7 @@ class EvaServiceProvider extends AggregateServiceProvider
 
         DuplicateOwnedItems::class,
         MoveOwnedItems::class,
+        MoveProfessionals::class,
 
         CreateTestInstrument::class,
         InitializeEnvironment::class,
