@@ -3,11 +3,10 @@
 namespace Vng\EvaCore\Repositories\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
-use Vng\EvaCore\Http\Requests\ManagerUpdateRequest;
+use Illuminate\Support\Facades\Gate;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Manager;
-use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Models\Role;
 use Vng\EvaCore\Repositories\ManagerRepositoryInterface;
 
@@ -67,12 +66,16 @@ class ManagerRepository extends BaseRepository implements ManagerRepositoryInter
 
     public function attachRole(Manager $manager, Role $role): Manager
     {
+        Gate::authorize('attachRole', [$manager, $role]);
+
         $manager->assignRole($role);
         return $manager;
     }
 
     public function detachRole(Manager $manager, Role $role): Manager
     {
+        Gate::authorize('detachRole', [$manager, $role]);
+
         $manager->removeRole($role);
         return $manager;
     }

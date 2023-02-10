@@ -115,4 +115,14 @@ class Manager extends Model implements IsInstrumentWatcherInterface
     {
         return $this->hasRole(config('authorization.super-admin-role'));
     }
+
+    public function getAssignableRoles(): array
+    {
+        $assignableRoles = [];
+        /** @var Role $role */
+        foreach ($this->roles as $role) {
+            $assignableRoles = array_unique(array_merge($assignableRoles, $role->getAssignableRoles()));
+        }
+        return $assignableRoles;
+    }
 }

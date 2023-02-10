@@ -93,10 +93,10 @@ class ManagerPolicy extends BasePolicy
 
     public function attachAnyRole(IsManagerInterface $user, Manager $targetManager)
     {
-        if ($user->id === $targetUser->id || $targetUser->isCreatedBy($user)) {
+        $manager = $user->getManager();
+        if ($manager->id === $targetManager->id || $targetManager->isCreatedBy($manager)) {
             return true;
         }
-        $manager = $user->getManager();
         if ($manager->managersShareOrganisation($targetManager)
             && $user->managerCan('manager.organisation.role.manage')) {
             return true;
@@ -107,18 +107,16 @@ class ManagerPolicy extends BasePolicy
     public function attachRole(IsManagerInterface $user, Manager $targetManager, Role $role)
     {
         if ($role->name === Role::SUPER_ADMIN_ROLE) {
+            // Super admin role may not be assigned
             return false;
         }
         $manager = $user->getManager();
         if ($manager->isSuperAdmin()) {
+            // User with super admin role may assign every role
             return true;
         }
 
-        $assignableRoles = [];
-        foreach ($manager->roles as $roleUser) {
-            $assignable = Role::ASSIGNABLE_ROLES[$roleUser->name];
-            $assignableRoles = array_unique(array_merge($assignableRoles, $assignable));
-        }
+        $assignableRoles = $manager->getAssignableRoles();
 
         if ($manager->managersShareOrganisation($targetManager)
             && $user->managerCan('manager.organisation.role.manage')
