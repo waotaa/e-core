@@ -4,6 +4,7 @@ namespace Vng\EvaCore\Repositories\Eloquent;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Vng\EvaCore\Http\Requests\EnvironmentCreateRequest;
+use Vng\EvaCore\Http\Requests\EnvironmentDetailsUpdateRequest;
 use Vng\EvaCore\Http\Requests\EnvironmentUpdateRequest;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
@@ -16,7 +17,6 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
 
     public function create(EnvironmentCreateRequest $request): Environment
     {
-
         return $this->saveFromRequest(new $this->model(), $request);
     }
 
@@ -25,18 +25,29 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
         return $this->saveFromRequest($environment, $request);
     }
 
+    public function updateDetails(Environment $environment, EnvironmentDetailsUpdateRequest $request): Environment
+    {
+        return $this->saveFromRequest($environment, $request);
+    }
+
     public function saveFromRequest(Environment $environment, FormRequest $request): Environment
     {
         $organisationRepository = new OrganisationRepository();
-        $organisation = $organisationRepository->find($request->input('organisation_id'));
-        if (is_null($organisation)) {
-            throw new \Exception('invalid organisation provided');
+
+        if ($request->has('organisation_id')) {
+            $organisation = $organisationRepository->find($request->input('organisation_id'));
+            if (is_null($organisation)) {
+                throw new \Exception('invalid organisation provided');
+            }
+            $environment->organisation()->associate($organisation);
         }
 
         $environment->fill([
-            'name' => $request->input('name'),
-            'slug' => $request->input('slug'),
-            'url' => $request->input('url'),
+            // optional in edit requests
+            'name' => $request->has('name') ? $request->input('name') : $environment->name,
+            'slug' => $request->has('slug') ? $request->input('slug') : $environment->slug,
+            'url' => $request->has('url') ? $request->input('url') : $environment->url,
+
             'description_header' => $request->input('description_header'),
             'description' => $request->input('description'),
             'logo' => $request->input('logo'),
@@ -44,11 +55,8 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
             'color_secondary' => $request->input('color_secondary'),
         ]);
 
-        $environment->organisation()->associate($organisation);
-
         $environment->contact()->disassociate();
-        if ($request->has('contact_id'))
-        {
+        if ($request->has('contact_id')) {
             $environment->contact()->associate($request->input('contact_id'));
         }
 

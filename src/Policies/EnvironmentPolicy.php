@@ -31,6 +31,14 @@ class EnvironmentPolicy extends BasePolicy
         return $user->managerCan('environment.view') || $this->viewAll($user);
     }
 
+    /**
+     * Allows a user to setup crucial environment settings
+     */
+    public function setup(IsManagerInterface $user, Environment $environment)
+    {
+        return $this->create($user) && $this->update($user, $environment);
+    }
+
     public function create(IsManagerInterface $user)
     {
         return $user->managerCan('environment.organisation.create')
