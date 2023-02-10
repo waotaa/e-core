@@ -17,6 +17,8 @@ interface BaseRepositoryInterface
 
     public function find(string $id): ?Model;
 
+    public function findMany(array $ids): Collection;
+
     public function new(): Model;
 
     public function delete(string $id): ?bool;

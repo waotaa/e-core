@@ -34,6 +34,14 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $this->model::find($id);
     }
 
+    public function findMany(array $ids): Collection
+    {
+        return $this
+            ->builder()
+            ->whereIn('id', $ids)
+            ->get();
+    }
+
     public function new(): Model
     {
         return new $this->model();
