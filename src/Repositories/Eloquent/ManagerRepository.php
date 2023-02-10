@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Gate;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Manager;
+use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Models\Role;
 use Vng\EvaCore\Repositories\ManagerRepositoryInterface;
+use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
 
 class ManagerRepository extends BaseRepository implements ManagerRepositoryInterface
 {
@@ -54,12 +56,26 @@ class ManagerRepository extends BaseRepository implements ManagerRepositoryInter
 
     public function attachOrganisations(Manager $manager, string|array $organisationIds): Manager
     {
+        $organisationIds = (array) $organisationIds;
+
+        /** @var OrganisationRepositoryInterface $organisationRepo */
+        $organisationRepo = app(OrganisationRepositoryInterface::class);
+        $organisations = $organisationRepo->builder()->whereIn('id', $organisationIds)->get();
+        $organisations->each(fn (Organisation $org) => Gate::authorize('attachOrganisation', [$manager, $org]));
+
         $manager->organisations()->syncWithoutDetaching($organisationIds);
         return $manager;
     }
 
     public function detachOrganisations(Manager $manager, string|array $organisationIds): Manager
     {
+        $organisationIds = (array) $organisationIds;
+
+        /** @var OrganisationRepositoryInterface $organisationRepo */
+        $organisationRepo = app(OrganisationRepositoryInterface::class);
+        $organisations = $organisationRepo->builder()->whereIn('id', $organisationIds)->get();
+        $organisations->each(fn (Organisation $org) => Gate::authorize('detachOrganisation', [$manager, $org]));
+
         $manager->organisations()->detach($organisationIds);
         return $manager;
     }
@@ -69,6 +85,7 @@ class ManagerRepository extends BaseRepository implements ManagerRepositoryInter
         Gate::authorize('attachRole', [$manager, $role]);
 
         $manager->assignRole($role);
+//        $manager->forgetCachedPermissions();
         return $manager;
     }
 
@@ -77,6 +94,7 @@ class ManagerRepository extends BaseRepository implements ManagerRepositoryInter
         Gate::authorize('detachRole', [$manager, $role]);
 
         $manager->removeRole($role);
+//        $manager->forgetCachedPermissions();
         return $manager;
     }
 }
