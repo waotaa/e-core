@@ -118,6 +118,9 @@ class ManagerPolicy extends BasePolicy
 
         $assignableRoles = $manager->getAssignableRoles();
 
+        if ($manager->id === $targetManager->id || $targetManager->isCreatedBy($manager)) {
+            return true;
+        }
         if ($manager->managersShareOrganisation($targetManager)
             && $user->managerCan('manager.organisation.role.manage')
             && in_array($role->name, $assignableRoles)
@@ -129,7 +132,11 @@ class ManagerPolicy extends BasePolicy
 
     public function detachRole(IsManagerInterface $user, Manager $targetManager)
     {
-        if ($user->getManager()->managersShareOrganisation($targetManager)
+        $manager = $user->getManager();
+        if ($manager->id === $targetManager->id || $targetManager->isCreatedBy($manager)) {
+            return true;
+        }
+        if ($manager->managersShareOrganisation($targetManager)
             && $user->managerCan('manager.organisation.role.manage')) {
             return true;
         }
