@@ -4,7 +4,6 @@ namespace Vng\EvaCore\Observers;
 
 use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Manager;
-use Vng\EvaCore\Repositories\Eloquent\ManagerRepository;
 
 class ManagerObserver
 {

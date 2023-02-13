@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Traits\HasRoles;
+use Vng\EvaCore\Observers\ManagerObserver;
 use Vng\EvaCore\Traits\IsInstrumentWatcher;
 
 class Manager extends Model implements IsInstrumentWatcherInterface
@@ -26,6 +27,12 @@ class Manager extends Model implements IsInstrumentWatcherInterface
         'email',
         'months_unupdated_limit',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(ManagerObserver::class);
+    }
 
     public function getFirstNameAttribute()
     {

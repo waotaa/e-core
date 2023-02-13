@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Vng\EvaCore\Enums\LocationEnum;
+use Vng\EvaCore\Observers\LocationObserver;
 
 class Location extends Model
 {
@@ -16,6 +17,12 @@ class Location extends Model
         'is_active',
         'description'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(LocationObserver::class);
+    }
 
     public function setTypeAttribute($value)
     {
