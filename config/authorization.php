@@ -473,10 +473,8 @@ return [
         'super-admin' => 'Super Admin',
         'administrator' => 'Administrator',
         'instrument-manager' => 'Instrument beheerder',
-        'instrument-manager-organisation' => 'Instrument beheerder voor organisatie',
         'environment-manager' => 'Omgeving beheerder',
-        'environment-content-manager' => 'Omgeving content beheerder',
-        'environment-theme-manager' => 'Omgeving opmaak beheerder',
+        'instrument-manager-organisation' => 'Instrument beheerder voor organisatie',
         'user-manager-organisation' => 'Gebruikers beheerder voor organisatie'
     ],
 
@@ -489,14 +487,15 @@ return [
             'user-manager-organisation'
         ],
         'instrument-manager' => [],
-        'instrument-manager-organisation' => [],
         'environment-manager' => [
-            'instrument-manager-organisation',
             'environment-manager',
+            'user-manager-organisation',
+            'instrument-manager-organisation',
         ],
         'user-manager-organisation' => [
             'instrument-manager-organisation',
             'user-manager-organisation',
         ],
+        'instrument-manager-organisation' => [],
     ]
 ];

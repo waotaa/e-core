@@ -9,46 +9,36 @@ class Role extends \Spatie\Permission\Models\Role
         'super-admin' => 'Super Admin',
         'administrator' => 'Administrator',
 
+        // global roles
         'instrument-manager' => 'Instrument beheerder',
-        'instrument-manager-organisation' => 'Instrument beheerder organisatie',
 
+        // environment (includes organisation level roles)
         'environment-manager' => 'Omgeving beheerder',
-        'national-user-manager' => 'Nationale gebruikers beheerder',
-        'user-manager-organisation' => 'Organisatie gebruikers beheerder'
+
+        // organisation
+        'user-manager-organisation' => 'Organisatie gebruikers beheerder',
+        'instrument-manager-organisation' => 'Instrument beheerder organisatie',
     ];
 
     const ASSIGNABLE_ROLES = [
         'administrator' => [
             'administrator',
-
             'instrument-manager',
-            'instrument-manager-organisation',
-
             'environment-manager',
-            'national-user-manager',
+            'instrument-manager-organisation',
             'user-manager-organisation'
         ],
         'instrument-manager' => [],
-        'instrument-manager-national' => [],
-        'instrument-manager-organisation' => [],
         'environment-manager' => [
-            'instrument-manager-organisation',
             'environment-manager',
-        ],
-        'environment-content-manager' => [],
-        'environment-theme-manager' => [],
-        'environment-user-manager' => [
+            'user-manager-organisation',
             'instrument-manager-organisation',
-            'environment-user-manager',
-        ],
-        'national-user-manager' => [
-            'instrument-manager-national',
-            'national-user-manager',
         ],
         'user-manager-organisation' => [
-            'instrument-manager-organisation',
             'user-manager-organisation',
+            'instrument-manager-organisation',
         ],
+        'instrument-manager-organisation' => [],
     ];
 
     public function getNameTranslatedAttribute(): string
