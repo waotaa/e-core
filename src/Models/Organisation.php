@@ -26,6 +26,11 @@ class Organisation extends Model
         return $this->name . ' - ' . __($this->type);
     }
 
+    public function getShortIdentifierAttribute()
+    {
+        return $this->id . '-' . $this->slug;
+    }
+
     public function getNameAttribute()
     {
         return $this->organisationable?->name;
