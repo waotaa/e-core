@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 class PasswordGenerationTest extends Command
 {
     protected $signature = 'dev:password-gen';
-    protected $description = 'Test password generator';
+    protected $description = 'Generates and prints 10 passwords for testing purposes';
 
     public function handle(): int
     {

@@ -13,7 +13,7 @@ use Vng\EvaCore\Repositories\Eloquent\OrganisationRepository;
 class EnsureOrganisations extends Command
 {
     protected $signature = 'format:ensure-organisations';
-    protected $description = 'Ensures every organisationabel entity has an organisations';
+    protected $description = 'Ensures every organisationable entity has an organisations';
 
     protected OrganisationRepository $organisationRepository;
 

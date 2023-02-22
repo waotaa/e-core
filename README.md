@@ -26,16 +26,12 @@ When updating an existing instance of the project run:\
 This will run missing migrations.
 I recommend you create your own update script which executes this script.
 
-## Environments files
-```
-.env.test
-.env.staging
-.env.production
-.env.testing (unit tests)
-```
+## Environment variables
+All .env variables used by the core are found in `.env.example`.
+Make sure to copy them to your own project's .env file
 
-### Environment variables
-All these variables are found in `.env.example`. Make sure to copy them to your own project
+APP_DEDICATED_INSTRUMENT_TYPE
+: The name of the instrument type all instruments by default have
 
 ELASTIC_INDEX_PREFIX
 : The prefix used to prefix all elastic indeces
