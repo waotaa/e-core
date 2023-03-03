@@ -2,6 +2,9 @@
 
 namespace Vng\EvaCore\Services;
 
+use Aws\Exception\MultipartUploadException;
+use Aws\S3\MultipartUploader;
+use Aws\S3\S3Client;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -32,17 +35,61 @@ class DownloadsService
             $download = new Download();
         }
         $originalFileName = $uploadedFile->getClientOriginalName();
-        $filePath = $uploadedFile->store(
-            static::getDownloadsDirectory(),
-            [
-                'disk' => static::getDownloadsDisk(),
-                'visibility' => 'private',
-            ]
-        );
+
+        if (App::environment('local')) {
+            $filePath = $uploadedFile->store(
+                static::getDownloadsDirectory(),
+                [
+                    'disk' => static::getDownloadsDisk(),
+                    'visibility' => 'private',
+                ]
+            );
+
+            return $download->fill([
+                'filename' => $originalFileName,
+                'url' => $filePath
+            ]);
+        }
+
+        $bucket = config('filesystems.disks.s3.bucket');
+        $region = config('filesystems.disks.s3.region');
+
+        // Create an S3Client
+        $s3Client = new S3Client([
+            'profile' => 'default',
+            'region' => $region,
+            'version' => '2006-03-01'
+        ]);
+
+        $source = $uploadedFile->path();
+        $uploader = new MultipartUploader($s3Client, $source, [
+            'bucket' => $bucket,
+            'key' => $originalFileName,
+        ]);
+
+        //Recover from errors
+        do {
+            try {
+                $result = $uploader->upload();
+            } catch (MultipartUploadException $e) {
+                $uploader = new MultipartUploader($s3Client, $source, [
+                    'state' => $e->getState(),
+                ]);
+            }
+        } while (!isset($result));
+
+        //Abort a multipart upload if failed
+        try {
+            $result = $uploader->upload();
+        } catch (MultipartUploadException $e) {
+            // State contains the "Bucket", "Key", and "UploadId"
+            $params = $e->getState()->getId();
+            $result = $s3Client->abortMultipartUpload($params);
+        }
 
         return $download->fill([
             'filename' => $originalFileName,
-            'url' => $filePath
+            'url' => $result->get('ObjectURL'),
         ]);
     }
 
