@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\AssociateableValidation;
 use Vng\EvaCore\Models\Associateable;
 
+/**
+ * @deprecated
+ */
 class AssociateableUpdateRequest extends FormRequest implements FormRequestInterface
 {
     public function authorize(): bool
@@ -20,6 +23,6 @@ class AssociateableUpdateRequest extends FormRequest implements FormRequestInter
         if (!$associateable instanceof Associateable) {
             throw new \Exception('Cannot derive associateable from route');
         }
-        return AssociateableValidation::getUpdateRules($associateable);
+        return AssociateableValidation::make($this)->getUpdateRules($associateable);
     }
 }

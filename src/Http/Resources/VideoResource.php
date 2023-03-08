@@ -10,8 +10,13 @@ class VideoResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+
             'provider' => $this->provider,
             'video_identifier' => $this->video_identifier,
+
+            'instrument' => InstrumentResource::make($this->whenLoaded('instrument'))
         ];
     }
 }

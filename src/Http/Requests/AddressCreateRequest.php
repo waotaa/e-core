@@ -16,6 +16,6 @@ class AddressCreateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return AddressValidation::getCreationRules();
+        return AddressValidation::make($this)->getCreationRules();
     }
 }

@@ -5,6 +5,10 @@ namespace Vng\EvaCore\Services\ElasticSearch;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 
+/**
+ * Creates an elastic client for a second, public, elastic instance
+ * Data on this instance is used to share insights on the kibana dashboards
+ */
 class ElasticPublicClientBuilder extends ClientBuilder
 {
     private static $clientInstance = null;

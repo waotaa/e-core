@@ -11,11 +11,14 @@ class InstrumentResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
+
             'uuid' => $this->uuid,
             'name' => $this->name,
             'slug' => (string) Str::slug($this->name),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
             'publish' => $this->is_active,
             'publish_from' => $this->publish_from,
             'publish_to' => $this->publish_to,
@@ -60,6 +63,7 @@ class InstrumentResource extends JsonResource
 
             // relations
             'owner' => OwnerResource::make($this->owner),
+            'organisation' => OrganisationResource::make($this->organisation),
             'implementation' => ImplementationResource::make($this->implementation),
             'group_forms' => GroupFormResource::collection($this->groupForms),
             'locations' => LocationResource::collection($this->locations),
@@ -90,6 +94,9 @@ class InstrumentResource extends JsonResource
             'available_regions' => RegionResource::collection($this->availableRegions),
             'available_townships' => TownshipResource::collection($this->availableTownships),
             'available_neighbourhoods' => NeighbourhoodResource::collection($this->availableNeighbourhoods),
+
+            'mutations' => MutationResource::collection($this->mutations),
+            'parent_instrument' => InstrumentResource::make($this->whenLoaded($this->parentInstrument))
         ];
     }
 }

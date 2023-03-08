@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Util;
 use Vng\EvaCore\Models\Download;
+use Vng\EvaCore\Models\Organisation;
 
 class DownloadsService
 {
@@ -23,22 +24,26 @@ class DownloadsService
             : config('filesystems.cloud', 's3');
     }
 
-    public static function getDownloadsDirectory(): string
+    public static function getDownloadsDirectory(Organisation $organisation = null): string
     {
         $downloadPath = config('filesystems.storage_paths.downloads');
+        if (!is_null($organisation)) {
+            $downloadPath .= '/' . $organisation->id .  '-' . $organisation->getSlugAttribute();
+        }
         return Util::normalizePath($downloadPath);
     }
 
-    public static function saveUploadedFile(UploadedFile $uploadedFile, ?Download $download = null): Download
+    public static function saveUploadedFile(UploadedFile $uploadedFile, Organisation $organisation, ?Download $download = null): Download
     {
         if (is_null($download)) {
             $download = new Download();
         }
+
         $originalFileName = $uploadedFile->getClientOriginalName();
 
         if (App::environment('local')) {
             $filePath = $uploadedFile->store(
-                static::getDownloadsDirectory(),
+                static::getDownloadsDirectory($organisation),
                 [
                     'disk' => static::getDownloadsDisk(),
                     'visibility' => 'private',

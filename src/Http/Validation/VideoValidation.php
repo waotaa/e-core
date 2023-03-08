@@ -2,15 +2,20 @@
 
 namespace Vng\EvaCore\Http\Validation;
 
+use Vng\EvaCore\Enums\VideoProviderEnum;
+
 class VideoValidation extends ModelValidation
 {
-    public static function rules(): array
+    public function rules(): array
     {
         return [
+            'provider' => [
+                'in:' . implode(',', VideoProviderEnum::values()),
+            ],
             'video_identifier' => [
                 'max:11',
             ],
-            'instrument' => [
+            'instrument_id' => [
                 'required',
             ]
         ];

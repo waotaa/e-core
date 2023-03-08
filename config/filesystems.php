@@ -13,12 +13,21 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
+    'default' => env('FILESYSTEM_DRIVER', 'local'),
     'geo' => env('FILESYSTEM_GEO', 'geo-local'),
 
-    'storage_paths' => [
-        'downloads' => env('FILESYSTEM_DIRECTORY_PATH_DOWNLOADS', env('ENVIRONMENT_DOWNLOAD_PATH', ''))
-    ],
+    /*
+    |--------------------------------------------------------------------------
+    | Default Cloud Filesystem Disk
+    |--------------------------------------------------------------------------
+    |
+    | Many applications store files both locally and in the cloud. For this
+    | reason, you may specify a default "cloud" driver here. This driver
+    | will be bound as the Cloud disk implementation in the container.
+    |
+    */
+
+    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,13 +64,13 @@ return [
             'region' => env('AWS_REGION', 'eu-central-1'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
-//            'endpoint' => env('AWS_ENDPOINT'),
-//            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
+
         'geo-local' => [
             'driver' => 'local',
             'root' => storage_path('app/fixed/geo'),
         ],
+
         'geo' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -69,24 +78,12 @@ return [
             'region' => env('AWS_REGION', 'eu-central-1'),
             'bucket' => env('AWS_BUCKET_GEO'),
             'url' => env('AWS_URL'),
-//            'endpoint' => env('AWS_ENDPOINT'),
-//            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ]
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Symbolic Links
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure the symbolic links that will be created when the
-    | `storage:link` Artisan command is executed. The array keys should be
-    | the locations of the links and the values should be their targets.
-    |
-    */
+    'storage' => env('STORAGE', 's3'),
 
-    'links' => [
-        public_path('storage') => storage_path('app/public'),
-    ],
-
+    'storage_paths' => [
+        'downloads' => env('FILESYSTEM_STORAGE_PATH_DOWNLOADS', 'downloads')
+    ]
 ];

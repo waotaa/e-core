@@ -10,6 +10,10 @@ class RatingResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
+
             'author' => $this->author,
             'general_score' => $this->general_score,
             'general_explanation' => $this->general_explanation,
@@ -18,12 +22,10 @@ class RatingResource extends JsonResource
             'execution_score' => $this->execution_score,
             'execution_explanation' => $this->execution_explanation,
 
-            'instrument_id' => $this->instrument->id,
-            'professional_email' => $this->professional ? $this->professional->email : null,
-
-            'created_at' => $this->created_at,
+            'instrument_id' => $this->instrument_id,
 
             // relations
+            'instrument' => InstrumentResource::make($this->whenLoaded('instrument')),
             'professional' => ProfessionalResource::make($this->professional),
         ];
     }

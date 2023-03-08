@@ -7,18 +7,23 @@ use Vng\EvaCore\Services\Cognito\CognitoService;
 
 class ProfessionalObserver
 {
-    public function saving(Professional $professional): void
+    public function creating(Professional $professional): void
     {
+        // temporary; will be overwritten on saved
         $professional->username = $professional->email;
     }
 
-    public function created(Professional $professional): void
+    public function saved(Professional $professional): void
     {
-        CognitoService::createProfessional($professional);
+        $cognitoService = CognitoService::make($professional->environment);
+        $profModel = $cognitoService->getUser($professional);
+        if (is_null($profModel)) {
+            $cognitoService->createProfessional($professional);
+        }
     }
 
     public function deleted(Professional $professional): void
     {
-        CognitoService::deleteProfessional($professional);
+        CognitoService::make($professional->environment)->deleteProfessional($professional);
     }
 }

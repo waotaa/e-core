@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Repositories\Eloquent;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -21,9 +22,24 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $this->model::all();
     }
 
+    public function index(int $perPage = 10): LengthAwarePaginator
+    {
+        return $this->builder()
+            ->orderBy('id', 'desc')
+            ->paginate($perPage);
+    }
+
     public function find(string $id): ?Model
     {
         return $this->model::find($id);
+    }
+
+    public function findMany(array $ids): Collection
+    {
+        return $this
+            ->builder()
+            ->whereIn('id', $ids)
+            ->get();
     }
 
     public function new(): Model

@@ -3,6 +3,8 @@
 namespace Vng\EvaCore\Commands\Setup;
 
 use Illuminate\Console\Command;
+use Vng\EvaCore\Commands\Operations\SetupGeoData;
+use Vng\EvaCore\Commands\Professionals\CognitoSetup;
 
 class Setup extends Command
 {
@@ -24,25 +26,20 @@ class Setup extends Command
         return 0;
     }
 
-    private function publishPackage()
-    {
-        $this->call('vendor:publish', [
-            '--provider' => 'Vng\EvaCore\Providers\EvaServiceProvider',
-            '--force' => true,
-        ]);
-    }
-
     private function setupDatabase()
     {
         $this->call('migrate:fresh', ['--force' => true]);
-        $this->call('setup:seed-characteristics');
+        $this->call(SeedCharacteristics::class);
+        $this->call(SetupAuthorizationMatrix::class);
     }
 
     private function setupUtilities()
     {
-        $this->call('eva:setup-geo');
-        $this->call('setup:init-environment');
-        $this->call('setup:create-test-instrument');
-        $this->call('professionals:setup', ['--no-interaction' => $this->option('no-interaction')]);
+        $this->call(SetupGeoData::class);
+
+        $this->call(InitializeEnvironment::class);
+        $this->call(CreateTestInstrument::class);
+
+        $this->call(CognitoSetup::class, ['--no-interaction' => $this->option('no-interaction')]);
     }
 }

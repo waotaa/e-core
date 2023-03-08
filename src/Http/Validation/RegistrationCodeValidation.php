@@ -4,7 +4,7 @@ namespace Vng\EvaCore\Http\Validation;
 
 class RegistrationCodeValidation extends ModelValidation
 {
-    public static function rules(): array
+    public function rules(): array
     {
         return [
             'label' => [
@@ -12,6 +12,9 @@ class RegistrationCodeValidation extends ModelValidation
             ],
             'code' => [
                 'required',
+            ],
+            'instrument_id' => [
+                'required'
             ]
         ];
     }

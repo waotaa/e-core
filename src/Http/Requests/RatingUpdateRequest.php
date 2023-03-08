@@ -2,24 +2,34 @@
 
 namespace Vng\EvaCore\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\RatingValidation;
 use Vng\EvaCore\Models\Rating;
+use Vng\EvaCore\Repositories\RatingRepositoryInterface;
 
-class RatingUpdateRequest extends FormRequest implements FormRequestInterface
+class RatingUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
+    protected $modelName = 'rating';
+
     public function authorize(): bool
     {
-        return Auth::user()->can('update', $this->route('rating'));
+        return Auth::user()->can('update', $this->getRating());
     }
 
     public function rules(): array
     {
-        $rating = $this->route('rating');
+        $rating = $this->getRating();
         if (!$rating instanceof Rating) {
             throw new \Exception('Cannot derive rating from route');
         }
-        return RatingValidation::getUpdateRules($rating);
+        return RatingValidation::make($this)->getUpdateRules($rating);
+    }
+
+    protected function getRating()
+    {
+        /** @var RatingRepositoryInterface $ratingRepository */
+        $ratingRepository = App::make(RatingRepositoryInterface::class);
+        return $ratingRepository->find($this->getModelId());
     }
 }

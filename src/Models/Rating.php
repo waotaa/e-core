@@ -40,4 +40,12 @@ class Rating extends Model
     {
         return $this->belongsTo(Instrument::class);
     }
+
+    public function getProviderAttribute(): ?Provider
+    {
+        if (is_null($this->instrument)) {
+            return null;
+        }
+        return $this->instrument->provider;
+    }
 }

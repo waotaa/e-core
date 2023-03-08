@@ -3,10 +3,11 @@
 namespace Vng\EvaCore\Http\Validation;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\Rule;
 
 class UserValidation extends ModelValidation
 {
-    public static function rules(): array
+    public function rules(): array
     {
         return [
             'name' => [
@@ -31,26 +32,27 @@ class UserValidation extends ModelValidation
         ];
     }
 
-    public static function creationRules(): array
+    protected function creationRules(): array
     {
         return [
             'email' => [
                 'required',
                 'email',
                 'max:254',
-                'unique:users,email'
+                Rule::unique('users', 'email')
             ],
         ];
     }
 
-    public static function updateRules(Model $model): array
+    protected function updateRules(Model $model): array
     {
         return [
             'email' => [
                 'required',
                 'email',
                 'max:254',
-                'unique:users,email,' . $model->id,
+                Rule::unique('users', 'email')
+                    ->ignore($model->id)
             ],
         ];
     }

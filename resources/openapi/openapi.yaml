@@ -1,0 +1,5299 @@
+openapi: 3.0.0
+
+info:
+  version: 0.0.1
+  title: Eva API
+  description: The Eva API
+
+servers:
+  - url: http://eva-backend-orchid.test/api/v1
+
+security:
+  - bearerAuth: []
+
+paths:
+  /api/token:
+    post:
+      description: Get a authentication token for a user
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - device
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                device:
+                  type: string
+      responses:
+        '200':
+          description: Returns a token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+  # Address
+  /api/v1/address/list:
+    get:
+      summary: Get all addresses
+      tags:
+        - address
+      responses:
+        '200':
+          description: Successfully returned the addresses
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Address'
+  /api/v1/address/show/{addressId}:
+    get:
+      summary: Get an address
+      tags:
+        - address
+      parameters:
+        - in: path
+          name: addressId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The address id
+      responses:
+        '200':
+          description: Successfully returned the address
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Address'
+  /api/v1/address/create:
+    post:
+      summary: Create a new address
+      tags:
+        - address
+      requestBody:
+        $ref: '#/components/requestBodies/AddressBody'
+      responses:
+        '201':
+          description: Successfully created the address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+  /api/v1/address/update/{addressId}:
+    put:
+      summary: Updates an address
+      tags:
+        - address
+      parameters:
+        - in: path
+          name: addressId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The address id
+      requestBody:
+        $ref: '#/components/requestBodies/AddressBody'
+      responses:
+        '200':
+          description: Successfully updated the address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+  /api/v1/address/delete/{addressId}:
+    delete:
+      summary: Deletes an address
+      tags:
+        - address
+      responses:
+        '204':
+          description: Successfully deleted the address
+
+  # Client Characteristic
+  /api/v1/clientCharacteristic/list:
+    get:
+      summary: Get all client characteristics
+      tags:
+        - client characteristic
+      responses:
+        '200':
+          description: Successfully returned the client characteristics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ClientCharacteristic'
+  /api/v1/clientCharacteristic/show/{clientCharacteristicId}:
+    get:
+      summary: Get a client characteristic
+      tags:
+        - client characteristic
+      parameters:
+        - in: path
+          name: clientCharacteristicId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The client characteristic id
+      responses:
+        '200':
+          description: Successfully returned the client characteristic
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ClientCharacteristic'
+  /api/v1/clientCharacteristic/attach/{clientCharacteristicId}/instrument/{instrumentId}:
+    post:
+      summary: Attach an instrument to a client characteristic
+      tags:
+        - client characteristic
+      parameters:
+        - in: path
+          name: clientCharacteristicId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The client characteristic id
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '200':
+          description: Successfully attached the instrument to the client characteristic
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCharacteristic'
+  /api/v1/clientCharacteristic/detach/{clientCharacteristicId}/instrument/{instrumentId}:
+    post:
+      summary: Detach an instrument from a client characteristic
+      tags:
+        - client characteristic
+      parameters:
+        - in: path
+          name: clientCharacteristicId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The client characteristic id
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '200':
+          description: Successfully detached the instrument from the client characteristic
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCharacteristic'
+
+  # Contact
+  /api/v1/contact/list:
+    get:
+      summary: Get all contacts
+      tags:
+        - contact
+      responses:
+        '200':
+          description: Successfully returned the contacts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Contact'
+  /api/v1/contact/show/{contactId}:
+    get:
+      summary: Get a contact
+      tags:
+        - contact
+      parameters:
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The contact id
+      responses:
+        '200':
+          description: Successfully returned the contact
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Contact'
+  /api/v1/contact/create:
+    post:
+      summary: Create a new contact
+      tags:
+        - contact
+      requestBody:
+        $ref: '#/components/requestBodies/ContactBody'
+      responses:
+        '201':
+          description: Successfully created the contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /api/v1/contact/update/{contactId}:
+    put:
+      summary: Updates a contact
+      tags:
+        - contact
+      parameters:
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The contact id
+      requestBody:
+        $ref: '#/components/requestBodies/ContactBody'
+      responses:
+        '200':
+          description: Successfully updated the contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /api/v1/contact/delete/{contactId}:
+    delete:
+      summary: Deletes a contact
+      tags:
+        - contact
+      responses:
+        '204':
+          description: Successfully deleted the contact
+  /api/v1/contact/attach/{contactId}/instrument/{instrumentId}:
+    post:
+      summary: Attach an instrument to a contact
+      tags:
+        - contact
+      parameters:
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The contact id
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '200':
+          description: Successfully attached the instrument to the contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /api/v1/contact/detach/{contactId}/instrument/{instrumentId}:
+    post:
+      summary: Detach an instrument from a contact
+      tags:
+        - contact
+      parameters:
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The contact id
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '200':
+          description: Successfully detached the instrument from the contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /api/v1/contact/attach/{contactId}/provider/{providerId}:
+    post:
+      summary: Attach an provider to a contact
+      tags:
+        - contact
+      parameters:
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The contact id
+        - in: path
+          name: providerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The provider id
+      responses:
+        '200':
+          description: Successfully attached the provider to the contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+  /api/v1/contact/detach/{contactId}/provider/{providerId}:
+    post:
+      summary: Detach an provider from a contact
+      tags:
+        - contact
+      parameters:
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The contact id
+        - in: path
+          name: providerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The provider id
+      responses:
+        '200':
+          description: Successfully detached the provider from the contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+
+  # Download
+  /api/v1/download/list:
+    get:
+      summary: Get all downloads
+      tags:
+        - download
+      responses:
+        '200':
+          description: Successfully returned the downloads
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Download'
+  /api/v1/download/show/{downloadId}:
+    get:
+      summary: Get a download
+      tags:
+        - download
+      parameters:
+        - in: path
+          name: downloadId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The download id
+      responses:
+        '200':
+          description: Successfully returned the download
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Download'
+  /api/v1/download/create:
+    post:
+      summary: Create a new download
+      tags:
+        - download
+      requestBody:
+        $ref: '#/components/requestBodies/DownloadBody'
+      responses:
+        '201':
+          description: Successfully created the download
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Download'
+  /api/v1/download/update/{downloadId}:
+    put:
+      summary: Updates a download
+      tags:
+        - download
+      parameters:
+        - in: path
+          name: downloadId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The download id
+      requestBody:
+        $ref: '#/components/requestBodies/DownloadBody'
+      responses:
+        '200':
+          description: Successfully updated the download
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Download'
+  /api/v1/download/delete/{downloadId}:
+    delete:
+      summary: Deletes a download
+      tags:
+        - download
+      responses:
+        '204':
+          description: Successfully deleted the download
+
+  # Environment
+  /api/v1/environment/list:
+    get:
+      summary: Get all environments
+      tags:
+        - environment
+      responses:
+        '200':
+          description: Successfully returned the environments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Environment'
+  /api/v1/environment/show/{environmentId}:
+    get:
+      summary: Get a environment
+      tags:
+        - environment
+      parameters:
+        - in: path
+          name: environmentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The environment id
+      responses:
+        '200':
+          description: Successfully returned the environment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Environment'
+  /api/v1/environment/create:
+    post:
+      summary: Create a new environment
+      tags:
+        - environment
+      requestBody:
+        $ref: '#/components/requestBodies/EnvironmentBody'
+      responses:
+        '201':
+          description: Successfully created the environment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+  /api/v1/environment/update/{environmentId}:
+    put:
+      summary: Updates a environment
+      tags:
+        - environment
+      parameters:
+        - in: path
+          name: environmentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The environment id
+      requestBody:
+        $ref: '#/components/requestBodies/EnvironmentBody'
+      responses:
+        '200':
+          description: Successfully updated the environment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+  /api/v1/environment/delete/{environmentId}:
+    delete:
+      summary: Deletes a environment
+      tags:
+        - environment
+      responses:
+        '204':
+          description: Successfully deleted the environment
+  /api/v1/environment/restore/{environmentId}:
+    post:
+      summary: Restores an environment
+      tags:
+        - environment
+      parameters:
+        - in: path
+          name: environmentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The environment id
+      responses:
+        '201':
+          description: Successfully restored the environment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+  /api/v1/environment/forceDelete/{environmentId}:
+    delete:
+      summary: Permanently deletes a environment
+      tags:
+        - environment
+      parameters:
+        - in: path
+          name: environmentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The environment id
+      responses:
+        '204':
+          description: Successfully deleted the environment
+  /api/v1/environment/trashed:
+    get:
+      summary: Get all deleted environments
+      tags:
+        - environment
+      responses:
+        '200':
+          description: Successfully returned the deleted environments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Environment'
+  /api/v1/environment/attach/{environmentId}/featuredOrganisatin/{organistionId}:
+    post:
+      summary: Attach an featured organisation to an environment
+      tags:
+        - environment
+      parameters:
+        - in: path
+          name: environmentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The environment id
+        - in: path
+          name: organistionId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+      responses:
+        '200':
+          description: Successfully attached the organisation to the environment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+  /api/v1/environment/detach/{environmentId}/featuredOrganisatin/{organistionId}:
+    post:
+      summary: Detach a featured organisation from an environment
+      tags:
+        - environment
+      parameters:
+        - in: path
+          name: environmentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The environment id
+        - in: path
+          name: organistionId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+      responses:
+        '200':
+          description: Successfully detached the organisation from the environment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+
+  # Group Form
+  /api/v1/groupForm/list:
+    get:
+      summary: Get all group forms
+      tags:
+        - group form
+      responses:
+        '200':
+          description: Successfully returned the group forms
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GroupForm'
+  /api/v1/groupForm/show/{groupFormId}:
+    get:
+      summary: Get a group form
+      tags:
+        - group form
+      parameters:
+        - in: path
+          name: groupFormId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The group form id
+      responses:
+        '200':
+          description: Successfully returned the group form
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/GroupForm'
+  /api/v1/groupForm/attach/{groupFormId}/instrument/{instrumentId}:
+    post:
+      summary: Attach an instrument to a group form
+      tags:
+        - group form
+      parameters:
+        - in: path
+          name: groupFormId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The group form id
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '200':
+          description: Successfully attached the instrument to the group form
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupForm'
+  /api/v1/groupForm/detach/{groupFormId}/instrument/{instrumentId}:
+    post:
+      summary: Detach an instrument from a group form
+      tags:
+        - group form
+      parameters:
+        - in: path
+          name: groupFormId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The group form id
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '200':
+          description: Successfully detached the instrument from the client characteristic
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientCharacteristic'
+
+  # Implementation
+  /api/v1/implementation/list:
+    get:
+      summary: Get all implementations
+      tags:
+        - implementation
+      responses:
+        '200':
+          description: Successfully returned the implementations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Implementation'
+  /api/v1/implementation/show/{implementationId}:
+    get:
+      summary: Get an implementation
+      tags:
+        - implementation
+      parameters:
+        - in: path
+          name: implementationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The implementation id
+      responses:
+        '200':
+          description: Successfully returned the implementation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Implementation'
+
+  # Instrument
+  /api/v1/instrument/list:
+    get:
+      summary: Get all instruments
+      tags:
+        - instrument
+      responses:
+        '200':
+          description: Successfully returned the instruments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/show/{instrumentId}:
+    get:
+      summary: Get an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '200':
+          description: Successfully returned the instrument
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/create:
+    post:
+      summary: Create a new instrument
+      tags:
+        - instrument
+      requestBody:
+        $ref: '#/components/requestBodies/InstrumentBody'
+      responses:
+        '201':
+          description: Successfully created the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/update/{instrumentId}:
+    put:
+      summary: Updates an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      requestBody:
+        $ref: '#/components/requestBodies/InstrumentBody'
+      responses:
+        '200':
+          description: Successfully updated the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/delete/{instrumentId}:
+    delete:
+      summary: Deletes an instrument
+      tags:
+        - instrument
+      responses:
+        '204':
+          description: Successfully deleted the instrument
+  /api/v1/instrument/restore/{instrumentId}:
+    post:
+      summary: Restores an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '201':
+          description: Successfully restored the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/forceDelete/{instrumentId}:
+    delete:
+      summary: Permanently deletes an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '204':
+          description: Successfully deleted the instrument
+  /api/v1/instrument/trashed:
+    get:
+      summary: Get all deleted instruments
+      tags:
+        - instrument
+      responses:
+        '200':
+          description: Successfully returned the deleted instruments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Instrument'
+
+  /api/v1/instrument/attach/{instrumentId}/availableNeighbourhood/{neighbourhoodId}:
+    post:
+      summary: Attach a neighbourhood to an instrument to specifiy it's available there
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: neighbourhoodId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The neighbourhood id
+      responses:
+        '200':
+          description: Successfully attached the neighbourhood to the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/detach/{instrumentId}/neighbourhood/{neighboourhoodId}:
+    post:
+      summary: Detach a neighbbourhood from an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: neighbourhoodId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The neighbourhood id
+      responses:
+        '200':
+          description: Successfully detached the neighbourhood from the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+
+  /api/v1/instrument/attach/{instrumentId}/availableRegion/{regionId}:
+    post:
+      summary: Attach a region to an instrument to specifiy it's available there
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: regionId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The region id
+      responses:
+        '200':
+          description: Successfully attached the region to the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/detach/{instrumentId}/region/{regionId}:
+    post:
+      summary: Detach a region from an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: regionId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The region id
+      responses:
+        '200':
+          description: Successfully detached the region from the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+
+  /api/v1/instrument/attach/{instrumentId}/availableTownship/{townshipId}:
+    post:
+      summary: Attach a township to an instrument to specifiy it's available there
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: townshipId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The township id
+      responses:
+        '200':
+          description: Successfully attached the township to the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/detach/{instrumentId}/township/{townshipId}:
+    post:
+      summary: Detach a township from an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: townshipId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The township id
+      responses:
+        '200':
+          description: Successfully detached the township from the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+
+  /api/v1/instrument/attach/{instrumentId}/clientCharacteristic/{clientCharacteristicId}:
+    post:
+      summary: Attach a client characteristic to an instrument to specifiy it's available there
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: clientCharacteristicId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The client characteristic id
+      responses:
+        '200':
+          description: Successfully attached the client characteristic to the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/detach/{instrumentId}/clientCharacteristic/{clientCharacteristicId}:
+    post:
+      summary: Detach a client characteristic from an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: clientCharacteristicId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The client characteristic id
+      responses:
+        '200':
+          description: Successfully detached the client characteristic from the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+
+  /api/v1/instrument/attach/{instrumentId}/contact/{contactId}:
+    post:
+      summary: Attach a contact to an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The contact id
+      responses:
+        '200':
+          description: Successfully attached the contact to the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/detach/{instrumentId}/contact/{contactId}:
+    post:
+      summary: Detach a contact from an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The contact id
+      responses:
+        '200':
+          description: Successfully detached the contact from the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+
+  /api/v1/instrument/attach/{instrumentId}/groupForm/{groupFormId}:
+    post:
+      summary: Attach a group form to an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: groupFormId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The group form id
+      responses:
+        '200':
+          description: Successfully attached the group form to the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/detach/{instrumentId}/groupForm/{groupFormId}:
+    post:
+      summary: Detach a group form from an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: groupFormId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The group form id
+      responses:
+        '200':
+          description: Successfully detached the group form from the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+
+  /api/v1/instrument/attach/{instrumentId}/targetGroup/{targetGroupId}:
+    post:
+      summary: Attach a target group to an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: targetGroupId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The target group id
+      responses:
+        '200':
+          description: Successfully attached the target group to the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/detach/{instrumentId}/targetGroup/{targetGroupId}:
+    post:
+      summary: Detach a target group from an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: targetGroupId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The target group id
+      responses:
+        '200':
+          description: Successfully detached the target group from the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+
+  /api/v1/instrument/attach/{instrumentId}/tile/{tileId}:
+    post:
+      summary: Attach a tile to an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: tileId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The tile id
+      responses:
+        '200':
+          description: Successfully attached the tile to the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+  /api/v1/instrument/detach/{instrumentId}/tile/{tileId}:
+    post:
+      summary: Detach a tile from an instrument
+      tags:
+        - instrument
+      parameters:
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+        - in: path
+          name: tileId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The tile id
+      responses:
+        '200':
+          description: Successfully detached the tile from the instrument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+
+  # Instrument Tracker
+  /api/v1/instrumentTracker/list:
+    get:
+      summary: Get all instrumentTrackers
+      tags:
+        - instrument tracker
+      responses:
+        '200':
+          description: Successfully returned the instrumentTrackers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InstrumentTracker'
+  /api/v1/instrumentTracker/show/{instrumentTrackerId}:
+    get:
+      summary: Get an instrument tracker
+      tags:
+        - instrument tracker
+      parameters:
+        - in: path
+          name: instrumentTrackerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument tracker id
+      responses:
+        '200':
+          description: Successfully returned the instrument tracker
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/InstrumentTracker'
+  /api/v1/instrumentTracker/create:
+    post:
+      summary: Create a new instrument tracker
+      tags:
+        - instrument tracker
+      requestBody:
+        $ref: '#/components/requestBodies/InstrumentTrackerBody'
+      responses:
+        '201':
+          description: Successfully created the instrument tracker
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstrumentTracker'
+  /api/v1/instrumentTracker/update/{instrumentTrackerId}:
+    put:
+      summary: Updates an instrument tracker
+      tags:
+        - instrument tracker
+      parameters:
+        - in: path
+          name: instrumentTrackerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument tracker id
+      requestBody:
+        $ref: '#/components/requestBodies/InstrumentTrackerBody'
+      responses:
+        '200':
+          description: Successfully updated the instrument tracker
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstrumentTracker'
+  /api/v1/instrumentTracker/delete/{instrumentTrackerId}:
+    delete:
+      summary: Deletes an instrument tracker
+      tags:
+        - instrument tracker
+      responses:
+        '204':
+          description: Successfully deleted the instrument tracker
+
+
+  # Link
+  /api/v1/link/list:
+    get:
+      summary: Get all links
+      tags:
+        - link
+      responses:
+        '200':
+          description: Successfully returned the links
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Link'
+  /api/v1/link/show/{linkId}:
+    get:
+      summary: Get a link
+      tags:
+        - link
+      parameters:
+        - in: path
+          name: linkId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The link id
+      responses:
+        '200':
+          description: Successfully returned the link
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Link'
+  /api/v1/link/create:
+    post:
+      summary: Create a new link
+      tags:
+        - link
+      requestBody:
+        $ref: '#/components/requestBodies/LinkBody'
+      responses:
+        '201':
+          description: Successfully created the link
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Link'
+  /api/v1/link/update/{linkId}:
+    put:
+      summary: Updates a link
+      tags:
+        - link
+      parameters:
+        - in: path
+          name: linkId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The link id
+      requestBody:
+        $ref: '#/components/requestBodies/LinkBody'
+      responses:
+        '200':
+          description: Successfully updated the link
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Link'
+  /api/v1/link/delete/{linkId}:
+    delete:
+      summary: Deletes a link
+      tags:
+        - link
+      responses:
+        '204':
+          description: Successfully deleted the link
+
+
+  # Local Party
+  /api/v1/localParty/list:
+    get:
+      summary: Get all local parties
+      tags:
+        - local party
+      responses:
+        '200':
+          description: Successfully returned the local parties
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LocalParty'
+  /api/v1/localParty/show/{localPartyId}:
+    get:
+      summary: Get a local party
+      tags:
+        - local party
+      parameters:
+        - in: path
+          name: localPartyId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The local party id
+      responses:
+        '200':
+          description: Successfully returned the local party
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LocalParty'
+  /api/v1/localParty/create:
+    post:
+      summary: Create a new local party
+      tags:
+        - local party
+      requestBody:
+        $ref: '#/components/requestBodies/LocalPartyBody'
+      responses:
+        '201':
+          description: Successfully created the local party
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocalParty'
+  /api/v1/localParty/update/{localPartyId}:
+    put:
+      summary: Updates a local party
+      tags:
+        - local party
+      parameters:
+        - in: path
+          name: localPartyId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The local party id
+      requestBody:
+        $ref: '#/components/requestBodies/LocalPartyBody'
+      responses:
+        '200':
+          description: Successfully updated the local party
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocalParty'
+  /api/v1/localParty/delete/{localPartyId}:
+    delete:
+      summary: Deletes a local party
+      tags:
+        - local party
+      responses:
+        '204':
+          description: Successfully deleted the local party
+  /api/v1/localParty/restore/{localPartyId}:
+    post:
+      summary: Restores a local party
+      tags:
+        - local party
+      parameters:
+        - in: path
+          name: localPartyId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The local party id
+      responses:
+        '201':
+          description: Successfully restored the local party
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocalParty'
+  /api/v1/localParty/forceDelete/{localPartyId}:
+    delete:
+      summary: Permanently deletes a local party
+      tags:
+        - local party
+      parameters:
+        - in: path
+          name: localPartyId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The local party id
+      responses:
+        '204':
+          description: Successfully deleted the local party
+  /api/v1/localParty/trashed:
+    get:
+      summary: Get all deleted local parties
+      tags:
+        - local party
+      responses:
+        '200':
+          description: Successfully returned the deleted local parties
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LocalParty'
+
+
+  # Location
+  /api/v1/location/list:
+    get:
+      summary: Get all locations
+      tags:
+        - location
+      responses:
+        '200':
+          description: Successfully returned the locations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Location'
+  /api/v1/location/show/{locationId}:
+    get:
+      summary: Get a location
+      tags:
+        - location
+      parameters:
+        - in: path
+          name: locationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The location id
+      responses:
+        '200':
+          description: Successfully returned the location
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Location'
+  /api/v1/location/create:
+    post:
+      summary: Create a new location
+      tags:
+        - location
+      requestBody:
+        $ref: '#/components/requestBodies/LocationBody'
+      responses:
+        '201':
+          description: Successfully created the location
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+  /api/v1/location/update/{locationId}:
+    put:
+      summary: Updates a location
+      tags:
+        - location
+      parameters:
+        - in: path
+          name: locationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The location id
+      requestBody:
+        $ref: '#/components/requestBodies/LocationBody'
+      responses:
+        '200':
+          description: Successfully updated the location
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+  /api/v1/location/delete/{locationId}:
+    delete:
+      summary: Deletes a location
+      tags:
+        - location
+      responses:
+        '204':
+          description: Successfully deleted the location
+
+
+  # Manager
+  /api/v1/manager/list:
+    get:
+      summary: Get all managers
+      tags:
+        - manager
+      responses:
+        '200':
+          description: Successfully returned the managers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Manager'
+  /api/v1/manager/show/{managerId}:
+    get:
+      summary: Get a manager
+      tags:
+        - manager
+      parameters:
+        - in: path
+          name: managerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The manager id
+      responses:
+        '200':
+          description: Successfully returned the manager
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Manager'
+
+  /api/v1/manager/attach/{managerId}/organisation/{organisationId}:
+    post:
+      summary: Attach an organisation to a manager
+      tags:
+        - manager
+      parameters:
+        - in: path
+          name: managerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The manager id
+        - in: path
+          name: organisationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+      responses:
+        '200':
+          description: Successfully attached the organisation to the manager
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manager'
+  /api/v1/manager/detach/{managerId}/organisation/{organisationId}:
+    post:
+      summary: Detach an organisation from a manager
+      tags:
+        - manager
+      parameters:
+        - in: path
+          name: managerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+        - in: path
+          name: organisationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+      responses:
+        '200':
+          description: Successfully detached the organisation from the manager
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manager'
+
+  /api/v1/manager/attach/{managerId}/role/{roleId}:
+    post:
+      summary: Attach a role to a manager
+      tags:
+        - manager
+      parameters:
+        - in: path
+          name: managerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The manager id
+        - in: path
+          name: roleId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The role id
+      responses:
+        '200':
+          description: Successfully attached the role to the manager
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manager'
+  /api/v1/manager/detach/{managerId}/role/{roleId}:
+    post:
+      summary: Detach an role from a manager
+      tags:
+        - manager
+      parameters:
+        - in: path
+          name: managerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+        - in: path
+          name: roleId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The role id
+      responses:
+        '200':
+          description: Successfully detached the role from the manager
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manager'
+
+
+  # Mutation
+  /api/v1/mutation/list:
+    get:
+      summary: Get all mutations
+      tags:
+        - mutation
+      responses:
+        '200':
+          description: Successfully returned the mutations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Mutation'
+  /api/v1/mutation/show/{mutationId}:
+    get:
+      summary: Get a mutation
+      tags:
+        - mutation
+      parameters:
+        - in: path
+          name: mutationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The mutation id
+      responses:
+        '200':
+          description: Successfully returned the mutation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Mutation'
+
+
+  # National Party
+  /api/v1/nationalParty/list:
+    get:
+      summary: Get all national parties
+      tags:
+        - national party
+      responses:
+        '200':
+          description: Successfully returned the national parties
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NationalParty'
+  /api/v1/nationalParty/show/{nationalPartyId}:
+    get:
+      summary: Get a national party
+      tags:
+        - national party
+      parameters:
+        - in: path
+          name: nationalPartyId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The national party id
+      responses:
+        '200':
+          description: Successfully returned the national party
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NationalParty'
+  /api/v1/nationalParty/create:
+    post:
+      summary: Create a new national party
+      tags:
+        - national party
+      requestBody:
+        $ref: '#/components/requestBodies/NationalPartyBody'
+      responses:
+        '201':
+          description: Successfully created the national party
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NationalParty'
+  /api/v1/nationalParty/update/{nationalPartyId}:
+    put:
+      summary: Updates a national party
+      tags:
+        - national party
+      parameters:
+        - in: path
+          name: nationalPartyId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The national party id
+      requestBody:
+        $ref: '#/components/requestBodies/NationalPartyBody'
+      responses:
+        '200':
+          description: Successfully updated the national party
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NationalParty'
+  /api/v1/nationalParty/delete/{nationalPartyId}:
+    delete:
+      summary: Deletes a national party
+      tags:
+        - national party
+      responses:
+        '204':
+          description: Successfully deleted the national party
+  /api/v1/nationalParty/restore/{nationalPartyId}:
+    post:
+      summary: Restores a national party
+      tags:
+        - national party
+      parameters:
+        - in: path
+          name: nationalPartyId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The national party id
+      responses:
+        '201':
+          description: Successfully restored the national party
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NationalParty'
+  /api/v1/nationalParty/forceDelete/{nationalPartyId}:
+    delete:
+      summary: Permanently deletes a national party
+      tags:
+        - national party
+      parameters:
+        - in: path
+          name: nationalPartyId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The national party id
+      responses:
+        '204':
+          description: Successfully deleted the national party
+  /api/v1/nationalParty/trashed:
+    get:
+      summary: Get all deleted national parties
+      tags:
+        - national party
+      responses:
+        '200':
+          description: Successfully returned the deleted national parties
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NationalParty'
+
+
+  # Neighbourhood
+  /api/v1/neighbourhood/list:
+    get:
+      summary: Get all neighbourhoods
+      tags:
+        - neighbourhood
+      responses:
+        '200':
+          description: Successfully returned the neighbourhoods
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Neighbourhood'
+  /api/v1/neighbourhood/show/{neighbourhoodId}:
+    get:
+      summary: Get a neighbourhood
+      tags:
+        - neighbourhood
+      parameters:
+        - in: path
+          name: neighbourhoodId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The neighbourhood id
+      responses:
+        '200':
+          description: Successfully returned the neighbourhood
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Neighbourhood'
+  /api/v1/neighbourhood/create:
+    post:
+      summary: Create a new neighbourhood
+      tags:
+        - neighbourhood
+      requestBody:
+        $ref: '#/components/requestBodies/NeighbourhoodBody'
+      responses:
+        '201':
+          description: Successfully created the neighbourhood
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocalParty'
+  /api/v1/neighbourhood/update/{neighbourhoodId}:
+    put:
+      summary: Updates a neighbourhood
+      tags:
+        - neighbourhood
+      parameters:
+        - in: path
+          name: neighbourhoodId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The neighbourhood id
+      requestBody:
+        $ref: '#/components/requestBodies/NeighbourhoodBody'
+      responses:
+        '200':
+          description: Successfully updated the neighbourhood
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Neighbourhood'
+  /api/v1/neighbourhood/delete/{neighbourhoodId}:
+    delete:
+      summary: Deletes a neighbourhood
+      tags:
+        - neighbourhood
+      responses:
+        '204':
+          description: Successfully deleted the neighbourhood
+
+
+  # News Item
+  /api/v1/newsItem/list:
+    get:
+      summary: Get all news items
+      tags:
+        - news item
+      responses:
+        '200':
+          description: Successfully returned the news items
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NewsItem'
+  /api/v1/newsItem/show/{newsItemId}:
+    get:
+      summary: Get a news items
+      tags:
+        - news item
+      parameters:
+        - in: path
+          name: newsItemId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The news item id
+      responses:
+        '200':
+          description: Successfully returned the news item
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NewsItem'
+  /api/v1/newsItem/create:
+    post:
+      summary: Create a new news item
+      tags:
+        - news item
+      requestBody:
+        $ref: '#/components/requestBodies/NewsItemBody'
+      responses:
+        '201':
+          description: Successfully created the news item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsItem'
+  /api/v1/newsItem/update/{newsItemId}:
+    put:
+      summary: Updates a news item
+      tags:
+        - news item
+      parameters:
+        - in: path
+          name: newsItemId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The news item id
+      requestBody:
+        $ref: '#/components/requestBodies/NewsItemBody'
+      responses:
+        '200':
+          description: Successfully updated the news item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsItem'
+  /api/v1/newsItem/delete/{newsItemId}:
+    delete:
+      summary: Deletes a news item
+      tags:
+        - news item
+      responses:
+        '204':
+          description: Successfully deleted the news item
+
+
+  # Organisation
+  /api/v1/organisation/list:
+    get:
+      summary: Get all organisations
+      tags:
+        - organisation
+      responses:
+        '200':
+          description: Successfully returned the organisations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Organisation'
+  /api/v1/organisation/show/{organisationId}:
+    get:
+      summary: Get an organisation
+      tags:
+        - organisation
+      parameters:
+        - in: path
+          name: organisationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+      responses:
+        '200':
+          description: Successfully returned the organisation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Organisation'
+
+  /api/v1/organisation/attach/{organisationId}/manager/{managerId}:
+    post:
+      summary: Attach a manager to an organisation
+      tags:
+        - organisation
+      parameters:
+        - in: path
+          name: organisationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+        - in: path
+          name: managerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The manager id
+      responses:
+        '200':
+          description: Successfully attached the manager to the organisation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisation'
+  /api/v1/organisation/detach/{organisationId}/manager/{managerId}:
+    post:
+      summary: Detach a manager from an organisation
+      tags:
+        - organisation
+      parameters:
+        - in: path
+          name: organisationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+        - in: path
+          name: managerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The manager id
+      responses:
+        '200':
+          description: Successfully detached the manager from the organisation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisation'
+
+  /api/v1/organisation/attach/{organisationId}/featuringEnvironment/{environmentId}:
+    post:
+      summary: Attach an environment to an organisation
+      tags:
+        - organisation
+      parameters:
+        - in: path
+          name: organisationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+        - in: path
+          name: environmentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The environment id
+      responses:
+        '200':
+          description: Successfully attached the environment to the organisation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisation'
+  /api/v1/organisation/detach/{organisationId}/featuringEnvironment/{environmentId}:
+    post:
+      summary: Detach an environment from an organisation
+      tags:
+        - organisation
+      parameters:
+        - in: path
+          name: organisationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+        - in: path
+          name: environmentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The environment id
+      responses:
+        '200':
+          description: Successfully detached the environment from the organisation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisation'
+
+  /api/v1/organisation/attach/{organisationId}/contact/{contactId}:
+    post:
+      summary: Attach a contact to an organisation
+      tags:
+        - organisation
+      parameters:
+        - in: path
+          name: organisationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The contact id
+      responses:
+        '200':
+          description: Successfully attached the contact to the organisation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisation'
+  /api/v1/organisation/detach/{organisationId}/contact/{contactId}:
+    post:
+      summary: Detach a contact from an organisation
+      tags:
+        - organisation
+      parameters:
+        - in: path
+          name: organisationId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The organisation id
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The contact id
+      responses:
+        '200':
+          description: Successfully detached the contact from the organisation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organisation'
+
+
+  # Partnership
+  /api/v1/partnership/list:
+    get:
+      summary: Get all partnerships
+      tags:
+        - partnership
+      responses:
+        '200':
+          description: Successfully returned the partnerships
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Partnership'
+  /api/v1/partnership/show/{partnershipId}:
+    get:
+      summary: Get a partnership
+      tags:
+        - partnership
+      parameters:
+        - in: path
+          name: partnershipId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The partnership id
+      responses:
+        '200':
+          description: Successfully returned the partnership
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Partnership'
+  /api/v1/partnership/create:
+    post:
+      summary: Create a new partnership
+      tags:
+        - partnership
+      requestBody:
+        $ref: '#/components/requestBodies/PartnershipBody'
+      responses:
+        '201':
+          description: Successfully created the partnership
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partnership'
+  /api/v1/partnership/update/{partnershipId}:
+    put:
+      summary: Updates a partnership
+      tags:
+        - partnership
+      parameters:
+        - in: path
+          name: partnershipId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The partnership id
+      requestBody:
+        $ref: '#/components/requestBodies/PartnershipBody'
+      responses:
+        '200':
+          description: Successfully updated the partnership
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partnership'
+  /api/v1/partnership/delete/{partnershipId}:
+    delete:
+      summary: Deletes a partnership
+      tags:
+        - partnership
+      responses:
+        '204':
+          description: Successfully deleted the partnership
+  /api/v1/partnership/restore/{partnershipId}:
+    post:
+      summary: Restores a partnership
+      tags:
+        - partnership
+      parameters:
+        - in: path
+          name: partnershipId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The partnership id
+      responses:
+        '201':
+          description: Successfully restored the partnership
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partnership'
+  /api/v1/partnership/forceDelete/{partnershipId}:
+    delete:
+      summary: Permanently deletes a partnership
+      tags:
+        - partnership
+      parameters:
+        - in: path
+          name: partnershipId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The partnership id
+      responses:
+        '204':
+          description: Successfully deleted the partnership
+  /api/v1/partnership/trashed:
+    get:
+      summary: Get all deleted partnerships
+      tags:
+        - partnership
+      responses:
+        '200':
+          description: Successfully returned the deleted partnerships
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Partnership'
+
+  /api/v1/partnership/attach/{partnershipId}/township/{townshipId}:
+    post:
+      summary: Attach a township to a partnership
+      tags:
+        - partnership
+      parameters:
+        - in: path
+          name: partnershipId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The partnership id
+        - in: path
+          name: townshipId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The township id
+      responses:
+        '200':
+          description: Successfully attached the township to the partnership
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partnership'
+  /api/v1/partnership/detach/{partnershipId}/township/{townshipId}:
+    post:
+      summary: Detach a township from a partnership
+      tags:
+        - partnership
+      parameters:
+        - in: path
+          name: partnershipId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The partnership id
+        - in: path
+          name: townshipId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The township id
+      responses:
+        '200':
+          description: Successfully detached the township from the partnership
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partnership'
+
+
+  # Professional
+  /api/v1/professional/list:
+    get:
+      summary: Get all professionals
+      tags:
+        - professional
+      responses:
+        '200':
+          description: Successfully returned the professionals
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Professional'
+  /api/v1/professional/show/{professionalId}:
+    get:
+      summary: Get a professional
+      tags:
+        - professional
+      parameters:
+        - in: path
+          name: professionalId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The professional id
+      responses:
+        '200':
+          description: Successfully returned the professional
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Professional'
+  /api/v1/professional/create:
+    post:
+      summary: Create a new professional
+      tags:
+        - professional
+      requestBody:
+        $ref: '#/components/requestBodies/ProfessionalBody'
+      responses:
+        '201':
+          description: Successfully created the professional
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Professional'
+  /api/v1/professional/update/{professionalId}:
+    put:
+      summary: Updates a professional
+      tags:
+        - professional
+      parameters:
+        - in: path
+          name: professionalId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The professional id
+      requestBody:
+        $ref: '#/components/requestBodies/ProfessionalBody'
+      responses:
+        '200':
+          description: Successfully updated the professional
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Professional'
+  /api/v1/professional/delete/{professionalId}:
+    delete:
+      summary: Deletes a professional
+      tags:
+        - professional
+      responses:
+        '204':
+          description: Successfully deleted the professional
+
+
+  # Provider
+  /api/v1/provider/list:
+    get:
+      summary: Get all providers
+      tags:
+        - provider
+      responses:
+        '200':
+          description: Successfully returned the providers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Provider'
+  /api/v1/provider/show/{providerId}:
+    get:
+      summary: Get a provider
+      tags:
+        - provider
+      parameters:
+        - in: path
+          name: providerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The provider id
+      responses:
+        '200':
+          description: Successfully returned the provider
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Provider'
+  /api/v1/provider/create:
+    post:
+      summary: Create a new provider
+      tags:
+        - provider
+      requestBody:
+        $ref: '#/components/requestBodies/ProviderBody'
+      responses:
+        '201':
+          description: Successfully created the provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Provider'
+  /api/v1/provider/update/{providerId}:
+    put:
+      summary: Updates a provider
+      tags:
+        - provider
+      parameters:
+        - in: path
+          name: providerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The provider id
+      requestBody:
+        $ref: '#/components/requestBodies/ProviderBody'
+      responses:
+        '200':
+          description: Successfully updated the provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Provider'
+  /api/v1/provider/delete/{providerId}:
+    delete:
+      summary: Deletes a provider
+      tags:
+        - provider
+      responses:
+        '204':
+          description: Successfully deleted the provider
+  /api/v1/provider/restore/{providerId}:
+    post:
+      summary: Restores a provider
+      tags:
+        - provider
+      parameters:
+        - in: path
+          name: providerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The provider id
+      responses:
+        '201':
+          description: Successfully restored the provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Provider'
+  /api/v1/provider/forceDelete/{providerId}:
+    delete:
+      summary: Permanently deletes a provider
+      tags:
+        - provider
+      parameters:
+        - in: path
+          name: providerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The provider id
+      responses:
+        '204':
+          description: Successfully deleted the provider
+  /api/v1/provider/trashed:
+    get:
+      summary: Get all deleted providers
+      tags:
+        - provider
+      responses:
+        '200':
+          description: Successfully returned the deleted providers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Provider'
+
+  /api/v1/provider/attach/{providerId}/contact/{contactId}:
+    post:
+      summary: Attach a contact to a provider
+      tags:
+        - provider
+      parameters:
+        - in: path
+          name: providerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The provider id
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The contact id
+      responses:
+        '200':
+          description: Successfully attached the contact to the provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Provider'
+  /api/v1/provider/detach/{providerId}/contact/{contactId}:
+    post:
+      summary: Detach a contact from a provider
+      tags:
+        - provider
+      parameters:
+        - in: path
+          name: providerId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The provider id
+        - in: path
+          name: contactId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The contact id
+      responses:
+        '200':
+          description: Successfully detached the contact from the provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Provider'
+
+
+  # Rating
+  /api/v1/rating/list:
+    get:
+      summary: Get all ratings
+      tags:
+        - rating
+      responses:
+        '200':
+          description: Successfully returned the ratings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Rating'
+  /api/v1/rating/show/{ratingId}:
+    get:
+      summary: Get a rating
+      tags:
+        - rating
+      parameters:
+        - in: path
+          name: ratingId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The rating id
+      responses:
+        '200':
+          description: Successfully returned the rating
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Rating'
+  /api/v1/rating/create:
+    post:
+      summary: Create a new rating
+      tags:
+        - rating
+      requestBody:
+        $ref: '#/components/requestBodies/RatingBody'
+      responses:
+        '201':
+          description: Successfully created the rating
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+  /api/v1/rating/update/{ratingId}:
+    put:
+      summary: Updates a rating
+      tags:
+        - rating
+      parameters:
+        - in: path
+          name: ratingId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The rating id
+      requestBody:
+        $ref: '#/components/requestBodies/RatingBody'
+      responses:
+        '200':
+          description: Successfully updated the rating
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+  /api/v1/rating/delete/{ratingId}:
+    delete:
+      summary: Deletes a rating
+      tags:
+        - rating
+      responses:
+        '204':
+          description: Successfully deleted the rating
+
+
+  # Region
+  /api/v1/region/list:
+    get:
+      summary: Get all regions
+      tags:
+        - region
+      responses:
+        '200':
+          description: Successfully returned the regions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Region'
+  /api/v1/region/show/{regionId}:
+    get:
+      summary: Get a region
+      tags:
+        - region
+      parameters:
+        - in: path
+          name: regionId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The region id
+      responses:
+        '200':
+          description: Successfully returned the region
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Region'
+
+
+  # Regional Party
+  /api/v1/regionalParty/list:
+    get:
+      summary: Get all regional parties
+      tags:
+        - regional party
+      responses:
+        '200':
+          description: Successfully returned the regional parties
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RegionalParty'
+  /api/v1/regionalParty/show/{regionalPartyId}:
+    get:
+      summary: Get a regional party
+      tags:
+        - regional party
+      parameters:
+        - in: path
+          name: regionalPartyId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The regional party id
+      responses:
+        '200':
+          description: Successfully returned the regional party
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RegionalParty'
+  /api/v1/regionalParty/create:
+    post:
+      summary: Create a new regional party
+      tags:
+        - regional party
+      requestBody:
+        $ref: '#/components/requestBodies/RegionalPartyBody'
+      responses:
+        '201':
+          description: Successfully created the regional party
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionalParty'
+  /api/v1/regionalParty/update/{regionalPartyId}:
+    put:
+      summary: Updates a regional party
+      tags:
+        - regional party
+      parameters:
+        - in: path
+          name: regionalPartyId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The regional party id
+      requestBody:
+        $ref: '#/components/requestBodies/RegionalPartyBody'
+      responses:
+        '200':
+          description: Successfully updated the regional party
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionalParty'
+  /api/v1/regionalParty/delete/{regionalPartyId}:
+    delete:
+      summary: Deletes a regional party
+      tags:
+        - regional party
+      responses:
+        '204':
+          description: Successfully deleted the regional party
+  /api/v1/regionalParty/restore/{regionalPartyId}:
+    post:
+      summary: Restores a regional party
+      tags:
+        - regional party
+      parameters:
+        - in: path
+          name: regionalPartyId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The regional party id
+      responses:
+        '201':
+          description: Successfully restored the regional party
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionalParty'
+  /api/v1/regionalParty/forceDelete/{regionalPartyId}:
+    delete:
+      summary: Permanently deletes a regional party
+      tags:
+        - regional party
+      parameters:
+        - in: path
+          name: regionalPartyId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The regional party id
+      responses:
+        '204':
+          description: Successfully deleted the regional party
+  /api/v1/regionalParty/trashed:
+    get:
+      summary: Get all deleted regional parties
+      tags:
+        - regional party
+      responses:
+        '200':
+          description: Successfully returned the deleted regional parties
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RegionalParty'
+
+
+  # Registration Code
+  /api/v1/registrationCode/list:
+    get:
+      summary: Get all registration codes
+      tags:
+        - registration code
+      responses:
+        '200':
+          description: Successfully returned the registration codes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RegistrationCode'
+  /api/v1/registrationCode/show/{registrationCodeId}:
+    get:
+      summary: Get a registration code
+      tags:
+        - registration code
+      parameters:
+        - in: path
+          name: registrationCodeId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The registration code id
+      responses:
+        '200':
+          description: Successfully returned the registration code
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RegistrationCode'
+  /api/v1/registrationCode/create:
+    post:
+      summary: Create a new registration code
+      tags:
+        - registration code
+      requestBody:
+        $ref: '#/components/requestBodies/RegistrationCodeBody'
+      responses:
+        '201':
+          description: Successfully created the registration code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationCode'
+  /api/v1/registrationCode/update/{registrationCodeId}:
+    put:
+      summary: Updates a registration code
+      tags:
+        - registration code
+      parameters:
+        - in: path
+          name: registrationCodeId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The registration code id
+      requestBody:
+        $ref: '#/components/requestBodies/RegistrationCodeBody'
+      responses:
+        '200':
+          description: Successfully updated the registration code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationCode'
+  /api/v1/registrationCode/delete/{registrationCodeId}:
+    delete:
+      summary: Deletes a registration code
+      tags:
+        - registration code
+      responses:
+        '204':
+          description: Successfully deleted the registration code
+
+
+  # Role
+  /api/v1/role/list:
+    get:
+      summary: Get all roles
+      tags:
+        - role
+      responses:
+        '200':
+          description: Successfully returned the roles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Role'
+  /api/v1/role/show/{roleId}:
+    get:
+      summary: Get a role
+      tags:
+        - role
+      parameters:
+        - in: path
+          name: roleId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The role id
+      responses:
+        '200':
+          description: Successfully returned the role
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Role'
+
+
+  # Target Group
+  /api/v1/targetGroup/list:
+    get:
+      summary: Get all target groups
+      tags:
+        - target group
+      responses:
+        '200':
+          description: Successfully returned the target groups
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TargetGroup'
+  /api/v1/targetGroup/show/{targetGroupId}:
+    get:
+      summary: Get a target group
+      tags:
+        - target group
+      parameters:
+        - in: path
+          name: targetGroupId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The target group id
+      responses:
+        '200':
+          description: Successfully returned the target group
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TargetGroup'
+  /api/v1/targetGroup/attach/{targetGroupId}/instrument/{instrumentId}:
+    post:
+      summary: Attach an instrument to a target group
+      tags:
+        - target group
+      parameters:
+        - in: path
+          name: targetGroupId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The target group id
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '200':
+          description: Successfully attached the instrument to the target group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TargetGroup'
+  /api/v1/targetGroup/detach/{targetGroupId}/instrument/{instrumentId}:
+    post:
+      summary: Detach an instrument from a target group
+      tags:
+        - target group
+      parameters:
+        - in: path
+          name: targetGroupId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The target group id
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '200':
+          description: Successfully detached the instrument from the target group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TargetGroup'
+
+
+  # Tile
+  /api/v1/tile/list:
+    get:
+      summary: Get all tiles
+      tags:
+        - tile
+      responses:
+        '200':
+          description: Successfully returned the tiles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Tile'
+  /api/v1/tile/show/{tileId}:
+    get:
+      summary: Get a tile
+      tags:
+        - tile
+      parameters:
+        - in: path
+          name: tileId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The tile id
+      responses:
+        '200':
+          description: Successfully returned the tile
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Tile'
+  /api/v1/tile/attach/{tileId}/instrument/{instrumentId}:
+    post:
+      summary: Attach an instrument to a tile
+      tags:
+        - tile
+      parameters:
+        - in: path
+          name: tileId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The tile id
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '200':
+          description: Successfully attached the instrument to the tile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tile'
+  /api/v1/tile/detach/{tileId}/instrument/{instrumentId}:
+    post:
+      summary: Detach an instrument from a tile
+      tags:
+        - tile
+      parameters:
+        - in: path
+          name: tileId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The tile id
+        - in: path
+          name: instrumentId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The instrument id
+      responses:
+        '200':
+          description: Successfully detached the instrument from the tile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tile'
+
+  # Township
+  /api/v1/township/list:
+    get:
+      summary: Get all townships
+      tags:
+        - township
+      responses:
+        '200':
+          description: Successfully returned the townships
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Township'
+  /api/v1/township/show/{townshipId}:
+    get:
+      summary: Get a township
+      tags:
+        - township
+      parameters:
+        - in: path
+          name: townshipId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The township id
+      responses:
+        '200':
+          description: Successfully returned the township
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Township'
+
+
+  # User
+  /api/v1/user:
+    get:
+      summary: Returns the data from the user owning the token
+      tags:
+        - user
+      responses:
+        '200':
+          description: Successfully returned the user data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+
+  # Video
+  /api/v1/video/list:
+    get:
+      summary: Get all videos
+      tags:
+        - video
+      responses:
+        '200':
+          description: Successfully returned the videos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Video'
+  /api/v1/video/show/{videoId}:
+    get:
+      summary: Get a video
+      tags:
+        - video
+      parameters:
+        - in: path
+          name: videoId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The video id
+      responses:
+        '200':
+          description: Successfully returned the video
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Video'
+  /api/v1/video/create:
+    post:
+      summary: Create a new video
+      tags:
+        - video
+      requestBody:
+        $ref: '#/components/requestBodies/VideoBody'
+      responses:
+        '201':
+          description: Successfully created the video
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+  /api/v1/video/update/{videoId}:
+    put:
+      summary: Updates a video
+      tags:
+        - video
+      parameters:
+        - in: path
+          name: videoId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The video id
+      requestBody:
+        $ref: '#/components/requestBodies/VideoBody'
+      responses:
+        '200':
+          description: Successfully updated the video
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Video'
+  /api/v1/video/delete/{videoId}:
+    delete:
+      summary: Deletes a video
+      tags:
+        - video
+      responses:
+        '204':
+          description: Successfully deleted the video
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  requestBodies:
+    AddressBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/AddressForm'
+    ClientCharacteristicBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ClientCharacteristicForm'
+    ContactBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ContactForm'
+    DownloadBody:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/DownloadForm'
+    EnvironmentBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/EnvironmentForm'
+    GroupFormBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/GroupFormForm'
+    ImplementationBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ImplementationForm'
+    InstrumentBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/InstrumentForm'
+    InstrumentTrackerBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/InstrumentTrackerForm'
+    LinkBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/LinkForm'
+    LocalPartyBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/LocalPartyForm'
+    LocationBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/LocationForm'
+    ManagerBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ManagerForm'
+    NationalPartyBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/NationalPartyForm'
+    NeighbourhoodBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/NeighbourhoodForm'
+    NewsItemBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/NewsItemForm'
+    PartnershipBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/PartnershipForm'
+    ProfessionalBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ProfessionalForm'
+    ProviderBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/ProviderForm'
+    RatingBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RatingForm'
+    RegionalPartyBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RegionalPartyForm'
+    RegistrationCodeBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/RegistrationCodeForm'
+    TargetGroupBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/TargetGroupForm'
+    TileBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/TileForm'
+    UserBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/UserForm'
+    VideoBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: '#/components/schemas/VideoForm'
+  schemas:
+    Address:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        straatnaam:
+          type: string
+        huisnummer:
+          type: string
+        postbusnummer:
+          type: integer
+        antwoordnummer:
+          type: integer
+        postcode:
+          type: string
+          pattern: '^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-zA-Z]{2}$'
+        woonplaats:
+          type: string
+        postcode_digits:
+          type: integer
+        organisation:
+          $ref: '#/components/schemas/Organisation'
+    AddressForm:
+      type: object
+      required:
+        - organisation_id
+        - postcode
+        - woonplaats
+      properties:
+        name:
+          type: string
+        organisation_id:
+          type: integer
+        straatnaam:
+          type: string
+        huisnummer:
+          type: string
+        postbusnummer:
+          type: integer
+        antwoordnummer:
+          type: integer
+        postcode:
+          type: string
+          pattern: '^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-zA-Z]{2}$'
+        woonplaats:
+          type: string
+    Area:
+      type: object
+      properties:
+        identifier:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+    ClientCharacteristic:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        instruments:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Instrument'
+    ClientCharacteristicForm:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    Contact:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        type:
+          type: object
+          nullable: true
+          properties:
+            key:
+              type: string
+            name:
+              type: string
+        organisation:
+          $ref: '#/components/schemas/Organisation'
+        instruments:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Instrument'
+        providers:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Provider'
+    ContactForm:
+      type: object
+      required:
+        - name
+        - organisation_id
+      properties:
+        name:
+          type: string
+        organisation_id:
+          type: integer
+        phone:
+          type: string
+          pattern: '(^\+[0-9]{2}|^\+[0-9]{2}\(0\)|^\(\+[0-9]{2}\)\(0\)|^00[0-9]{2}|^0)([0-9]{9}$)'
+        email:
+          type: string
+          format: email
+    Download:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        label:
+          type: string
+        url:
+          type: string
+        filename:
+          type: string
+        instrument:
+          $ref: '#/components/schemas/Instrument'
+    DownloadForm:
+      type: object
+      required:
+        - file
+        - instrument_id
+      properties:
+        label:
+          type: string
+        file:
+          type: string
+          format: binary
+        instrument_id:
+          type: integer
+    Environment:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        slug:
+          type: string
+        description_header:
+          type: string
+        description:
+          type: string
+        logo:
+          type: string
+        color_primary:
+          type: string
+        color_secondary:
+          type: string
+        user_pool_id:
+          type: string
+        user_pool_client_id:
+          type: string
+        contact:
+          $ref: '#/components/schemas/Contact'
+        featured_organisations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Organisation'
+        news_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsItem'
+        organisation:
+          $ref: '#/components/schemas/Organisation'
+    EnvironmentForm:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        description_header:
+          type: string
+        description:
+          type: string
+        logo:
+          type: string
+        color_primary:
+          type: string
+        color_secondary:
+          type: string
+        contact_id:
+          type: integer
+          nullable: true
+        organisation_id:
+          type: integer
+    GroupForm:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        custom:
+          type: boolean
+        instruments:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Instrument'
+    GroupFormForm:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        custom:
+          type: boolean
+    Implementation:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        custom:
+          type: boolean
+        instruments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Instrument'
+    ImplementationForm:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        custom:
+          type: boolean
+    Instrument:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        uuid:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+
+        publish:
+          type: boolean
+        publish_from:
+          type: string
+        publish_to:
+          type: string
+        published:
+          type: boolean
+        complete:
+          type: boolean
+
+        aim:
+          type: string
+        summary:
+          type: string
+        method:
+          type: string
+        distinctive_approach:
+          type: string
+        target_group_description:
+          type: string
+        participation_conditions:
+          type: string
+        cooperatioon_partners:
+          type: string
+        additional_information:
+          type: string
+
+        work_agreements:
+          type: string
+        application_instructions:
+          type: string
+        intensity_hours_per_week:
+          type: integer
+        total_duration_value:
+          type: integer
+        total_duration_unit:
+          type: string
+        total_duration_unit_key:
+          type: string
+        total_duration_hours:
+          type: integer
+        total_costs:
+          type: string
+        total_costs_whole_number:
+          type: integer
+        costs_description:
+          type: string
+        duration_description:
+          type: string
+        intensity_description:
+          type: string
+
+        import_mark:
+          type: string
+
+        is_national:
+          type: boolean
+        is_regional:
+          type: boolean
+        is_local:
+          type: boolean
+        reach:
+          type: string
+
+        organisation:
+          $ref: '#/components/schemas/Organisation'
+        implementation:
+          $ref: '#/components/schemas/Implementation'
+        group_forms:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupForm'
+        locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+        registration_codes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationCode'
+        rating:
+          type: string
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rating'
+        tiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tile'
+        tiles_count:
+          type: integer
+        target_groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/TargetGroup'
+        target_groups_count:
+          type: integer
+        client_characteristics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientCharacteristic'
+        client_characteristics_count:
+          type: integer
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+        videos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Video'
+        downloads:
+          type: array
+          items:
+            $ref: '#/components/schemas/Download'
+        provider:
+          $ref: '#/components/schemas/Provider'
+        contact:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+
+        available_areas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Area'
+        available_areas_all:
+          type: array
+          items:
+            $ref: '#/components/schemas/Area'
+        available_areas_specified:
+          type: array
+          items:
+            $ref: '#/components/schemas/Area'
+        available_regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Region'
+        available_townships:
+          type: array
+          items:
+            $ref: '#/components/schemas/Township'
+        available_neighbourhoods:
+          type: array
+          items:
+            $ref: '#/components/schemas/Neighbourhood'
+        mutations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mutation'
+        parent_instrument:
+          $ref: '#/components/schemas/Instrument'
+    InstrumentForm:
+      type: object
+      required:
+        - name
+        - summary
+        - aim
+        - method
+        - organisation_id
+        - provider_id
+        - implementation_id
+      properties:
+        name:
+          type: string
+        is_active:
+          type: boolean
+        publish_from:
+          type: string
+        publish_to:
+          type: string
+        summary:
+          type: string
+        aim:
+          type: string
+        method:
+          type: string
+        distinctive_approach:
+          type: string
+        target_group_description:
+          type: string
+        participation_conditions:
+          type: string
+        cooperatioon_partners:
+          type: string
+        additional_information:
+          type: string
+        work_agreements:
+          type: string
+        application_instructions:
+          type: string
+        intensity_hours_per_week:
+          type: integer
+        intensity_description:
+          type: string
+        total_duration_value:
+          type: integer
+        total_duration_unit:
+          type: string
+        duration_description:
+          type: string
+        total_costs:
+          type: string
+        costs_description:
+          type: string
+        organisation_id:
+          type: integer
+        implementation_id:
+          type: integer
+        instrument_type_id:
+          type: integer
+          nullable: true
+        provider_id:
+          type: integer
+    InstrumentTracker:
+      type: object
+      properties:
+        id:
+          type: integer
+        role:
+          type: string
+        notified_at:
+          type: string
+          format: date-time
+        notification_frequency:
+          type: string
+        on_modification:
+          type: boolean
+        on_expiration:
+          type: boolean
+        manager:
+          $ref: '#/components/schemas/Manager'
+        instrument:
+          $ref: '#/components/schemas/Instrument'
+    InstrumentTrackerForm:
+      type: object
+      required:
+        - instrument_id
+        - manager_id
+      properties:
+        role:
+          type: string
+        notification_frequency:
+          type: string
+        on_modification:
+          type: boolean
+        on_expiration:
+          type: boolean
+        instrument_id:
+          type: integer
+        manager_id:
+          type: integer
+    Link:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        label:
+          type: string
+        url:
+          type: string
+        instrument:
+          $ref: '#/components/schemas/Instrument'
+    LinkForm:
+      type: object
+      required:
+        - url
+        - instrument_id
+      properties:
+        label:
+          type: string
+        url:
+          type: string
+        instrument_id:
+          type: integer
+    LocalParty:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        slug:
+          type: string
+        township:
+          $ref: '#/components/schemas/Township'
+        organisation:
+          anyOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Organisation'
+    LocalPartyForm:
+      type: object
+      required:
+        - name
+        - township_id
+      properties:
+        name:
+          type: string
+        township_id:
+          type: integer
+    Location:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        type:
+          type: object
+          properties:
+            key:
+              type: string
+            name:
+              type: string
+        is_active:
+          type: boolean
+        description:
+          type: string
+        instrument:
+          $ref: '#/components/schemas/Instrument'
+        address:
+          $ref: '#/components/schemas/Address'
+    LocationForm:
+      type: object
+      required:
+        - instrument_id
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        is_active:
+          type: boolean
+        description:
+          type: string
+        instrument_id:
+          type: integer
+        address_id:
+          type: integer
+          nullable: true
+    Manager:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        givenName:
+          type: string
+        surName:
+          type: string
+        email:
+          type: string
+        created_by:
+          anyOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Manager'
+        instrumentTrackers:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/InstrumentTracker'
+        organisations:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Organisation'
+        roles:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Role'
+        mutations:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Mutation'
+    ManagerForm:
+      type: object
+      properties:
+        givenName:
+          type: string
+        surName:
+          type: string
+        email:
+          type: string
+        months_unupdated_limit:
+          type: integer
+    Mutation:
+      type: object
+      properties:
+        id:
+          type: integer
+        batch_id:
+          type: integer
+        name:
+          type: string
+        original:
+          type: string
+        changes:
+          type: string
+        manager:
+          anyOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Manager'
+        loggable_type:
+          type: string
+        loggable_id:
+          type: integer
+        target_type:
+          type: string
+        target_id:
+          type: integer
+        model_type:
+          type: string
+        model_id:
+          type: integer
+        fields:
+          type: string
+        status:
+          type: string
+        exception:
+          type: string
+    NationalParty:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        slug:
+          type: string
+        organisation:
+          anyOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Organisation'
+    NationalPartyForm:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    Neighbourhood:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        township:
+          $ref: '#/components/schemas/Township'
+    NeighbourhoodForm:
+      type: object
+      required:
+        - name
+        - township_id
+      properties:
+        name:
+          type: string
+        township_id:
+          type: integer
+    NewsItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        environment_slug:
+          type: string
+        publish_from:
+          type: string
+          format: date-time
+        publish_to:
+          type: string
+          format: date-time
+        publication_date:
+          type: string
+          format: date-time
+        published:
+          type: boolean
+        title:
+          type: string
+        sub_title:
+          type: string
+        body:
+          type: string
+        teaser:
+          type: string
+        environment:
+          anyOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Environment'
+    NewsItemForm:
+      type: object
+      required:
+        - title
+        - body
+        - environment_id
+      properties:
+        title:
+          type: string
+        sub_title:
+          type: string
+        body:
+          type: string
+        teaser:
+          type: string
+        publish_from:
+          type: string
+          format: date-time
+        publish_to:
+          type: string
+          format: date-time
+        environment_id:
+          type: integer
+    Organisation:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        type:
+          type: string
+        organisationable_type:
+          type: string
+        organisationable_id:
+          type: integer
+        managers:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Manager'
+        featuringEnvironments:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Environment'
+        contacts:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Contact'
+    Partnership:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        slug:
+          type: string
+        organisation:
+          oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Organisation'
+        townships:
+          type: array
+          items:
+            $ref: '#/components/schemas/Township'
+    PartnershipForm:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    Professional:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        username:
+          type: string
+        email:
+          type: string
+        enabled:
+          type: boolean
+        last_seen_at:
+          type: string
+          format: date-time
+        email_verified:
+          type: boolean
+        status:
+          type: string
+        ratings_count:
+          type: integer
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rating'
+        environment:
+          anyOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Environment'
+        mutations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mutation'
+    ProfessionalForm:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+        environment_id:
+          type: integer
+    Provider:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        slug:
+          type: string
+        import_mark:
+          type: string
+        organisation:
+          $ref: '#/components/schemas/Organisation'
+        address:
+          oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Address'
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+        mutations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mutation'
+    ProviderForm:
+      type: object
+      required:
+        - name
+        - organisation_id
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        website:
+          type: string
+        organisation_id:
+          type: integer
+        address_id:
+          type: integer
+          nullable: true
+    Rating:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        author:
+          type: string
+        general_score:
+          type: integer
+        general_explanation:
+          type: string
+        result_score:
+          type: integer
+        result_explanation:
+          type: string
+        execution_score:
+          type: integer
+        execution_explanation:
+          type: string
+        instrument_id:
+          type: integer
+        professional_email:
+          type: string
+        instrument:
+          anyOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Instrument'
+        professional:
+          anyOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Professional'
+    RatingForm:
+      type: object
+      required:
+        - instrument_id
+        - email
+        - general_score
+        - result_score
+        - execution_score
+      properties:
+        author:
+          type: string
+        email:
+          type: string
+        general_score:
+          type: integer
+        general_explanation:
+          type: string
+        result_score:
+          type: integer
+        result_explanation:
+          type: string
+        execution_score:
+          type: integer
+        execution_explanation:
+          type: string
+        instrument_id:
+          type: integer
+        professional_id:
+          type: integer
+          nullable: true
+    RegionalParty:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        slug:
+          type: string
+        organisation:
+          $ref: '#/components/schemas/Organisation'
+        region:
+          $ref: '#/components/schemas/Region'
+    RegionalPartyForm:
+      type: object
+      required:
+        - name
+        - region_id
+      properties:
+        name:
+          type: string
+        region_id:
+          type: integer
+    Region:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        slug:
+          type: string
+        code:
+          type: string
+        townships:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Township'
+    RegistrationCode:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        code:
+          type: string
+        label:
+          type: string
+        instrument:
+          anyOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Instrument'
+    RegistrationCodeForm:
+      type: object
+      required:
+        - code
+        - label
+        - instrument_id
+      properties:
+        code:
+          type: string
+        label:
+          type: string
+        instrument_id:
+          type: integer
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        name_translated:
+          type: string
+    TargetGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        description:
+          type: string
+        custom:
+          type: boolean
+        instruments:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Instrument'
+    TargetGroupForm:
+      type: object
+      required:
+        - description
+      properties:
+        description:
+          type: string
+        custom:
+          type: boolean
+    Tile:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        sub_title:
+          type: string
+        excerpt:
+          type: string
+        description:
+          type: string
+        crisis_description:
+          type: string
+        crisis_services:
+          type: string
+        list:
+          type: string
+        key:
+          type: string
+        position:
+          type: string
+        instruments:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Instrument'
+    TileForm:
+      type: object
+      required:
+        - name
+        - sub_title
+        - description
+        - list
+      properties:
+        name:
+          type: string
+        sub_title:
+          type: string
+        excerpt:
+          type: string
+        description:
+          type: string
+        list:
+          type: string
+        crisis_description:
+          type: string
+        crisis_services:
+          type: string
+        key:
+          type: string
+        position:
+          type: string
+    Township:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        code:
+          type: string
+        region:
+          anyOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Region'
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        email:
+          type: string
+        email_verified_at:
+          type: string
+          format: date-time
+        password_updated_at:
+          type: string
+        manager:
+          anyOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Manager'
+    UserForm:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+          nullable: true
+    Video:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        provider:
+          type: string
+        video_identifier:
+          type: string
+        instrument:
+          anyOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Instrument'
+    VideoForm:
+      type: object
+      required:
+        - instrument_id
+      properties:
+        video_identifier:
+          type: string
+        provider:
+          type: string
+        instrument_id:
+          type: integer

@@ -60,9 +60,13 @@ trait IsMember
         return false;
     }
 
-    public function getAssociationsOwnedInstruments()
+    public function getAssociationsOwnedInstruments(): ?Collection
     {
-        return $this->getAssociations()
+        $associations = $this->getAssociations();
+        if (is_null($associations)) {
+            return null;
+        }
+        return $associations
             ->flatMap(fn ($association) => $association->ownedInstruments)
             ->unique('id');
     }

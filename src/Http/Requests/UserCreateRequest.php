@@ -16,6 +16,6 @@ class UserCreateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return UserValidation::getCreationRules();
+        return UserValidation::make($this)->getCreationRules();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Vng\EvaCore\Services\Cognito;
 
-use Illuminate\Support\Facades\Cache;
+use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\Professional;
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
 use Aws\Laravel\AwsFacade;
@@ -100,49 +100,53 @@ class UserPoolService
 //        'UserPoolTags' => ['<string>', ...],
         'VerificationMessageTemplate' => [
             'DefaultEmailOption' => 'CONFIRM_WITH_CODE',
-            'EmailMessage' => 'Uw verificatiecode is {####}.',
+            'EmailMessage' => 'Uw herstelcode is {####}.',
             'EmailMessageByLink' => 'Klik op de onderstaande link om uw e-mailadres te verifiëren. {##Verifieer Email##}',
-            'EmailSubject' => 'Verificatiecode Instrumentengids Eva',
-            'EmailSubjectByLink' => 'Verificatielink Instrumentengids Eva',
+            'EmailSubject' => 'Herstelcode Instrumentengids Eva',
+            'EmailSubjectByLink' => 'Herstellink Instrumentengids Eva',
 //            'SmsMessage' => 'SMS Bericht voor wat?',
         ]
     ];
 
-    public static function ensureUserPool(): void
+    public static function ensureUserPool(Environment $environment): UserPoolModel
     {
-        $userPool = static::getUserPool();
+        $userPool = static::getUserPoolByEnvironment($environment);
         if (!is_null($userPool)) {
-            static::updateUserPool($userPool);
+            static::updateUserPool($userPool, $environment);
             static::ensureUserPoolSchema($userPool);
         } else {
-            static::createUserPool();
-            $userPool = static::getUserPool();
+            $result = static::createUserPool($environment);
+            $userPoolId = $result['UserPool']['Id'];
+            $userPool = static::getUserPoolById($userPoolId);
         }
+
         static::setupMfaConfig($userPool->getId());
+        return $userPool;
     }
 
-    protected static function createUserPool(): Result
+    protected static function createUserPool(Environment $environment): Result
     {
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
-        return $cognitoClient->createUserPool(static::getUserPoolArgs());
+        return $cognitoClient->createUserPool(static::getUserPoolArgs($environment));
     }
 
-    protected static function updateUserPool(UserPoolModel $userPoolModel): Result
+    protected static function updateUserPool(UserPoolModel $userPoolModel, Environment $environment): Result
     {
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
-        $args = static::getUserPoolArgs();
+        $args = static::getUserPoolArgs($environment);
         $args['UserPoolId'] = $userPoolModel->getId();
+        // 15 requests per second
         return $cognitoClient->updateUserPool($args);
     }
 
-    protected static function getUserPoolArgs()
+    protected static function getUserPoolArgs(Environment $environment)
     {
         $args = static::DEFAULT_POOL_SETTINGS;
-        $args['PoolName'] = static::getUserPoolName();
-        $args['AdminCreateUserConfig']['InviteMessageTemplate']['EmailMessage'] = static::getInvitationEmail();
-        $args['VerificationMessageTemplate']['EmailMessage'] = static::getValidationMessage();
+        $args['PoolName'] = $environment->deriveUserPoolName();
+        $args['AdminCreateUserConfig']['InviteMessageTemplate']['EmailMessage'] = static::getInvitationEmail($environment->url);
+        $args['VerificationMessageTemplate']['EmailMessage'] = static::getValidationMessage($environment);
         return $args;
     }
 
@@ -166,22 +170,12 @@ class UserPoolService
         ]);
     }
 
-    public static function getUserPoolName()
-    {
-        $userPoolName = config('eva.userpool.name');
-        if (is_null($userPoolName)) {
-            throw new Exception('Userpool not setup in .env!');
-        }
-        return $userPoolName;
-    }
-
-    public static function getInvitationEmail()
+    public static function getInvitationEmail(?string $environmentUrl = null)
     {
         $message = "Beste professional, <br><br>Er is een account voor je aangemaakt voor instrumentengids Eva.<br>";
 
-        $url = config('eva.userpool.url');
-        if (!is_null($url)) {
-            $message .= "Je kan inloggen op <a href='". $url ."'>" . $url . "</a> om de instrumentengids te raadplegen over jullie instrumentenaanbod.";
+        if (!is_null($environmentUrl)) {
+            $message .= "Je kan inloggen op <a href='". $environmentUrl ."'>" . $environmentUrl . "</a> om de instrumentengids te raadplegen over jullie instrumentenaanbod.";
         }
 
         $message .= "<br><br>
@@ -196,34 +190,53 @@ class UserPoolService
         return $message;
     }
 
-    public static function getValidationMessage()
+    public static function getValidationMessage(Environment $environment)
     {
-        return "
+        $url = $environment->url;
+
+        $message = "
         Beste professional,<br>
         <br>
-        Er is een herstelcode om uw nieuwe wachtwoord in te stellen aangevraagd, deze heeft u nodig om uw wachtwoord te wijzigen: {####}<br>
+        U ontvangt deze mail omdat het wachtwoord van uw Eva account (opnieuw) ingesteld dient te worden.<br>
+        Dit komt omdat:<br>
+        <ul>
+            <li>Uzelf of uw beheerder een wachtwoord herstel voor uw account heeft aangevraagd.</li>
+        </ul>
+        Of
+        <ul>
+            <li>Uw wachtwoord al zes maanden ongewijzigd is, en daardoor automatisch gereset wordt.</li>
+        </ul>
         <br>
+        U kunt uw wachtwoord opnieuw instellen met herstelcode: {####}<br>";
+
+        if (!is_null($url)) {
+            $message .= "
+            Ga naar <a href='". $url ."'>" . $url . "</a><br>
+            ";
+        }
+
+        $message .= "
         Klik op “Stel wachtwoord opnieuw in” en vervolgens op “Ik heb al een herstelcode en wil mijn wachtwoord wijzigen”.<br>
+        <br>
+        <b>Let op;</b> de herstelcode is 1 uur geldig. Mocht deze verlopen zijn dan kunt u een nieuwe aanvragen.
+        Klik op “Stel wachtwoord opnieuw in” en vul vervolgens uw e-mailadres in waarop uw account geregistreerd is.<br>
+        <br>
         <br>
         Neem voor vragen contact op met je teamleider of de contactpersoon voor Eva binnen jullie gemeente.<br>
         <br>
         Veel succes met Eva!
         ";
+
+        return $message;
     }
 
-    public static function getUserPool(): ?UserPoolModel
+    public static function getUserPoolByEnvironment(Environment $environment): ?UserPoolModel
     {
-        $userPoolId = Cache::get('userPoolId');
-        if (!is_null($userPoolId)) {
-            return static::getUserPoolById($userPoolId);
+        $userPoolId = $environment->user_pool_id;
+        if (is_null($userPoolId)) {
+            return null;
         }
-        $userPool = static::getUserPoolByName(static::getUserPoolName());
-        if (!is_null($userPool)) {
-            $eightHoursInSeconds = 60 * 60 * 8;
-            Cache::put('userPoolId', $userPool->getId(), $eightHoursInSeconds);
-        }
-
-        return $userPool;
+        return static::getUserPoolById($userPoolId);
     }
 
     protected static function getUserPoolByName(string $name, string $nextToken = null): ?UserPoolModel
@@ -270,6 +283,7 @@ class UserPoolService
     {
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
+        // max 15 requests per second
         return $cognitoClient->describeUserPool([
             'UserPoolId' => $userPoolId
         ]);
@@ -304,7 +318,7 @@ class UserPoolService
 
     public static function findMissingAttributes(UserPoolModel $userPool): array
     {
-        $args = static::getUserPoolArgs();
+        $args = static::DEFAULT_POOL_SETTINGS;
         $schema = $args['Schema'];
         $userPoolDescription = static::describeUserPool($userPool->getId());
         $attributes = $userPoolDescription['UserPool']['SchemaAttributes'];

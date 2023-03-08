@@ -13,7 +13,7 @@ use Vng\EvaCore\Repositories\Eloquent\OrganisationRepository;
 class EnsureOrganisations extends Command
 {
     protected $signature = 'format:ensure-organisations';
-    protected $description = 'Ensures every organisationabel entity has an organisations';
+    protected $description = 'Ensures every organisationable entity has an organisations';
 
     protected OrganisationRepository $organisationRepository;
 
@@ -38,6 +38,9 @@ class EnsureOrganisations extends Command
 
         $this->ensurePartnerships();
         $this->output->writeln('partnerships have organisation');
+
+        $this->removeObsoleteOrganisations();
+        $this->output->writeln('(soft) deleted obsolete organisation');
 
         $this->getOutput()->writeln('ensuring organisations finished!');
         return 0;
@@ -84,5 +87,45 @@ class EnsureOrganisations extends Command
             $model->organisation()->associate($organisation);
             $model->save();
         }
+    }
+
+    private function removeObsoleteOrganisations()
+    {
+        $ids = $this->getActiveOrganisationIds();
+        $query = $this->organisationRepository->builder();
+        $query->whereNotIn('id', $ids)->delete();
+    }
+
+    private function getActiveOrganisationIds()
+    {
+        $ids = array_merge(
+            $this->getLocalPartyOrganisationIds(),
+            $this->getRegionPartyOrganisationIds(),
+            $this->getNationalPartyOrganisationIds(),
+            $this->getPartnershipOrganisationIds()
+        );
+        sort($ids);
+        return $ids;
+    }
+
+    private function getLocalPartyOrganisationIds()
+    {
+        $localParties = LocalParty::all();
+        return $localParties->pluck('organisation.id')->toArray();
+    }
+    private function getRegionPartyOrganisationIds()
+    {
+        $localParties = RegionalParty::all();
+        return $localParties->pluck('organisation.id')->toArray();
+    }
+    private function getNationalPartyOrganisationIds()
+    {
+        $localParties = NationalParty::all();
+        return $localParties->pluck('organisation.id')->toArray();
+    }
+    private function getPartnershipOrganisationIds()
+    {
+        $localParties = Partnership::all();
+        return $localParties->pluck('organisation.id')->toArray();
     }
 }

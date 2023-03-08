@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * @deprecated
+ * This was the previous relationship between a user and an organisation
+ * Once all parties migrated to orchid this can be removed
+ */
 abstract class Associateable extends MorphPivot
 {
     public $incrementing = true;

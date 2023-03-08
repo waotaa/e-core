@@ -16,7 +16,7 @@ class NewsItemFactory extends Factory
     public function definition()
     {
         return [
-            'environment_id' => Environment::factory()->featurePartnership(),
+            'environment_id' => Environment::factory(),
             'title' => $this->faker->sentence,
             'sub_title' => $this->faker->sentence,
             'body' => $this->faker->paragraph,

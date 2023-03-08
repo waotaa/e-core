@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Vng\EvaCore\ElasticResources\ProfessionalResource;
 use Vng\EvaCore\Observers\ProfessionalObserver;
@@ -26,10 +27,10 @@ class Professional extends SearchableModel implements CanResetPasswordContract
     ];
 
     protected $fillable = [
-        'last_seen_at',
         'username',
         'email',
         'email_verified',
+        'last_seen_at',
         'enabled',
         'user_status',
     ];
@@ -76,6 +77,11 @@ class Professional extends SearchableModel implements CanResetPasswordContract
         }
 
         return $this->user_status;
+    }
+
+    public function environment(): BelongsTo
+    {
+        return $this->belongsTo(Environment::class);
     }
 
     public function ratings(): HasMany

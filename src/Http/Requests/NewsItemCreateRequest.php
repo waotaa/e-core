@@ -16,6 +16,6 @@ class NewsItemCreateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return NewsItemValidation::getCreationRules();
+        return NewsItemValidation::make($this)->getCreationRules();
     }
 }

@@ -4,8 +4,7 @@ namespace Vng\EvaCore\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use Vng\EvaCore\Http\Validation\DownloadValidation;
-use Vng\EvaCore\Models\Download;
+use Vng\EvaCore\Http\Validation\EnvironmentValidation;
 use Vng\EvaCore\Models\Environment;
 
 class EnvironmentCreateRequest extends FormRequest implements FormRequestInterface
@@ -17,6 +16,6 @@ class EnvironmentCreateRequest extends FormRequest implements FormRequestInterfa
 
     public function rules(): array
     {
-        return DownloadValidation::getCreationRules();
+        return EnvironmentValidation::make($this)->getCreationRules();
     }
 }

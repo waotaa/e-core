@@ -16,6 +16,6 @@ class ContactCreateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return ContactValidation::getCreationRules();
+        return ContactValidation::make($this)->getCreationRules();
     }
 }

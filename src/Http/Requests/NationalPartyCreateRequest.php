@@ -16,6 +16,6 @@ class NationalPartyCreateRequest extends FormRequest implements FormRequestInter
 
     public function rules(): array
     {
-        return NationalPartyValidation::getCreationRules();
+        return NationalPartyValidation::make($this)->getCreationRules();
     }
 }

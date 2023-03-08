@@ -2,9 +2,12 @@
 
 namespace Vng\EvaCore\Http\Validation;
 
+/**
+ * @deprecated
+ */
 class AssociateableValidation extends ModelValidation
 {
-    public static function rules(): array
+    public function rules(): array
     {
         return [
             'user_id' => [

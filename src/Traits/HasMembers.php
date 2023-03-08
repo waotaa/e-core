@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Vng\EvaCore\Interfaces\IsMemberInterface;
 
+/**
+ * @deprecated
+ */
 trait HasMembers
 {
     public abstract function members(): MorphToMany;

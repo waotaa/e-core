@@ -10,10 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Collection;
+use Vng\EvaCore\Traits\HasContacts;
 
 class Organisation extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasContacts;
 
     protected $table = 'organisations';
 
@@ -21,12 +23,27 @@ class Organisation extends Model
 
     public function getIdentifierAttribute()
     {
-        return $this->name . ' - ' . __($this->organisationable->getOwnerType());
+        return $this->name . ' - ' . __($this->type);
+    }
+
+    public function getShortIdentifierAttribute()
+    {
+        return $this->id . '-' . $this->slug;
     }
 
     public function getNameAttribute()
     {
-        return $this->organisationable->name;
+        return $this->organisationable?->name;
+    }
+
+    public function getSlugAttribute()
+    {
+        return $this->organisationable?->slug;
+    }
+
+    public function getTypeAttribute()
+    {
+        return $this->organisationable?->type;
     }
 
     public function managers(): BelongsToMany
@@ -34,9 +51,9 @@ class Organisation extends Model
         return $this->belongsToMany(Manager::class);
     }
 
-    public function hasMember(Model $user): bool
+    public function hasMember(Manager $manager): bool
     {
-        return $this->managers && $this->managers->contains($user->id);
+        return $this->managers && $this->managers->contains($manager->id);
     }
 
     public function scopeIsMember(Builder $query, Manager $manager): Builder
@@ -74,9 +91,39 @@ class Organisation extends Model
         return $this->morphTo();
     }
 
+    public function featuringEnvironments():  BelongsToMany
+    {
+        return $this->belongsToMany(Environment::class, 'featured_organisations')->using(FeaturedOrganisation::class);
+    }
+
+    public function ownedAddresses(): HasMany
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    public function ownedContacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function ownedEnvironments(): HasMany
+    {
+        return $this->hasMany(Environment::class);
+    }
+
+    public function ownedInstruments(): HasMany
+    {
+        return $this->instruments();
+    }
+
     public function instruments(): HasMany
     {
         return $this->hasMany(Instrument::class);
+    }
+
+    public function ownedProviders(): HasMany
+    {
+        return $this->providers();
     }
 
     public function providers(): HasMany
@@ -89,4 +136,42 @@ class Organisation extends Model
         return $this->instruments && $this->instruments->contains($instrument->id);
     }
 
+    public function getOverarchingOrganisations(): Collection
+    {
+        // include this organisation
+        $organisations = collect([$this]);
+
+        if (!is_null($this->localParty)){
+            /** @var LocalParty $localParty */
+            $localParty = $this->localParty;
+            // add overarching regional party organisations
+            $regionalParties = $localParty->township->region->regionalParties;
+            $regionalParties->each(fn (RegionalParty $rp) => $organisations->add($rp->organisation));
+
+            // add overarching partnership organisations
+            $partnerships = $localParty->township->partnerships;
+            $partnerships->each(fn (Partnership $p) => $organisations->add($p->organisation));
+        }
+
+        // we include all national parties
+        $nationalOrganisations = Organisation::query()->whereHasMorph('organisationable', [NationalParty::class])->get();
+        $organisations = $organisations->merge($nationalOrganisations);
+
+        return $organisations;
+
+        // Query only attempt
+//        $q = Organisation::query()->whereHasMorph('organisationable', [NationalParty::class]);
+//        if (!is_null($this->localParty)) {
+//            $q->orWhereHasMorph('organisationable', [RegionalParty::class], function (Builder $query) {
+//                $query->whereHas('region', function (Builder $query) {
+//                    $query->whereHas('townships', function (Builder $query) {
+//                        $query->whereHas('localParties', function (Builder $query) {
+//                            $query->where('id', $this->localParty);
+//                        });
+//                    });
+//                });
+//            });
+//        }
+
+    }
 }

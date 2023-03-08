@@ -18,7 +18,7 @@ class PartnershipResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'organisation' => OrganisationResource::make($this->organisation),
-            'townships' => TownshipResource::collection($this->townships),
+            'townships' => TownshipResource::collection($this->whenLoaded('townships')),
         ];
     }
 }

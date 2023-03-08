@@ -53,6 +53,11 @@ class Township extends SearchableModel implements IsOwnerInterface, AreaInterfac
         return $this->neighbourhoods;
     }
 
+    public function localParties(): HasMany
+    {
+        return $this->hasMany(LocalParty::class);
+    }
+
     public function partnerships(): BelongsToMany
     {
         return $this->belongsToMany(Partnership::class);

@@ -4,7 +4,7 @@ namespace Vng\EvaCore\Http\Validation;
 
 class NewsItemValidation extends ModelValidation
 {
-    public static function rules(): array
+    public function rules(): array
     {
         return [
             'title' => [
@@ -12,7 +12,10 @@ class NewsItemValidation extends ModelValidation
             ],
             'body' => [
                 'required',
-            ]
+            ],
+            'environment_id' => [
+                'required',
+            ],
         ];
     }
 }

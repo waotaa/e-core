@@ -3,9 +3,7 @@
 namespace Vng\EvaCore\Commands\Format;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
-use Vng\EvaCore\Providers\EvaServiceProvider;
 use Vng\EvaCore\Providers\MorphMapServiceProvider;
 
 class ApplyMorphMap extends Command
@@ -17,15 +15,16 @@ class ApplyMorphMap extends Command
     {
         $this->getOutput()->writeln('starting applying morph map...');
 
-        $this->applyMorphMap();
+        $this->applyMorphMap($this->getMorphMap());
+        $this->applyMorphMap($this->getMorphMapAppVariant());
 
         $this->getOutput()->writeln('applying morph map finished!');
         return 0;
     }
 
-    public function applyMorphMap()
+    public function applyMorphMap($map)
     {
-        foreach ($this->getMorphMap() as $label => $mappedClass) {
+        foreach ($map as $label => $mappedClass) {
             $this->updateAddressables($label, $mappedClass);
             $this->updateAssociateables($label, $mappedClass);
             $this->updateContactables($label, $mappedClass);
@@ -33,6 +32,7 @@ class ApplyMorphMap extends Command
             $this->updateInstruments($label, $mappedClass);
             $this->updateProviders($label, $mappedClass);
             $this->updateSyncAttempts($label, $mappedClass);
+            $this->updateManagerRoles($label, $mappedClass);
         }
     }
 
@@ -77,6 +77,16 @@ class ApplyMorphMap extends Command
         }
     }
 
+    public function updateManagerRoles($label, $mappedClass)
+    {
+        $fields = [
+            'model_type',
+        ];
+        foreach ($fields as $field) {
+            $this->updateField('core_manager_has_roles', $field, $label, $mappedClass);
+        }
+    }
+
     public function updateField(
         $table,
         $field,
@@ -92,11 +102,14 @@ class ApplyMorphMap extends Command
 
     private function getMorphMap()
     {
+        return MorphMapServiceProvider::MORPH_MAP;
+    }
+
+    private function getMorphMapAppVariant()
+    {
         $map = MorphMapServiceProvider::MORPH_MAP;
-        // temporary additions
-        return array_merge($map, [
-            'instrument' => 'App\\Models\\Instrument',
-            'township' => 'App\\Models\\Township',
-        ]);
+        return array_map(function ($entry){
+            return str_replace('Vng\\EvaCore', 'App', $entry);
+        }, $map);
     }
 }

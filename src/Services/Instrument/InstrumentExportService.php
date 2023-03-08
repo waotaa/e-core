@@ -2,43 +2,37 @@
 
 namespace Vng\EvaCore\Services\Instrument;
 
+use Illuminate\Support\Collection;
 use Vng\EvaCore\ElasticResources\InstrumentResource;
 use Vng\EvaCore\Models\Instrument;
-use Vng\EvaCore\Services\StorageService;
-use Illuminate\Support\Collection;
+use Vng\EvaCore\Services\ImExport\AbstractEntityExportService;
 
-class InstrumentExportService
+class InstrumentExportService extends AbstractEntityExportService
 {
-    public static function exportAllInstruments($filenameAddition = null)
-    {
-        $instruments = Instrument::all();
-        $instrumentsJson = static::createExportJson($instruments);
-        $filePath = static::getFilePath($filenameAddition);
-        StorageService::getStorage()->put($filePath, $instrumentsJson);
-        return $filePath;
-    }
+    protected string $entity = 'instrument';
 
-    private static function createExportJson(Collection $instruments)
-    {
-        $instrumentResources = collect($instruments)->map(function(Instrument $instrument) {
-            return InstrumentResource::make($instrument)->toArray();
-        });
-        return json_encode($instrumentResources, JSON_PRETTY_PRINT);
-    }
+    protected ?Collection $items = null;
 
-    protected static function getFilePath($filenameAddition): string
+    public function handle(): string
     {
-        $name_prefix = date('dmy');
-        $filename = $name_prefix . '-instruments';
-        if (!empty($filenameAddition)) {
-            $filename = $name_prefix . '-' . $filenameAddition . '-instruments';
+        if (is_null($this->items)) {
+            $this->setItems(Instrument::all());
         }
 
-        return static::getDirectory() . $filename.'.json';
+        $instruments = $this->items->map(function(Instrument $instrument) {
+            $instrument->import_mark = $this->importMark;
+            return InstrumentResource::make($instrument)->toArray();
+        });
+        return $this->createExportJson($instruments);
     }
 
-    protected static function getDirectory(): string
+    /**
+     * @param Collection|null $items
+     * @return InstrumentExportService
+     */
+    public function setItems($items)
     {
-        return 'exports/';
+        $this->items = $items;
+        return $this;
     }
 }

@@ -4,13 +4,18 @@ namespace Vng\EvaCore\Observers;
 
 use Illuminate\Database\Eloquent\Model;
 use Vng\EvaCore\Repositories\Eloquent\OrganisationRepository;
+use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
 
 class OrganisationEntityObserver
 {
+    public function __construct(
+        protected OrganisationRepositoryInterface $organisationRepository
+    )
+    {}
+
     public function creating(Model $model): void
     {
-        $orgRepo = new OrganisationRepository();
-        $organisation = $orgRepo->new();
+        $organisation = $this->organisationRepository->new();
         $organisation->save();
         $model->organisation()->associate($organisation);
     }
@@ -18,8 +23,7 @@ class OrganisationEntityObserver
     public function saved(Model $model): void
     {
         // optional
-        $orgRepo = new OrganisationRepository();
-        $organisation = $orgRepo->associateOrganisationable($model);
+        $organisation = $this->organisationRepository->associateOrganisationable($model);
         $organisation->save();
     }
 }

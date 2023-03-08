@@ -4,10 +4,10 @@ namespace Vng\EvaCore\Http\Validation;
 
 class RatingValidation extends ModelValidation
 {
-    public static function rules(): array
+    public function rules(): array
     {
         return [
-            'instrument' => [
+            'instrument_id' => [
                 'required',
             ],
             'email' => [

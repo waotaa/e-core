@@ -10,14 +10,14 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+
             'name'  => $this->name,
             'email'  => $this->email,
             'email_verfied_at'  => $this->email_verfied_at,
             'password_updated_at'  => $this->password_updated_at,
             'manager' => ManagerResource::make($this->manager),
-
-            'associations' => OwnerResource::collection($this->resource->getAssociations()),
-            'associateables' => AssociateableResource::collection($this->associateables),
         ];
     }
 }

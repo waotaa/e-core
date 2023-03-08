@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 trait MutationLog
 {
-    public function actions()
+    public function mutations()
     {
         return $this->morphMany(Mutation::class, 'loggable');
     }
@@ -16,27 +16,44 @@ trait MutationLog
         static::created(function($model) {
             /** @var User $user */
             $user = Auth::user();
-            Mutation::forResourceCreate($user->manager, $model);
+            if (is_null($user)) {
+                return;
+            }
+            $mutation = Mutation::forResourceCreate($user->manager, $model);
+            $mutation->save();
         });
 
         static::updated(function($model) {
             /** @var User $user */
             $user = Auth::user();
-            Mutation::forResourceUpdate($user->manager, $model);
+            if (is_null($user)) {
+                return;
+            }
+            $mutation = Mutation::forResourceUpdate($user->manager, $model);
+            $mutation->save();
         });
 
         if (in_array(SoftDeletes::class, class_uses(static::class))) {
             static::deleted(function($model) {
                 /** @var User $user */
                 $user = Auth::user();
-                Mutation::forResourceDelete($user->manager, $model);
+                if (is_null($user)) {
+                    return;
+                }
+                $models = collect([$model]);
+                $mutations = Mutation::forResourceDelete($user->manager, $models);
+                $mutations->each(fn (Mutation $m) => $m->save());
             });
             static::restored(function($model) {
                 /** @var User $user */
                 $user = Auth::user();
-                Mutation::forResourceRestore($user->manager, $model);
+                if (is_null($user)) {
+                    return;
+                }
+                $models = collect([$model]);
+                $mutations = Mutation::forResourceRestore($user->manager, $models);
+                $mutations->each(fn (Mutation $m) => $m->save());
             });
         }
-
     }
 }

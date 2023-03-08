@@ -18,6 +18,6 @@ class PartnershipCreateRequest extends FormRequest implements FormRequestInterfa
 
     public function rules(): array
     {
-        return PartnershipValidation::getCreationRules();
+        return PartnershipValidation::make($this)->getCreationRules();
     }
 }

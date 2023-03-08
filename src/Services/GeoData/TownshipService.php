@@ -9,17 +9,19 @@ class TownshipService
 {
     public static function createTownship(BasicTownshipModel $townshipData): Township
     {
-        /** @var Township $township */
-        $township = Township::query()->updateOrCreate([
-            'code' => $townshipData->getCode(),
-        ], [
-            'name' => $townshipData->getName(),
-            'region_code' => $townshipData->getRegionCode(),
-        ]);
-
-        static::connectTownshipToRegion($township);
-
-        return $township;
+        return Township::withoutEvents(function() use ($townshipData) {
+            /** @var Township $township */
+            $township = Township::query()->firstOrNew([
+                'code' => $townshipData->getCode(),
+            ], [
+                'name' => $townshipData->getName(),
+                'slug' => $townshipData->getSlug(),
+                'region_code' => $townshipData->getRegionCode(),
+            ]);
+            $township->saveQuietly();
+            static::connectTownshipToRegion($township);
+            return $township;
+        });
     }
 
     public static function updateTownship(BasicTownshipModel $townshipData): Township

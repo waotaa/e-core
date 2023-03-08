@@ -17,18 +17,24 @@ class TargetGroup extends Model
         'custom',
     ];
 
+    protected $attributes = [
+        'custom' => true,
+    ];
+
     protected $casts = [
         'custom' => 'boolean',
     ];
 
     public function instruments(): BelongsToMany
     {
-        return $this->belongsToMany(Instrument::class, 'instrument_target_group')->withTimestamps()->using(InstrumentTargetGroup::class);
+        return $this->belongsToMany(Instrument::class, 'instrument_target_group')
+            ->withTimestamps()
+            ->using(InstrumentTargetGroup::class);
     }
 
     public function getOwningInstrumentAttribute(): ?Instrument
     {
-        if (!$this->custom) {
+        if (!$this->getAttribute('custom')) {
             return null;
         }
         return $this->instruments()->orderByPivot('created_at', 'asc')->first();

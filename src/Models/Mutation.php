@@ -19,12 +19,6 @@ class Mutation extends Model
 
     protected $dateFormat = 'Y-m-d H:i:s';
 
-    public static function boot()
-    {
-        parent::boot();
-        static::observe(AddressObserver::class);
-    }
-
     public function manager()
     {
         return $this->belongsTo(Manager::class);

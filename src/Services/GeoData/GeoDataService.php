@@ -26,7 +26,6 @@ abstract class GeoDataService
     // fetch from cache (24 hrs) or api
     abstract public static function fetchData(): Collection;
 
-
     public static function createBasicGeoCollectionFromData(array $data): Collection
     {
         return collect($data)->map(function ($entry) {

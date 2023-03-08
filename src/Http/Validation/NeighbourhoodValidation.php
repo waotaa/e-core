@@ -4,13 +4,13 @@ namespace Vng\EvaCore\Http\Validation;
 
 class NeighbourhoodValidation extends ModelValidation
 {
-    public static function rules(): array
+    public function rules(): array
     {
         return [
             'name' => [
                 'required',
             ],
-            'township' => [
+            'township_id' => [
                 'required',
             ],
         ];

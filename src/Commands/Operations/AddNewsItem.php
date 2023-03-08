@@ -15,7 +15,7 @@ class AddNewsItem extends Command
     {
         Environment::all()->each(fn (Environment $e) => $this->addNewsItemForEnvironment($e));
 
-//        $environmentSlug = config('eva.environment.slug');
+//        $environmentSlug = config('eva-core.environment.slug');
 //        if (!$environmentSlug) {
 //            $this->output->warning('No environment slug found in config');
 //            return 1;

@@ -16,6 +16,6 @@ class VideoCreateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return VideoValidation::getCreationRules();
+        return VideoValidation::make($this)->getCreationRules();
     }
 }

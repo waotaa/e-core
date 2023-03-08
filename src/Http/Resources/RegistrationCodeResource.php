@@ -10,8 +10,13 @@ class RegistrationCodeResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+
             'code' => $this->code,
             'label' => $this->label,
+
+            'instrument' => InstrumentResource::make($this->whenLoaded('instrument'))
         ];
     }
 }

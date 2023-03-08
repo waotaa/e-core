@@ -16,6 +16,6 @@ class LinkCreateRequest extends FormRequest implements FormRequestInterface
 
     public function rules(): array
     {
-        return LinkValidation::getCreationRules();
+        return LinkValidation::make($this)->getCreationRules();
     }
 }

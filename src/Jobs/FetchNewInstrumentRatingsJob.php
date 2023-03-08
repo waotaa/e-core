@@ -4,7 +4,6 @@ namespace Vng\EvaCore\Jobs;
 
 use Vng\EvaCore\ElasticResources\RatingResource;
 use Vng\EvaCore\Models\Instrument;
-use Vng\EvaCore\Models\Professional;
 use Vng\EvaCore\Models\Rating;
 use DateTime;
 
@@ -63,13 +62,6 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
                     'created_at' => new DateTime($rating['created_at']),
                 ]);
                 $ratingModel->instrument()->associate($this->instrument);
-
-                if ($rating["professional"]["username"]) {
-                    $professional = Professional::query()->where('username', $rating["professional"]["username"])->first();
-                    if ($professional) {
-                        $ratingModel->professional()->associate($professional);
-                    }
-                }
 
                 $ratingModel->saveQuietly();
             });

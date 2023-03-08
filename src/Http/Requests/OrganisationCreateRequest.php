@@ -16,6 +16,6 @@ class OrganisationCreateRequest extends FormRequest implements FormRequestInterf
 
     public function rules(): array
     {
-        return OrganisationValidation::getCreationRules();
+        return OrganisationValidation::make($this)->getCreationRules();
     }
 }

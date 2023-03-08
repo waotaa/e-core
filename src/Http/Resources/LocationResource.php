@@ -10,6 +10,9 @@ class LocationResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+
             'name' => $this->name,
             'type' => [
                 'key' => $this->rawType,
@@ -19,6 +22,7 @@ class LocationResource extends JsonResource
             'description' => $this->description,
 
             'address' => AddressResource::make($this->address),
+            'instrument' => InstrumentResource::make($this->whenLoaded('instrument'))
         ];
     }
 }

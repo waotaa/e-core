@@ -11,13 +11,22 @@ class ProviderResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
+
             'name' => $this->name,
             'slug' => (string) Str::slug($this->name),
-            'contact' => ContactResource::make($this->contact),
-            'address' => AddressResource::make($this->address),
-            'organisation' => OrganisationResource::make($this->organisation),
+            'import_mark' => $this->import_mark,
 
-            'owner' => OwnerResource::make($this->owner),
+            'organisation' => OrganisationResource::make($this->organisation),
+            'address' => AddressResource::make($this->address),
+            'contacts' => ContactResource::collection($this->whenLoaded('contact')),
+
+//            'owner' => OwnerResource::make($this->owner),
+            'mutations' => MutationResource::collection($this->mutations),
+
+            'instrument' => InstrumentResource::make($this->whenLoaded('instrument'))
         ];
     }
 }

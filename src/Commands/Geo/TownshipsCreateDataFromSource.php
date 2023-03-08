@@ -23,6 +23,7 @@ class TownshipsCreateDataFromSource extends Command
             $townshipData = TownshipDataService::loadSourceData();
         }
 
+
         $sourceData = TownshipDataService::createBasicGeoCollectionFromData($townshipData);
         $sourceData->each(function (BasicTownshipModel $townshipModel) {
             $this->output->write('.');

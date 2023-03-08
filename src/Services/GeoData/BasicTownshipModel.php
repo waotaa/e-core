@@ -10,7 +10,6 @@ class BasicTownshipModel extends BasicGeoModel
 
     public static function create(): BasicTownshipModel
     {
-//        return parent::create();
         return new static();
     }
 

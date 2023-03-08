@@ -37,4 +37,16 @@ class PartnershipRepository extends BaseRepository implements PartnershipReposit
         $partnership->save();
         return $partnership;
     }
+
+    public function attachTownships(Partnership $partnership, string|array $townshipIds): Partnership
+    {
+        $partnership->townships()->syncWithoutDetaching((array) $townshipIds);
+        return $partnership;
+    }
+
+    public function detachTownships(Partnership $partnership, string|array $townshipIds): Partnership
+    {
+        $partnership->townships()->detach((array) $townshipIds);
+        return $partnership;
+    }
 }

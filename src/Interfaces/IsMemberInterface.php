@@ -27,6 +27,8 @@ interface IsMemberInterface
 
     public function managesInstrument(Instrument $instrument): bool;
 
+    public function getAssociationsOwnedInstruments(): ?Collection;
+
 //    public function association(): MorphTo;
 //
 //    public function isAssociated(): bool;

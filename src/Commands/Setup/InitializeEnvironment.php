@@ -22,11 +22,13 @@ class InitializeEnvironment extends Command
             $this->info('name: '.$name);
 
             Environment::onlyTrashed()->where('slug', $slug)->restore();
-            Environment::query()->updateOrCreate([
-                'slug' => $slug
-            ], [
-                'name' => $name,
-            ]);
+            Environment::withoutEvents(function () use($slug, $name) {
+                Environment::query()->updateOrCreate([
+                    'slug' => $slug
+                ], [
+                    'name' => $name,
+                ]);
+            });
         } else {
             $this->warn('Could not create environment, no slug present in .env');
         }

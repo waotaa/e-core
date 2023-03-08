@@ -4,14 +4,14 @@ namespace Vng\EvaCore\Http\Validation;
 
 class DownloadValidation extends ModelValidation
 {
-    public static function rules(): array
+    public function rules(): array
     {
         return [
             'file' => [
                 'required',
                 'max:5000',
             ],
-            'instrument' => [
+            'instrument_id' => [
                 'required',
             ]
         ];

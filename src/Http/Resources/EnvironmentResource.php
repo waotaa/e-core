@@ -8,10 +8,14 @@ class EnvironmentResource extends JsonResource
 {
     public function toArray($request)
     {
-        $orderedNewsItems = $this->resource->newsItems()->orderBy('id', 'desc')->get();
+//        $orderedNewsItems = $this->resource->newsItems()->orderBy('id', 'desc')->get();
 
         return [
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
+
             'name' => $this->name,
             'slug' => $this->slug,
 
@@ -21,10 +25,18 @@ class EnvironmentResource extends JsonResource
             'logo' => $this->logo,
             'color_primary' => $this->color_primary,
             'color_secondary' => $this->color_secondary,
-            'featured_association' => OwnerResource::make($this->featuredAssociation),
+//            'featured_association' => OwnerResource::make($this->featuredAssociation),
+
+            'user_pool_id' => $this->user_pool_id,
+            'user_pool_client_id' => $this->user_pool_client_id,
 
             'contact' => ContactResource::make($this->contact),
-            'news_items' => NewsItemResource::collection($orderedNewsItems),
+            'featured_organisations' => OrganisationResource::collection($this->featuredOrganisations),
+
+            'news_items' => NewsItemResource::collection($this->whenLoaded(
+                'newsItems',
+                fn() => $this->resource->newsItems()->orderBy('id', 'desc')->get())
+            ),
         ];
     }
 }
