@@ -24,6 +24,7 @@ class EnvironmentResource extends ElasticResource
 
             'professionals' => ProfessionalResource::many($this->professionals),
             'featured_organisations' => OrganisationResource::many($this->featuredOrganisations),
+            'featured_areas' => AreaInterfaceResource::many($this->featuredAreas),
 
             'contact' => ContactResource::one($this->contact),
             'news_items' => NewsItemResource::many($orderedNewsItems),

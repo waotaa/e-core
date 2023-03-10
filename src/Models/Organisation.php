@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Collection;
+use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Traits\HasContacts;
 
 class Organisation extends Model
@@ -172,6 +173,19 @@ class Organisation extends Model
 //                });
 //            });
 //        }
+    }
 
+    /**
+     * Get all areas this organisation operates in (if not a national party)
+     * @return Collection
+     */
+    public function getAreasActiveInAttribute()
+    {
+        if (!is_null($this->nationalParty()->first())) {
+            return collect();
+        }
+        /** @var AreaInterface $organisationEntity */
+        $organisationEntity = $this->organisationable()->first();
+        return $organisationEntity->getEncompassingAreas();
     }
 }

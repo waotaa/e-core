@@ -14,7 +14,7 @@ class NewsItemResource extends ElasticResource
     {
         return [
             'id' => $this->id,
-            'environment_slug' => $this->environment->slug,
+            'environment_slug' => $this->environment?->slug,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'publish_from' => $this->publish_from,

@@ -5,9 +5,12 @@ namespace Vng\EvaCore\Policies;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
+use Vng\EvaCore\Models\Address;
 use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\Contact;
+use Vng\EvaCore\Models\GroupForm;
 use Vng\EvaCore\Models\Instrument;
+use Vng\EvaCore\Models\Location;
 use Vng\EvaCore\Models\Neighbourhood;
 use Vng\EvaCore\Models\Region;
 use Vng\EvaCore\Models\TargetGroup;
@@ -116,11 +119,11 @@ class InstrumentPolicy extends BasePolicy
     {
         return $this->update($user, $instrument);
     }
-    public function attachGroupForm(IsManagerInterface $user, Instrument $instrument): bool
+    public function attachGroupForm(IsManagerInterface $user, Instrument $instrument, GroupForm $groupForm): bool
     {
         return $this->update($user, $instrument);
     }
-    public function detachGroupForm(IsManagerInterface $user, Instrument $instrument): bool
+    public function detachGroupForm(IsManagerInterface $user, Instrument $instrument, GroupForm $groupForm): bool
     {
         return $this->update($user, $instrument);
     }
@@ -129,11 +132,11 @@ class InstrumentPolicy extends BasePolicy
     {
         return $this->update($user, $instrument);
     }
-    public function attachLocation(IsManagerInterface $user, Instrument $instrument): bool
+    public function attachLocation(IsManagerInterface $user, Instrument $instrument, Location $location): bool
     {
         return $this->update($user, $instrument);
     }
-    public function detachLocation(IsManagerInterface $user, Instrument $instrument): bool
+    public function detachLocation(IsManagerInterface $user, Instrument $instrument, Location $location): bool
     {
         return $this->update($user, $instrument);
     }
@@ -142,11 +145,11 @@ class InstrumentPolicy extends BasePolicy
     {
         return $this->update($user, $instrument);
     }
-    public function attachAddress(IsManagerInterface $user, Instrument $instrument): bool
+    public function attachAddress(IsManagerInterface $user, Instrument $instrument, Address $address): bool
     {
         return $this->update($user, $instrument);
     }
-    public function detachAddress(IsManagerInterface $user, Instrument $instrument): bool
+    public function detachAddress(IsManagerInterface $user, Instrument $instrument, Address $address): bool
     {
         return $this->update($user, $instrument);
     }

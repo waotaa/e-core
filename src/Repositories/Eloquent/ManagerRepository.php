@@ -85,7 +85,6 @@ class ManagerRepository extends BaseRepository implements ManagerRepositoryInter
         Gate::authorize('attachRole', [$manager, $role]);
 
         $manager->assignRole($role);
-//        $manager->forgetCachedPermissions();
         return $manager;
     }
 
@@ -94,7 +93,6 @@ class ManagerRepository extends BaseRepository implements ManagerRepositoryInter
         Gate::authorize('detachRole', [$manager, $role]);
 
         $manager->removeRole($role);
-//        $manager->forgetCachedPermissions();
         return $manager;
     }
 }

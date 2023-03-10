@@ -25,11 +25,19 @@ trait AreaTrait
         return $this->getType() . '-' . $this->getName();
     }
 
+    /**
+     * The Areas this object resides in
+     * @return Collection
+     */
     public function getOwnAreas(): Collection
     {
         return collect([$this]);
     }
 
+    /**
+     * Returns the own areas and the parent areas of those areas
+     * @return Collection
+     */
     public function getAreasLocatedIn(): Collection
     {
         $areasLocatedIn = $this->getOwnAreas();
@@ -45,6 +53,10 @@ trait AreaTrait
         return AreaService::removeDuplicateAreas($areasLocatedIn);
     }
 
+    /**
+     * Returns the own areas and the areas within those areas
+     * @return Collection
+     */
     public function getContainingAreas(): Collection
     {
         $containingAreas = $this->getOwnAreas();
@@ -60,6 +72,10 @@ trait AreaTrait
         return AreaService::removeDuplicateAreas($containingAreas);
     }
 
+    /**
+     * Returns both the parent areas as the areas within the own areas
+     * @return Collection
+     */
     public function getEncompassingAreas(): Collection
     {
         $locatedIn = $this->getAreasLocatedIn();

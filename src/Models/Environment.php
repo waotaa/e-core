@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Observers\EnvironmentObserver;
+use Vng\EvaCore\Services\AreaService;
 use Vng\EvaCore\Traits\HasOwner;
 use Vng\EvaCore\Traits\HasPermanentSlug;
 
@@ -69,5 +71,16 @@ class Environment extends SearchableModel
     public function deriveUserPoolName()
     {
         return Str::slug($this->name);
+    }
+
+    public function getFeaturedAreasAttribute()
+    {
+        $organisations = $this->featuredOrganisations()->get();
+        $areas = $organisations->map(function(Organisation $organisation) {
+            return $organisation->getAreasActiveInAttribute();
+        })
+            ->filter()
+            ->flatten();
+        return AreaService::removeDuplicateAreas($areas);
     }
 }

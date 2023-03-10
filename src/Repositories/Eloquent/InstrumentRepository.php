@@ -130,7 +130,7 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
         $pivotValues = [
             'type' => $type
         ];
-        $instrument->contacts()->syncWithPivotValues((array) $contactIds, $pivotValues, false);
+        $instrument->contacts()->syncWithPivotValues($contactIds, $pivotValues, false);
         return $instrument;
     }
 
@@ -147,7 +147,7 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
                 }
             );
 
-        $instrument->contacts()->detach((array) $contactIds);
+        $instrument->contacts()->detach($contactIds);
         return $instrument;
     }
 
@@ -334,7 +334,7 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
                 }
             );
 
-        $instrument->availableTownships()->syncWithoutDetaching((array) $townshipIds);
+        $instrument->availableTownships()->syncWithoutDetaching($townshipIds);
         return $instrument;
     }
 
@@ -351,7 +351,7 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
                 }
             );
 
-        $instrument->availableTownships()->detach((array) $townshipIds);
+        $instrument->availableTownships()->detach($townshipIds);
         return $instrument;
     }
 
@@ -368,7 +368,7 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
                 }
             );
 
-        $instrument->availableNeighbourhoods()->syncWithoutDetaching((array) $neighbourhoodIds);
+        $instrument->availableNeighbourhoods()->syncWithoutDetaching($neighbourhoodIds);
         return $instrument;
     }
 
@@ -385,7 +385,7 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
                 }
             );
 
-        $instrument->availableNeighbourhoods()->detach((array) $neighbourhoodIds);
+        $instrument->availableNeighbourhoods()->detach($neighbourhoodIds);
         return $instrument;
     }
 }

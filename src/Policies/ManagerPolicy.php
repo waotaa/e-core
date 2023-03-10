@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Contracts\Auth\Access\Authorizable;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\LocalParty;
 use Vng\EvaCore\Models\NationalParty;
@@ -23,6 +24,11 @@ class ManagerPolicy extends BasePolicy
         return $user->managerCan('manager.viewAny');
     }
 
+    /**
+     * @param Authorizable&IsManagerInterface $user
+     * @param Manager $targetManager
+     * @return bool
+     */
     public function view(IsManagerInterface $user, Manager $targetManager)
     {
         $manager = $user->getManager();
@@ -94,10 +100,11 @@ class ManagerPolicy extends BasePolicy
     public function attachAnyRole(IsManagerInterface $user, Manager $targetManager)
     {
         $manager = $user->getManager();
-        if ($manager->id === $targetManager->id || $targetManager->isCreatedBy($manager)) {
-            return true;
-        }
-        if ($manager->managersShareOrganisation($targetManager)
+        $isSelf = $manager->id === $targetManager->id;
+        $isCreatedBy = $targetManager->isCreatedBy($manager);
+        $hasManagingRelation = $isSelf || $isCreatedBy || $manager->managersShareOrganisation($targetManager);
+
+        if ($hasManagingRelation
             && $user->managerCan('manager.organisation.role.manage')) {
             return true;
         }
@@ -118,10 +125,11 @@ class ManagerPolicy extends BasePolicy
 
         $assignableRoles = $manager->getAssignableRoles();
 
-        if ($manager->id === $targetManager->id || $targetManager->isCreatedBy($manager)) {
-            return true;
-        }
-        if ($manager->managersShareOrganisation($targetManager)
+        $isSelf = $manager->id === $targetManager->id;
+        $isCreatedBy = $targetManager->isCreatedBy($manager);
+        $hasManagingRelation = $isSelf || $isCreatedBy || $manager->managersShareOrganisation($targetManager);
+
+        if ($hasManagingRelation
             && $user->managerCan('manager.organisation.role.manage')
             && in_array($role->name, $assignableRoles)
         ) {
@@ -133,10 +141,11 @@ class ManagerPolicy extends BasePolicy
     public function detachRole(IsManagerInterface $user, Manager $targetManager)
     {
         $manager = $user->getManager();
-        if ($manager->id === $targetManager->id || $targetManager->isCreatedBy($manager)) {
-            return true;
-        }
-        if ($manager->managersShareOrganisation($targetManager)
+        $isSelf = $manager->id === $targetManager->id;
+        $isCreatedBy = $targetManager->isCreatedBy($manager);
+        $hasManagingRelation = $isSelf || $isCreatedBy || $manager->managersShareOrganisation($targetManager);
+
+        if ($hasManagingRelation
             && $user->managerCan('manager.organisation.role.manage')) {
             return true;
         }
