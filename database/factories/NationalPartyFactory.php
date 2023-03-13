@@ -16,6 +16,7 @@ class NationalPartyFactory extends Factory
     {
         return [
             'name' => 'Landelijke partij',
+            'slug' => 'landelijke-partij',
         ];
     }
 }

@@ -17,6 +17,7 @@ class RegionalPartyFactory extends Factory
     {
         return [
             'name' => 'Regionale partij',
+            'slug' => 'regionale-partij',
         ];
     }
 

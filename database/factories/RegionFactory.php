@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Str;
 use Vng\EvaCore\Models\Region;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Collection;
@@ -18,6 +19,7 @@ class RegionFactory extends Factory
         $name = $this->faker->word;
         return [
             'name' => $name,
+            'slug' => Str::slug($name),
             'code' => 'AM' . str_pad($this->faker->numberBetween(0, 9999), 2, 0, STR_PAD_LEFT),
             'color' => $this->pickRandomColor(),
             'description' => '',

@@ -16,6 +16,7 @@ class PartnershipFactory extends Factory
     {
         return [
             'name' => 'Samenwerkingsverband',
+            'slug' => 'samenwerkingsverband',
         ];
     }
 }

@@ -16,6 +16,7 @@ class EnvironmentFactory extends Factory
     {
         return [
             'name' => 'Omgeving',
+            'slug' => 'omgeving',
         ];
     }
 }

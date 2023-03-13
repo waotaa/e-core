@@ -17,6 +17,7 @@ class LocalPartyFactory extends Factory
     {
         return [
             'name' => 'Lokale partij',
+            'slug' => 'lokale-partij',
         ];
     }
 
