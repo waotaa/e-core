@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Database\Factories\ProfessionalFactory;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,6 +49,11 @@ class Professional extends SearchableModel implements CanResetPasswordContract
     {
         parent::boot();
         static::observe(ProfessionalObserver::class);
+    }
+
+    protected static function newFactory()
+    {
+        return ProfessionalFactory::new();
     }
 
     public function passwordCanBeReset()

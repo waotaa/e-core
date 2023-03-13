@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Database\Factories\AddressFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -29,6 +30,11 @@ class Address extends Model
     {
         parent::boot();
         static::observe(AddressObserver::class);
+    }
+
+    protected static function newFactory()
+    {
+        return AddressFactory::new();
     }
 
     public function getLabelAttribute()

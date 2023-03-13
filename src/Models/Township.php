@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Database\Factories\TownshipFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Vng\EvaCore\ElasticResources\TownshipResource;
 use Vng\EvaCore\Interfaces\AreaInterface;
@@ -30,6 +31,11 @@ class Township extends SearchableModel implements IsOwnerInterface, AreaInterfac
         'region_code',
         'description'
     ];
+
+    protected static function newFactory()
+    {
+        return TownshipFactory::new();
+    }
 
     // A Township belongs to a Region
     public function region(): BelongsTo

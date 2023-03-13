@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Database\Factories\EnvironmentFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use Vng\EvaCore\ElasticResources\EnvironmentResource;
@@ -41,6 +42,11 @@ class Environment extends SearchableModel
     {
         parent::boot();
         static::observe(EnvironmentObserver::class);
+    }
+
+    protected static function newFactory()
+    {
+        return EnvironmentFactory::new();
     }
 
     public function contact()

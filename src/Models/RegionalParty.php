@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Database\Factories\RegionalPartyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
@@ -21,6 +22,11 @@ class RegionalParty extends AbstractOrganisationBase implements AreaInterface
         'name',
         'slug',
     ];
+
+    protected static function newFactory()
+    {
+        return RegionalPartyFactory::new();
+    }
 
     public function region(): BelongsTo
     {

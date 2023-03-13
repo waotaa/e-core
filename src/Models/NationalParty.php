@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Database\Factories\NationalPartyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Collection;
 use Vng\EvaCore\ElasticResources\NationalPartyResource;
@@ -27,6 +28,11 @@ class NationalParty extends AbstractOrganisationBase implements AreaInterface
     {
         parent::boot();
         static::observe(NationalPartyObserver::class);
+    }
+
+    protected static function newFactory()
+    {
+        return NationalPartyFactory::new();
     }
 
     public function getParentAreas(): ?Collection

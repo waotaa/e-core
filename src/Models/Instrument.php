@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Database\Factories\InstrumentFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Vng\EvaCore\Casts\CleanedHtml;
 use Vng\EvaCore\ElasticResources\InstrumentResource;
@@ -116,6 +117,11 @@ class Instrument extends SearchableModel
         });
 
         static::observe(InstrumentObserver::class);
+    }
+
+    protected static function newFactory()
+    {
+        return InstrumentFactory::new();
     }
 
     public function getSearchId()

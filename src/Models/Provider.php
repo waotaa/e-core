@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Database\Factories\ProviderFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Vng\EvaCore\ElasticResources\ProviderResource;
 use Vng\EvaCore\Interfaces\IsMemberInterface;
@@ -57,6 +58,11 @@ class Provider extends SearchableModel
         });
 
         static::observe(ProviderObserver::class);
+    }
+
+    protected static function newFactory()
+    {
+        return ProviderFactory::new();
     }
 
     public function instruments(): HasMany

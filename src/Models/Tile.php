@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Database\Factories\TileFactory;
 use Vng\EvaCore\ElasticResources\TileResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -29,6 +30,11 @@ class Tile extends SearchableModel
     protected $casts = [
         'position' => 'json',
     ];
+
+    protected static function newFactory()
+    {
+        return TileFactory::new();
+    }
 
     public function instruments(): BelongsToMany
     {

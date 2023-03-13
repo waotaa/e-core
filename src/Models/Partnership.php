@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Database\Factories\PartnershipFactory;
 use Vng\EvaCore\ElasticResources\PartnershipResource;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Traits\AreaTrait;
@@ -20,6 +21,11 @@ class Partnership extends AbstractOrganisationBase implements AreaInterface
         'name',
         'slug',
     ];
+
+    protected static function newFactory()
+    {
+        return PartnershipFactory::new();
+    }
 
     public function townships(): BelongsToMany
     {

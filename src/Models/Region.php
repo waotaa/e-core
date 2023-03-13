@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Database\Factories\RegionFactory;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Interfaces\IsOwnerInterface;
 use Vng\EvaCore\ElasticResources\RegionResource;
@@ -30,6 +31,11 @@ class Region extends SearchableModel implements IsOwnerInterface, AreaInterface
         'description',
         'cooperation_partners',
     ];
+
+    protected static function newFactory()
+    {
+        return RegionFactory::new();
+    }
 
     // A Region has many gemeenten
     public function townships(): HasMany
