@@ -14,7 +14,7 @@
         "php": "^8.0",
         "ext-dom": "*",
         "ext-json": "*",
-        "aws/aws-sdk-php": "^3.176",
+        "aws/aws-sdk-php": "^3.258",
         "aws/aws-sdk-php-laravel": "^3.6",
         "doctrine/dbal": "^3.1",
         "elasticsearch/elasticsearch": "^7.4",
