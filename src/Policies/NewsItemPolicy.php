@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Policies;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Contracts\Auth\Access\Authorizable;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
+use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\NewsItem;
 
 class NewsItemPolicy extends BasePolicy
@@ -19,6 +20,7 @@ class NewsItemPolicy extends BasePolicy
     {
         return $user->managerCan('newsItem.viewAny');
     }
+
     /**
      * @param IsManagerInterface&Authorizable $user
      * @return mixed
@@ -35,8 +37,11 @@ class NewsItemPolicy extends BasePolicy
      */
     public function view(IsManagerInterface $user, NewsItem $newsItem)
     {
+        /** @var Environment $environment */
         $environment = $newsItem->environment;
-        if ($environment->hasOwner()
+        if (
+            !is_null($environment)
+            && $environment->hasOwner()
             && $environment->isUserMemberOfOwner($user)
             && $user->managerCan('newsItem.view')
         ) {
@@ -57,8 +62,10 @@ class NewsItemPolicy extends BasePolicy
      */
     public function update(IsManagerInterface $user, NewsItem $newsItem)
     {
+        /** @var Environment $environment */
         $environment = $newsItem->environment;
-        return $environment->hasOwner()
+        return !is_null($environment)
+            && $environment->hasOwner()
             && $environment->isUserMemberOfOwner($user)
             && $user->managerCan('newsItem.update');
     }
@@ -70,8 +77,10 @@ class NewsItemPolicy extends BasePolicy
      */
     public function delete(IsManagerInterface $user, NewsItem $newsItem)
     {
+        /** @var Environment $environment */
         $environment = $newsItem->environment;
-        return $environment->hasOwner()
+        return !is_null($environment)
+            && $environment->hasOwner()
             && $environment->isUserMemberOfOwner($user)
             && $user->managerCan('newsItem.delete');
     }
