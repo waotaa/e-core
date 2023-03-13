@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Database\Factories\NewsItemFactory;
 use Vng\EvaCore\ElasticResources\NewsItemResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,6 +37,11 @@ class NewsItem extends SearchableModel
     {
         parent::boot();
         static::observe(NewsItemObserver::class);
+    }
+
+    protected static function newFactory()
+    {
+        return NewsItemFactory::new();
     }
 
     public function environment(): BelongsTo
