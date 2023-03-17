@@ -29,10 +29,13 @@ interface InstrumentRepositoryInterface extends OwnedEntityRepositoryInterface, 
 
     public function attachAvailableRegions(Instrument $instrument, string|array $regionIds): Instrument;
     public function detachAvailableRegions(Instrument $instrument, string|array $regionIds): Instrument;
+    public function syncAvailableRegions(Instrument $instrument, string|array $regionIds): Instrument;
 
     public function attachAvailableTownships(Instrument $instrument, string|array $townshipIds): Instrument;
     public function detachAvailableTownships(Instrument $instrument, string|array $townshipIds): Instrument;
+    public function syncAvailableTownships(Instrument $instrument, string|array $townshipIds): Instrument;
 
     public function attachAvailableNeighbourhoods(Instrument $instrument, string|array $neighbourhoodIds): Instrument;
     public function detachAvailableNeighbourhoods(Instrument $instrument, string|array $neighbourhoodIds): Instrument;
+    public function syncAvailableNeighbourhoods(Instrument $instrument, string|array $neighbourhoodIds): Instrument;
 }

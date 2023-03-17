@@ -321,6 +321,29 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
         return $instrument;
     }
 
+    public function syncAvailableRegions(Instrument $instrument, string|array $regionIds): Instrument
+    {
+        $instrument->availableRegions()->get()->each(
+            function (Region $region) use ($instrument) {
+                Gate::authorize('detachAvailableRegion', [$instrument, $region]);
+            }
+        );
+
+        $regionIds = (array) $regionIds;
+        /** @var RegionRepositoryInterface $regionRepository */
+        $regionRepository = app(RegionRepositoryInterface::class);
+        $regionRepository
+            ->findMany($regionIds)
+            ->each(
+                function (Region $region) use ($instrument) {
+                    Gate::authorize('attachAvailableRegion', [$instrument, $region]);
+                }
+            );
+
+        $instrument->availableRegions()->sync($regionIds);
+        return $instrument;
+    }
+
     public function attachAvailableTownships(Instrument $instrument, string|array $townshipIds): Instrument
     {
         $townshipIds = (array) $townshipIds;
@@ -355,6 +378,29 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
         return $instrument;
     }
 
+    public function syncAvailableTownships(Instrument $instrument, string|array $townshipIds): Instrument
+    {
+        $instrument->availableTownships()->get()->each(
+            function (Township $township) use ($instrument) {
+                Gate::authorize('detachAvailableTownship', [$instrument, $township]);
+            }
+        );
+
+        $townshipIds = (array) $townshipIds;
+        /** @var TownshipRepositoryInterface $townshipRepository */
+        $townshipRepository = app(TownshipRepositoryInterface::class);
+        $townshipRepository
+            ->findMany($townshipIds)
+            ->each(
+                function (Township $township) use ($instrument) {
+                    Gate::authorize('attachAvailableTownship', [$instrument, $township]);
+                }
+            );
+
+        $instrument->availableTownships()->sync($townshipIds);
+        return $instrument;
+    }
+
     public function attachAvailableNeighbourhoods(Instrument $instrument, string|array $neighbourhoodIds): Instrument
     {
         $neighbourhoodIds = (array) $neighbourhoodIds;
@@ -386,6 +432,29 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
             );
 
         $instrument->availableNeighbourhoods()->detach($neighbourhoodIds);
+        return $instrument;
+    }
+
+    public function syncAvailableNeighbourhoods(Instrument $instrument, string|array $neighbourhoodIds): Instrument
+    {
+        $instrument->availableNeighbourhoods()->get()->each(
+            function (Neighbourhood $neighbourhood) use ($instrument) {
+                Gate::authorize('detachAvailableNeighbourhood', [$instrument, $neighbourhood]);
+            }
+        );
+
+        $neighbourhoodIds = (array) $neighbourhoodIds;
+        /** @var NeighbourhoodRepositoryInterface $neighbourhoodRepository */
+        $neighbourhoodRepository = app(NeighbourhoodRepositoryInterface::class);
+        $neighbourhoodRepository
+            ->findMany($neighbourhoodIds)
+            ->each(
+                function (Neighbourhood $neighbourhood) use ($instrument) {
+                    Gate::authorize('attachAvailableNeighbourhood', [$instrument, $neighbourhood]);
+                }
+            );
+
+        $instrument->availableNeighbourhoods()->sync($neighbourhoodIds);
         return $instrument;
     }
 }

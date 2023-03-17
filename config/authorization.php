@@ -256,39 +256,25 @@ $globalContactPermissions = [
 
 // Instruments
 $instrumentPropertyPermissions = [
-    // moet weg. AddressPolicyTest test verwachtingen ook aanpassen
-    'address.viewAny',
-    'address.view',
-    // moet weg. ContactPolicyTest test verwachtingen ook aanpassen`z
-    'contact.viewAny',
-    'contact.view',
-
     'clientCharacteristic.viewAny',
-    'clientCharacteristic.view',
-
     'groupForm.viewAny',
-    'groupForm.view',
-
     'implementation.viewAny',
-    'implementation.view',
-
     'instrumentType.viewAny',
-    'instrumentType.view',
-
-    'location.viewAny',
-    'location.view',
-
     'targetGroup.viewAny',
-    'targetGroup.view',
-
     'tile.viewAny',
-    'tile.view',
 
     'neighbourhood.viewAny',
     'neighbourhood.view',
 ];
 $instrumentPropertyManagementPermissions = [
     ...$instrumentPropertyPermissions,
+
+    'clientCharacteristic.view',
+    'groupForm.view',
+    'implementation.view',
+    'instrumentType.view',
+    'targetGroup.view',
+    'tile.view',
 
     // All of these properties are ownerless at this time.
     'implementation.custom.create',
@@ -418,6 +404,7 @@ return [
         'administrator' => [
             ...$generalPermissions,
             ...$environmentGeneralPermissions,
+            ...$instrumentPropertyManagementPermissions,
 
             ...$localPartyAdministratorPermissions,
             ...$regionalPartyAdministratorPermissions,
@@ -450,7 +437,7 @@ return [
         'environment-manager' => [
             ...$generalPermissions,
             ...$environmentGeneralPermissions,
-            ...$instrumentPropertyManagementPermissions,
+//            ...$instrumentPropertyManagementPermissions,
 
             ...$organisationEnvironmentPermissions,
 
