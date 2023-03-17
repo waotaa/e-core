@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Observers;
 
+use Illuminate\Support\Facades\App;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Repositories\ManagerRepositoryInterface;
@@ -25,7 +26,9 @@ class UserObserver
     public function created(EvaUserInterface $user): void
     {
         $this->managerRepository->createForUser($user);
-        $user->sendAccountCreationNotification();
+        if (!App::runningUnitTests()) {
+            $user->sendAccountCreationNotification();
+        }
     }
 
     public function deleted(IsManagerInterface $user): void

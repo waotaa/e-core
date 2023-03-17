@@ -42,11 +42,6 @@ class DownloadsService
         $originalFileName = $uploadedFile->getClientOriginalName();
 
         if (App::environment('local')) {
-
-            $debugDisk = static::getDownloadsDisk()
-
-            die("LOCAL download disk: " . $debugDisk);
-
             $filePath = $uploadedFile->store(
                 static::getDownloadsDirectory($organisation),
                 [
@@ -60,10 +55,6 @@ class DownloadsService
                 'url' => $filePath
             ]);
         }
-
-        $debugDisk = static::getDownloadsDisk()
-
-        die("Download disk: " . $debugDisk);
 
         $bucket = config('filesystems.disks.s3.bucket');
         $region = config('filesystems.disks.s3.region');
