@@ -41,9 +41,19 @@ class DownloadRepository extends BaseRepository implements DownloadRepositoryInt
             throw new \Exception('instrument requires an organisation');
         }
 
-        /** @var UploadedFile $uploadedFile */
-        $uploadedFile = $request->file('file');
-        $download = DownloadsService::saveUploadedFile($uploadedFile, $organisation, $download);
+        if ($request->has('file')) {
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $request->file('file');
+            $download = DownloadsService::saveUploadedFile($uploadedFile, $organisation, $download);
+        } elseif ($request->has('key')) {
+            $download = DownloadsService::movePreUploadedFile($request->input('key'), $organisation, $download);
+            $download->fill([
+                'filename' => $request->input('filename'),
+            ]);
+        } else {
+            throw new \Exception('Invalid request. Missing file or key');
+        }
+
         $download->fill([
             'label' => $request->input('label'),
         ]);

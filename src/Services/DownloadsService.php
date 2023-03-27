@@ -98,6 +98,24 @@ class DownloadsService
         ]);
     }
 
+    public static function movePreUploadedFile(string $tempPath, Organisation $organisation, ?Download $download = null): Download
+    {
+        if (is_null($download)) {
+            $download = new Download();
+        }
+
+        $filePath = str_replace('tmp/', static::getDownloadsDirectory($organisation) . '/', $tempPath);
+
+        Storage::copy(
+            $tempPath,
+            $filePath
+        );
+
+        return $download->fill([
+            'url' => $filePath
+        ]);
+    }
+
     public static function downloadDownloadFile(Download $download)
     {
         return Storage::disk(static::getDownloadsDisk())->download($download->url, $download->filename);
