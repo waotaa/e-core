@@ -41,7 +41,7 @@ class DownloadsService
 
         $originalFileName = $uploadedFile->getClientOriginalName();
         $filePath = $uploadedFile->store(
-            static::getDownloadsDirectory(),
+            static::getDownloadsDirectory($organisation),
             [
                 'disk' => static::getDownloadsDisk(),
                 'visibility' => 'private',
