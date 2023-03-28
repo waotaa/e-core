@@ -11,15 +11,15 @@ class DownloadValidation extends ModelValidation
         return [
             'file' => [
                 'required_without:key',
-                'prohibited_with:key',
+                'prohibited_unless:key,null',
                 'max:5000',
             ],
             'key' => [
                 'required_without:file',
-                'prohibited_with:file'
+                'prohibited_unless:file,null'
             ],
             'filename' => [
-                'prohibited_with:file'
+                'prohibited_unless:file,null'
             ],
             'instrument_id' => [
                 'required',
