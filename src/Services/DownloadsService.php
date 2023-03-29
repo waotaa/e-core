@@ -62,7 +62,7 @@ class DownloadsService
 
         $filePath = str_replace('tmp/', static::getDownloadsDirectory($organisation) . '/', $tempPath);
 
-        Storage::copy(
+        self::getStorage('s3')->copy(
             $tempPath,
             $filePath
         );
