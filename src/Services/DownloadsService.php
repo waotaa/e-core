@@ -19,9 +19,7 @@ class DownloadsService
 {
     public static function getDownloadsDisk(): string
     {
-        return App::environment('local')
-            ? config('filesystems.default', 'local')
-            : config('filesystems.cloud', 's3');
+        return config('filesystems.cloud', 's3');
     }
 
     public static function getDownloadsDirectory(Organisation $organisation = null): string
@@ -62,7 +60,7 @@ class DownloadsService
 
         $filePath = str_replace('tmp/', static::getDownloadsDirectory($organisation) . '/', $tempPath);
 
-        self::getStorage('s3')->copy(
+        self::getStorage(static::getDownloadsDisk())->copy(
             $tempPath,
             $filePath
         );
