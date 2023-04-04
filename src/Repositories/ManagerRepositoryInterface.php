@@ -2,12 +2,18 @@
 
 namespace Vng\EvaCore\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Manager;
+use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Models\Role;
 
 interface ManagerRepositoryInterface extends BaseRepositoryInterface
 {
+    public function addMultipleOrganisationConditions(Builder $query, Collection $organisations): Builder;
+    public function addOrganisationCondition(Builder $query, Organisation $organisation): Builder;
+
     public function createForUser(IsManagerInterface $user): Manager;
     public function update(Manager $manager, array $attributes): Manager;
     public function associateCreatedBy(Manager $manager, Manager $createdByManager);

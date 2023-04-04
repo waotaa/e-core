@@ -19,6 +19,13 @@ class ManagerPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
+    private function hasManagingRelation(Manager $manager, Manager $targetManager)
+    {
+        $isSelf = $manager->id === $targetManager->id;
+        $isCreatedBy = $targetManager->isCreatedBy($manager);
+        return  $isSelf || $isCreatedBy || $manager->managersShareOrganisation($targetManager);
+    }
+
     public function viewAny(IsManagerInterface $user)
     {
         return $user->managerCan('manager.viewAny');
@@ -99,16 +106,11 @@ class ManagerPolicy extends BasePolicy
 
     public function attachAnyRole(IsManagerInterface $user, Manager $targetManager)
     {
-        $manager = $user->getManager();
-        $isSelf = $manager->id === $targetManager->id;
-        $isCreatedBy = $targetManager->isCreatedBy($manager);
-        $hasManagingRelation = $isSelf || $isCreatedBy || $manager->managersShareOrganisation($targetManager);
-
-        if ($hasManagingRelation
-            && $user->managerCan('manager.organisation.role.manage')) {
+        if ($this->hasManagingRelation($user->getManager(), $targetManager)
+            && $user->managerCan('manager.organisation.role')) {
             return true;
         }
-        return $user->managerCan('manager.role.manage');
+        return $user->managerCan('manager.role');
     }
 
     public function attachRole(IsManagerInterface $user, Manager $targetManager, Role $role)
@@ -125,31 +127,22 @@ class ManagerPolicy extends BasePolicy
 
         $assignableRoles = $manager->getAssignableRoles();
 
-        $isSelf = $manager->id === $targetManager->id;
-        $isCreatedBy = $targetManager->isCreatedBy($manager);
-        $hasManagingRelation = $isSelf || $isCreatedBy || $manager->managersShareOrganisation($targetManager);
-
-        if ($hasManagingRelation
-            && $user->managerCan('manager.organisation.role.manage')
+        if ($this->hasManagingRelation($manager, $targetManager)
+            && $user->managerCan('manager.organisation.role')
             && in_array($role->name, $assignableRoles)
         ) {
             return true;
         }
-        return $user->managerCan('manager.role.manage');
+        return $user->managerCan('manager.role');
     }
 
     public function detachRole(IsManagerInterface $user, Manager $targetManager)
     {
-        $manager = $user->getManager();
-        $isSelf = $manager->id === $targetManager->id;
-        $isCreatedBy = $targetManager->isCreatedBy($manager);
-        $hasManagingRelation = $isSelf || $isCreatedBy || $manager->managersShareOrganisation($targetManager);
-
-        if ($hasManagingRelation
-            && $user->managerCan('manager.organisation.role.manage')) {
+        if ($this->hasManagingRelation($user->getManager(), $targetManager)
+            && $user->managerCan('manager.organisation.role')) {
             return true;
         }
-        return $user->managerCan('manager.role.manage');
+        return $user->managerCan('manager.role');
     }
 
 
@@ -158,20 +151,30 @@ class ManagerPolicy extends BasePolicy
         return true;
     }
 
-    public function attachOrganisation(IsManagerInterface $user, Manager $manager, Organisation $organisation)
+    public function attachOrganisation(IsManagerInterface $user, Manager $targetManager, Organisation $organisation)
     {
-        if ($user->getManager()->hasOrganisation($organisation)) {
+        $hasManagingRelation = $this->hasManagingRelation($user->getManager(), $targetManager);
+        $managerIsMember = $user->getManager()->hasOrganisation($organisation);
+        if ($hasManagingRelation
+            && $managerIsMember
+            && $user->managerCan('manager.organisation.members')
+        ) {
             return true;
         }
-        return $user->managerCan('manager.organisation.manage');
+        return $user->managerCan('manager.members');
     }
 
-    public function detachOrganisation(IsManagerInterface $user, Manager $manager, Organisation $organisation)
+    public function detachOrganisation(IsManagerInterface $user, Manager $targetManager, Organisation $organisation)
     {
-        if ($user->getManager()->hasOrganisation($organisation)) {
+        $hasManagingRelation = $this->hasManagingRelation($user->getManager(), $targetManager);
+        $managerIsMember = $user->getManager()->hasOrganisation($organisation);
+        if ($hasManagingRelation
+            && $managerIsMember
+            && $user->managerCan('manager.organisation.members')
+        ) {
             return true;
         }
-        return $user->managerCan('manager.organisation.manage');
+        return $user->managerCan('manager.members');
     }
 
 
@@ -182,18 +185,12 @@ class ManagerPolicy extends BasePolicy
 
     public function attachPartnership(IsManagerInterface $user, Manager $manager, Partnership $partnership)
     {
-        if ($user->getManager()->hasOrganisation($partnership->organisation)) {
-            return true;
-        }
-        return $user->managerCan('manager.organisation.manage');
+        return $this->attachOrganisation($user, $manager, $partnership->getOrganisation());
     }
 
     public function detachPartnership(IsManagerInterface $user, Manager $manager, Partnership $partnership)
     {
-        if ($user->getManager()->hasOrganisation($partnership->organisation)) {
-            return true;
-        }
-        return $user->managerCan('manager.organisation.manage');
+        return $this->detachOrganisation($user, $manager, $partnership->getOrganisation());
     }
 
     public function attachAnyLocalParty(IsManagerInterface $user, Manager $manager)
@@ -203,18 +200,12 @@ class ManagerPolicy extends BasePolicy
 
     public function attachLocalParty(IsManagerInterface $user, Manager $manager, LocalParty $localParty)
     {
-        if ($user->getManager()->hasOrganisation($localParty->organisation)) {
-            return true;
-        }
-        return $user->managerCan('manager.organisation.manage');
+        return $this->attachOrganisation($user, $manager, $localParty->getOrganisation());
     }
 
     public function detachLocalParty(IsManagerInterface $user, Manager $manager, LocalParty $localParty)
     {
-        if ($user->getManager()->hasOrganisation($localParty->organisation)) {
-            return true;
-        }
-        return $user->managerCan('manager.organisation.manage');
+        return $this->detachOrganisation($user, $manager, $localParty->getOrganisation());
     }
 
     public function attachAnyRegionalParty(IsManagerInterface $user, Manager $manager)
@@ -224,18 +215,12 @@ class ManagerPolicy extends BasePolicy
 
     public function attachRegionalParty(IsManagerInterface $user, Manager $manager, RegionalParty $regionalParty)
     {
-        if ($user->getManager()->hasOrganisation($regionalParty->organisation)) {
-            return true;
-        }
-        return $user->managerCan('manager.organisation.manage');
+        return $this->attachOrganisation($user, $manager, $regionalParty->getOrganisation());
     }
 
     public function detachRegionalParty(IsManagerInterface $user, Manager $manager, RegionalParty $regionalParty)
     {
-        if ($user->getManager()->hasOrganisation($regionalParty->organisation)) {
-            return true;
-        }
-        return $user->managerCan('manager.organisation.manage');
+        return $this->detachOrganisation($user, $manager, $regionalParty->getOrganisation());
     }
 
     public function attachAnyNationalParty(IsManagerInterface $user, Manager $manager)
@@ -245,17 +230,11 @@ class ManagerPolicy extends BasePolicy
 
     public function attachNationalParty(IsManagerInterface $user, Manager $manager, NationalParty $nationalParty)
     {
-        if ($user->getManager()->hasOrganisation($nationalParty->organisation)) {
-            return true;
-        }
-        return $user->managerCan('manager.organisation.manage');
+        return $this->attachOrganisation($user, $manager, $nationalParty->getOrganisation());
     }
 
     public function detachNationalParty(IsManagerInterface $user, Manager $manager, NationalParty $nationalParty)
     {
-        if ($user->getManager()->hasOrganisation($nationalParty->organisation)) {
-            return true;
-        }
-        return $user->managerCan('manager.organisation.manage');
+        return $this->detachOrganisation($user, $manager, $nationalParty->getOrganisation());
     }
 }

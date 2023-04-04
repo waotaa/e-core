@@ -145,7 +145,12 @@ $organisationUserPermissions = [
     // This permission allows you to restore a manager from your organisation
     'manager.organisation.restore',
     // This permission allows you to forceDelete a manager from your organisation
-    'manager.organisation.role.manage',
+    'manager.organisation.forceDelete',
+
+    // This permission allows you to manage the role of a manager from your organisation
+    'manager.organisation.role',
+    // This permission allows you to manage the organisation of a manager from your organisation
+    'manager.organisation.members',
 ];
 
 $userAdministratorPermissions = [
@@ -164,10 +169,10 @@ $userAdministratorPermissions = [
     'manager.restore',
     'manager.forceDelete',
 
-    // This permission allows you to manage the role of a manager from your organisation
-    'manager.role.manage',
-    // This permission allows you to manage the organisation of a manager from your organisation
-    'manager.organisation.manage',
+    // This permission allows you to manage the role of a manager
+    'manager.role',
+    // This permission allows you to manage the organisation of a manager
+    'manager.members',
 ];
 
 

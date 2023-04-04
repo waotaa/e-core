@@ -2,12 +2,12 @@
 
 namespace Vng\EvaCore\Repositories\Eloquent;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Vng\EvaCore\Http\Requests\OrganisationCreateRequest;
 use Vng\EvaCore\Http\Requests\OrganisationUpdateRequest;
 use Vng\EvaCore\Interfaces\OrganisationEntityInterface;
-use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\Manager;
 use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
@@ -15,6 +15,13 @@ use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
 class OrganisationRepository extends BaseRepository implements OrganisationRepositoryInterface
 {
     public string $model = Organisation::class;
+
+    public function addManagerIsMemberCondition(Builder $query, Manager $manager): Builder
+    {
+        return $query->whereHas('managers', function (Builder $query) use ($manager) {
+            $query->where('managers.id', $manager->id);
+        });
+    }
 
     public function new(): Organisation
     {
