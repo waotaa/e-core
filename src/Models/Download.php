@@ -23,9 +23,11 @@ class Download extends Model
         static::observe(DownloadObserver::class);
     }
 
-    public function delete()
+    public function delete($deleteFile = true)
     {
-        DownloadsService::deleteDownloadFile($this);
+        if ($deleteFile) {
+            DownloadsService::deleteDownloadFile($this);
+        }
         return parent::delete();
     }
 
