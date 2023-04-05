@@ -31,6 +31,8 @@ class SetupAuthorizationMatrix extends Command
         $this->output->writeln('assigning permissions to roles');
         $this->assignPermissionsToRoles();
 
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
         $this->info("\n[ Setting up eva authorization matrix ] - finished!\n");
         return 0;
     }
