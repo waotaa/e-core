@@ -2,6 +2,10 @@
 
 return [
     'prefix' => env('ELASTIC_INDEX_PREFIX'),
+    'kibana' => [
+        'host' => env('KIBANA_HOST'),
+        'apiKey' => env('KIBANA_API_KEY')
+    ],
     'instances' => [
         'default' => [
             'cloud_id' => env('ELASTIC_CLOUD_ID'),

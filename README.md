@@ -33,6 +33,12 @@ Make sure to copy them to your own project's .env file
 APP_DEDICATED_INSTRUMENT_TYPE
 : The name of the instrument type all instruments by default have
 
+KIBANA_HOST
+: The kibana API host
+
+KIBANA_API_KEY
+: The kibana api key used for calling kibana endpoints
+
 ELASTIC_INDEX_PREFIX
 : The prefix used to prefix all elastic indeces
 
