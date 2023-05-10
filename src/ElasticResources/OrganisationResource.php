@@ -2,6 +2,8 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
+use Vng\EvaCore\ElasticResources\Environment\BasicEnvironmentResource;
+
 class OrganisationResource extends ElasticResource
 {
     public function toArray()
@@ -16,6 +18,8 @@ class OrganisationResource extends ElasticResource
             'regionalParty' => RegionalPartyResource::one($this->regionalParty),
             'nationalParty' => NationalPartyResource::one($this->nationalParty),
             'partnership' => PartnershipResource::one($this->partnership),
+
+            'featuringEnvironments' => BasicEnvironmentResource::many($this->featuringEnvironments),
 
             'areasActiveIn' => AreaInterfaceResource::many($this->resource->getAreasActiveInAttribute())
         ];

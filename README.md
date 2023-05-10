@@ -107,6 +107,10 @@ single point of truth we use to create our database entries.
 There are various commands to check if the source file or database is up-to-date
 and other commands to update them if they're not.
 
+We currently use the Cbs Open Data API for this data. \
+See class: `Vng\EvaCore\Services\GeoApi\CbsOpenDataApiService`
+> Please note that the endpoint for this data changes yearly
+
 ### New source and new data set
 To generate a new township and region source run
 

@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Services\ElasticSearch;
 
+use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
 use Vng\EvaCore\Models\Environment;
 
@@ -22,29 +23,38 @@ class KibanaService
     public function putRoles()
     {
         $curl = ElasticCurl::make();
-        $endpoint = ElasticCurl::getPathForEndpoint('kbn:api/security/role/' . $this->getRoleName());
+        $endpoint = ElasticCurl::getPathForEndpoint($this->getRoleEndpoint());
 
-        $curl->put($endpoint, $this->getRolesRequestBody());
+        $curl->put($endpoint, $this->getRoleRequestBody());
+    }
+
+    public function getRoleConsoleInput()
+    {
+        return
+            'PUT ' . $this->getRoleEndpoint() . PHP_EOL .
+            json_encode($this->getRoleRequestBody(), JSON_PRETTY_PRINT);
+    }
+
+    private function getRoleEndpoint()
+    {
+        return 'kbn:api/security/role/' . $this->getRoleName();
     }
 
     private function getRoleName(): string
     {
-        $environmentName = $this->environment->getAttribute('name');
+        $environmentName = $this->environment->getAttribute('slug');
         return 'view-' . $environmentName;
     }
 
     #[ArrayShape(['elasticsearch' => "array", 'kibana' => "array"])]
-    private function getRolesRequestBody(): array
+    private function getRoleRequestBody(): array
     {
-        $environmentName = $this->environment->getAttribute('name');
-        $environmentUrl = $environmentName . 'instrumentengids-eva.nl';
-
         $environmentSlug = $this->environment->getAttribute('slug');
 
         return [
             'elasticsearch' => [
                 'indices' => [
-                    $this->getRoleIndexPermissionInteraction($environmentUrl),
+                    $this->getRoleIndexPermissionInteraction($environmentSlug),
                     $this->getRoleIndexPermissionInstrument($environmentSlug),
                     $this->getRoleIndexPermissionEnvironment($environmentSlug),
                 ],
@@ -69,7 +79,7 @@ class KibanaService
     }
 
     #[ArrayShape(['names' => "string[]", 'privileges' => "string[]", 'query' => "string", 'allow_restricted_indices' => "false"])]
-    private function getRoleIndexPermissionInteraction(string $environmentUrl): array
+    private function getRoleIndexPermissionInteraction(string $environmentSlug): array
     {
         return [
             'names' => [
@@ -79,13 +89,14 @@ class KibanaService
                 'read',
                 'view_index_metadata'
             ],
-            'query' => "{\"match_phrase\": {\"location.url\":\"${$environmentUrl}\"}}",
+//            'query' => "{\"match_phrase\": {\"location.url\":\"${$environmentUrl}\"}}",
+            'query' => '{"match": {"environment.slug.keyword":"'.$environmentSlug.'"}}',
             'allow_restricted_indices' => false
         ];
     }
 
     #[ArrayShape(['names' => "string[]", 'privileges' => "string[]", 'query' => "string", 'allow_restricted_indices' => "false"])]
-    private function getRoleIndexPermissionInstrument(string $organisationSlug): array
+    private function getRoleIndexPermissionInstrument(string $environmentSlug): array
     {
         return [
             'names' => [
@@ -95,7 +106,8 @@ class KibanaService
                 'read',
                 'view_index_metadata'
             ],
-            'query' => "{\"match\": {\"organisation.slug.keyword\":\"${$organisationSlug}\"}}",
+//            'query' => "{\"match\": {\"organisation.slug.keyword\":\"${$organisationSlug}\"}}",
+            'query' => '{"match": {"organisation.featuringEnvironment.slug.keyword":"'.$environmentSlug.'"}}"',
             'allow_restricted_indices' => false
         ];
     }
@@ -111,8 +123,30 @@ class KibanaService
                 'read',
                 'view_index_metadata'
             ],
-            'query' => "{\"match\": {\"slug.keyword\":\"${$environmentSlug}\"}}",
+            'query' => '{"match": {"slug.keyword":"'.$environmentSlug.'"}}"',
             'allow_restricted_indices' => false
+        ];
+    }
+
+    public function getUserConsoleInput()
+    {
+        return
+            'POST ' . $this->getUserEndpoint() . PHP_EOL .
+            json_encode($this->getUserRequestBody(), JSON_PRETTY_PRINT);
+    }
+
+    private function getUserEndpoint()
+    {
+        return '/_security/user/' . $this->environment->getAttribute('name');
+    }
+
+    private function getUserRequestBody(): array
+    {
+        return [
+            'password' => Str::random(),
+            'roles' => [
+                $this->getRoleName()
+            ],
         ];
     }
 }

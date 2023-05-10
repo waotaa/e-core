@@ -16,7 +16,7 @@ class ElasticCurl
         $this->setHeaders();
     }
 
-    public static function make()
+    public static function make(): Curl
     {
         $c = new self();
         return $c->instance;
@@ -36,12 +36,12 @@ class ElasticCurl
         }
     }
 
-    public static function getHost()
+    public static function getHost(): string
     {
         return Str::finish(config('elastic.kibana.host'), '/');
     }
 
-    public static function getPathForEndpoint($endpoint)
+    public static function getPathForEndpoint($endpoint): string
     {
         if (Str::startsWith($endpoint, '/')) {
             $endpoint = substr($endpoint, 1);
