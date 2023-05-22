@@ -11,7 +11,7 @@ interface InstrumentRepositoryInterface extends OwnedEntityRepositoryInterface, 
     public function create(InstrumentCreateRequest $request): Instrument;
     public function update(Instrument $instrument, InstrumentUpdateRequest $request): Instrument;
 
-    public function attachContacts(Instrument $instrument, string|array $contactIds, ?string $type = null): Instrument;
+    public function attachContacts(Instrument $instrument, string|array $contactIds, ?string $type = null, ?string $label = null): Instrument;
     public function detachContacts(Instrument $instrument, string|array $contactIds): Instrument;
 
     public function attachClientCharacteristics(Instrument $instrument, string|array $clientCharacteristicIds): Instrument;
