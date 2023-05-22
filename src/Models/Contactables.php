@@ -14,7 +14,8 @@ class Contactables extends MorphPivot
     protected $table = 'contactables';
 
     protected $attributes = [
-        'type'
+        'type',
+        'label',
     ];
 
     protected $fillable = [
@@ -23,6 +24,7 @@ class Contactables extends MorphPivot
         'contactable_id',
         'contactable_type',
         'type',
+        'label'
     ];
 
     public function contact(): BelongsTo

@@ -13,6 +13,6 @@ trait HasContacts
     {
         return $this->morphToMany(Contact::class, 'contactable')
             ->using(Contactables::class)
-            ->withPivot('type');
+            ->withPivot(['type', 'label']);
     }
 }

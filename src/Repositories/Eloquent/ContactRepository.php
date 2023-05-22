@@ -44,13 +44,14 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
         return $contact;
     }
 
-    public function attachInstruments(Contact $contact, array|string $instrumentIds, ?string $type = null): Contact
+    public function attachInstruments(Contact $contact, array|string $instrumentIds, ?string $type = null, ?string $label = null): Contact
     {
         if (!is_null($type) && !ContactTypeEnum::search($type)) {
             throw new \Exception('invalid type [' .$type. '] given. Allowed types are: ' . implode(', ', ContactTypeEnum::toArray()));
         }
         $pivotValues = [
-            'type' => $type
+            'type' => $type,
+            'label' => $label
         ];
         $contact->instruments()->syncWithPivotValues((array) $instrumentIds, $pivotValues, false);
         return $contact;
@@ -62,13 +63,14 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
         return $contact;
     }
 
-    public function attachProviders(Contact $contact, array|string $providerIds, ?string $type = null): Contact
+    public function attachProviders(Contact $contact, array|string $providerIds, ?string $type = null, ?string $label = null): Contact
     {
         if (!is_null($type) && !ContactTypeEnum::search($type)) {
             throw new \Exception('invalid type given ' . $type);
         }
         $pivotValues = [
-            'type' => $type
+            'type' => $type,
+            'label' => $label
         ];
         $contact->providers()->syncWithPivotValues((array) $providerIds, $pivotValues, false);
         return $contact;

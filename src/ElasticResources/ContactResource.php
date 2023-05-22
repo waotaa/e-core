@@ -11,7 +11,8 @@ class ContactResource extends ElasticResource
             'name' => $this->name,
             'phone' => $this->phone,
             'email' => $this->email,
-            'type' => null
+            'type' => null,
+            'label' => $this->resource?->pivot?->label,
         ];
 
         $pivot = $this->resource->pivot;
