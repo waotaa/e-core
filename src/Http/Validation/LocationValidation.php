@@ -18,7 +18,7 @@ class LocationValidation extends ModelValidation
             ],
             'address_id' => [
                 'required_if:type,Adres',
-                'prohibited_if:type,Klant thuis'
+                'prohibited_if:type,Klant thuis,Aanbieder,Werkgever'
             ],
             'instrument_id' => [
                 'required'
