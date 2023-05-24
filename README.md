@@ -170,7 +170,7 @@ php artisan geo:regions-create-dataset --update-source
 ```
 
 #### Check for deviations between Source file and Database
-You can also check if the database is up to date with the source data.
+You can also check if the database is up-to-date with the source data.
 The following commands will check for missing items and content
 deviations.
 
@@ -178,6 +178,12 @@ deviations.
 php artisan geo:townships-check-data-from-source
 php artisan geo:regions-check-data-from-source
 ```
+
+> **_NOTE:_**
+> Townships and regions can be connected to local parties, partnerships,
+> regional parties, neighbourhoods. Before removing missing items make
+> sure you reallocated these related items. There are reallocation services
+> which can help you out with that.
 
 #### Update the Database with the data from the Source file
 When you decide to update the database with the source data you can run
@@ -193,7 +199,8 @@ php artisan geo:townships-update-data-from-source
 php artisan geo:regions-update-data-from-source
 ```
 
-> **_NOTE:_** Some deployment methods might not allow for interaction. In that
+> **_NOTE:_** 
+> Some deployment methods might not allow for interaction. In that
 case you can run the commands with the yes-to-all flag. Do make sure to
 check the deviations before running the command
 

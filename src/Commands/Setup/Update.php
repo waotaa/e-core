@@ -9,7 +9,7 @@ use Vng\EvaCore\Commands\Professionals\CognitoSetup;
 
 class Update extends Command
 {
-    protected $signature = 'eva-core:update';
+    protected $signature = 'eva-core:update {--n|no-interaction}';
     protected $description = 'Post deploy update script';
 
     public function handle(): int
@@ -28,7 +28,7 @@ class Update extends Command
         $this->call(CleanupSyncAttempts::class);
         $this->call(SeedCharacteristics::class);
         $this->call(SetupAuthorizationMatrix::class);
-        $this->call(CognitoSetup::class, ['--no-interaction' => true]);
+        $this->call(CognitoSetup::class, ['--no-interaction' => $this->option('no-interaction')]);
         return 0;
     }
 }

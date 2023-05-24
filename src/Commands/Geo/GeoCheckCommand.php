@@ -107,7 +107,7 @@ abstract class GeoCheckCommand extends Command
             );
 
             $isNotLastItem = $deviatingItems->last()->getItemsCode() !== $comparison->getItemsCode();
-            if (!is_null($handleDeviation) && ($this->yesToAll || $this->confirm('handle deviation?'))) {
+            if (!is_null($handleDeviation) && ($this->yesToAll || $this->confirm('handle deviation?', true))) {
                 $handleDeviation($comparison);
             } elseif ($isNotLastItem && !$this->confirm('continue?', true)) {
                 // break

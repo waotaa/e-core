@@ -15,6 +15,10 @@ class CognitoSetup extends Command
     {
         $this->getOutput()->writeln('setting up user pools...');
 
+        if (!$this->confirm('Setup environments?', false)) {
+            return 0;
+        }
+
         $slug = $this->argument('environmentSlug');
         if (!is_null($slug)) {
             $this->output->writeln('* for specified environment: ' . $slug);

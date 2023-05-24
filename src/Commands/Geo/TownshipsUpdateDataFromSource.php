@@ -9,7 +9,7 @@ use Vng\EvaCore\Services\GeoComparison\TownshipDataComparisonService;
 use Vng\EvaCore\Services\GeoData\BasicTownshipModel;
 use Vng\EvaCore\Services\GeoData\TownshipDataService;
 use Vng\EvaCore\Services\GeoData\TownshipService;
-use Vng\EvaCore\Services\ReallocationService;
+use Vng\EvaCore\Services\TownshipReallocationService;
 
 class TownshipsUpdateDataFromSource extends GeoCheckCommand
 {
@@ -34,16 +34,16 @@ class TownshipsUpdateDataFromSource extends GeoCheckCommand
 
         $this->call('geo:integrity');
 
+        $this->output->writeln('checking for townships missing from database');
+        $this->checkForMissingTownships();
+        $this->output->writeln('- checked');
+        $this->output->writeln('');
+
         $this->output->writeln('checking for townships no longer in source');
         $result = $this->checkForRemovedTownships();
         if ($result === 1) {
             return 1;
         }
-        $this->output->writeln('- checked');
-        $this->output->writeln('');
-
-        $this->output->writeln('checking for townships missing from database');
-        $this->checkForMissingTownships();
         $this->output->writeln('- checked');
         $this->output->writeln('');
 
@@ -78,14 +78,17 @@ class TownshipsUpdateDataFromSource extends GeoCheckCommand
             try {
                 $this->handleMissingItems($abandonedTownships, function (BasicTownshipModel $geoModel) {
                     $abandonedTownship = $geoModel->getSourceTownship();
-                    if ($abandonedTownship->ownedItemsCount() > 0) {
+                    $localPartiesCount = $abandonedTownship->localParties()->count();
+                    $neighbourhoodCount = $abandonedTownship->neighbourhoods()->count();
+                    if ($localPartiesCount > 0 || $neighbourhoodCount > 0) {
                         throw new GeoCommandException('Cannot handle all missing townships');
                     }
                 });
             } catch (GeoCommandException $e) {
                 $this->output->newLine(2);
                 $this->output->caution('Cannot handle all missing townships');
-                $this->output->writeln('Reallocate items of removed townships before running this command again');
+                $this->output->writeln('Some local parties and/or partnerships are connected to the township up for removal');
+                $this->output->writeln('Connect these organisations to the right township before running this command again');
                 $this->output->newLine(2);
                 return 1;
             }
@@ -93,19 +96,33 @@ class TownshipsUpdateDataFromSource extends GeoCheckCommand
 
         $this->handleMissingItems($abandonedTownships, function (BasicTownshipModel $geoModel) {
             $abandonedTownship = $geoModel->getSourceTownship();
-            if ($abandonedTownship->ownedItemsCount() > 0) {
-                $this->output->writeln('Township owns' . $abandonedTownship->ownedItemsCount() . ' items');
+
+            $localPartiesCount = $abandonedTownship->localParties()->count();
+            $neighbourhoodCount = $abandonedTownship->neighbourhoods()->count();
+
+            if ($localPartiesCount > 0 || $neighbourhoodCount > 0) {
+                $this->output->writeln('Township is connected to :');
+                $this->output->writeln($localPartiesCount . ' local parties');
+                $this->output->writeln($neighbourhoodCount . ' neighbourhoods');
+
                 if ($this->confirm('Reallocate data before removal?', true)) {
                     $slug = $this->askWithCompletion('Transfer to which township?', Township::all()->pluck('slug')->toArray());
+                    /** @var Township $targetTownship */
                     $targetTownship = Township::query()->where('slug', $slug)->firstOrFail();
+
                     if ($this->confirm('Transfer data to ' . $targetTownship->name . ' [' . $targetTownship->code . '] ?')) {
-                        ReallocationService::transferOwnership($abandonedTownship, $targetTownship);
+                        TownshipReallocationService::transfer($abandonedTownship, $targetTownship);
                         $this->output->writeln('reallocated!');
                     }
                 }
+            } else {
+                $this->output->writeln('Township currently has no relations');
             }
 
-            if ($abandonedTownship->ownedItemsCount() === 0 || $this->confirm('Township still owns items - remove anyway?')) {
+            $localPartiesCount = $abandonedTownship->localParties()->count();
+            $neighbourhoodCount = $abandonedTownship->neighbourhoods()->count();
+            $notRelated = $localPartiesCount === 0 && $neighbourhoodCount === 0;
+            if ($notRelated || $this->confirm('Township is still related - remove anyway?')) {
                 TownshipService::deleteTownship($abandonedTownship);
                 $this->output->writeln('- removed');
             }
