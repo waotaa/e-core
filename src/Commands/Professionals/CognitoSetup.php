@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Commands\Professionals;
 
+use Illuminate\Support\Facades\App;
 use Vng\EvaCore\Jobs\EnsureCognitoSetup;
 use Vng\EvaCore\Models\Environment;
 use Illuminate\Console\Command;
@@ -15,7 +16,7 @@ class CognitoSetup extends Command
     {
         $this->getOutput()->writeln('setting up user pools...');
 
-        if (!$this->confirm('Setup environments?', false)) {
+        if (App::environment('local') && !$this->confirm('Setup environments?', false)) {
             return 0;
         }
 
