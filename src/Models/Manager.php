@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Vng\EvaCore\Interfaces\IsInstrumentWatcherInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -77,6 +78,11 @@ class Manager extends Model implements IsInstrumentWatcherInterface
     public function organisations(): BelongsToMany
     {
         return $this->belongsToMany(Organisation::class);
+    }
+
+    public function executedMutations(): HasMany
+    {
+        return $this->hasMany(Mutation::class);
     }
 
     public function hasAnyOrganisations(): bool
