@@ -58,23 +58,24 @@ class KibanaService
                     $this->getRoleIndexPermissionInstrument($environmentSlug),
                     $this->getRoleIndexPermissionEnvironment($environmentSlug),
                 ],
-                'cluster' => [],
-                'metadata' => []
+                'cluster' => []
             ],
             'kibana' => [
-                "base" => [],
-                "feature" => [
-                    "dashboard" => [
-                        "minimal_read",
-                        "store_search_session",
-                        "generate_report",
+                [
+                    "base" => [],
+                    "feature" => [
+                        "dashboard" => [
+                            "minimal_read",
+                            "store_search_session",
+                            "generate_report",
+                        ]
+                    ],
+                    "spaces" => [
+                        "instrumenten",
+                        "interactie"
                     ]
-                ],
-                "spaces" => [
-                    "instrumenten",
-                    "interactie"
                 ]
-            ],
+            ]
         ];
     }
 
@@ -83,7 +84,7 @@ class KibanaService
     {
         return [
             'names' => [
-                'eva-prod*-*interaction'
+                'eva-prod-*_interaction'
             ],
             'privileges' => [
                 'read',
@@ -107,7 +108,7 @@ class KibanaService
                 'view_index_metadata'
             ],
 //            'query' => "{\"match\": {\"organisation.slug.keyword\":\"${$organisationSlug}\"}}",
-            'query' => '{"match": {"organisation.featuringEnvironment.slug.keyword":"'.$environmentSlug.'"}}"',
+            'query' => '{"match": {"organisation.featuringEnvironment.slug.keyword":"'.$environmentSlug.'"}}',
             'allow_restricted_indices' => false
         ];
     }
@@ -123,7 +124,7 @@ class KibanaService
                 'read',
                 'view_index_metadata'
             ],
-            'query' => '{"match": {"slug.keyword":"'.$environmentSlug.'"}}"',
+            'query' => '{"match": {"slug.keyword":"'.$environmentSlug.'"}}',
             'allow_restricted_indices' => false
         ];
     }
