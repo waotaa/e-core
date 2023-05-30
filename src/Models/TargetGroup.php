@@ -14,6 +14,7 @@ class TargetGroup extends Model
 
     protected $fillable = [
         'description',
+        'code',
         'custom',
     ];
 

@@ -15,6 +15,7 @@ class TargetGroupResource extends JsonResource
             'deleted_at' => $this->deleted_at,
 
             'description'  => $this->description,
+            'code' => $this->code,
             'custom'  => (bool) $this->custom,
 
             'instruments' => InstrumentResource::collection($this->whenLoaded('instruments'))

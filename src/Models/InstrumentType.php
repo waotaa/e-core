@@ -11,7 +11,7 @@ class InstrumentType extends Model
 
     protected $fillable = [
         'name',
-        'key',
+        'code',
     ];
 
     public function instruments(): HasMany

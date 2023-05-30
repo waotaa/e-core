@@ -15,6 +15,7 @@ class Implementation extends Model
 
     protected $fillable = [
         'name',
+        'code',
         'custom'
     ];
 

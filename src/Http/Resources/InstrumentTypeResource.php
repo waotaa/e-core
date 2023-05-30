@@ -15,7 +15,7 @@ class InstrumentTypeResource extends JsonResource
             'deleted_at' => $this->deleted_at,
 
             'name' => $this->name,
-            'key' => $this->key,
+            'code' => $this->code,
 
             'instruments' => InstrumentResource::collection($this->whenLoaded('instruments'))
         ];

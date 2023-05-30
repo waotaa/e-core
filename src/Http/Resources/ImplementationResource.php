@@ -15,6 +15,7 @@ class ImplementationResource extends JsonResource
             'deleted_at' => $this->deleted_at,
 
             'name' => $this->name,
+            'code' => $this->code,
             'custom' => $this->custom,
 
             'instruments' => InstrumentResource::collection($this->whenLoaded('instruments'))

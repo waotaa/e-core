@@ -9,6 +9,7 @@ class TargetGroupResource extends ElasticResource
         return [
             'id' => $this->id,
             'description'  => $this->description,
+            'code' => $this->code,
             'custom'  => (bool) $this->custom,
         ];
     }

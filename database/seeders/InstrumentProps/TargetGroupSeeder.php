@@ -5,6 +5,9 @@ namespace Database\Seeders\InstrumentProps;
 use Vng\EvaCore\Models\TargetGroup;
 use Illuminate\Database\Seeder;
 
+/**
+ * Eva Doelgroep - ED
+ */
 class TargetGroupSeeder extends Seeder
 {
     public function run(): void
@@ -79,48 +82,56 @@ class TargetGroupSeeder extends Seeder
             TargetGroup::query()->updateOrCreate([
                 'description' => 'Jongeren tot 27 jaar'
             ], [
+                'code' => 'ED01',
                 'custom' => false,
             ]);
 
             TargetGroup::query()->updateOrCreate([
                 'description' => '50-plussers'
             ], [
+                'code' => 'ED02',
                 'custom' => false,
             ]);
 
             TargetGroup::query()->updateOrCreate([
                 'description' => '(Vermoedelijk) Verstandelijke beperking (IQ 50-85)'
             ], [
+                'code' => 'ED03',
                 'custom' => false,
             ]);
 
             TargetGroup::query()->updateOrCreate([
                 'description' => '(Vermoedelijk) Arbeidsbeperkten'
             ], [
+                'code' => 'ED04',
                 'custom' => false,
             ]);
 
             TargetGroup::query()->updateOrCreate([
                 'description' => 'Statushouders'
             ], [
+                'code' => 'ED05',
                 'custom' => false,
             ]);
 
             TargetGroup::query()->updateOrCreate([
                 'description' => 'Migranten'
             ], [
+                'code' => 'ED06',
                 'custom' => false,
             ]);
 
             TargetGroup::query()->updateOrCreate([
                 'description' => 'Ondernemers'
             ], [
+                'code' => 'ED07',
                 'custom' => false,
             ]);
 
             TargetGroup::query()->updateOrCreate([
                 'description' => 'Dak- en thuislozen'
             ], [
+                'code' => 'ED08',
                 'custom' => false,
             ]);
         });

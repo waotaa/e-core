@@ -15,6 +15,7 @@ class ClientCharacteristic extends SearchableModel
 
     protected $fillable = [
         'name',
+        'code',
     ];
 
     public function instruments(): BelongsToMany

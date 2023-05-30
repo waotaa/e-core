@@ -7,6 +7,9 @@ use Vng\EvaCore\Models\Tile;
 use Exception;
 use Illuminate\Database\Seeder;
 
+/**
+ * Eva Werklandschapstegel - EW
+ */
 class TileSeeder extends Seeder
 {
     public function run(): void
@@ -21,6 +24,7 @@ class TileSeeder extends Seeder
                 Tile::query()->updateOrCreate([
                     'key' => $tileData['key']
                 ], [
+                    'code' => $tileData['code'],
                     'name' => $tileData['name'],
                     'sub_title' => $tileData['sub_title'],
                     'excerpt' => $tileData['excerpt'],
@@ -44,6 +48,7 @@ class TileSeeder extends Seeder
     private function getData() {
         return [
             [
+                'code' => 'EW01',
                 'name' => 'Melding',
                 'sub_title' => 'Start',
                 'excerpt' => "Iemand die zijn baan, opdracht of bedrijf (bij ZZP) dreigt te verliezen of inmiddels verloren heeft, meldt zich met het verzoek tot ondersteuning naar scholing of werk.",
@@ -178,7 +183,9 @@ class TileSeeder extends Seeder
                     'x' => 0,
                     'y' => 1,
                 ],
-            ], [
+            ],
+            [
+                'code' => 'EW02',
                 'name' => 'Diagnostiek',
                 'sub_title' => 'Opstellen klantbeeld',
                 'excerpt' => "Situatie bespreken, klantbeeld vormen en hulpvraag verhelderen. Op basis van dit gesprek samen tot een plan van aanpak met wat nodig is om weer duurzaam aan het werk te gaan. Melding en diagnostiek kunnen in één gesprek.",
@@ -294,7 +301,9 @@ class TileSeeder extends Seeder
                     'x' => 1,
                     'y' => 1,
                 ],
-            ], [
+            ],
+            [
+                'code' => 'EW03',
                 'name' => 'Maatschappelijk fit',
                 'sub_title' => 'Meedoen, in balans zijn en participeren',
                 'excerpt' => "De basis op orde en meedoen in de maatschappij",
@@ -401,7 +410,9 @@ class TileSeeder extends Seeder
                     'x' => 2,
                     'y' => 0,
                 ],
-            ], [
+            ],
+            [
+                'code' => 'EW04',
                 'name' => 'Werk fit',
                 'sub_title' => 'klaar voor werk',
                 'excerpt' => "Het doel van Werk-fit is de werkzoekende te versterken om betaald werk of een opleiding te kunnen aanvaarden en behouden/afmaken. Belangrijk is het versterken van vertrouwen in eigen kunnen.",
@@ -578,7 +589,9 @@ class TileSeeder extends Seeder
                     'x' => 2,
                     'y' => 1,
                 ],
-            ], [
+            ],
+            [
+                'code' => 'EW05',
                 'name' => 'Oriëntatie',
                 'sub_title' => 'Op de arbeidsmarkt',
                 'excerpt' => "Met de werkzoekende wordt onderzocht wat een passende loopbaan is en wat de kansen zijn op de hedendaagse arbeidsmarkt.",
@@ -694,7 +707,9 @@ class TileSeeder extends Seeder
                     'x' => 2,
                     'y' => 2,
                 ],
-            ], [
+            ],
+            [
+                'code' => 'EW06',
                 'name' => 'Opleiden',
                 'sub_title' => 'Kwalificeren',
                 'excerpt' => "Een ‘leven lang leren’ is onvermijdelijk geworden door de continue veranderende arbeidsmarkt. Om aan het werk te komen en blijven is (bij-)scholing noodzakelijk.",
@@ -861,7 +876,9 @@ class TileSeeder extends Seeder
                     'x' => 3,
                     'y' => 2,
                 ],
-            ], [
+            ],
+            [
+                'code' => 'EW07',
                 'name' => 'Bemiddeling',
                 'sub_title' => 'Kandidaten en vacatures koppelen',
                 'excerpt' => "Het koppelen van kandidaten aan vacatures of werkgevers. Belangrijk is om in affiniteiten, competenties en leervermogen te denken.",
@@ -966,7 +983,9 @@ class TileSeeder extends Seeder
                     'x' => 3,
                     'y' => 1,
                 ],
-            ], [
+            ],
+            [
+                'code' => 'EW08',
                 'name' => 'Plaatsing',
                 'sub_title' => 'Werkelijk aan de slag',
                 'excerpt' => "Het maken van plaatsingsafspraken met de werkgever en werknemer en aanvragen van ondersteunende voorzieningen om de kans op een duurzame match te vergroten.",
@@ -1066,7 +1085,9 @@ class TileSeeder extends Seeder
                     'x' => 4,
                     'y' => 1,
                 ],
-            ], [
+            ],
+            [
+                'code' => 'EW09',
                 'name' => 'Nazorg',
                 'sub_title' => 'Voor duurzame plaatsing',
                 'excerpt' => "Om de kans te vergroten dat de werknemer aan het werk blijft, is het van belang dat er nazorg wordt geboden als dat nodig is.",

@@ -15,6 +15,7 @@ class GroupForm extends Model
 
     protected $fillable = [
         'name',
+        'code',
         'custom'
     ];
 
