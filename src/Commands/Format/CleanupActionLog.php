@@ -36,8 +36,8 @@ class CleanupActionLog extends Command
     public function removeEntriesFromClass($typeClass)
     {
         DB::table('mutations')
-            ->where('actionable_type', $typeClass)
-            ->orWhere('target_type', $typeClass)
+            ->where('loggable_type', $typeClass)
+            ->where('target_type', $typeClass)
             ->orWhere('model_type', $typeClass)
             ->delete();
     }
