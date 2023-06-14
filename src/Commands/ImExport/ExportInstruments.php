@@ -15,7 +15,12 @@ class ExportInstruments extends Command
     {
         $this->output->writeln('exporting instruments');
 
-        $service = InstrumentExportService::make($this->argument('mark'));
+        $mark = $this->argument('mark');
+        $service = InstrumentExportService::make($mark);
+
+        if ($mark) {
+            $this->output->info('With mark: ' . $mark);
+        }
 
         $organisationOption = $this->option('org');
         if ($organisationOption) {
@@ -32,9 +37,12 @@ class ExportInstruments extends Command
                 $organisation = $organisations[0];
             }
 
+            $this->output->info('Exporting instruments for organisation: ' . $organisation->id . ' ' . $organisation->name);
+
             $service->setItems($organisation->instruments);
         }
 
+        $service->handle();
         $this->output->writeln('finished');
         return 0;
     }
