@@ -138,7 +138,7 @@ class Instrument extends SearchableModel
         $this->attributes['total_duration_unit'] = (new DurationUnitEnum($value))->getKey();
     }
 
-    public function getTotalDurationUnitAttribute($value): ?string
+    public function getTotalDurationUnitAttribute($value): ?DurationUnitEnum
     {
         if (is_null($value) || !in_array($value, DurationUnitEnum::keys())) {
             return null;
