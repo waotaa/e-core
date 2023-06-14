@@ -22,9 +22,6 @@ use Vng\EvaCore\Commands\Elastic\SyncPublicInstruments;
 use Vng\EvaCore\Commands\Elastic\SyncRegions;
 use Vng\EvaCore\Commands\Elastic\SyncTiles;
 use Vng\EvaCore\Commands\Elastic\SyncTownships;
-use Vng\EvaCore\Commands\ExportInstruments;
-use Vng\EvaCore\Commands\ExportInstrumentsCosts;
-use Vng\EvaCore\Commands\ExportOldInstruments;
 use Vng\EvaCore\Commands\ExtractGeoData;
 use Vng\EvaCore\Commands\Format\ApplyMorphMap;
 use Vng\EvaCore\Commands\Format\AssociateProfessionalsWithEnvironment;
@@ -47,6 +44,8 @@ use Vng\EvaCore\Commands\Geo\TownshipsCheckSourceFromApi;
 use Vng\EvaCore\Commands\Geo\TownshipsCreateDataFromSource;
 use Vng\EvaCore\Commands\Geo\TownshipsCreateDataSetFromApi;
 use Vng\EvaCore\Commands\Geo\TownshipsUpdateDataFromSource;
+use Vng\EvaCore\Commands\ImExport\ExportInstruments;
+use Vng\EvaCore\Commands\ImExport\ExportInstrumentsCosts;
 use Vng\EvaCore\Commands\ImportInstruments;
 use Vng\EvaCore\Commands\ImportOldFormatInstruments;
 use Vng\EvaCore\Commands\Instruments\AssignInstrumentTypes;
@@ -217,7 +216,6 @@ class EvaServiceProvider extends AggregateServiceProvider
         AssignRegions::class,
         ExportInstruments::class,
         ExportInstrumentsCosts::class,
-        ExportOldInstruments::class,
         ExtractGeoData::class,
         ImportInstruments::class,
         ImportOldFormatInstruments::class,

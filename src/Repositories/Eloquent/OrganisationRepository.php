@@ -16,6 +16,18 @@ class OrganisationRepository extends BaseRepository implements OrganisationRepos
 {
     public string $model = Organisation::class;
 
+    public function findBySlug(string $slug)
+    {
+        return $this->addSlugCondition($this->builder(), $slug)->get();
+    }
+
+    public function addSlugCondition(Builder $query, $slug): Builder
+    {
+        return $query->whereHas('organisationable', function (Builder $query) use ($slug){
+            $query->where('slug', $slug);
+        });
+    }
+
     public function addManagerIsMemberCondition(Builder $query, Manager $manager): Builder
     {
         return $query->whereHas('managers', function (Builder $query) use ($manager) {

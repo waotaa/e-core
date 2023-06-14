@@ -1,15 +1,16 @@
 <?php
 
-namespace Vng\EvaCore\Commands;
+namespace Vng\EvaCore\Commands\ImExport;
 
+use Illuminate\Console\Command;
 use Vng\EvaCore\ElasticResources\Instrument\InstrumentCostResource;
 use Vng\EvaCore\Models\Instrument;
-use Illuminate\Console\Command;
 use Vng\EvaCore\Services\StorageService;
+use function collect;
 
 class ExportInstrumentsCosts extends Command
 {
-    protected $signature = 'eva:export-instruments-costs {mark?}';
+    protected $signature = 'export:instruments-costs {mark?}';
     protected $description = 'Create a json file with all instrument costs data.';
 
     public function handle(): int
