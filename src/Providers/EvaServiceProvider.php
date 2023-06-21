@@ -27,6 +27,8 @@ use Vng\EvaCore\Commands\Format\ApplyMorphMap;
 use Vng\EvaCore\Commands\Format\AssociateProfessionalsWithEnvironment;
 use Vng\EvaCore\Commands\Format\CleanupActionLog;
 use Vng\EvaCore\Commands\Format\CleanupSyncAttempts;
+use Vng\EvaCore\Commands\Format\MigrateImplementations;
+use Vng\EvaCore\Commands\Format\MigrateTargetGroups;
 use Vng\EvaCore\Commands\Format\MigrateToFormat2;
 use Vng\EvaCore\Commands\Geo\GeoClearApiCaches;
 use Vng\EvaCore\Commands\Geo\GeoEnsureIntegrity;
@@ -167,6 +169,8 @@ class EvaServiceProvider extends AggregateServiceProvider
         AssociateProfessionalsWithEnvironment::class,
         CleanupActionLog::class,
         CleanupSyncAttempts::class,
+        MigrateImplementations::class,
+        MigrateTargetGroups::class,
         MigrateToFormat2::class,
 
         GeoClearApiCaches::class,

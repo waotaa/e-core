@@ -127,11 +127,58 @@ class TargetGroupSeeder extends Seeder
                 'code' => 'ED07',
                 'custom' => false,
             ]);
+            TargetGroup::query()->updateOrCreate([
+                'code' => 'ED07',
+            ], [
+                'description' => '(Ex) Ondernemers'
+            ]);
 
             TargetGroup::query()->updateOrCreate([
                 'description' => 'Dak- en thuislozen'
             ], [
                 'code' => 'ED08',
+                'custom' => false,
+            ]);
+
+            TargetGroup::query()->updateOrCreate([
+                'code' => 'ED09'
+            ], [
+                'description' => 'Laaggeletterden en analfabeten',
+                'custom' => false,
+            ]);
+
+            TargetGroup::query()->updateOrCreate([
+                'code' => 'ED10'
+            ], [
+                'description' => 'ZZP-er',
+                'custom' => false,
+            ]);
+
+            TargetGroup::query()->updateOrCreate([
+                'code' => 'ED11'
+            ], [
+                'description' => 'Met werkloosheid bedreigd',
+                'custom' => false,
+            ]);
+
+            TargetGroup::query()->updateOrCreate([
+                'code' => 'ED12'
+            ], [
+                'description' => 'Banenafspraak (doelgroepregister)',
+                'custom' => false,
+            ]);
+
+            TargetGroup::query()->updateOrCreate([
+                'code' => 'ED13'
+            ], [
+                'description' => 'NUG-ers',
+                'custom' => false,
+            ]);
+
+            TargetGroup::query()->updateOrCreate([
+                'code' => 'ED14'
+            ], [
+                'description' => 'Medewerkers',
                 'custom' => false,
             ]);
         });
