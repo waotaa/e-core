@@ -9,6 +9,8 @@ interface AreaInterface
 {
     public function getName(): string;
 
+    public function getSlug(): string;
+
     public function getType(): string;
 
     public function getAreaIdentifier(): string;

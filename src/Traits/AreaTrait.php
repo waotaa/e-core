@@ -14,6 +14,11 @@ trait AreaTrait
         return $this->name;
     }
 
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
     public function getType(): string
     {
 //        return get_class($this);

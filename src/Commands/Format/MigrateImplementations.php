@@ -4,9 +4,7 @@ namespace Vng\EvaCore\Commands\Format;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Vng\EvaCore\Models\Implementation;
-use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Builder;
 use Vng\EvaCore\Repositories\ImplementationRepositoryInterface;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 
