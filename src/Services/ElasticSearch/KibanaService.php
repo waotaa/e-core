@@ -43,7 +43,7 @@ class KibanaService
     private function getRoleName(): string
     {
         $environmentName = $this->environment->getAttribute('slug');
-        return 'view-' . $environmentName;
+        return 'view_' . $environmentName;
     }
 
     #[ArrayShape(['elasticsearch' => "array", 'kibana' => "array"])]
@@ -101,14 +101,14 @@ class KibanaService
     {
         return [
             'names' => [
-                'eva-prod-centraal-instruments'
+                'eva-production-centraal-instruments'
             ],
             'privileges' => [
                 'read',
                 'view_index_metadata'
             ],
 //            'query' => "{\"match\": {\"organisation.slug.keyword\":\"${$organisationSlug}\"}}",
-            'query' => '{"match": {"organisation.featuringEnvironment.slug.keyword":"'.$environmentSlug.'"}}',
+            'query' => '{"match": {"organisation.featuringEnvironments.slug.keyword":"'.$environmentSlug.'"}}',
             'allow_restricted_indices' => false
         ];
     }
@@ -138,7 +138,7 @@ class KibanaService
 
     private function getUserEndpoint()
     {
-        return '/_security/user/' . $this->environment->getAttribute('name');
+        return '/_security/user/' . str_replace(' ', '-', $this->environment->getAttribute('name'));
     }
 
     private function getUserRequestBody(): array
