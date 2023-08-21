@@ -14,8 +14,8 @@ class Contactables extends MorphPivot
     protected $table = 'contactables';
 
     protected $attributes = [
-        'type',
-        'label',
+        'type' => null,
+        'label' => null
     ];
 
     protected $fillable = [
