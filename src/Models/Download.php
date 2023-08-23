@@ -26,7 +26,12 @@ class Download extends Model
     public function delete($deleteFile = true)
     {
         if ($deleteFile) {
-            DownloadsService::deleteDownloadFile($this);
+            try {
+                DownloadsService::deleteDownloadFile($this);
+            } catch (\Exception $e) {
+                // accept for now that deleting the file failed.
+                // We still want to delete the download entity though
+            }
         }
         return parent::delete();
     }
