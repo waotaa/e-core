@@ -68,6 +68,10 @@ class KibanaService
                             "minimal_read",
                             "store_search_session",
                             "generate_report",
+                        ],
+                        "visualize" => [
+                            "minimal_read",
+                            "generate_report"
                         ]
                     ],
                     "spaces" => [
