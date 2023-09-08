@@ -9,6 +9,9 @@ class DownloadValidation extends ModelValidation
     public function rules(): array
     {
         return [
+            'label' => [
+                'required'
+            ],
             'file' => [
                 'required_without:key',
                 'prohibited_unless:key,null',
