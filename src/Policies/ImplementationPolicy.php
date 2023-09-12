@@ -38,9 +38,6 @@ class ImplementationPolicy extends BasePolicy
      */
     public function view(IsManagerInterface $user, Implementation $implementation): bool
     {
-        if ($this->userOwnsImplementation($user, $implementation) && $user->managerCan('view my implementation')) {
-            return true;
-        }
         return $user->managerCan('implementation.view');
     }
 
