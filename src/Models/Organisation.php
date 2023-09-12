@@ -78,6 +78,11 @@ class Organisation extends Model
         return $this->hasOne(NationalParty::class, 'organisation_id');
     }
 
+    public function scopeNationalParty($query)
+    {
+        return $query->whereHas('nationalParty');
+    }
+
     public function partnership(): HasOne
     {
         return $this->hasOne(Partnership::class, 'organisation_id');
