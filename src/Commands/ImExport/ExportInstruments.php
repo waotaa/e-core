@@ -8,7 +8,9 @@ use Vng\EvaCore\Services\Instrument\InstrumentExportService;
 
 class ExportInstruments extends Command
 {
-    protected $signature = 'export:instruments {mark?} {--o|org=}';
+    protected $signature = 'export:instruments
+                            {mark? : Optional; a mark you want to add to all instruments as an indication it originated from this export}
+                            {--o|org= : Option; id of the organisation you want to export the instruments of}';
     protected $description = 'Create a json file with all instrument data. This json can also be used for an import';
 
     public function handle(): int
