@@ -16,7 +16,7 @@ class ElasticApiService
      * @return array
      * @throws Exception
      */
-    public function createKibanaUser($username, $password)
+    public function createKibanaUser($username, $password): array
     {
         $endpoint = '/_security/user/' . $username;
         $requestBody = [
@@ -36,29 +36,19 @@ class ElasticApiService
      * @return array
      * @throws Exception
      */
-    public function put($endpoint, $data)
+    public function put(string $endpoint, array $data)
     {
         // Set the authentication headers
         $headers = $this->getCommonHeaders();
-
-        // Construct the full URL
         $url = $this->getPathForEndpoint($endpoint);
-
-        // Make the PUT request with Laravel HTTP client
         $response = Http::withHeaders($headers)->put($url, $data);
 
-        // Handle the response as needed
         if ($response->failed()) {
-            // Handle the error
             $errorMessage = $response->body();
-            // Log or throw an exception, as appropriate
-        } else {
-            // Successful response
-            $responseData = $response->json();
-            // Process the response
+            throw new Exception($errorMessage);
         }
 
-        return $responseData;
+        return $response->json();
     }
 
     public function getPathForEndpoint($endpoint): string

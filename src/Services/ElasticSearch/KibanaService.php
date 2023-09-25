@@ -25,17 +25,29 @@ class KibanaService
         try {
             $this->updateOrCreateKibanaRoles();
         } catch (\Exception $e) {
-            // exit the attempt
+//            throw $e;
+//             exit the attempt
             return;
         }
 
         $user = $this->updateOrCreateKibanaUser();
         if (!is_null($user)) {
-            $this->environment->update([
+            $this->environment->updateQuietly([
                 'dashboard_username' => $user['username'],
                 'dashboard_password' => $user['password'],
             ]);
         }
+    }
+
+    private function getRoleName(): string
+    {
+        $environmentSlug = $this->environment->getAttribute('slug');
+        return 'view_' . $environmentSlug;
+    }
+
+    private function getUserName(): string
+    {
+        return str_replace(' ', '-', $this->environment->getAttribute('name'));
     }
 
     /**
@@ -44,13 +56,42 @@ class KibanaService
     public function updateOrCreateKibanaRoles(): void
     {
         try {
-            $endpoint = 'kbn:api/security/role/' . $this->getRoleName();
+            $endpoint = '/_security/role/' . $this->getRoleName();
             $requestBody = $this->getRoleRequestBody();
             $this->elasticApiService->put($endpoint, $requestBody);
         } catch (\Exception $e) {
             // Could add additional exception handling
             throw $e;
         }
+    }
+
+    private function getRoleRequestBody(): array
+    {
+        $environmentSlug = $this->environment->getAttribute('slug');
+
+        return [
+            'applications' => [
+                [
+                    'application' => 'kibana',
+                    'privileges' => [
+                        'dashboard.minimal_read',
+                        'dashboard.store_search_session',
+                        'dashboard.generate_report',
+                        'visualize.minimal_read',
+                        'visualize.generate_report',
+                    ],
+                    'resources' => [
+                        'space/instrumenten',
+                        'space/interactie'
+                    ],
+                ],
+            ],
+            'indices' => [
+                $this->getRoleIndexPermissionInteraction($environmentSlug),
+                $this->getRoleIndexPermissionInstrument($environmentSlug),
+                $this->getRoleIndexPermissionEnvironment($environmentSlug),
+            ],
+        ];
     }
 
     #[ArrayShape(['username' => "string", 'password' => "string"])]
@@ -86,24 +127,10 @@ class KibanaService
     {
         return
             'PUT kbn:api/security/role/' . $this->getRoleName() . PHP_EOL .
-            json_encode($this->getRoleRequestBody(), JSON_PRETTY_PRINT);
+            json_encode($this->getCliRoleRequestBody(), JSON_PRETTY_PRINT);
     }
 
-    private function getRoleName(): string
-    {
-        $environmentSlug = $this->environment->getAttribute('slug');
-        return 'view_' . $environmentSlug;
-    }
-
-    private function getUserName(): string
-    {
-        $environmentSlug = $this->environment->getAttribute('slug');
-        return $environmentSlug;
-//        return 'beheerder-' . $environmentSlug;
-    }
-
-    #[ArrayShape(['elasticsearch' => "array", 'kibana' => "array"])]
-    private function getRoleRequestBody(): array
+    private function getCliRoleRequestBody(): array
     {
         $environmentSlug = $this->environment->getAttribute('slug');
 
@@ -198,13 +225,13 @@ class KibanaService
 
     private function getUserEndpoint()
     {
-        return '/_security/user/' . str_replace(' ', '-', $this->environment->getAttribute('name'));
+        return '/_security/user/' . $this->getUserName();
     }
 
     private function getUserRequestBody(): array
     {
         return [
-            'password' => Str::random(),
+            'password' => Str::random(12),
             'roles' => [
                 $this->getRoleName()
             ],
