@@ -8,42 +8,98 @@ use Vng\EvaCore\Models\Environment;
 
 class KibanaService
 {
-    private Environment $environment;
-
-    public function __construct(Environment $environment)
-    {
-        $this->environment = $environment;
+    public function __construct(
+        private Environment $environment,
+        private ElasticApiService $elasticApiService
+    ){
     }
 
     public static function make(Environment $environment): self
     {
-        return new self($environment);
+        $elasticApiService = new ElasticApiService();
+        return new self($environment, $elasticApiService);
     }
 
-    public function putRoles()
+    public function ensureKibanaSetup()
     {
-        $curl = ElasticCurl::make();
-        $endpoint = ElasticCurl::getPathForEndpoint($this->getRoleEndpoint());
+        try {
+            $this->updateOrCreateKibanaRoles();
+        } catch (\Exception $e) {
+            // exit the attempt
+            return;
+        }
 
-        $curl->put($endpoint, $this->getRoleRequestBody());
+        $user = $this->updateOrCreateKibanaUser();
+        if (!is_null($user)) {
+            $this->environment->update([
+                'dashboard_username' => $user['username'],
+                'dashboard_password' => $user['password'],
+            ]);
+        }
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function updateOrCreateKibanaRoles(): void
+    {
+        try {
+            $endpoint = 'kbn:api/security/role/' . $this->getRoleName();
+            $requestBody = $this->getRoleRequestBody();
+            $this->elasticApiService->put($endpoint, $requestBody);
+        } catch (\Exception $e) {
+            // Could add additional exception handling
+            throw $e;
+        }
+    }
+
+    #[ArrayShape(['username' => "string", 'password' => "string"])]
+    public function updateOrCreateKibanaUser(): ?array
+    {
+        try {
+            $username = $this->getUserName();
+            $password = Str::random(12);
+            $endpoint = '/_security/user/' . $username;
+            $requestBody = [
+                'password' => $password,
+                'roles' => [
+                    $this->getRoleName()
+                ],
+            ];
+            $this->elasticApiService->put($endpoint, $requestBody);
+
+            return [
+                'username' => $username,
+                'password' => $password,
+            ];
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * @deprecated use api method instead
+     *
+     * @return string
+     */
     public function getRoleConsoleInput()
     {
         return
-            'PUT ' . $this->getRoleEndpoint() . PHP_EOL .
+            'PUT kbn:api/security/role/' . $this->getRoleName() . PHP_EOL .
             json_encode($this->getRoleRequestBody(), JSON_PRETTY_PRINT);
-    }
-
-    private function getRoleEndpoint()
-    {
-        return 'kbn:api/security/role/' . $this->getRoleName();
     }
 
     private function getRoleName(): string
     {
-        $environmentName = $this->environment->getAttribute('slug');
-        return 'view_' . $environmentName;
+        $environmentSlug = $this->environment->getAttribute('slug');
+        return 'view_' . $environmentSlug;
+    }
+
+    private function getUserName(): string
+    {
+        $environmentSlug = $this->environment->getAttribute('slug');
+        return $environmentSlug;
+//        return 'beheerder-' . $environmentSlug;
     }
 
     #[ArrayShape(['elasticsearch' => "array", 'kibana' => "array"])]

@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Observers;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Repositories\NationalPartyRepositoryInterface;
 use Vng\EvaCore\Services\Cognito\CognitoService;
+use Vng\EvaCore\Services\ElasticSearch\KibanaService;
 
 class EnvironmentObserver
 {
@@ -23,5 +24,8 @@ class EnvironmentObserver
     public function saving(Environment $environment): void
     {
         CognitoService::make($environment)->ensureSetup();
+
+        // ensure kibana setup
+        KibanaService::make($environment)->ensureKibanaSetup();
     }
 }

@@ -3,14 +3,15 @@
 namespace Vng\EvaCore\Models;
 
 use Database\Factories\EnvironmentFactory;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Support\Str;
 use Vng\EvaCore\ElasticResources\EnvironmentResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Observers\EnvironmentObserver;
 use Vng\EvaCore\Services\AreaService;
 use Vng\EvaCore\Traits\HasOwner;
@@ -35,7 +36,14 @@ class Environment extends SearchableModel
         'color_secondary',
         'user_pool_id',
         'user_pool_client_id',
-        'url'
+        'url',
+
+        'dashboard_username',
+        'dashboard_password'
+    ];
+
+    protected $hidden = [
+        'dashboard_password'
     ];
 
     protected static function boot()
@@ -47,6 +55,21 @@ class Environment extends SearchableModel
     protected static function newFactory()
     {
         return EnvironmentFactory::new();
+    }
+
+    public function setDashboardPasswordAttribute($value)
+    {
+        $this->attributes['dashboard_password'] = app(Encrypter::class)->encrypt($value);
+    }
+
+    public function getDashboardPasswordAttribute()
+    {
+        try {
+            return app(Encrypter::class)->decrypt($this->attributes['dashboard_password']);
+        } catch (DecryptException $e) {
+            // Handle decryption errors (e.g., invalid encryption or wrong key)
+            return null;
+        }
     }
 
     public function contact()
