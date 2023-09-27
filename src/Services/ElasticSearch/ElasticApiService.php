@@ -80,7 +80,7 @@ class ElasticApiService
         return $apiKey;
     }
 
-    private function getHost(): string
+    public function getHost(): string
     {
         return Str::finish(config('elastic.kibana.host'), '/');
     }
