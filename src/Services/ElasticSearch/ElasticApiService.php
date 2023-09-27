@@ -56,7 +56,7 @@ class ElasticApiService
         if (Str::startsWith($endpoint, '/')) {
             $endpoint = substr($endpoint, 1);
         }
-        return $this->getHost() . $endpoint;
+        return self::getHost() . $endpoint;
     }
 
     private function getCommonHeaders()
@@ -80,7 +80,7 @@ class ElasticApiService
         return $apiKey;
     }
 
-    public function getHost(): string
+    public static function getHost(): string
     {
         return Str::finish(config('elastic.kibana.host'), '/');
     }
