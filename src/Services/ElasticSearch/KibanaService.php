@@ -51,18 +51,17 @@ class KibanaService
         return str_replace(' ', '-', $this->environment->getAttribute('name'));
     }
 
-    /**
-     * @throws \Exception
-     */
     public function updateOrCreateKibanaRoles(): void
     {
         try {
             $endpoint = '/_security/role/' . $this->getRoleName();
             $requestBody = $this->getRoleRequestBody();
-            $this->elasticApiService->put($endpoint, $requestBody);
-        } catch (\Exception $e) {
-            // Could add additional exception handling
+            $result = $this->elasticApiService->put($endpoint, $requestBody);
+            Log::debug('kibana roles result', $result);
+        }  catch (\Exception $e) {
+            Log::error($e);
             throw $e;
+//            return null;
         }
     }
 
@@ -71,6 +70,7 @@ class KibanaService
         $environmentSlug = $this->environment->getAttribute('slug');
 
         return [
+            "cluster" => ["all"],
             'applications' => [
                 [
                     'application' => 'kibana',
@@ -108,8 +108,10 @@ class KibanaService
                     $this->getRoleName()
                 ],
             ];
-            $this->elasticApiService->put($endpoint, $requestBody);
-
+            $result = $this->elasticApiService->put($endpoint, $requestBody);
+            Log::debug('kibana user creation result', $result);
+            $created = $result['created'] ? '' : ' NOT';
+            Log::info('User is' . $created . ' created? ');
             return [
                 'username' => $username,
                 'password' => $password,
