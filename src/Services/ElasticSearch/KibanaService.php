@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Services\ElasticSearch;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
 use Vng\EvaCore\Models\Environment;
@@ -113,8 +114,10 @@ class KibanaService
                 'username' => $username,
                 'password' => $password,
             ];
-        } catch (\Exception $e) {
-            return null;
+        }  catch (\Exception $e) {
+            Log::error($e);
+            throw $e;
+//            return null;
         }
     }
 
