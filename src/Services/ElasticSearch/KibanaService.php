@@ -33,10 +33,7 @@ class KibanaService
 
         $user = $this->updateOrCreateKibanaUser();
         if (!is_null($user)) {
-            $this->environment->updateQuietly([
-                'dashboard_username' => $user['username'],
-                'dashboard_password' => $user['password'],
-            ]);
+            $this->saveKibanaUser($user['username'], $user['password']);
         }
     }
 
@@ -121,6 +118,14 @@ class KibanaService
             throw $e;
 //            return null;
         }
+    }
+
+    public function saveKibanaUser(string $username, string $password)
+    {
+        $this->environment->updateQuietly([
+            'dashboard_username' => $username,
+            'dashboard_password' => $password,
+        ]);
     }
 
     /**
