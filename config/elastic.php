@@ -3,7 +3,7 @@
 return [
     'prefix' => env('ELASTIC_INDEX_PREFIX'),
     'kibana' => [
-        'host' => env('KIBANA_HOST'),
+        'host' => env('KIBANA_API_HOST'),
         'apiKey' => env('KIBANA_API_KEY')
     ],
     'instances' => [
