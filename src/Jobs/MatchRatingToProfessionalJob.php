@@ -2,11 +2,8 @@
 
 namespace Vng\EvaCore\Jobs;
 
-use Vng\EvaCore\ElasticResources\RatingResource;
-use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Professional;
 use Vng\EvaCore\Models\Rating;
-use DateTime;
 
 class MatchRatingToProfessionalJob extends ElasticJob
 {

@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Services\ElasticSearch;
 
+use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
@@ -28,6 +29,11 @@ class KibanaService
         } catch (\Exception $e) {
 //            throw $e;
 //             exit the attempt
+            return;
+        }
+
+        $exists = $this->kibanaUserExists();
+        if ($exists) {
             return;
         }
 
@@ -90,6 +96,38 @@ class KibanaService
                 $this->getRoleIndexPermissionEnvironment($environmentSlug),
             ],
         ];
+    }
+
+    public function kibanaUserExists()
+    {
+        $username = $this->environment->getAttribute('dashboard_username');
+        if (is_null($username)) {
+            // no userdata in database, user does not exist on our end
+            return false;
+        }
+        $endpoint = '/_security/user/' . $username;
+        $response = $this->elasticApiService->get($endpoint);
+
+        if ($response->status() == '404') {
+            // we have a user registered, but none is found
+            return false;
+        }
+
+        if ($response->failed()) {
+            $errorMessage = $response->body();
+            Log::error($errorMessage);
+            throw new Exception($errorMessage);
+        }
+
+        $result = $response->json();
+        Log::debug('kibana user get result', $result);
+        if ($result && $result[0]['username'] === $username) {
+            // user found
+            return true;
+        }
+
+        // there was a response, but not one that matched our expectation
+        return false;
     }
 
     #[ArrayShape(['username' => "string", 'password' => "string"])]

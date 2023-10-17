@@ -28,6 +28,13 @@ class ElasticApiService
         return $this->put($endpoint, $requestBody);
     }
 
+    public function get(string $endpoint)
+    {
+        $headers = $this->getCommonHeaders();
+        $url = $this->getPathForEndpoint($endpoint);
+        return Http::withHeaders($headers)->get($url);
+    }
+
     /**
      * Perform an HTTP PUT request.
      *
