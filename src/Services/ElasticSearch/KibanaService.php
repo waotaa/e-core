@@ -121,7 +121,7 @@ class KibanaService
 
         $result = $response->json();
         Log::debug('kibana user get result', $result);
-        if ($result && $result[0]['username'] === $username) {
+        if ($result && reset($result)['username'] === $username) {
             // user found
             return true;
         }
