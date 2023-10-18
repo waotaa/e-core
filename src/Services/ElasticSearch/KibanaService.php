@@ -77,12 +77,21 @@ class KibanaService
             'applications' => [
                 [
                     'application' => 'kibana',
+//                    alternative
+//                    'application' => 'kibana-.kibana',
                     'privileges' => [
                         'dashboard.minimal_read',
                         'dashboard.store_search_session',
                         'dashboard.generate_report',
                         'visualize.minimal_read',
                         'visualize.generate_report',
+
+//                        alternative
+//                        "feature_dashboard.minimal_read",
+//                        "feature_dashboard.store_search_session",
+//                        "feature_dashboard.generate_report",
+//                        "feature_visualize.minimal_read",
+//                        "feature_visualize.generate_report"
                     ],
                     'resources' => [
                         'space:instrumenten',
