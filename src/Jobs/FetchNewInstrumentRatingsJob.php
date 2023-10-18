@@ -51,7 +51,8 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
             $newRatings->each(function($rating) {
                 $ratingModel = new Rating([
                     'author' => $rating["author"],
-                    'email' => $rating["professional"]["email"],
+                    'email' => $rating["email"],
+//                    'email' => $rating["professional"]["email"],
                     'general_score' => $rating["general_score"],
                     'general_explanation' => $rating["general_explanation"],
                     'result_score' => $rating["result_score"],

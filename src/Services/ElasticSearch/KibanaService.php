@@ -73,7 +73,7 @@ class KibanaService
         $environmentSlug = $this->environment->getAttribute('slug');
 
         return [
-            "cluster" => ["all"],
+            "cluster" => [],
             'applications' => [
                 [
                     'application' => 'kibana',
@@ -85,8 +85,8 @@ class KibanaService
                         'visualize.generate_report',
                     ],
                     'resources' => [
-                        'space/instrumenten',
-                        'space/interactie'
+                        'space:instrumenten',
+                        'space:interactie'
                     ],
                 ],
             ],
