@@ -76,9 +76,9 @@ class KibanaService
             "cluster" => [],
             'applications' => [
                 [
-                    'application' => 'kibana',
+//                    'application' => 'kibana',
 //                    alternative
-//                    'application' => 'kibana-.kibana',
+                    'application' => 'kibana-.kibana',
                     'privileges' => [
                         'dashboard.minimal_read',
                         'dashboard.store_search_session',
