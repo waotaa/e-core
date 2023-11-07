@@ -24,7 +24,10 @@ class EnvironmentObserver
     public function saving(Environment $environment): void
     {
         CognitoService::make($environment)->ensureSetup();
+    }
 
+    public function saved(Environment $environment): void
+    {
         // ensure kibana setup
         KibanaService::make($environment)->ensureKibanaSetup();
     }
