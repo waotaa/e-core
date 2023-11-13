@@ -53,7 +53,8 @@ class KibanaService
 
     private function getUserName(): string
     {
-        return str_replace(' ', '-', $this->environment->getAttribute('name'));
+        $pattern = '/[\s\/\\\\&]+/';
+        return preg_replace($pattern, '-', $this->environment->getAttribute('name'));
     }
 
     public function updateOrCreateKibanaRoles(): void
