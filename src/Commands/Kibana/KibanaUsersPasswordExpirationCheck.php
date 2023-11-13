@@ -1,19 +1,20 @@
 <?php
 
-namespace Vng\EvaCore\Commands\Professionals;
+namespace Vng\EvaCore\Commands\Kibana;
 
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Services\Cognito\CognitoService;
 use Illuminate\Console\Command;
+use Vng\EvaCore\Services\ElasticSearch\KibanaService;
 
-class ProfessionalPasswordExpirationCheck extends Command
+class KibanaUsersPasswordExpirationCheck extends Command
 {
-    protected $signature = 'professionals:password-expiration {environmentSlug?}';
-    protected $description = 'Reset passwords if expired';
+    protected $signature = 'kibana:password-expiration {environmentSlug?}';
+    protected $description = 'Reset passwords of kibana users if expired';
 
     public function handle(): int
     {
-        $this->getOutput()->writeln('resetting expired passwords...');
+        $this->getOutput()->writeln('resetting expired kibana passwords...');
 
         $slug = $this->argument('environmentSlug');
         if (!is_null($slug)) {
@@ -28,13 +29,13 @@ class ProfessionalPasswordExpirationCheck extends Command
             });
         }
 
-        $this->getOutput()->writeln('resetting expired passwords finished');
+        $this->getOutput()->writeln('resetting expired kibana passwords finished');
         return 0;
     }
 
     public function resetExpiredPasswords(Environment $environment)
     {
-        $this->output->writeln('handling environment ' . $environment->name . ' with userpool name ' . $environment->deriveUserPoolName());
-        CognitoService::make($environment)->resetExpiredPasswords();
+        $this->output->writeln('handling environment ' . $environment->name);
+        KibanaService::make($environment)->resetKibanaCredetialsIfExpired();
     }
 }

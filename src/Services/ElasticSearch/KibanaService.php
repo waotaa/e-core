@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Services\ElasticSearch;
 
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -33,7 +34,8 @@ class KibanaService
         }
 
         $exists = $this->kibanaUserExists();
-        if ($exists) {
+        $credentialsExpired = $this->kibanaUserCredetialsAreExpired();
+        if ($exists && !$credentialsExpired) {
             return;
         }
 
@@ -130,6 +132,22 @@ class KibanaService
         return false;
     }
 
+    public function kibanaUserCredetialsAreExpired(): bool
+    {
+        $sixMonthsAgo = Carbon::now()->modify('-6 months');
+        return $this->environment->dashboard_password_updated_at < $sixMonthsAgo;
+    }
+
+    public function resetKibanaCredetialsIfExpired(): void
+    {
+        if ($this->kibanaUserCredetialsAreExpired()) {
+            $user = $this->updateOrCreateKibanaUser();
+            if (!is_null($user)) {
+                $this->saveKibanaUser($user['username'], $user['password']);
+            }
+        }
+    }
+
     #[ArrayShape(['username' => "string", 'password' => "string"])]
     public function updateOrCreateKibanaUser(): ?array
     {
@@ -158,11 +176,12 @@ class KibanaService
         }
     }
 
-    public function saveKibanaUser(string $username, string $password)
+    public function saveKibanaUser(string $username, string $password): void
     {
         $this->environment->updateQuietly([
             'dashboard_username' => $username,
             'dashboard_password' => $password,
+            'dashboard_password_updated_at' => Carbon::now(),
         ]);
     }
 

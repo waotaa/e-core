@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Carbon\Carbon;
 use Database\Factories\EnvironmentFactory;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -39,11 +40,16 @@ class Environment extends SearchableModel
         'url',
 
         'dashboard_username',
-        'dashboard_password'
+        'dashboard_password',
+        'dashboard_password_updated_at'
     ];
 
     protected $hidden = [
         'dashboard_password'
+    ];
+
+    protected $dates = [
+        'dashboard_password_updated_at'
     ];
 
     protected static function boot()

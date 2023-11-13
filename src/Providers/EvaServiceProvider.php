@@ -52,6 +52,7 @@ use Vng\EvaCore\Commands\ImportInstruments;
 use Vng\EvaCore\Commands\ImportOldFormatInstruments;
 use Vng\EvaCore\Commands\Instruments\AssignInstrumentTypes;
 use Vng\EvaCore\Commands\Instruments\InstrumentSignalingCheck;
+use Vng\EvaCore\Commands\Kibana\KibanaUsersPasswordExpirationCheck;
 use Vng\EvaCore\Commands\Operations\AddNewsItem;
 use Vng\EvaCore\Commands\Operations\CleanContacts;
 use Vng\EvaCore\Commands\Operations\SetupGeoData;
@@ -196,6 +197,8 @@ class EvaServiceProvider extends AggregateServiceProvider
 
         AssignInstrumentTypes::class,
         InstrumentSignalingCheck::class,
+
+        KibanaUsersPasswordExpirationCheck::class,
 
         CognitoFetchProfessionals::class,
         CognitoGetConfig::class,
