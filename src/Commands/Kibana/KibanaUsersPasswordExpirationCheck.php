@@ -36,6 +36,13 @@ class KibanaUsersPasswordExpirationCheck extends Command
     public function resetExpiredPasswords(Environment $environment)
     {
         $this->output->writeln('handling environment ' . $environment->name);
-        KibanaService::make($environment)->resetKibanaCredetialsIfExpired();
+        $kibanaService = KibanaService::make($environment);
+        if ($kibanaService->kibanaUserCredetialsAreExpired()) {
+            $this->output->writeln('* expired');
+        } else {
+            $this->output->writeln('* NOT expired');
+        }
+
+        $kibanaService->resetKibanaCredetialsIfExpired();
     }
 }
