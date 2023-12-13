@@ -22,6 +22,7 @@ class CleanedHtml implements CastsAttributes
         if (!is_string($html)) {
             return $html;
         }
-        return TextEditService::cleanHtml($html);
+        $html = TextEditService::cleanHtml($html);
+        return TextEditService::hasOnlyEmptyParagraphs($html) ? null : $html;
     }
 }

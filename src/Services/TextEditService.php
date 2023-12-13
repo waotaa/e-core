@@ -37,6 +37,14 @@ class TextEditService
         return static::removeUnallowedTags($html);
     }
 
+    public static function hasOnlyEmptyParagraphs(string $html): bool
+    {
+        // Match paragraphs that are either empty or contain only whitespaces and/or &nbsp;
+        $pattern = '/^(?:<p(?:\s?[^>]*)*>(?:\s|&nbsp;)*<\/p>)*$/i';
+
+        return preg_match($pattern, $html) === 1;
+    }
+
     public static function splitOnParagraphs(string $html): array
     {
         $html = static::removeEmptyParagraphs($html);
