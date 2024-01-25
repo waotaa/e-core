@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Vng\EvaCore\Observers\EnvironmentObserver;
 use Vng\EvaCore\Services\AreaService;
+use Vng\EvaCore\Services\Storage\LogoStorageService;
 use Vng\EvaCore\Traits\HasOwner;
 use Vng\EvaCore\Traits\HasPermanentSlug;
 
@@ -76,6 +77,11 @@ class Environment extends SearchableModel
             // Handle decryption errors (e.g., invalid encryption or wrong key)
             return null;
         }
+    }
+
+    public function getLogoUrlAttribute()
+    {
+        return LogoStorageService::make($this->organisation)->getFileUrl($this->attributes['logo']);
     }
 
     public function contact()

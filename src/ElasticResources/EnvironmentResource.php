@@ -16,6 +16,7 @@ class EnvironmentResource extends ElasticResource
             'description' => $this->description,
 
             'logo' => $this->logo,
+            'logo_url' => $this->logo_url,
             'color_primary' => $this->color_primary,
             'color_secondary' => $this->color_secondary,
             'user_pool_id' => $this->user_pool_id,

@@ -3,11 +3,13 @@
 namespace Vng\EvaCore\Repositories\Eloquent;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\UploadedFile;
 use Vng\EvaCore\Http\Requests\EnvironmentCreateRequest;
 use Vng\EvaCore\Http\Requests\EnvironmentDetailsUpdateRequest;
 use Vng\EvaCore\Http\Requests\EnvironmentUpdateRequest;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
+use Vng\EvaCore\Services\Storage\LogoStorageService;
 
 class EnvironmentRepository extends BaseRepository implements EnvironmentRepositoryInterface
 {
@@ -42,6 +44,18 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
             $environment->organisation()->associate($organisation);
         }
 
+        $logo = $request->input('logo');
+        if ($request->hasFile('logo')) {
+            /** @var UploadedFile $uploadedFile */
+            $logo = $request->file('logo');
+            // Check if the file actually exists on the server
+            if ($logo->isValid()) {
+                $storedFile = LogoStorageService::make($environment->organisation)
+                    ->storeFile($logo);
+                $logo = $storedFile->getPath();
+            }
+        }
+
         $environment->fill([
             // optional in edit requests
             'name' => $request->has('name') ? $request->input('name') : $environment->name,
@@ -50,7 +64,7 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
 
             'description_header' => $request->input('description_header'),
             'description' => $request->input('description'),
-            'logo' => $request->input('logo'),
+            'logo' => $logo,
             'color_primary' => $request->input('color_primary'),
             'color_secondary' => $request->input('color_secondary'),
         ]);

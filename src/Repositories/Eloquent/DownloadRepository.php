@@ -10,7 +10,7 @@ use Vng\EvaCore\Models\Download;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Repositories\DownloadRepositoryInterface;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
-use Vng\EvaCore\Services\DownloadsService;
+use Vng\EvaCore\Services\Storage\DownloadStorageService;
 
 class DownloadRepository extends BaseRepository implements DownloadRepositoryInterface
 {
@@ -44,11 +44,16 @@ class DownloadRepository extends BaseRepository implements DownloadRepositoryInt
         if ($request->has('file')) {
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $request->file('file');
-            $download = DownloadsService::saveUploadedFile($uploadedFile, $organisation, $download);
+            $storedFile = DownloadStorageService::make($organisation)->storeFile($uploadedFile);
+            $download->fill([
+                'filename' => $storedFile->getFilename(),
+                'url' => $storedFile->getPath()
+            ]);
         } elseif ($request->has('key')) {
-            $download = DownloadsService::movePreUploadedFile($request->input('key'), $organisation, $download);
+            $filePath = DownloadStorageService::make($organisation)->movePreUploadedFile($request->input('key'));
             $download->fill([
                 'filename' => $request->input('filename'),
+                'url' => $filePath
             ]);
         } else {
             throw new \Exception('Invalid request. Missing file or key');

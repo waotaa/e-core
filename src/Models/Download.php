@@ -5,7 +5,7 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Vng\EvaCore\Observers\DownloadObserver;
-use Vng\EvaCore\Services\DownloadsService;
+use Vng\EvaCore\Services\Storage\DownloadStorageService;
 
 class Download extends Model
 {
@@ -27,7 +27,7 @@ class Download extends Model
     {
         if ($deleteFile) {
             try {
-                DownloadsService::deleteDownloadFile($this);
+                DownloadStorageService::make()->deleteFile($this->url);
             } catch (\Exception $e) {
                 // accept for now that deleting the file failed.
                 // We still want to delete the download entity though
