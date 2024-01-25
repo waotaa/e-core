@@ -40,9 +40,17 @@ class TextEditService
     public static function hasOnlyEmptyParagraphs(string $html): bool
     {
         // Match paragraphs that are either empty or contain only whitespaces and/or &nbsp;
-        $pattern = '/^(?:<p(?:\s?[^>]*)*>(?:\s|&nbsp;)*<\/p>)*$/i';
+//        $pattern = '/^(?:<p(?:\s?[^>]*)*>(?:\s|&nbsp;)*<\/p>)*$/i';
+        $pattern =  '/^(?:<p(?:\s?[^>]*)*>(?:(?:\s|&nbsp;|<br\s*\/?>)*)*<\/p>)*$/i';
 
         return preg_match($pattern, $html) === 1;
+    }
+
+    public static function hasContent($string): bool
+    {
+        $strippedString = strip_tags($string);
+        $trimmedString = trim($strippedString);
+        return $trimmedString !== '';
     }
 
     public static function splitOnParagraphs(string $html): array
