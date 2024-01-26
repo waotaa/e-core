@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Commands\Professionals;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Services\Cognito\CognitoService;
 
@@ -14,6 +15,10 @@ class CognitoFetchProfessionals extends Command
     public function handle(): int
     {
         $this->getOutput()->writeln('fetching professionals...');
+
+        if (!$this->hasValidConfig()) {
+            return 1;
+        }
 
         $slug = $this->argument('environmentSlug');
         if (!is_null($slug)) {
@@ -30,6 +35,17 @@ class CognitoFetchProfessionals extends Command
 
         $this->getOutput()->writeln('fetching professionals finished');
         return 0;
+    }
+
+    public function hasValidConfig(): bool
+    {
+        if (!CognitoService::hasRequiredConfig()) {
+            $message = 'AWS Config missing: Could not fetch professionals';
+            Log::warning($message);
+            $this->warn($message);
+            return false;
+        }
+        return true;
     }
 
     public function fetchNewUsers(Environment $environment)

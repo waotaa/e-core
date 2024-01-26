@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Commands\Professionals;
 
+use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Services\Cognito\CognitoService;
 use Illuminate\Console\Command;
@@ -35,6 +36,13 @@ class ProfessionalPasswordExpirationCheck extends Command
     public function resetExpiredPasswords(Environment $environment)
     {
         $this->output->writeln('handling environment ' . $environment->name . ' with userpool name ' . $environment->deriveUserPoolName());
-        CognitoService::make($environment)->resetExpiredPasswords();
+
+        if (CognitoService::hasRequiredConfig()) {
+            CognitoService::make($environment)->resetExpiredPasswords();
+        } else {
+            $message = 'AWS Config missing: Could not reset expired passwords';
+            Log::warning($message);
+            $this->warn($message);
+        }
     }
 }

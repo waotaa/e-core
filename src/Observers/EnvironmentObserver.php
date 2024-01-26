@@ -23,7 +23,9 @@ class EnvironmentObserver
 
     public function saving(Environment $environment): void
     {
-        CognitoService::make($environment)->ensureSetup();
+        if (CognitoService::hasRequiredConfig()) {
+            CognitoService::make($environment)->ensureSetup();
+        }
     }
 
     public function saved(Environment $environment): void

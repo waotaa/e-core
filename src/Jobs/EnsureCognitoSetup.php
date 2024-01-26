@@ -19,7 +19,9 @@ class EnsureCognitoSetup implements ShouldQueue
 
     public function handle(): void
     {
-        $environment = CognitoService::make($this->environment)->ensureSetup();
-        $environment->saveQuietly();
+        if (CognitoService::hasRequiredConfig()) {
+            $environment = CognitoService::make($this->environment)->ensureSetup();
+            $environment->saveQuietly();
+        }
     }
 }

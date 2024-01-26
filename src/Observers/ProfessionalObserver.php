@@ -15,15 +15,19 @@ class ProfessionalObserver
 
     public function saved(Professional $professional): void
     {
-        $cognitoService = CognitoService::make($professional->environment);
-        $profModel = $cognitoService->getUser($professional);
-        if (is_null($profModel)) {
-            $cognitoService->createProfessional($professional);
+        if (CognitoService::hasRequiredConfig()) {
+            $cognitoService = CognitoService::make($professional->environment);
+            $profModel = $cognitoService->getUser($professional);
+            if (is_null($profModel)) {
+                $cognitoService->createProfessional($professional);
+            }
         }
     }
 
     public function deleted(Professional $professional): void
     {
-        CognitoService::make($professional->environment)->deleteProfessional($professional);
+        if (CognitoService::hasRequiredConfig()) {
+            CognitoService::make($professional->environment)->deleteProfessional($professional);
+        }
     }
 }

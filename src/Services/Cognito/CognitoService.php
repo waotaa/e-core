@@ -63,6 +63,13 @@ class CognitoService
         return new static($environment);
     }
 
+    public static function hasRequiredConfig(): bool
+    {
+        $hasKey = config('aws.credentials.key');
+        $hasSecret = config('aws.credentials.secret');
+        return $hasKey && $hasSecret;
+    }
+
     public function ensureSetup(): Environment
     {
         $userPoolModel = UserPoolService::ensureUserPool($this->environment);
