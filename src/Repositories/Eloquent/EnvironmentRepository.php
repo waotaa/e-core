@@ -53,7 +53,14 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
                 $storedFile = LogoStorageService::make($environment->organisation)
                     ->storeFile($logo);
                 $logo = $storedFile->getPath();
+                $environment->fill([
+                    'logo' => $logo
+                ]);
             }
+        } elseif (!is_null($logo)) {
+            $environment->fill([
+                'logo' => $logo
+            ]);
         }
 
         $environment->fill([
@@ -64,7 +71,6 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
 
             'description_header' => $request->input('description_header'),
             'description' => $request->input('description'),
-            'logo' => $logo,
             'color_primary' => $request->input('color_primary'),
             'color_secondary' => $request->input('color_secondary'),
         ]);
