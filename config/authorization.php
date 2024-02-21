@@ -259,6 +259,29 @@ $globalContactPermissions = [
     'contact.forceDelete'
 ];
 
+// TargetGroup
+$organisationTargetGroupPermissions = [
+    'targetGroup.viewAny',
+    'targetGroup.organisation.view',
+    'targetGroup.organisation.create',
+    'targetGroup.organisation.update',
+    'targetGroup.organisation.delete',
+    'targetGroup.organisation.restore',
+    'targetGroup.organisation.forceDelete',
+];
+
+$globalTargetGroupPermissions = [
+    ...$organisationTargetGroupPermissions,
+    'targetGroup.viewAny',
+    'targetGroup.viewAll',
+    'targetGroup.view',
+    'targetGroup.create',
+    'targetGroup.update',
+    'targetGroup.delete',
+    'targetGroup.restore',
+    'targetGroup.forceDelete'
+];
+
 // Instruments
 $instrumentPropertyPermissions = [
     'clientCharacteristic.viewAny',
@@ -287,12 +310,6 @@ $instrumentPropertyManagementPermissions = [
     'implementation.custom.delete',
     'implementation.custom.restore',
     'implementation.custom.forceDelete',
-
-    'targetGroup.custom.create',
-    'targetGroup.custom.update',
-    'targetGroup.custom.delete',
-    'targetGroup.custom.restore',
-    'targetGroup.custom.forceDelete',
 
     'location.create',
     'location.update',
@@ -436,6 +453,7 @@ return [
             ...$generalPermissions,
             ...$organisationAddressPermissions,
             ...$organisationContactPermissions,
+            ...$organisationTargetGroupPermissions,
             ...$organisationInstrumentPermissions,
             ...$organisationProviderPermissions,
         ],
@@ -449,6 +467,7 @@ return [
             ...$organisationUserPermissions,
             ...$organisationAddressPermissions,
             ...$organisationContactPermissions,
+            ...$organisationTargetGroupPermissions,
             ...$organisationInstrumentPermissions,
             ...$organisationProviderPermissions,
         ],

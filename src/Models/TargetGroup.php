@@ -5,10 +5,11 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Vng\EvaCore\Traits\HasOwner;
 
 class TargetGroup extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasOwner;
 
     protected $table = 'target_groups';
 

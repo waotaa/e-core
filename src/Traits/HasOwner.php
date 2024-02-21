@@ -50,8 +50,8 @@ trait HasOwner
      * @deprecated
      * @see organisation()
      */
-    public function owner(): MorphTo
-    {
-        return $this->morphTo();
-    }
+//    public function owner(): MorphTo
+//    {
+//        return $this->morphTo();
+//    }
 }
