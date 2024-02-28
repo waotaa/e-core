@@ -1,0 +1,17 @@
+type: object
+required:
+  - instrument_id
+  - manager_id
+properties:
+  role:
+    type: string
+  notification_frequency:
+    type: string
+  on_modification:
+    type: boolean
+  on_expiration:
+    type: boolean
+  instrument_id:
+    type: integer
+  manager_id:
+    type: integer

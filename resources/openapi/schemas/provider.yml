@@ -1,0 +1,33 @@
+type: object
+properties:
+  id:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  deleted_at:
+    type: string
+    format: date-time
+  name:
+    type: string
+  slug:
+    type: string
+  import_mark:
+    type: string
+  organisation:
+    $ref: './organisation.yml'
+  address:
+    oneOf:
+      - type: 'null'
+      - $ref: './address.yml'
+  contacts:
+    type: array
+    items:
+      $ref: './contact.yml'
+  mutations:
+    type: array
+    items:
+      $ref: './mutation.yml'

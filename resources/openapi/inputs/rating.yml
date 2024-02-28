@@ -1,0 +1,29 @@
+type: object
+required:
+  - instrument_id
+  - email
+  - general_score
+  - result_score
+  - execution_score
+properties:
+  author:
+    type: string
+  email:
+    type: string
+  general_score:
+    type: integer
+  general_explanation:
+    type: string
+  result_score:
+    type: integer
+  result_explanation:
+    type: string
+  execution_score:
+    type: integer
+  execution_explanation:
+    type: string
+  instrument_id:
+    type: integer
+  professional_id:
+    type: integer
+    nullable: true

@@ -1,0 +1,16 @@
+type: object
+required:
+  - name
+  - organisation_id
+properties:
+  name:
+    type: string
+  email:
+    type: string
+  website:
+    type: string
+  organisation_id:
+    type: integer
+  address_id:
+    type: integer
+    nullable: true

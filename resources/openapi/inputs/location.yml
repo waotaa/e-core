@@ -1,0 +1,17 @@
+type: object
+required:
+  - instrument_id
+properties:
+  name:
+    type: string
+  type:
+    type: string
+  is_active:
+    type: boolean
+  description:
+    type: string
+  instrument_id:
+    type: integer
+  address_id:
+    type: integer
+    nullable: true

@@ -1,0 +1,64 @@
+Address:
+  $ref: './schemas/address.yml'
+Area:
+  $ref: './schemas/area.yml'
+ClientCharacteristic:
+  $ref: './schemas/client-characteristic.yml'
+Contact:
+  $ref: './schemas/contact.yml'
+Download:
+  $ref: './schemas/download.yml'
+Environment:
+  $ref: './schemas/environment.yml'
+GroupForm:
+  $ref: './schemas/group-form.yml'
+Implementation:
+  $ref: './schemas/implementation.yml'
+Instrument:
+  $ref: './schemas/instrument.yml'
+InstrumentTracker:
+  $ref: './schemas/instrument-tracker.yml'
+Link:
+  $ref: './schemas/link.yml'
+LocalParty:
+  $ref: './schemas/local-party.yml'
+Location:
+  $ref: './schemas/location.yml'
+Manager:
+  $ref: './schemas/manager.yml'
+Mutation:
+  $ref: './schemas/mutation.yml'
+NationalParty:
+  $ref: './schemas/national-party.yml'
+Neighbourhood:
+  $ref: './schemas/neighbourhood.yml'
+NewsItem:
+  $ref: './schemas/news-item.yml'
+Organisation:
+  $ref: './schemas/organisation.yml'
+Partnership:
+  $ref: './schemas/partnership.yml'
+Professional:
+  $ref: './schemas/professional.yml'
+Provider:
+  $ref: './schemas/provider.yml'
+Rating:
+  $ref: './schemas/rating.yml'
+Region:
+  $ref: './schemas/region.yml'
+RegionalParty:
+  $ref: './schemas/regional-party.yml'
+RegistrationCode:
+  $ref: './schemas/registration-code.yml'
+Role:
+  $ref: './schemas/role.yml'
+TargetGroup:
+  $ref: './schemas/target-group.yml'
+Tile:
+  $ref: './schemas/tile.yml'
+Township:
+  $ref: './schemas/township.yml'
+User:
+  $ref: './schemas/user.yml'
+Video:
+  $ref: './schemas/video.yml'

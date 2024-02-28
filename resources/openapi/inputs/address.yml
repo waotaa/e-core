@@ -1,0 +1,23 @@
+type: object
+required:
+  - organisation_id
+  - postcode
+  - woonplaats
+properties:
+  name:
+    type: string
+  organisation_id:
+    type: integer
+  straatnaam:
+    type: string
+  huisnummer:
+    type: string
+  postbusnummer:
+    type: integer
+  antwoordnummer:
+    type: integer
+  postcode:
+    type: string
+    pattern: '^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-zA-Z]{2}$'
+  woonplaats:
+    type: string

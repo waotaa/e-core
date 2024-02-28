@@ -1,0 +1,174 @@
+type: object
+properties:
+  id:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  deleted_at:
+    type: string
+    format: date-time
+  uuid:
+    type: string
+  name:
+    type: string
+  slug:
+    type: string
+
+  publish:
+    type: boolean
+  publish_from:
+    type: string
+  publish_to:
+    type: string
+  published:
+    type: boolean
+  complete:
+    type: boolean
+
+  aim:
+    type: string
+  summary:
+    type: string
+  method:
+    type: string
+  distinctive_approach:
+    type: string
+  target_group_description:
+    type: string
+  participation_conditions:
+    type: string
+  cooperatioon_partners:
+    type: string
+  additional_information:
+    type: string
+
+  work_agreements:
+    type: string
+  application_instructions:
+    type: string
+  intensity_hours_per_week:
+    type: integer
+  total_duration_value:
+    type: integer
+  total_duration_unit:
+    type: string
+  total_duration_unit_key:
+    type: string
+  total_duration_hours:
+    type: integer
+  total_costs:
+    type: string
+  total_costs_whole_number:
+    type: integer
+  costs_description:
+    type: string
+  duration_description:
+    type: string
+  intensity_description:
+    type: string
+
+  import_mark:
+    type: string
+
+  is_national:
+    type: boolean
+  is_regional:
+    type: boolean
+  is_local:
+    type: boolean
+  reach:
+    type: string
+
+  organisation:
+    $ref: './organisation.yml'
+  implementation:
+    $ref: './implementation.yml'
+  group_forms:
+    type: array
+    items:
+      $ref: './group-form.yml'
+  locations:
+    type: array
+    items:
+      $ref: './location.yml'
+  registration_codes:
+    type: array
+    items:
+      $ref: './registration-code.yml'
+  rating:
+    type: string
+  ratings:
+    type: array
+    items:
+      $ref: './rating.yml'
+  tiles:
+    type: array
+    items:
+      $ref: './tile.yml'
+  tiles_count:
+    type: integer
+  target_groups:
+    type: array
+    items:
+      $ref: './target-group.yml'
+  target_groups_count:
+    type: integer
+  client_characteristics:
+    type: array
+    items:
+      $ref: './client-characteristic.yml'
+  client_characteristics_count:
+    type: integer
+  links:
+    type: array
+    items:
+      $ref: './link.yml'
+  videos:
+    type: array
+    items:
+      $ref: './video.yml'
+  downloads:
+    type: array
+    items:
+      $ref: './download.yml'
+  provider:
+    $ref: './provider.yml'
+  contact:
+    type: array
+    items:
+      $ref: './contact.yml'
+
+  available_areas:
+    type: array
+    items:
+      $ref: './area.yml'
+  available_areas_all:
+    type: array
+    items:
+      $ref: './area.yml'
+  available_areas_specified:
+    type: array
+    items:
+      $ref: './area.yml'
+  available_regions:
+    type: array
+    items:
+      $ref: './region.yml'
+  available_townships:
+    type: array
+    items:
+      $ref: './township.yml'
+  available_neighbourhoods:
+    type: array
+    items:
+      $ref: './neighbourhood.yml'
+  mutations:
+    type: array
+    items:
+      $ref: './mutation.yml'
+  parent_instrument:
+    $ref: './instrument.yml'

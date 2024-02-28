@@ -1,0 +1,27 @@
+type: object
+properties:
+  id:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  name:
+    type: string
+  type:
+    type: object
+    properties:
+      key:
+        type: string
+      name:
+        type: string
+  is_active:
+    type: boolean
+  description:
+    type: string
+  instrument:
+    $ref: './instrument.yml'
+  address:
+    $ref: './address.yml'

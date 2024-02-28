@@ -1,0 +1,20 @@
+type: object
+properties:
+  id:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  deleted_at:
+    type: string
+    format: date-time
+  name:
+    type: string
+  instruments:
+    type: array
+    nullable: true
+    items:
+      $ref: './instrument.yml'

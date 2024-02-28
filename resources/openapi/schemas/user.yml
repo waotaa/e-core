@@ -1,0 +1,23 @@
+type: object
+properties:
+  id:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  name:
+    type: string
+  email:
+    type: string
+  email_verified_at:
+    type: string
+    format: date-time
+  password_updated_at:
+    type: string
+  manager:
+    anyOf:
+      - type: 'null'
+      - $ref: './manager.yml'

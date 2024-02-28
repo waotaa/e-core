@@ -1,0 +1,12 @@
+type: object
+required:
+  - code
+  - label
+  - instrument_id
+properties:
+  code:
+    type: string
+  label:
+    type: string
+  instrument_id:
+    type: integer

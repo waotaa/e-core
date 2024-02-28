@@ -1,0 +1,42 @@
+type: object
+properties:
+  id:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  name:
+    type: string
+  givenName:
+    type: string
+  surName:
+    type: string
+  email:
+    type: string
+  created_by:
+    anyOf:
+      - type: 'null'
+      - $ref: './manager.yml'
+  instrumentTrackers:
+    type: array
+    nullable: true
+    items:
+      $ref: './instrument-tracker.yml'
+  organisations:
+    type: array
+    nullable: true
+    items:
+      $ref: './organisation.yml'
+  roles:
+    type: array
+    nullable: true
+    items:
+      $ref: './role.yml'
+  mutations:
+    type: array
+    nullable: true
+    items:
+      $ref: './mutation.yml'

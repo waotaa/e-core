@@ -1,0 +1,35 @@
+type: object
+properties:
+  id:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  environment_slug:
+    type: string
+  publish_from:
+    type: string
+    format: date-time
+  publish_to:
+    type: string
+    format: date-time
+  publication_date:
+    type: string
+    format: date-time
+  published:
+    type: boolean
+  title:
+    type: string
+  sub_title:
+    type: string
+  body:
+    type: string
+  teaser:
+    type: string
+  environment:
+    anyOf:
+      - type: 'null'
+      - $ref: './environment.yml'

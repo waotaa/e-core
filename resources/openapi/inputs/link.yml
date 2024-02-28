@@ -1,0 +1,11 @@
+type: object
+required:
+  - url
+  - instrument_id
+properties:
+  label:
+    type: string
+  url:
+    type: string
+  instrument_id:
+    type: integer

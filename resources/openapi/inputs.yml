@@ -1,0 +1,52 @@
+AddressInput:
+  $ref: './inputs/address.yml'
+ClientCharacteristicInput:
+  $ref: './inputs/client-characteristic.yml'
+ContactInput:
+  $ref: './inputs/contact.yml'
+DownloadInput:
+  $ref: './inputs/download.yml'
+EnvironmentInput:
+  $ref: './inputs/environment.yml'
+GroupFormInput:
+  $ref: './inputs/group-Input.yml'
+ImplementationInput:
+  $ref: './inputs/implementation.yml'
+InstrumentInput:
+  $ref: './inputs/instrument.yml'
+InstrumentTrackerInput:
+  $ref: './inputs/instrument-tracker.yml'
+LinkInput:
+  $ref: './inputs/link.yml'
+LocalPartyInput:
+  $ref: './inputs/local-party.yml'
+LocationInput:
+  $ref: './inputs/location.yml'
+ManagerInput:
+  $ref: './inputs/manager.yml'
+NationalPartyInput:
+  $ref: './inputs/national-party.yml'
+NeighbourhoodInput:
+  $ref: './inputs/neighbourhood.yml'
+NewsItemInput:
+  $ref: './inputs/news-item.yml'
+PartnershipInput:
+  $ref: './inputs/partnership.yml'
+ProfessionalInput:
+  $ref: './inputs/professional.yml'
+ProviderInput:
+  $ref: './inputs/provider.yml'
+RatingInput:
+  $ref: './inputs/rating.yml'
+RegionalPartyInput:
+  $ref: './inputs/regional-party.yml'
+RegistrationCodeInput:
+  $ref: './inputs/registration-code.yml'
+TargetGroupInput:
+  $ref: './inputs/target-group.yml'
+TileInput:
+  $ref: './inputs/tile.yml'
+UserInput:
+  $ref: './inputs/user.yml'
+VideoInput:
+  $ref: './inputs/video.yml'

@@ -1,0 +1,22 @@
+type: object
+required:
+  - title
+  - body
+  - environment_id
+properties:
+  title:
+    type: string
+  sub_title:
+    type: string
+  body:
+    type: string
+  teaser:
+    type: string
+  publish_from:
+    type: string
+    format: date-time
+  publish_to:
+    type: string
+    format: date-time
+  environment_id:
+    type: integer

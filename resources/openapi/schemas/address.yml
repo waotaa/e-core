@@ -1,0 +1,29 @@
+type: object
+properties:
+  id:
+    type: string
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  name:
+    type: string
+  straatnaam:
+    type: string
+  huisnummer:
+    type: integer
+  postbusnummer:
+    type: integer
+  antwoordnummer:
+    type: integer
+  postcode:
+    type: string
+    pattern: '^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-zA-Z]{2}$'
+  woonplaats:
+    type: string
+  postcode_digits:
+    type: integer
+  organisation:
+    $ref: './organisation.yml'

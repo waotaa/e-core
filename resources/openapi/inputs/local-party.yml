@@ -1,0 +1,9 @@
+type: object
+required:
+  - name
+  - township_id
+properties:
+  name:
+    type: string
+  township_id:
+    type: integer

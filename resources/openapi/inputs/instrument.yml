@@ -1,0 +1,61 @@
+type: object
+required:
+  - name
+  - summary
+  - aim
+  - method
+  - organisation_id
+  - provider_id
+  - implementation_id
+properties:
+  name:
+    type: string
+  is_active:
+    type: boolean
+  publish_from:
+    type: string
+  publish_to:
+    type: string
+  summary:
+    type: string
+  aim:
+    type: string
+  method:
+    type: string
+  distinctive_approach:
+    type: string
+  target_group_description:
+    type: string
+  participation_conditions:
+    type: string
+  cooperatioon_partners:
+    type: string
+  additional_information:
+    type: string
+  work_agreements:
+    type: string
+  application_instructions:
+    type: string
+  intensity_hours_per_week:
+    type: integer
+  intensity_description:
+    type: string
+  total_duration_value:
+    type: integer
+  total_duration_unit:
+    type: string
+  duration_description:
+    type: string
+  total_costs:
+    type: string
+  costs_description:
+    type: string
+  organisation_id:
+    type: integer
+  implementation_id:
+    type: integer
+  instrument_type_id:
+    type: integer
+    nullable: true
+  provider_id:
+    type: integer

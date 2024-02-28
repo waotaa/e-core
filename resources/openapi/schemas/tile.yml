@@ -1,0 +1,36 @@
+type: object
+properties:
+  id:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  deleted_at:
+    type: string
+    format: date-time
+  name:
+    type: string
+  sub_title:
+    type: string
+  excerpt:
+    type: string
+  description:
+    type: string
+  crisis_description:
+    type: string
+  crisis_services:
+    type: string
+  list:
+    type: string
+  key:
+    type: string
+  position:
+    type: string
+  instruments:
+    type: array
+    nullable: true
+    items:
+      $ref: './instrument.yml'

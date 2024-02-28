@@ -1,0 +1,25 @@
+type: object
+required:
+  - name
+  - sub_title
+  - description
+  - list
+properties:
+  name:
+    type: string
+  sub_title:
+    type: string
+  excerpt:
+    type: string
+  description:
+    type: string
+  list:
+    type: string
+  crisis_description:
+    type: string
+  crisis_services:
+    type: string
+  key:
+    type: string
+  position:
+    type: string

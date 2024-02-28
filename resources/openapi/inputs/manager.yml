@@ -1,0 +1,10 @@
+type: object
+properties:
+  givenName:
+    type: string
+  surName:
+    type: string
+  email:
+    type: string
+  months_unupdated_limit:
+    type: integer

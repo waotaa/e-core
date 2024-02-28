@@ -1,0 +1,12 @@
+type: object
+required:
+  - file
+  - instrument_id
+properties:
+  label:
+    type: string
+  file:
+    type: string
+    format: binary
+  instrument_id:
+    type: integer

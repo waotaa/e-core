@@ -1,0 +1,24 @@
+type: object
+  properties:
+    id:
+      type: integer
+    created_at:
+      type: string
+      format: date-time
+    updated_at:
+      type: string
+      format: date-time
+    deleted_at:
+      type: string
+      format: date-time
+    name:
+      type: string
+    slug:
+      type: string
+    code:
+      type: string
+    townships:
+      type: array
+      nullable: true
+      items:
+        $ref: './township.yml'

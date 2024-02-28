@@ -3757,1543 +3757,246 @@ components:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/AddressForm'
+            $ref: '#/components/schemas/AddressInput'
     ClientCharacteristicBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/ClientCharacteristicForm'
+            $ref: '#/components/schemas/ClientCharacteristicInput'
     ContactBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/ContactForm'
+            $ref: '#/components/schemas/ContactInput'
     DownloadBody:
       content:
         multipart/form-data:
           schema:
-            $ref: '#/components/schemas/DownloadForm'
+            $ref: '#/components/schemas/DownloadInput'
     EnvironmentBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/EnvironmentForm'
+            $ref: '#/components/schemas/EnvironmentInput'
     GroupFormBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/GroupFormForm'
+            $ref: '#/components/schemas/GroupFormInput'
     ImplementationBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/ImplementationForm'
+            $ref: '#/components/schemas/ImplementationInput'
     InstrumentBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/InstrumentForm'
+            $ref: '#/components/schemas/InstrumentInput'
     InstrumentTrackerBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/InstrumentTrackerForm'
+            $ref: '#/components/schemas/InstrumentTrackerInput'
     LinkBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/LinkForm'
+            $ref: '#/components/schemas/LinkInput'
     LocalPartyBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/LocalPartyForm'
+            $ref: '#/components/schemas/LocalPartyInput'
     LocationBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/LocationForm'
+            $ref: '#/components/schemas/LocationInput'
     ManagerBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/ManagerForm'
+            $ref: '#/components/schemas/ManagerInput'
     NationalPartyBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/NationalPartyForm'
+            $ref: '#/components/schemas/NationalPartyInput'
     NeighbourhoodBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/NeighbourhoodForm'
+            $ref: '#/components/schemas/NeighbourhoodInput'
     NewsItemBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/NewsItemForm'
+            $ref: '#/components/schemas/NewsItemInput'
     PartnershipBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/PartnershipForm'
+            $ref: '#/components/schemas/PartnershipInput'
     ProfessionalBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/ProfessionalForm'
+            $ref: '#/components/schemas/ProfessionalInput'
     ProviderBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/ProviderForm'
+            $ref: '#/components/schemas/ProviderInput'
     RatingBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/RatingForm'
+            $ref: '#/components/schemas/RatingInput'
     RegionalPartyBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/RegionalPartyForm'
+            $ref: '#/components/schemas/RegionalPartyInput'
     RegistrationCodeBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/RegistrationCodeForm'
+            $ref: '#/components/schemas/RegistrationCodeInput'
     TargetGroupBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/TargetGroupForm'
+            $ref: '#/components/schemas/TargetGroupInput'
     TileBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/TileForm'
+            $ref: '#/components/schemas/TileInput'
     UserBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/UserForm'
+            $ref: '#/components/schemas/UserInput'
     VideoBody:
       content:
         application/x-www-form-urlencoded:
           schema:
-            $ref: '#/components/schemas/VideoForm'
+            $ref: '#/components/schemas/VideoInput'
   schemas:
     Address:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        straatnaam:
-          type: string
-        huisnummer:
-          type: string
-        postbusnummer:
-          type: integer
-        antwoordnummer:
-          type: integer
-        postcode:
-          type: string
-          pattern: '^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-zA-Z]{2}$'
-        woonplaats:
-          type: string
-        postcode_digits:
-          type: integer
-        organisation:
-          $ref: '#/components/schemas/Organisation'
-    AddressForm:
-      type: object
-      required:
-        - organisation_id
-        - postcode
-        - woonplaats
-      properties:
-        name:
-          type: string
-        organisation_id:
-          type: integer
-        straatnaam:
-          type: string
-        huisnummer:
-          type: string
-        postbusnummer:
-          type: integer
-        antwoordnummer:
-          type: integer
-        postcode:
-          type: string
-          pattern: '^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-zA-Z]{2}$'
-        woonplaats:
-          type: string
+      $ref: 'schemas.yml#/Address'
     Area:
-      type: object
-      properties:
-        identifier:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
+      $ref: 'schemas.yml#/Area'
     ClientCharacteristic:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        instruments:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Instrument'
-    ClientCharacteristicForm:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
+      $ref: 'schemas.yml#/ClientCharacteristic'
     Contact:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        phone:
-          type: string
-        email:
-          type: string
-        type:
-          type: object
-          nullable: true
-          properties:
-            key:
-              type: string
-            name:
-              type: string
-        organisation:
-          $ref: '#/components/schemas/Organisation'
-        instruments:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Instrument'
-        providers:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Provider'
-    ContactForm:
-      type: object
-      required:
-        - name
-        - organisation_id
-      properties:
-        name:
-          type: string
-        organisation_id:
-          type: integer
-        phone:
-          type: string
-          pattern: '(^\+[0-9]{2}|^\+[0-9]{2}\(0\)|^\(\+[0-9]{2}\)\(0\)|^00[0-9]{2}|^0)([0-9]{9}$)'
-        email:
-          type: string
-          format: email
+      $ref: 'schemas.yml#/Contact'
     Download:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        label:
-          type: string
-        url:
-          type: string
-        filename:
-          type: string
-        instrument:
-          $ref: '#/components/schemas/Instrument'
-    DownloadForm:
-      type: object
-      required:
-        - file
-        - instrument_id
-      properties:
-        label:
-          type: string
-        file:
-          type: string
-          format: binary
-        instrument_id:
-          type: integer
+      $ref: 'schemas.yml#/Download'
     Environment:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        slug:
-          type: string
-        description_header:
-          type: string
-        description:
-          type: string
-        logo:
-          type: string
-        color_primary:
-          type: string
-        color_secondary:
-          type: string
-        user_pool_id:
-          type: string
-        user_pool_client_id:
-          type: string
-        contact:
-          $ref: '#/components/schemas/Contact'
-        featured_organisations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Organisation'
-        news_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/NewsItem'
-        organisation:
-          $ref: '#/components/schemas/Organisation'
-    EnvironmentForm:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-        description_header:
-          type: string
-        description:
-          type: string
-        logo:
-          type: string
-        color_primary:
-          type: string
-        color_secondary:
-          type: string
-        contact_id:
-          type: integer
-          nullable: true
-        organisation_id:
-          type: integer
+      $ref: 'schemas.yml#/Environment'
     GroupForm:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        custom:
-          type: boolean
-        instruments:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Instrument'
-    GroupFormForm:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-        custom:
-          type: boolean
+      $ref: 'schemas.yml#/GroupForm'
     Implementation:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        custom:
-          type: boolean
-        instruments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Instrument'
-    ImplementationForm:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-        custom:
-          type: boolean
+      $ref: 'schemas.yml#/Implementation'
     Instrument:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        uuid:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-
-        publish:
-          type: boolean
-        publish_from:
-          type: string
-        publish_to:
-          type: string
-        published:
-          type: boolean
-        complete:
-          type: boolean
-
-        aim:
-          type: string
-        summary:
-          type: string
-        method:
-          type: string
-        distinctive_approach:
-          type: string
-        target_group_description:
-          type: string
-        participation_conditions:
-          type: string
-        cooperatioon_partners:
-          type: string
-        additional_information:
-          type: string
-
-        work_agreements:
-          type: string
-        application_instructions:
-          type: string
-        intensity_hours_per_week:
-          type: integer
-        total_duration_value:
-          type: integer
-        total_duration_unit:
-          type: string
-        total_duration_unit_key:
-          type: string
-        total_duration_hours:
-          type: integer
-        total_costs:
-          type: string
-        total_costs_whole_number:
-          type: integer
-        costs_description:
-          type: string
-        duration_description:
-          type: string
-        intensity_description:
-          type: string
-
-        import_mark:
-          type: string
-
-        is_national:
-          type: boolean
-        is_regional:
-          type: boolean
-        is_local:
-          type: boolean
-        reach:
-          type: string
-
-        organisation:
-          $ref: '#/components/schemas/Organisation'
-        implementation:
-          $ref: '#/components/schemas/Implementation'
-        group_forms:
-          type: array
-          items:
-            $ref: '#/components/schemas/GroupForm'
-        locations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Location'
-        registration_codes:
-          type: array
-          items:
-            $ref: '#/components/schemas/RegistrationCode'
-        rating:
-          type: string
-        ratings:
-          type: array
-          items:
-            $ref: '#/components/schemas/Rating'
-        tiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tile'
-        tiles_count:
-          type: integer
-        target_groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/TargetGroup'
-        target_groups_count:
-          type: integer
-        client_characteristics:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClientCharacteristic'
-        client_characteristics_count:
-          type: integer
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/Link'
-        videos:
-          type: array
-          items:
-            $ref: '#/components/schemas/Video'
-        downloads:
-          type: array
-          items:
-            $ref: '#/components/schemas/Download'
-        provider:
-          $ref: '#/components/schemas/Provider'
-        contact:
-          type: array
-          items:
-            $ref: '#/components/schemas/Contact'
-
-        available_areas:
-          type: array
-          items:
-            $ref: '#/components/schemas/Area'
-        available_areas_all:
-          type: array
-          items:
-            $ref: '#/components/schemas/Area'
-        available_areas_specified:
-          type: array
-          items:
-            $ref: '#/components/schemas/Area'
-        available_regions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Region'
-        available_townships:
-          type: array
-          items:
-            $ref: '#/components/schemas/Township'
-        available_neighbourhoods:
-          type: array
-          items:
-            $ref: '#/components/schemas/Neighbourhood'
-        mutations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Mutation'
-        parent_instrument:
-          $ref: '#/components/schemas/Instrument'
-    InstrumentForm:
-      type: object
-      required:
-        - name
-        - summary
-        - aim
-        - method
-        - organisation_id
-        - provider_id
-        - implementation_id
-      properties:
-        name:
-          type: string
-        is_active:
-          type: boolean
-        publish_from:
-          type: string
-        publish_to:
-          type: string
-        summary:
-          type: string
-        aim:
-          type: string
-        method:
-          type: string
-        distinctive_approach:
-          type: string
-        target_group_description:
-          type: string
-        participation_conditions:
-          type: string
-        cooperatioon_partners:
-          type: string
-        additional_information:
-          type: string
-        work_agreements:
-          type: string
-        application_instructions:
-          type: string
-        intensity_hours_per_week:
-          type: integer
-        intensity_description:
-          type: string
-        total_duration_value:
-          type: integer
-        total_duration_unit:
-          type: string
-        duration_description:
-          type: string
-        total_costs:
-          type: string
-        costs_description:
-          type: string
-        organisation_id:
-          type: integer
-        implementation_id:
-          type: integer
-        instrument_type_id:
-          type: integer
-          nullable: true
-        provider_id:
-          type: integer
+      $ref: 'schemas.yml#/Instrument'
     InstrumentTracker:
-      type: object
-      properties:
-        id:
-          type: integer
-        role:
-          type: string
-        notified_at:
-          type: string
-          format: date-time
-        notification_frequency:
-          type: string
-        on_modification:
-          type: boolean
-        on_expiration:
-          type: boolean
-        manager:
-          $ref: '#/components/schemas/Manager'
-        instrument:
-          $ref: '#/components/schemas/Instrument'
-    InstrumentTrackerForm:
-      type: object
-      required:
-        - instrument_id
-        - manager_id
-      properties:
-        role:
-          type: string
-        notification_frequency:
-          type: string
-        on_modification:
-          type: boolean
-        on_expiration:
-          type: boolean
-        instrument_id:
-          type: integer
-        manager_id:
-          type: integer
+      $ref: 'schemas.yml#/InstrumentTracker'
     Link:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        label:
-          type: string
-        url:
-          type: string
-        instrument:
-          $ref: '#/components/schemas/Instrument'
-    LinkForm:
-      type: object
-      required:
-        - url
-        - instrument_id
-      properties:
-        label:
-          type: string
-        url:
-          type: string
-        instrument_id:
-          type: integer
+      $ref: 'schemas.yml#/Link'
     LocalParty:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        slug:
-          type: string
-        township:
-          $ref: '#/components/schemas/Township'
-        organisation:
-          anyOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Organisation'
-    LocalPartyForm:
-      type: object
-      required:
-        - name
-        - township_id
-      properties:
-        name:
-          type: string
-        township_id:
-          type: integer
+      $ref: 'schemas.yml#/LocalParty'
     Location:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        type:
-          type: object
-          properties:
-            key:
-              type: string
-            name:
-              type: string
-        is_active:
-          type: boolean
-        description:
-          type: string
-        instrument:
-          $ref: '#/components/schemas/Instrument'
-        address:
-          $ref: '#/components/schemas/Address'
-    LocationForm:
-      type: object
-      required:
-        - instrument_id
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-        is_active:
-          type: boolean
-        description:
-          type: string
-        instrument_id:
-          type: integer
-        address_id:
-          type: integer
-          nullable: true
+      $ref: 'schemas.yml#/Location'
     Manager:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        givenName:
-          type: string
-        surName:
-          type: string
-        email:
-          type: string
-        created_by:
-          anyOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Manager'
-        instrumentTrackers:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/InstrumentTracker'
-        organisations:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Organisation'
-        roles:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Role'
-        mutations:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Mutation'
-    ManagerForm:
-      type: object
-      properties:
-        givenName:
-          type: string
-        surName:
-          type: string
-        email:
-          type: string
-        months_unupdated_limit:
-          type: integer
+      $ref: 'schemas.yml#/Manager'
     Mutation:
-      type: object
-      properties:
-        id:
-          type: integer
-        batch_id:
-          type: integer
-        name:
-          type: string
-        original:
-          type: string
-        changes:
-          type: string
-        manager:
-          anyOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Manager'
-        loggable_type:
-          type: string
-        loggable_id:
-          type: integer
-        target_type:
-          type: string
-        target_id:
-          type: integer
-        model_type:
-          type: string
-        model_id:
-          type: integer
-        fields:
-          type: string
-        status:
-          type: string
-        exception:
-          type: string
+      $ref: 'schemas.yml#/Mutation'
     NationalParty:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        slug:
-          type: string
-        organisation:
-          anyOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Organisation'
-    NationalPartyForm:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
+      $ref: 'schemas.yml#/NationalParty'
     Neighbourhood:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        township:
-          $ref: '#/components/schemas/Township'
-    NeighbourhoodForm:
-      type: object
-      required:
-        - name
-        - township_id
-      properties:
-        name:
-          type: string
-        township_id:
-          type: integer
+      $ref: 'schemas.yml#/Neighbourhood'
     NewsItem:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        environment_slug:
-          type: string
-        publish_from:
-          type: string
-          format: date-time
-        publish_to:
-          type: string
-          format: date-time
-        publication_date:
-          type: string
-          format: date-time
-        published:
-          type: boolean
-        title:
-          type: string
-        sub_title:
-          type: string
-        body:
-          type: string
-        teaser:
-          type: string
-        environment:
-          anyOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Environment'
-    NewsItemForm:
-      type: object
-      required:
-        - title
-        - body
-        - environment_id
-      properties:
-        title:
-          type: string
-        sub_title:
-          type: string
-        body:
-          type: string
-        teaser:
-          type: string
-        publish_from:
-          type: string
-          format: date-time
-        publish_to:
-          type: string
-          format: date-time
-        environment_id:
-          type: integer
+      $ref: 'schemas.yml#/NewsItem'
     Organisation:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        type:
-          type: string
-        organisationable_type:
-          type: string
-        organisationable_id:
-          type: integer
-        managers:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Manager'
-        featuringEnvironments:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Environment'
-        contacts:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Contact'
+      $ref: 'schemas.yml#/Organisation'
     Partnership:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        slug:
-          type: string
-        organisation:
-          oneOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Organisation'
-        townships:
-          type: array
-          items:
-            $ref: '#/components/schemas/Township'
-    PartnershipForm:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
+      $ref: 'schemas.yml#/Partnership'
     Professional:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        username:
-          type: string
-        email:
-          type: string
-        enabled:
-          type: boolean
-        last_seen_at:
-          type: string
-          format: date-time
-        email_verified:
-          type: boolean
-        status:
-          type: string
-        ratings_count:
-          type: integer
-        ratings:
-          type: array
-          items:
-            $ref: '#/components/schemas/Rating'
-        environment:
-          anyOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Environment'
-        mutations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Mutation'
-    ProfessionalForm:
-      type: object
-      required:
-        - email
-      properties:
-        email:
-          type: string
-        environment_id:
-          type: integer
+      $ref: 'schemas.yml#/Professional'
     Provider:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        slug:
-          type: string
-        import_mark:
-          type: string
-        organisation:
-          $ref: '#/components/schemas/Organisation'
-        address:
-          oneOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Address'
-        contacts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Contact'
-        mutations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Mutation'
-    ProviderForm:
-      type: object
-      required:
-        - name
-        - organisation_id
-      properties:
-        name:
-          type: string
-        email:
-          type: string
-        website:
-          type: string
-        organisation_id:
-          type: integer
-        address_id:
-          type: integer
-          nullable: true
+      $ref: 'schemas.yml#/Provider'
     Rating:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        author:
-          type: string
-        general_score:
-          type: integer
-        general_explanation:
-          type: string
-        result_score:
-          type: integer
-        result_explanation:
-          type: string
-        execution_score:
-          type: integer
-        execution_explanation:
-          type: string
-        instrument_id:
-          type: integer
-        professional_email:
-          type: string
-        instrument:
-          anyOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Instrument'
-        professional:
-          anyOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Professional'
-    RatingForm:
-      type: object
-      required:
-        - instrument_id
-        - email
-        - general_score
-        - result_score
-        - execution_score
-      properties:
-        author:
-          type: string
-        email:
-          type: string
-        general_score:
-          type: integer
-        general_explanation:
-          type: string
-        result_score:
-          type: integer
-        result_explanation:
-          type: string
-        execution_score:
-          type: integer
-        execution_explanation:
-          type: string
-        instrument_id:
-          type: integer
-        professional_id:
-          type: integer
-          nullable: true
-    RegionalParty:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        slug:
-          type: string
-        organisation:
-          $ref: '#/components/schemas/Organisation'
-        region:
-          $ref: '#/components/schemas/Region'
-    RegionalPartyForm:
-      type: object
-      required:
-        - name
-        - region_id
-      properties:
-        name:
-          type: string
-        region_id:
-          type: integer
+      $ref: 'schemas.yml#/Rating'
     Region:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        slug:
-          type: string
-        code:
-          type: string
-        townships:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Township'
+      $ref: 'schemas.yml#/Region'
+    RegionalParty:
+      $ref: 'schemas.yml#/RegionalParty'
     RegistrationCode:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        code:
-          type: string
-        label:
-          type: string
-        instrument:
-          anyOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Instrument'
-    RegistrationCodeForm:
-      type: object
-      required:
-        - code
-        - label
-        - instrument_id
-      properties:
-        code:
-          type: string
-        label:
-          type: string
-        instrument_id:
-          type: integer
+      $ref: 'schemas.yml#/RegistrationCode'
     Role:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        name_translated:
-          type: string
+      $ref: 'schemas.yml#/Role'
     TargetGroup:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        description:
-          type: string
-        custom:
-          type: boolean
-        instruments:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Instrument'
-    TargetGroupForm:
-      type: object
-      required:
-        - description
-      properties:
-        description:
-          type: string
-        custom:
-          type: boolean
+      $ref: 'schemas.yml#/TargetGroup'
     Tile:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        sub_title:
-          type: string
-        excerpt:
-          type: string
-        description:
-          type: string
-        crisis_description:
-          type: string
-        crisis_services:
-          type: string
-        list:
-          type: string
-        key:
-          type: string
-        position:
-          type: string
-        instruments:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Instrument'
-    TileForm:
-      type: object
-      required:
-        - name
-        - sub_title
-        - description
-        - list
-      properties:
-        name:
-          type: string
-        sub_title:
-          type: string
-        excerpt:
-          type: string
-        description:
-          type: string
-        list:
-          type: string
-        crisis_description:
-          type: string
-        crisis_services:
-          type: string
-        key:
-          type: string
-        position:
-          type: string
+      $ref: 'schemas.yml#/Tile'
     Township:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        deleted_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        slug:
-          type: string
-        description:
-          type: string
-        code:
-          type: string
-        region:
-          anyOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Region'
+      $ref: 'schemas.yml#/Township'
     User:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        name:
-          type: string
-        email:
-          type: string
-        email_verified_at:
-          type: string
-          format: date-time
-        password_updated_at:
-          type: string
-        manager:
-          anyOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Manager'
-    UserForm:
-      type: object
-      required:
-        - name
-        - email
-      properties:
-        name:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-          nullable: true
+      $ref: 'schemas.yml#/User'
     Video:
-      type: object
-      properties:
-        id:
-          type: integer
-        created_at:
-          type: string
-        updated_at:
-          type: string
-        provider:
-          type: string
-        video_identifier:
-          type: string
-        instrument:
-          anyOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Instrument'
-    VideoForm:
-      type: object
-      required:
-        - instrument_id
-      properties:
-        video_identifier:
-          type: string
-        provider:
-          type: string
-        instrument_id:
-          type: integer
+      $ref: 'schemas.yml#/Video'
+    AddressInput:
+      $ref: 'inputs.yml#/AddressInput'
+    ClientCharacteristicInput:
+      $ref: 'inputs.yml#/ClientCharacteristicInput'
+    ContactInput:
+      $ref: 'inputs.yml#/ContactInput'
+    DownloadInput:
+      $ref: 'inputs.yml#/DownloadInput'
+    EnvironmentInput:
+      $ref: 'inputs.yml#/EnvironmentInput'
+    GroupFormInput:
+      $ref: 'inputs.yml#/GroupFormInput'
+    ImplementationInput:
+      $ref: 'inputs.yml#/ImplementationInput'
+    InstrumentInput:
+      $ref: 'inputs.yml#/InstrumentInput'
+    InstrumentTrackerInput:
+      $ref: 'inputs.yml#/InstrumentTrackerInput'
+    LinkInput:
+      $ref: 'inputs.yml#/LinkInput'
+    LocalPartyInput:
+      $ref: 'inputs.yml#/LocalPartyInput'
+    LocationInput:
+      $ref: 'inputs.yml#/LocationInput'
+    ManagerInput:
+      $ref: 'inputs.yml#/ManagerInput'
+    NationalPartyInput:
+      $ref: 'inputs.yml#/NationalPartyInput'
+    NeighbourhoodInput:
+      $ref: 'inputs.yml#/NeighbourhoodInput'
+    NewsItemInput:
+      $ref: 'inputs.yml#/NewsItemInput'
+    PartnershipInput:
+      $ref: 'inputs.yml#/PartnershipInput'
+    ProfessionalInput:
+      $ref: 'inputs.yml#/ProfessionalInput'
+    ProviderInput:
+      $ref: 'inputs.yml#/ProviderInput'
+    RatingInput:
+      $ref: 'inputs.yml#/RatingInput'
+    RegionalPartyInput:
+      $ref: 'inputs.yml#/RegionalPartyInput'
+    RegistrationCodeInput:
+      $ref: 'inputs.yml#/RegistrationCodeInput'
+    TargetGroupInput:
+      $ref: 'forms.yml#/TargetGroupInput'
+    TileInput:
+      $ref: 'forms.yml#/TileInput'
+    UserInput:
+      $ref: 'forms.yml#/UserInput'
+    VideoInput:
+      $ref: 'forms.yml#/VideoInput'

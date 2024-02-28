@@ -1,0 +1,19 @@
+type: object
+properties:
+  id:
+    type: integer
+  role:
+    type: string
+  notified_at:
+    type: string
+    format: date-time
+  notification_frequency:
+    type: string
+  on_modification:
+    type: boolean
+  on_expiration:
+    type: boolean
+  manager:
+    $ref: './manager.yml'
+  instrument:
+    $ref: './instrument.yml'

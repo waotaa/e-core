@@ -1,0 +1,9 @@
+type: object
+required:
+  - name
+  - region_id
+properties:
+  name:
+    type: string
+  region_id:
+    type: integer

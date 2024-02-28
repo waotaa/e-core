@@ -1,0 +1,23 @@
+type: object
+required:
+  - name
+properties:
+  name:
+    type: string
+  slug:
+    type: string
+  description_header:
+    type: string
+  description:
+    type: string
+  logo:
+    type: string
+  color_primary:
+    type: string
+  color_secondary:
+    type: string
+  contact_id:
+    type: integer
+    nullable: true
+  organisation_id:
+    type: integer

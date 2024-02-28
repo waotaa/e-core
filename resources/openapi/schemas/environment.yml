@@ -1,0 +1,43 @@
+type: object
+properties:
+  id:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  deleted_at:
+    type: string
+    format: date-time
+  name:
+    type: string
+  slug:
+    type: string
+  description_header:
+    type: string
+  description:
+    type: string
+  logo:
+    type: string
+  color_primary:
+    type: string
+  color_secondary:
+    type: string
+  user_pool_id:
+    type: string
+  user_pool_client_id:
+    type: string
+  contact:
+    $ref: './contact.yml'
+  featured_organisations:
+    type: array
+    items:
+      $ref: './organisation.yml'
+  news_items:
+    type: array
+    items:
+      $ref: './news-item.yml'
+  organisation:
+    $ref: './organisation.yml'

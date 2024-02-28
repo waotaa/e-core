@@ -1,0 +1,37 @@
+type: object
+properties:
+  id:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  username:
+    type: string
+  email:
+    type: string
+  enabled:
+    type: boolean
+  last_seen_at:
+    type: string
+    format: date-time
+  email_verified:
+    type: boolean
+  status:
+    type: string
+  ratings_count:
+    type: integer
+  ratings:
+    type: array
+    items:
+      $ref: './rating.yml'
+  environment:
+    anyOf:
+      - type: 'null'
+      - $ref: './environment.yml'
+  mutations:
+    type: array
+    items:
+      $ref: './mutation.yml'

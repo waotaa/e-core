@@ -1,0 +1,36 @@
+type: object
+properties:
+  id:
+    type: integer
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  name:
+    type: string
+  phone:
+    type: string
+  email:
+    type: string
+  type:
+    type: object
+    nullable: true
+    properties:
+      key:
+        type: string
+      name:
+        type: string
+  organisation:
+    $ref: './organisation.yml'
+  instruments:
+    type: array
+    nullable: true
+    items:
+      $ref: './instrument.yml'
+  providers:
+    type: array
+    nullable: true
+    items:
+      $ref: './provider.yml'
