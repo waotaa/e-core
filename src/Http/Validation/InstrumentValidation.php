@@ -25,6 +25,12 @@ class InstrumentValidation extends ModelValidation
                 'numeric',
                 'min:0'
             ],
+            'intensity_hours_per_week' => [
+                'nullable',
+                'numeric',
+                'regex:/^\d+(\.\d{1,2})?$/',
+                'min:0'
+            ],
             'organisation_id' => [
                 'required'
             ],

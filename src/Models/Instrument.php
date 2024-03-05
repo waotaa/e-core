@@ -129,6 +129,11 @@ class Instrument extends SearchableModel
         return $this->uuid;
     }
 
+    public function getIntensityHoursPerWeekAttribute($value)
+    {
+        return round($value, 1);
+    }
+
     public function setTotalDurationUnitAttribute($value): void
     {
         if (is_null($value)) {
