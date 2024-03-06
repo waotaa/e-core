@@ -13,6 +13,10 @@ class RegistrationCodeValidation extends ModelValidation
             'code' => [
                 'required',
             ],
+            'is_displayed' => [
+                'nullable',
+                'boolean',
+            ],
             'instrument_id' => [
                 'required'
             ]

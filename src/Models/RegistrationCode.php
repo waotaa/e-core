@@ -15,7 +15,12 @@ class RegistrationCode extends Model
 
     protected $fillable = [
         'code',
-        'label'
+        'label',
+        'is_displayed'
+    ];
+
+    protected $casts = [
+        'is_displayed' => 'boolean',
     ];
 
     protected static function boot()

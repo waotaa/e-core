@@ -10,6 +10,7 @@ class RegistrationCodeResource extends ElasticResource
             'id' => $this->id,
             'code' => $this->code,
             'label' => $this->label,
+            'is_displayed' => $this->is_displayed,
         ];
     }
 }

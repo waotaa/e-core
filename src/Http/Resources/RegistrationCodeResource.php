@@ -15,6 +15,7 @@ class RegistrationCodeResource extends JsonResource
 
             'code' => $this->code,
             'label' => $this->label,
+            'is_displayed' => $this->is_displayed,
 
             'instrument' => InstrumentResource::make($this->whenLoaded('instrument'))
         ];
