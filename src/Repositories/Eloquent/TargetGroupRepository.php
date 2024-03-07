@@ -11,7 +11,7 @@ use Vng\EvaCore\Repositories\TargetGroupRepositoryInterface;
 
 class TargetGroupRepository extends BaseRepository implements TargetGroupRepositoryInterface
 {
-    use OwnedEntityRepository;
+    use OwnedEntityRepository, SoftDeletableRepository;
 
     public string $model = TargetGroup::class;
 

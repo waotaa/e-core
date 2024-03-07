@@ -6,7 +6,7 @@ use Vng\EvaCore\Http\Requests\TargetGroupCreateRequest;
 use Vng\EvaCore\Http\Requests\TargetGroupUpdateRequest;
 use Vng\EvaCore\Models\TargetGroup;
 
-interface TargetGroupRepositoryInterface extends BaseRepositoryInterface
+interface TargetGroupRepositoryInterface extends BaseRepositoryInterface, SoftDeletableRepositoryInterface
 {
     public function create(TargetGroupCreateRequest $request): TargetGroup;
     public function update(TargetGroup $targetGroup, TargetGroupUpdateRequest $request): TargetGroup;
