@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Observers;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\App;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
@@ -31,7 +32,20 @@ class UserObserver
         }
     }
 
-    public function deleted(IsManagerInterface $user): void
+    public function deleted(IsManagerInterface $user)
+    {
+        if (!in_array(SoftDeletes::class, class_uses_recursive(get_class($user)))) {
+            // No softdeletes used, hard delete user
+            $this->hardDelete($user);
+        }
+    }
+
+    public function forceDeleted(IsManagerInterface $user)
+    {
+        $this->hardDelete($user);
+    }
+
+    protected function hardDelete(IsManagerInterface $user)
     {
         $manager = $user->getManager();
         if (!is_null($manager)) {
