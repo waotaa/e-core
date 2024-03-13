@@ -13,6 +13,7 @@ use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Models\Role;
 use Vng\EvaCore\Repositories\ManagerRepositoryInterface;
 use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
+use Vng\EvaCore\Repositories\RoleRepositoryInterface;
 
 class ManagerRepository extends BaseRepository implements ManagerRepositoryInterface
 {
@@ -101,6 +102,25 @@ class ManagerRepository extends BaseRepository implements ManagerRepositoryInter
         return $manager;
     }
 
+    public function syncOrganisations(Manager $manager, string|array $organisationIds): Manager
+    {
+        $organisationIds = (array) $organisationIds;
+
+        // Check if current attached orgs who will be detached may be detached
+        $manager->organisations->filter(function (Organisation $org) use ($organisationIds) {
+            // Return true if the org's id is NOT in the $organisationIds array
+            return !in_array($org->id, $organisationIds);
+        })->each(fn (Organisation $org) => Gate::authorize('detachOrganisation', [$manager, $org]));
+
+        /** @var OrganisationRepositoryInterface $organisationRepo */
+        $organisationRepo = app(OrganisationRepositoryInterface::class);
+        $organisations = $organisationRepo->builder()->whereIn('id', $organisationIds)->get();
+        $organisations->each(fn (Organisation $org) => Gate::authorize('attachOrganisation', [$manager, $org]));
+
+        $manager->organisations()->sync($organisationIds);
+        return $manager;
+    }
+
     public function attachRole(Manager $manager, Role $role): Manager
     {
         Gate::authorize('attachRole', [$manager, $role]);
@@ -114,6 +134,26 @@ class ManagerRepository extends BaseRepository implements ManagerRepositoryInter
         Gate::authorize('detachRole', [$manager, $role]);
 
         $manager->removeRole($role);
+        return $manager;
+    }
+
+    public function syncRoles(Manager $manager, string|array $roleIds): Manager
+    {
+        $roleIds = (array) $roleIds;
+
+        // Check if current attached orgs who will be detached may be detached
+        $manager->roles->filter(function (Role $role) use ($roleIds) {
+            // Return true if the org's id is NOT in the $organisationIds array
+            return !in_array($role->id, $roleIds);
+        })->each(fn (Role $role) => Gate::authorize('detachRole', [$manager, $role]));
+
+        /** @var RoleRepositoryInterface $roleRepo */
+        $roleRepo = app(RoleRepositoryInterface::class);
+        $roles = $roleRepo->builder()->whereIn('id', $roleIds)->get();
+        $roles->each(fn (Role $role) => Gate::authorize('attachRole', [$manager, $role]));
+
+        $manager->syncRoles($roleIds);
+
         return $manager;
     }
 }

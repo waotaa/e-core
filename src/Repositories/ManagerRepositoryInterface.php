@@ -20,7 +20,9 @@ interface ManagerRepositoryInterface extends BaseRepositoryInterface
 
     public function attachOrganisations(Manager $manager, string|array $organisationIds): Manager;
     public function detachOrganisations(Manager $manager, string|array $organisationIds): Manager;
+    public function syncOrganisations(Manager $manager, string|array $organisationIds): Manager;
 
     public function attachRole(Manager $manager, Role $role): Manager;
     public function detachRole(Manager $manager, Role $role): Manager;
+    public function syncRoles(Manager $manager, string|array $roleIds): Manager;
 }
