@@ -59,6 +59,7 @@ use Vng\EvaCore\Commands\Operations\SetupGeoData;
 use Vng\EvaCore\Commands\Professionals\CognitoFetchProfessionals;
 use Vng\EvaCore\Commands\Professionals\CognitoGetConfig;
 use Vng\EvaCore\Commands\Professionals\CognitoSetup;
+use Vng\EvaCore\Commands\Professionals\CognitoSyncProfessionalBatch;
 use Vng\EvaCore\Commands\Professionals\CognitoSyncProfessionals;
 use Vng\EvaCore\Commands\Professionals\ProfessionalPasswordExpirationCheck;
 use Vng\EvaCore\Commands\Ratings\MatchInstrumentRatingsWithProfessionals;
@@ -203,6 +204,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         CognitoFetchProfessionals::class,
         CognitoGetConfig::class,
         CognitoSetup::class,
+        CognitoSyncProfessionalBatch::class,
         CognitoSyncProfessionals::class,
         ProfessionalPasswordExpirationCheck::class,
 

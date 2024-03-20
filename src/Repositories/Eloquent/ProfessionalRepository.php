@@ -2,7 +2,9 @@
 
 namespace Vng\EvaCore\Repositories\Eloquent;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Http\FormRequest;
 use Vng\EvaCore\Http\Requests\ProfessionalCreateRequest;
 use Vng\EvaCore\Http\Requests\ProfessionalUpdateRequest;
@@ -55,5 +57,19 @@ class ProfessionalRepository extends BaseRepository implements ProfessionalRepos
     public function getQueryItemsManagedByUser(IsManagerInterface $user): Builder
     {
         return $this->addForUserConditions($this->builder(), $user);
+    }
+
+    public function getLastSeenProfessionals($limit = 200, $daysAgoThreshold = null): Collection|array
+    {
+        $query = $this->builder()
+            ->orderBy('last_seen_at', 'ASC')
+            ->limit($limit);
+
+        if ($daysAgoThreshold !== null) {
+            $dateThreshold = Carbon::now()->subDays($daysAgoThreshold);
+            $query->where('last_seen_at', '<=', $dateThreshold);
+        }
+
+        return $query->get();
     }
 }

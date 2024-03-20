@@ -2,12 +2,10 @@
 
 namespace Vng\EvaCore\Commands\Professionals;
 
-use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Services\Cognito\CognitoService;
-use Illuminate\Console\Command;
 
-class CognitoSyncProfessionals extends Command
+class CognitoSyncProfessionals extends AbstractCognitoCommand
 {
     protected $signature = 'professionals:sync {environmentSlug?} {--d|destructive}';
     protected $description = 'Sync the professionals with the AWS user pool';
@@ -35,17 +33,6 @@ class CognitoSyncProfessionals extends Command
 
         $this->output->writeln('syncing professionals finished');
         return 0;
-    }
-
-    public function hasValidConfig(): bool
-    {
-        if (!CognitoService::hasRequiredConfig()) {
-            $message = 'AWS Config missing: Could not sync professionals';
-            Log::warning($message);
-            $this->warn($message);
-            return false;
-        }
-        return true;
     }
 
     public function syncProfessionals(Environment $environment)
