@@ -3,34 +3,34 @@
 namespace Vng\EvaCore\Traits;
 
 use Illuminate\Support\Facades\Schema;
-use Vng\EvaCore\Models\Release;
+use Vng\EvaCore\Models\Update;
 
-trait ReleaseTrait
+trait UpdateTrait
 {
     protected ?string $version = null;
-    protected ?Release $release = null;
+    protected ?Update $update = null;
     protected array $tasks = [];
 
-    public function hasReleasesTable(): bool
+    public function hasUpdatesTable(): bool
     {
-        $table = (new Release())->getTable();
+        $table = (new Update())->getTable();
         return Schema::hasTable($table);
     }
 
-    public function hasReleaseEntitiy(): bool
+    public function hasUpdateEntitiy(): bool
     {
-        return !is_null($this->release);
+        return !is_null($this->update);
     }
 
-    public function initializeRelease(?string $version = null): void
+    public function initializeUpdate(?string $version = null): void
     {
         $this->setVersion($version);
-        $this->createRelease();
+        $this->createUpdate();
     }
 
-    protected function createRelease()
+    protected function createUpdate()
     {
-        if (!$this->hasReleasesTable()) {
+        if (!$this->hasUpdatesTable()) {
             return;
         }
 
@@ -40,9 +40,9 @@ trait ReleaseTrait
             throw new \Exception('Version number missing');
         }
 
-        $this->release = Release::create([
+        $this->update = Update::create([
             'version' => $version,
-            'status' => Release::STATUS_INITIATED
+            'status' => Update::STATUS_INITIATED
         ]);
     }
 
@@ -57,18 +57,18 @@ trait ReleaseTrait
     {
         $tasks = $this->addTask($task);
 
-        if (!$this->hasReleaseEntitiy()) {
+        if (!$this->hasUpdateEntitiy()) {
             // attempt to create a release if it's not there yet
-            $this->initializeRelease();
+            $this->initializeUpdate();
 
-            if (!$this->hasReleaseEntitiy()) {
+            if (!$this->hasUpdateEntitiy()) {
                 // if still no release available we can't update
                 return;
             }
         }
 
-        $this->release->update([
-            'status' => Release::STATUS_TASK_DONE,
+        $this->update->update([
+            'status' => Update::STATUS_TASK_DONE,
             'tasks' => $tasks,
         ]);
     }
@@ -79,14 +79,14 @@ trait ReleaseTrait
         return $this->tasks;
     }
 
-    public function completeRelease()
+    public function completeUpdate()
     {
-        if (!$this->hasReleaseEntitiy()) {
+        if (!$this->hasUpdateEntitiy()) {
             throw new \Exception('Release functionality was not implemented during release');
         }
 
-        $this->release->update([
-            'status' => Release::STATUS_COMPLETED
+        $this->update->update([
+            'status' => Update::STATUS_COMPLETED
         ]);
     }
 }

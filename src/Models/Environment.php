@@ -81,7 +81,9 @@ class Environment extends SearchableModel
 
     public function getLogoUrlAttribute()
     {
-        return LogoStorageService::make($this->organisation)->getFileUrl($this->attributes['logo']);
+        return LogoStorageService::make()
+            ->setOrganisation($this->organisation)
+            ->getFileUrl($this->attributes['logo']);
     }
 
     public function contact()

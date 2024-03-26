@@ -9,20 +9,16 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use League\Flysystem\Util;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Vng\EvaCore\Models\Organisation;
 
 abstract class AbstractStorageService
 {
     protected $visibility = 'private';
 
-    public function __construct(
-        protected ?Organisation $organisation
-    )
-    {}
-
-    public static function make(?Organisation $organisation = null)
+    public static function make(): static
     {
-        return new static($organisation);
+        return new static();
     }
 
     abstract protected function getBasePath(): string;
@@ -44,10 +40,6 @@ abstract class AbstractStorageService
     {
         $basePath = $this->getBasePath();
         $basePath = Str::finish($basePath, '/');
-
-        if (!is_null($this->organisation)) {
-            $basePath .= $this->getOrganisationPathPrefix($this->organisation);
-        }
         return Util::normalizePath($basePath);
     }
 
@@ -79,7 +71,7 @@ abstract class AbstractStorageService
         return $this->getStorageDisk()->url($filePath);
     }
 
-    public function downloadFile($filePath, $fileName): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function downloadFile($filePath, $fileName): StreamedResponse
     {
         return $this->getStorageDisk()->download($filePath, $fileName);
     }
@@ -111,11 +103,5 @@ abstract class AbstractStorageService
     public function deleteFile($filePath)
     {
         $this->getStorageDisk()->delete($filePath);
-    }
-
-
-    protected function getOrganisationPathPrefix(Organisation $organisation)
-    {
-        return $organisation->id .  '-' . $organisation->getSlugAttribute();
     }
 }

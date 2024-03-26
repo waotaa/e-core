@@ -50,7 +50,8 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
             $logo = $request->file('logo');
             // Check if the file actually exists on the server
             if ($logo->isValid()) {
-                $storedFile = LogoStorageService::make($environment->organisation)
+                $storedFile = LogoStorageService::make()
+                    ->setOrganisation($environment->organisation)
                     ->storeFile($logo);
                 $logo = $storedFile->getPath();
                 $environment->fill([
