@@ -7,6 +7,7 @@ namespace Vng\EvaCore\Interfaces;
 interface EvaUserInterface
 {
     public function isSuperAdmin();
+    public function isAdministrator();
 
     public function getName(): ?string;
     public function getGivenName(): ?string;

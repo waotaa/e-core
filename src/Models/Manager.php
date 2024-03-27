@@ -124,6 +124,11 @@ class Manager extends Model implements IsInstrumentWatcherInterface
             ->unique('id');
     }
 
+    public function isAdministrator()
+    {
+        return $this->hasRole('administrator') || $this->isSuperAdmin();
+    }
+
     public function isSuperAdmin()
     {
         return $this->hasRole(config('authorization.super-admin-role'));

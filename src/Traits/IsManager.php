@@ -19,6 +19,11 @@ trait IsManager
         return $manager;
     }
 
+    public function isAdministrator()
+    {
+        return $this->getManager()->isAdministrator();
+    }
+
     public function isSuperAdmin()
     {
         return $this->getManager()->isSuperAdmin();

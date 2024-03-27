@@ -13,7 +13,7 @@ class ReleasePolicy extends BasePolicy
 
     public function viewAny(IsManagerInterface $user)
     {
-        return true;
+        return $user->managerCan('release.viewAny');
     }
     
     /**

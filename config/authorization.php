@@ -109,6 +109,15 @@ $generalPermissions = [
     ...$partnershipGeneralPermissions,
     ...$regionGeneralPermissions,
     ...$townshipGeneralPermissions,
+
+    'release.viewAny',
+    'release.view',
+];
+
+$administratorPermissions = [
+    'release.create',
+    'release.update',
+    'release.delete',
 ];
 
 // User
@@ -415,6 +424,7 @@ return [
         'rating',
         'region',
         'regionalParty',
+        'release',
         'targetGroup',
         'tile',
         'township',
@@ -424,6 +434,7 @@ return [
     // Roles and their associated permissions
     'matrix' => [
         'administrator' => [
+            ...$administratorPermissions,
             ...$generalPermissions,
             ...$environmentGeneralPermissions,
             ...$instrumentPropertyManagementPermissions,
