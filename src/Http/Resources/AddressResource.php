@@ -24,7 +24,7 @@ class AddressResource extends JsonResource
 
             'postcode_digits' => (int) substr($this->postcode, 0, 4),
 
-            'organisation' => OrganisationResource::make($this->organisation),
+            'organisation' => OrganisationResource::make($this->whenLoaded('organisation')),
         ];
     }
 }

@@ -13,9 +13,11 @@ class RegionResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
+
             'name' => $this->name,
             'slug' => $this->slug,
             'code' => $this->code,
+
             'townships' => TownshipResource::collection($this->whenLoaded('townships')),
         ];
     }

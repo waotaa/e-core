@@ -18,6 +18,7 @@ class NewsItemResource extends JsonResource
             'publish_to' => $this->publish_to,
             'publication_date' => $this->publish_from ?: $this->created_at,
             'published' => NewsItemHelper::create($this->resource)->isPublished(),
+
             'title' => $this->title,
             'sub_title' => $this->sub_title,
             'body' => $this->body,

@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Providers;
 
 use Illuminate\Support\AggregateServiceProvider;
+use Vng\EvaCore\Commands\ApiSpecs\GenerateSchema;
 use Vng\EvaCore\Commands\AssignRegions;
 use Vng\EvaCore\Commands\Dev\PasswordGenerationTest;
 use Vng\EvaCore\Commands\Dev\Test;
@@ -151,6 +152,8 @@ class EvaServiceProvider extends AggregateServiceProvider
     ];
 
     protected $commands = [
+        GenerateSchema::class,
+
         PasswordGenerationTest::class,
         Test::class,
 

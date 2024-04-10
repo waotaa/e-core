@@ -8,9 +8,11 @@ properties:
   updated_at:
     type: string
     format: date-time
+    nullable: true
   deleted_at:
     type: string
     format: date-time
+    nullable: true
   name:
     type: string
   slug:
@@ -21,6 +23,8 @@ properties:
     type: string
   logo:
     type: string
+  logo_url:
+    type: string
   color_primary:
     type: string
   color_secondary:
@@ -29,12 +33,22 @@ properties:
     type: string
   user_pool_client_id:
     type: string
+  url:
+    type: string
   contact:
     $ref: './contact.yml'
+  professionals:
+    type: array
+    items:
+      $ref: './professional.yml'
   featured_organisations:
     type: array
     items:
       $ref: './organisation.yml'
+  featured_areas:
+    type: array
+    items:
+      $ref: './area.yml'
   news_items:
     type: array
     items:

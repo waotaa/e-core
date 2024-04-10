@@ -22,6 +22,7 @@ class ContactResource extends JsonResource
                     'name' => $this->pivot->type,
                 ];
             }),
+            'label' => $this->pivot?->label,
 
             'organisation' => OrganisationResource::make($this->organisation),
 

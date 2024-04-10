@@ -27,6 +27,10 @@ class RatingResource extends JsonResource
             // relations
             'instrument' => InstrumentResource::make($this->whenLoaded('instrument')),
             'professional' => ProfessionalResource::make($this->professional),
+
+            // shared for dashboard
+            'email' => $this->email,
+            'professional_email' => $this->professional ? $this->professional->email : null,
         ];
     }
 }

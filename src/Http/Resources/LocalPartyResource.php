@@ -17,6 +17,7 @@ class LocalPartyResource extends JsonResource
 
             'name' => $this->name,
             'slug' => $this->slug,
+
             'township' => TownshipResource::make($this->township),
             'organisation' => OrganisationResource::make($this->organisation)
         ];

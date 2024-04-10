@@ -10,8 +10,8 @@ properties:
     format: date-time
   username:
     type: string
-  email:
-    type: string
+#  email: // keep private
+#    type: string
   enabled:
     type: boolean
   last_seen_at:
@@ -31,7 +31,7 @@ properties:
     anyOf:
       - type: 'null'
       - $ref: './environment.yml'
-  mutations:
-    type: array
-    items:
-      $ref: './mutation.yml'
+#  mutations:
+#    type: array
+#    items:
+#      $ref: './mutation.yml'

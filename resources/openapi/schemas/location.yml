@@ -8,6 +8,7 @@ properties:
   updated_at:
     type: string
     format: date-time
+    nullable: true
   name:
     type: string
   type:
@@ -21,7 +22,7 @@ properties:
     type: boolean
   description:
     type: string
-  instrument:
-    $ref: './instrument.yml'
   address:
     $ref: './address.yml'
+  instrument:
+    $ref: './instrument.yml'

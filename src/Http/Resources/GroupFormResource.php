@@ -18,7 +18,7 @@ class GroupFormResource extends JsonResource
             'code' => $this->code,
             'custom' => $this->custom,
 
-            'instruments' => InstrumentResource::collection($this->whenLoaded('instruments'))
+//            'instruments' => InstrumentResource::collection($this->whenLoaded('instruments'))
         ];
     }
 }

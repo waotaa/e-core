@@ -2,8 +2,13 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
+use Vng\EvaCore\Models\Download;
+
 class DownloadResource extends ElasticResource
 {
+    /** @var Download */
+    protected $resource;
+
     public function toArray()
     {
         return [
@@ -14,6 +19,8 @@ class DownloadResource extends ElasticResource
             'label' => $this->label,
             'url' => $this->url,
             'filename' => $this->filename,
+
+            'instrument' => InstrumentResource::one($this->resource->relationLoaded('instrument') ? $this->instrument : null)
         ];
     }
 }

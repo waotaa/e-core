@@ -14,15 +14,17 @@ class InstrumentResource extends ElasticResource
     public function toArray()
     {
         return [
+            'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
+
             'uuid' => $this->uuid,
             'name' => $this->name,
             'slug' => (string) Str::slug($this->name),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
             'publish' => $this->is_active,
             'publish_from' => $this->publish_from,
             'publish_to' => $this->publish_to,
-
             'published' => InstrumentHelper::create($this->resource)->isPublished(),
             'complete' => InstrumentHelper::create($this->resource)->isComplete(),
 
@@ -62,7 +64,6 @@ class InstrumentResource extends ElasticResource
             'reach' => $this->resource->getReach(),
 
             // relations
-//            'owner' => OwnerResource::one($this->owner), // depricated
             'organisation' => OrganisationResource::one($this->organisation),
             'implementation' => ImplementationResource::one($this->implementation),
             'group_forms' => GroupFormResource::many($this->groupForms),
@@ -94,6 +95,8 @@ class InstrumentResource extends ElasticResource
             'available_regions' => RegionResource::many($this->availableRegions),
             'available_townships' => TownshipResource::many($this->availableTownships),
             'available_neighbourhoods' => NeighbourhoodResource::many($this->availableNeighbourhoods),
+
+            'parent_instrument' => InstrumentResource::one($this->resource->relationLoaded('parentInstrument') ? $this->parentInstrument : null)
         ];
     }
 }

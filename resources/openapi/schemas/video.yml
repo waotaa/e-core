@@ -6,6 +6,7 @@ properties:
     type: string
   updated_at:
     type: string
+    nullable: true
   provider:
     type: string
   video_identifier:

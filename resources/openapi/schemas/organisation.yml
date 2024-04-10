@@ -8,10 +8,14 @@ properties:
   updated_at:
     type: string
     format: date-time
+    nullable: true
   deleted_at:
     type: string
     format: date-time
+    nullable: true
   name:
+    type: string
+  slug:
     type: string
   type:
     type: string
@@ -19,11 +23,11 @@ properties:
     type: string
   organisationable_id:
     type: integer
-  managers:
-    type: array
-    nullable: true
-    items:
-      $ref: './manager.yml'
+#  managers:
+#    type: array
+#    nullable: true
+#    items:
+#      $ref: './manager.yml'
   featuringEnvironments:
     type: array
     nullable: true
@@ -34,3 +38,7 @@ properties:
     nullable: true
     items:
       $ref: './contact.yml'
+  areasActiveIn:
+    anyOf:
+      - type: 'null'
+      - $ref: './area.yml'

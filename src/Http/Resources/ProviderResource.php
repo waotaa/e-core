@@ -15,18 +15,19 @@ class ProviderResource extends JsonResource
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
 
+            'uuid' => $this->uuid,
             'name' => $this->name,
             'slug' => (string) Str::slug($this->name),
+
             'import_mark' => $this->import_mark,
 
             'organisation' => OrganisationResource::make($this->organisation),
+
             'address' => AddressResource::make($this->address),
             'contacts' => ContactResource::collection($this->whenLoaded('contact')),
 
-//            'owner' => OwnerResource::make($this->owner),
-            'mutations' => MutationResource::collection($this->mutations),
-
-            'instrument' => InstrumentResource::make($this->whenLoaded('instrument'))
+//            'instruments' => InstrumentResource::collection($this->whenLoaded('instruments'))
+//            'mutations' => MutationResource::collection($this->mutations),
         ];
     }
 }

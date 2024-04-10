@@ -23,20 +23,25 @@ class EnvironmentResource extends JsonResource
             'description' => $this->description,
 
             'logo' => $this->logo,
+            'logo_url' => $this->logo_url,
             'color_primary' => $this->color_primary,
             'color_secondary' => $this->color_secondary,
-//            'featured_association' => OwnerResource::make($this->featuredAssociation),
-
             'user_pool_id' => $this->user_pool_id,
             'user_pool_client_id' => $this->user_pool_client_id,
+            'url' => $this->url,
 
             'contact' => ContactResource::make($this->contact),
+
+            'professionals' => ProfessionalResource::collection($this->whenLoaded('professionals')),
             'featured_organisations' => OrganisationResource::collection($this->featuredOrganisations),
+            'featured_areas' => AreaInterfaceResource::collection($this->featuredAreas),
 
             'news_items' => NewsItemResource::collection($this->whenLoaded(
                 'newsItems',
                 fn() => $this->resource->newsItems()->orderBy('id', 'desc')->get())
             ),
+
+            'organisation' => OrganisationResource::make($this->organisation),
         ];
     }
 }

@@ -8,6 +8,9 @@ class LocationResource extends ElasticResource
     {
         return [
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+
             'name' => $this->name,
             'type' => [
                 'key' => $this->rawType,
@@ -17,6 +20,7 @@ class LocationResource extends ElasticResource
             'description' => $this->description,
 
             'address' => AddressResource::one($this->address),
+            'instrument' => InstrumentResource::one($this->instrument)
         ];
     }
 }

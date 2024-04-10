@@ -22,7 +22,6 @@ class InstrumentResource extends JsonResource
             'publish' => $this->is_active,
             'publish_from' => $this->publish_from,
             'publish_to' => $this->publish_to,
-
             'published' => InstrumentHelper::create($this->resource)->isPublished(),
             'complete' => InstrumentHelper::create($this->resource)->isComplete(),
 
@@ -62,7 +61,6 @@ class InstrumentResource extends JsonResource
             'reach' => $this->resource->getReach(),
 
             // relations
-            'owner' => OwnerResource::make($this->owner),
             'organisation' => OrganisationResource::make($this->organisation),
             'implementation' => ImplementationResource::make($this->implementation),
             'group_forms' => GroupFormResource::collection($this->groupForms),
@@ -95,8 +93,8 @@ class InstrumentResource extends JsonResource
             'available_townships' => TownshipResource::collection($this->availableTownships),
             'available_neighbourhoods' => NeighbourhoodResource::collection($this->availableNeighbourhoods),
 
-            'mutations' => MutationResource::collection($this->mutations),
             'parent_instrument' => InstrumentResource::make($this->whenLoaded($this->parentInstrument))
+//            'mutations' => MutationResource::collection($this->mutations),
         ];
     }
 }

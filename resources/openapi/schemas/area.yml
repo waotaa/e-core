@@ -4,5 +4,7 @@ properties:
     type: string
   name:
     type: string
+  slug:
+    type: string
   type:
     type: string

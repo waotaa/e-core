@@ -10,11 +10,15 @@ class TownshipResource extends ElasticResource
     {
         return [
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
+
             'name' =>  $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
             'code' => $this->code,
-            'featureId' => $this->featureId,
+
             'region' => $this->region ? TownshipRegionResource::one($this->region) : null,
         ];
     }

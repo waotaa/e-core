@@ -17,7 +17,7 @@ class ClientCharacteristicResource extends JsonResource
             'name' => $this->name,
             'code' => $this->code,
 
-            'instruments' => InstrumentResource::collection($this->whenLoaded('instruments'))
+//            'instruments' => InstrumentResource::collection($this->whenLoaded('instruments'))
         ];
     }
 }

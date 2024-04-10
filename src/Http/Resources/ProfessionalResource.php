@@ -14,7 +14,7 @@ class ProfessionalResource extends JsonResource
             'updated_at' => $this->updated_at,
 
             'username' => $this->username,
-            'email' => $this->email,
+//            'email' => $this->email, // keep private
 
             'enabled' => $this->enabled,
             'last_seen_at' => $this->last_seen_at,
@@ -26,7 +26,7 @@ class ProfessionalResource extends JsonResource
 
             'environment' => EnvironmentResource::make($this->whenLoaded('environment')),
 
-            'mutations' => MutationResource::collection($this->mutations),
+//            'mutations' => MutationResource::collection($this->mutations),
         ];
     }
 }

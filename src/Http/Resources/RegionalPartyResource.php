@@ -17,6 +17,7 @@ class RegionalPartyResource extends JsonResource
 
             'name' => $this->name,
             'slug' => $this->slug,
+
             'organisation' => OrganisationResource::make($this->organisation),
             'region' => RegionResource::make($this->region),
         ];

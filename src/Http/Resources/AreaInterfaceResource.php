@@ -11,6 +11,7 @@ class AreaInterfaceResource extends JsonResource
         return [
             'identifier' => $this->resource->getAreaIdentifier(),
             'name' => $this->resource->getName(),
+            'slug' => $this->resource->getSlug(),
             'type' => $this->resource->getType(),
         ];
     }

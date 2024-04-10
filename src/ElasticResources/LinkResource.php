@@ -8,8 +8,13 @@ class LinkResource extends ElasticResource
     {
         return [
             'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+
             'label' => $this->label,
             'url' => $this->url,
+
+            'instrument' => InstrumentResource::one($this->resource->instrument),
         ];
     }
 }

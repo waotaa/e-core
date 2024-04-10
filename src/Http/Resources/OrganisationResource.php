@@ -19,6 +19,7 @@ class OrganisationResource extends JsonResource
             'deleted_at' => $this->deleted_at,
 
             'name' => $this->name,
+            'slug' => $this->slug,
             'type' => $this->type,
 
             'organisationable_type' => $this->organisationable_type,
@@ -29,9 +30,11 @@ class OrganisationResource extends JsonResource
             'nationalParty' => OrganisationNationalPartyResource::make($this->nationalParty),
             'partnership' => OrganisationPartnershipResource::make($this->partnership),
 
-            'managers' => ManagerResource::collection($this->whenLoaded('managers')),
+//            'managers' => ManagerResource::collection($this->whenLoaded('managers')),
             'featuringEnvironments' => EnvironmentResource::collection($this->whenLoaded('featuringEnvironments')),
             'contacts' => ContactResource::collection($this->whenLoaded('contacts')),
+
+            'areasActiveIn' => AreaInterfaceResource::collection($this->resource->getAreasActiveInAttribute())
         ];
     }
 }

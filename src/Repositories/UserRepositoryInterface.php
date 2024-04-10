@@ -8,7 +8,7 @@ use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Organisation;
 
-interface UserRepositoryInterface extends BaseRepositoryInterface
+interface UserRepositoryInterface extends BaseRepositoryInterface, SoftDeletableRepositoryInterface
 {
     public function addMultipleSameAssociationCondition(Builder $query, Collection $organisations): Builder;
     public function addSameOrganisationCondition(Builder $query, Organisation $organisation): Builder;

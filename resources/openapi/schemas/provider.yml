@@ -27,7 +27,11 @@ properties:
     type: array
     items:
       $ref: './contact.yml'
-  mutations:
-    type: array
-    items:
-      $ref: './mutation.yml'
+#  mutations:
+#    type: array
+#    items:
+#      $ref: './mutation.yml'
+#  instruments:
+#    type: array
+#      items:
+#        $ref: './instrument.yml'

@@ -8,14 +8,17 @@ properties:
   updated_at:
     type: string
     format: date-time
+    nullable: true
   deleted_at:
     type: string
     format: date-time
+    nullable: true
   name:
     type: string
   custom:
     type: boolean
-  instruments:
-    type: array
-    items:
-      $ref: './instrument.yml'
+#  instruments:
+#    type: array
+#    nullable: true
+#    items:
+#      $ref: './instrument.yml'
