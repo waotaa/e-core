@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Services\Storage;
 
+use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 use League\Flysystem\Util;
 use Vng\EvaCore\Models\Organisation;
@@ -30,10 +31,11 @@ abstract class AbstractOrganisationStorageService extends AbstractStorageService
         return $organisation->id .  '-' . $organisation->getSlugAttribute();
     }
 
-    protected function getStorageDirectory(): string
+    public function getStorageDirectory(): string
     {
         $this->ensureOrganisationIsSet();
         $storageDir = parent::getStorageDirectory();
+        $storageDir = Str::finish($storageDir, '/');
         $storageDir .= $this->getOrganisationPathPrefix($this->organisation);
         return Util::normalizePath($storageDir);
     }

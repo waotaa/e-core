@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Services\Storage;
 
+use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 use League\Flysystem\Util;
 use Vng\EvaCore\Models\Release;
@@ -40,10 +41,11 @@ class ReleaseImageStorageService extends AbstractStorageService
         return 'id-' . $release->id;
     }
 
-    protected function getStorageDirectory(): string
+    public function getStorageDirectory(): string
     {
         $this->ensureReleaseIsSet();
         $storageDir = parent::getStorageDirectory();
+        $storageDir = Str::finish($storageDir, '/');
         $storageDir .= $this->getReleasePathPrefix($this->release);
         return Util::normalizePath($storageDir);
     }

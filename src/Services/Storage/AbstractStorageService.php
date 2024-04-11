@@ -7,10 +7,8 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use League\Flysystem\Util;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Vng\EvaCore\Models\Organisation;
 
 abstract class AbstractStorageService
 {
@@ -36,10 +34,9 @@ abstract class AbstractStorageService
         return Storage::disk($this->getStorageDiskName());
     }
 
-    protected function getStorageDirectory(): string
+    public function getStorageDirectory(): string
     {
         $basePath = $this->getBasePath();
-        $basePath = Str::finish($basePath, '/');
         return Util::normalizePath($basePath);
     }
 
