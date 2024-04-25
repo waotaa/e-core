@@ -16,7 +16,7 @@ class NationalPartyResource extends ElasticResource
             'name' => $this->name,
             'slug' => $this->slug,
 
-            'organisation' => OrganisationResource::one($this->organisation)
+            'organisation' => OrganisationResource::one($this->whenLoaded('organisation'))
         ];
     }
 }

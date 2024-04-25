@@ -27,8 +27,8 @@ class NewsItemResource extends ElasticResource
             'body' => $this->body,
             'teaser' => $this->teaser,
 
-            'environment_slug' => $this->resource->relationLoaded('environment') ? $this->envrionment->slug : null,
-            'environment' => $this->resource->relationLoaded('environment') ? EnvironmentResource::one($this->envrionment) : null
+            'environment_slug' => $this->whenLoaded('environment', $this->envrionment?->slug),
+            'environment' => EnvironmentResource::one($this->whenLoaded('environment'))
         ];
     }
 }

@@ -14,7 +14,7 @@ class VideoResource extends ElasticResource
             'provider' => $this->provider,
             'video_identifier' => $this->video_identifier,
 
-            'instrument' => $this->resource->relationLoaded('instrument') ? InstrumentResource::one($this->instrument) : null
+            'instrument' => InstrumentResource::one($this->whenLoaded('instrument')),
         ];
     }
 }

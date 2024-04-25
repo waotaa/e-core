@@ -23,12 +23,12 @@ class RatingResource extends ElasticResource
             'instrument_id' => $this->instrument_id,
 
             // relations
-            'instrument' => $this->resource->relationLoaded('instrument') ? InstrumentResource::one($this->instrument) : null,
-            'professional' => ProfessionalResource::one($this->professional),
+            'instrument' => InstrumentResource::one($this->whenLoaded('instrument')),
+            'professional' => ProfessionalResource::one($this->whenLoaded('professional')),
 
             // shared for dashboard
             'email' => $this->email,
-            'professional_email' => $this->professional ? $this->professional->email : null,
+            'professional_email' => $this->whenLoaded('professional', $this->professional?->email),
         ];
     }
 }

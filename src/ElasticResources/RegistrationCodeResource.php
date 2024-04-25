@@ -15,7 +15,7 @@ class RegistrationCodeResource extends ElasticResource
             'label' => $this->label,
             'is_displayed' => $this->is_displayed,
 
-            'instrument' => InstrumentResource::one($this->instrument)
+            'instrument' => InstrumentResource::one($this->whenLoaded('instrument'))
         ];
     }
 }

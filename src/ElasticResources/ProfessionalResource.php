@@ -22,9 +22,9 @@ class ProfessionalResource extends ElasticResource
             'status' => $this->status,
 
             'ratings_count' => $this->ratings->count(),
-            'ratings' => $this->resource->relationLoaded('ratings') ? RatingResource::many($this->ratings) : null,
+//            'ratings' => $this->resource->relationLoaded('ratings') ? RatingResource::many($this->ratings) : null,
 
-            'environment' => EnvironmentResource::one($this->environment),
+            'environment' => EnvironmentResource::one($this->whenLoaded('environment')),
         ];
     }
 }

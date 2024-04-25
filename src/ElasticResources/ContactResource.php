@@ -17,10 +17,10 @@ class ContactResource extends ElasticResource
             'type' => null,
             'label' => $this->resource?->pivot?->label,
 
-            'organisation' => OrganisationResource::one($this->organisation),
+            'organisation' => OrganisationResource::one($this->whenLoaded('organisation')),
 
-            'instruments' => InstrumentResource::many($this->resource->relationLoaded('instruments') ? $this->instruments : null),
-            'providers' => ProviderResource::many($this->resource->relationLoaded('providers') ? $this->providers : null),
+            'instruments' => InstrumentResource::many($this->whenLoaded('instruments')),
+            'providers' => ProviderResource::many($this->whenLoaded('providers')),
         ];
 
         $pivot = $this->resource->pivot;

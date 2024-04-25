@@ -6,7 +6,6 @@ class EnvironmentResource extends ElasticResource
 {
     public function toArray()
     {
-        $orderedNewsItems = $this->resource->newsItems()->orderBy('id', 'desc')->get();
         return [
             'id' => $this->id,
             'created_at' => $this->created_at,
@@ -27,15 +26,17 @@ class EnvironmentResource extends ElasticResource
             'user_pool_client_id' => $this->user_pool_client_id,
             'url' => $this->url,
 
-            'contact' => ContactResource::one($this->contact),
+            'contact' => ContactResource::one($this->whenLoaded('contact')),
 
-            'professionals' => ProfessionalResource::many($this->professionals),
-            'featured_organisations' => OrganisationResource::many($this->featuredOrganisations),
-            'featured_areas' => AreaInterfaceResource::many($this->featuredAreas),
+            'professionals' => ProfessionalResource::many($this->whenLoaded('professionals')),
+            'featured_organisations' => OrganisationResource::many($this->whenLoaded('featuredOrganisations')),
+            'featured_areas' => AreaInterfaceResource::many($this->whenLoaded('featuredAreas')),
 
-            'news_items' => NewsItemResource::many($orderedNewsItems),
+            'news_items' => NewsItemResource::many($this->whenLoaded('newsItems', function () {
+                $this->resource->newsItems()->orderBy('id', 'desc')->get();
+            })),
 
-            'organisation' => OrganisationResource::one($this->organisation),
+            'organisation' => OrganisationResource::one($this->whenLoaded('organisation')),
         ];
     }
 }

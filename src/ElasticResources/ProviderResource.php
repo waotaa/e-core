@@ -22,10 +22,10 @@ class ProviderResource extends ElasticResource
             'import_mark' => $this->import_mark,
 
             // relations
-            'organisation' => OrganisationResource::one($this->organisation),
+            'organisation' => OrganisationResource::one($this->whenLoaded('organisation')),
 
-            'address' => AddressResource::one($this->address),
-            'contacts' => $this->resource->relationLoaded('contacts') ? ContactResource::many($this->contacts) : null,
+            'address' => AddressResource::one($this->whenLoaded('address')),
+            'contacts' => ContactResource::many($this->whenLoaded('contacts')),
         ];
     }
 }

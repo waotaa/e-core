@@ -16,8 +16,8 @@ class RegionalPartyResource extends ElasticResource
             'name' => $this->name,
             'slug' => $this->slug,
 
-            'organisation' => OrganisationResource::one($this->organisation),
-            'region' => RegionResource::one($this->region),
+            'organisation' => OrganisationResource::one($this->whenLoaded('organisation')),
+            'region' => RegionResource::one($this->whenLoaded('region')),
         ];
     }
 }

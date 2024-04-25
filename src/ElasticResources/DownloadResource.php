@@ -20,7 +20,7 @@ class DownloadResource extends ElasticResource
             'url' => $this->url,
             'filename' => $this->filename,
 
-            'instrument' => InstrumentResource::one($this->resource->relationLoaded('instrument') ? $this->instrument : null)
+            'instrument' => InstrumentResource::one($this->whenLoaded('instrument')),
         ];
     }
 }

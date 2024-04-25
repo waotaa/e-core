@@ -16,8 +16,8 @@ class PartnershipResource extends ElasticResource
             'name' => $this->name,
             'slug' => $this->slug,
 
-            'organisation' => OrganisationResource::one($this->organisation),
-            'townships' => TownshipResource::many($this->townships),
+            'organisation' => OrganisationResource::one($this->whenLoaded('organisation')),
+            'townships' => TownshipResource::many($this->whenLoaded('townships')),
         ];
     }
 }

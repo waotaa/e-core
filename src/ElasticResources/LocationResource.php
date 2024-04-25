@@ -19,8 +19,8 @@ class LocationResource extends ElasticResource
             'is_active' => $this->is_active,
             'description' => $this->description,
 
-            'address' => AddressResource::one($this->address),
-            'instrument' => InstrumentResource::one($this->instrument)
+            'address' => AddressResource::one($this->whenLoaded('address')),
+            'instrument' => InstrumentResource::one($this->whenLoaded('instrument'))
         ];
     }
 }

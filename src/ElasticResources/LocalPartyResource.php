@@ -16,8 +16,8 @@ class LocalPartyResource extends ElasticResource
             'name' => $this->name,
             'slug' => $this->slug,
 
-            'township' => TownshipResource::one($this->township),
-            'organisation' => OrganisationResource::one($this->organisation)
+            'township' => TownshipResource::one($this->whenLoaded('township')),
+            'organisation' => OrganisationResource::one($this->whenLoaded('organisation'))
         ];
     }
 }

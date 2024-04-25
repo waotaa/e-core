@@ -51,4 +51,21 @@ class ElasticResource
     {
         return $this->resource->{$key};
     }
+
+    protected function whenLoaded($relationship, $value = null)
+    {
+        if (! $this->resource->relationLoaded($relationship)) {
+            return null;
+        }
+
+        if (func_num_args() === 1) {
+            return $this->resource->{$relationship};
+        }
+
+        if ($this->resource->{$relationship} === null) {
+            return null;
+        }
+
+        return value($value);
+    }
 }

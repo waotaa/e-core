@@ -96,7 +96,7 @@ class InstrumentResource extends ElasticResource
             'available_townships' => TownshipResource::many($this->availableTownships),
             'available_neighbourhoods' => NeighbourhoodResource::many($this->availableNeighbourhoods),
 
-            'parent_instrument' => InstrumentResource::one($this->resource->relationLoaded('parentInstrument') ? $this->parentInstrument : null)
+            'parent_instrument' => InstrumentResource::one($this->whenLoaded('parentInstrument'))
         ];
     }
 }

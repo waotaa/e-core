@@ -21,13 +21,13 @@ class OrganisationResource extends ElasticResource
             'organisationable_type' => $this->organisationable_type,
             'organisationable_id' => $this->organisationable_id,
 
-            'localParty' => LocalPartyResource::one($this->localParty),
-            'regionalParty' => RegionalPartyResource::one($this->regionalParty),
-            'nationalParty' => NationalPartyResource::one($this->nationalParty),
-            'partnership' => PartnershipResource::one($this->partnership),
+            'localParty' => LocalPartyResource::one($this->whenLoaded('localParty')),
+            'regionalParty' => RegionalPartyResource::one($this->whenLoaded('regionalParty')),
+            'nationalParty' => NationalPartyResource::one($this->whenLoaded('nationalParty')),
+            'partnership' => PartnershipResource::one($this->whenLoaded('partnership')),
 
-            'featuringEnvironments' => BasicEnvironmentResource::many($this->featuringEnvironments),
-            'contacts' => $this->resource->relationLoaded('contacts') ? ContactResource::many($this->contacts) : null,
+            'featuringEnvironments' => BasicEnvironmentResource::many($this->whenLoaded('featuringEnvironments')),
+            'contacts' => ContactResource::many($this->whenLoaded('contacts')),
 
             'areasActiveIn' => AreaInterfaceResource::many($this->resource->getAreasActiveInAttribute())
         ];
