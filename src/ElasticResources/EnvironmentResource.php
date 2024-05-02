@@ -30,7 +30,9 @@ class EnvironmentResource extends ElasticResource
 
             'professionals' => ProfessionalResource::many($this->whenLoaded('professionals')),
             'featured_organisations' => OrganisationResource::many($this->whenLoaded('featuredOrganisations')),
-            'featured_areas' => AreaInterfaceResource::many($this->whenLoaded('featuredAreas')),
+            'featured_areas' => AreaInterfaceResource::many(
+                $this->whenLoaded('featuredOrganisations', fn () => $this->resource->featuredAreas)
+            ),
 
             'news_items' => NewsItemResource::many($this->whenLoaded('newsItems', function () {
                 $this->resource->newsItems()->orderBy('id', 'desc')->get();

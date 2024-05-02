@@ -6,6 +6,7 @@ use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
 use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Region;
 use Illuminate\Console\Command;
+use Vng\EvaCore\Repositories\RegionRepositoryInterface;
 
 class SyncRegions extends Command
 {
@@ -22,7 +23,17 @@ class SyncRegions extends Command
         }
 
         $this->getOutput()->writeln('');
-        foreach (Region::all() as $region) {
+
+        /** @var RegionRepositoryInterface $regionRepository */
+        $regionRepository = app(RegionRepositoryInterface::class);
+        $regions = $regionRepository
+            ->builder()
+            ->with([
+                'townships'
+            ])
+            ->get();
+
+        foreach ($regions as $region) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $region->name);
             dispatch(new SyncSearchableModelToElasticJob($region));

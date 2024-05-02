@@ -7,6 +7,7 @@ use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Models\SyncAttempt;
+use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 
 class SyncInstruments extends Command
 {
@@ -26,7 +27,34 @@ class SyncInstruments extends Command
         }
 
         $this->output->writeln('');
-        foreach (Instrument::all() as $instrument) {
+
+        /** @var InstrumentRepositoryInterface $instrumentRepository */
+        $instrumentRepository = app(InstrumentRepositoryInterface::class);
+        $instruments = $instrumentRepository
+            ->builder()
+            ->with([
+                'organisation',
+                'implementation',
+                'groupForms',
+                'locations',
+                'registrationCodes',
+                'ratings',
+                'tiles',
+                'targetGroups',
+                'clientCharacteristics',
+                'links',
+                'videos',
+                'downloads',
+                'provider',
+                'contacts',
+                'availableRegions',
+                'availableTownships',
+                'availableNeighbourhoods',
+                'parentInstrument'
+            ])
+            ->get();
+
+        foreach ($instruments as $instrument) {
             $this->output->write('.');
 //            $this->getOutput()->write('- ' . $instrument->name);
 

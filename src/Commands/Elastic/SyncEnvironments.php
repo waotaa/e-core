@@ -6,6 +6,7 @@ use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
 use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Environment;
 use Illuminate\Console\Command;
+use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
 
 class SyncEnvironments extends Command
 {
@@ -22,7 +23,21 @@ class SyncEnvironments extends Command
         }
 
         $this->output->writeln('');
-        foreach (Environment::all() as $environment) {
+
+        /** @var EnvironmentRepositoryInterface $environmentRepo */
+        $environmentRepo = app(EnvironmentRepositoryInterface::class);
+        $environments = $environmentRepo
+            ->builder()
+            ->with([
+                'contact',
+                'featuredOrganisations',
+                'newsItems',
+                'organisation',
+                'professionals'
+            ])
+            ->get();
+
+        foreach ($environments as $environment) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $environment->name);
             dispatch(new SyncSearchableModelToElasticJob($environment));

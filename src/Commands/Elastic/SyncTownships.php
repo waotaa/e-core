@@ -7,6 +7,7 @@ use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Models\Township;
 use Illuminate\Console\Command;
+use Vng\EvaCore\Repositories\TownshipRepositoryInterface;
 
 class SyncTownships extends Command
 {
@@ -23,7 +24,17 @@ class SyncTownships extends Command
         }
 
         $this->output->writeln('');
-        foreach (Township::all() as $township) {
+
+        /** @var TownshipRepositoryInterface $townshipRepository */
+        $townshipRepository = app(TownshipRepositoryInterface::class);
+        $townships = $townshipRepository
+            ->builder()
+            ->with([
+                'region'
+            ])
+            ->get();
+
+        foreach ($townships as $township) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $township->name);
 

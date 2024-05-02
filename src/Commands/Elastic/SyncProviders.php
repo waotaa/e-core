@@ -6,6 +6,7 @@ use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
 use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Provider;
 use Illuminate\Console\Command;
+use Vng\EvaCore\Repositories\ProviderRepositoryInterface;
 
 class SyncProviders extends Command
 {
@@ -22,7 +23,19 @@ class SyncProviders extends Command
         }
 
         $this->output->writeln('');
-        foreach (Provider::all() as $provider) {
+
+        /** @var ProviderRepositoryInterface $providerRepository */
+        $providerRepository = app(ProviderRepositoryInterface::class);
+        $providers = $providerRepository
+            ->builder()
+            ->with([
+                'organisation',
+                'address',
+                'contacts'
+            ])
+            ->get();
+
+        foreach ($providers as $provider) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $provider->name);
             dispatch(new SyncSearchableModelToElasticJob($provider));

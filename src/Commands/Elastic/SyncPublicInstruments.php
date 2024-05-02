@@ -7,6 +7,7 @@ use Vng\EvaCore\Jobs\RemoveResourceFromPublicElasticJob;
 use Vng\EvaCore\Jobs\SyncResourceToPublicElasticJob;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Models\Instrument;
+use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 use Vng\EvaCore\Services\ElasticSearch\ElasticPublicClientBuilder;
 
 class SyncPublicInstruments extends Command
@@ -24,7 +25,34 @@ class SyncPublicInstruments extends Command
         }
 
         $this->output->writeln('');
-        foreach (Instrument::all() as $instrument) {
+
+        /** @var InstrumentRepositoryInterface $instrumentRepository */
+        $instrumentRepository = app(InstrumentRepositoryInterface::class);
+        $instruments = $instrumentRepository
+            ->builder()
+            ->with([
+                'organisation',
+                'implementation',
+                'groupForms',
+                'locations',
+                'registrationCodes',
+                'ratings',
+                'tiles',
+                'targetGroups',
+                'clientCharacteristics',
+                'links',
+                'videos',
+                'downloads',
+                'provider',
+                'contacts',
+                'availableRegions',
+                'availableTownships',
+                'availableNeighbourhoods',
+                'parentInstrument'
+            ])
+            ->get();
+
+        foreach ($instruments as $instrument) {
             $this->getOutput()->write('.');
             dispatch(new SyncResourceToPublicElasticJob(
                 $instrument,

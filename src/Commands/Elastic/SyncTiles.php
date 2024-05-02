@@ -7,6 +7,7 @@ use Vng\EvaCore\Jobs\SyncResourceToElasticJob;
 use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Tile;
 use Illuminate\Console\Command;
+use Vng\EvaCore\Repositories\TileRepositoryInterface;
 
 class SyncTiles extends Command
 {
@@ -23,7 +24,14 @@ class SyncTiles extends Command
         }
 
         $this->getOutput()->writeln('');
-        foreach (Tile::all() as $tile) {
+
+        /** @var TileRepositoryInterface $tileRepository */
+        $tileRepository = app(TileRepositoryInterface::class);
+        $tiles = $tileRepository
+            ->builder()
+            ->get();
+
+        foreach ($tiles as $tile) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $tile->name);
             dispatch(new SyncSearchableModelToElasticJob($tile));

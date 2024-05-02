@@ -7,6 +7,7 @@ use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
 use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\SyncAttempt;
+use Vng\EvaCore\Repositories\ClientCharacteristicRepositoryInterface;
 
 class SyncClientCharacteristics extends Command
 {
@@ -23,7 +24,14 @@ class SyncClientCharacteristics extends Command
         }
 
         $this->output->writeln('');
-        foreach (ClientCharacteristic::all() as $clientCharacteristic) {
+
+        /** @var ClientCharacteristicRepositoryInterface $clientCharacteristicsRepository */
+        $clientCharacteristicsRepository = app(ClientCharacteristicRepositoryInterface::class);
+        $clientCharacteristics = $clientCharacteristicsRepository
+            ->builder()
+            ->get();
+
+        foreach ($clientCharacteristics as $clientCharacteristic) {
             $this->output->write('.');
 //            $this->getOutput()->write('- ' . $clientCharacteristic->name);
 

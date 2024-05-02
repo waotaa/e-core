@@ -7,6 +7,7 @@ use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
 use Vng\EvaCore\Jobs\SyncResourceToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
+use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 
 class SyncInstrumentsDescription extends Command
 {
@@ -23,7 +24,34 @@ class SyncInstrumentsDescription extends Command
         }
 
         $this->output->writeln('');
-        foreach (Instrument::all() as $instrument) {
+
+        /** @var InstrumentRepositoryInterface $instrumentRepository */
+        $instrumentRepository = app(InstrumentRepositoryInterface::class);
+        $instruments = $instrumentRepository
+            ->builder()
+            ->with([
+                'organisation',
+                'implementation',
+                'groupForms',
+                'locations',
+                'registrationCodes',
+                'ratings',
+                'tiles',
+                'targetGroups',
+                'clientCharacteristics',
+                'links',
+                'videos',
+                'downloads',
+                'provider',
+                'contacts',
+                'availableRegions',
+                'availableTownships',
+                'availableNeighbourhoods',
+                'parentInstrument'
+            ])
+            ->get();
+
+        foreach ($instruments as $instrument) {
             $this->getOutput()->write('.');
             dispatch(new SyncResourceToElasticJob(
                 $instrument,

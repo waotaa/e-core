@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Commands\Elastic;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Professional;
+use Vng\EvaCore\Repositories\ProfessionalRepositoryInterface;
 
 class SyncProfessionals extends Command
 {
@@ -21,7 +22,17 @@ class SyncProfessionals extends Command
         }
 
         $this->getOutput()->writeln('');
-        foreach (Professional::all() as $professional) {
+
+        /** @var ProfessionalRepositoryInterface $professionalRepository */
+        $professionalRepository = app(ProfessionalRepositoryInterface::class);
+        $professionals = $professionalRepository
+            ->builder()
+            ->with([
+                'environment'
+            ])
+            ->get();
+
+        foreach ($professionals as $professional) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $professional->name);
             dispatch(new SyncSearchableModelToElasticJob($professional));
