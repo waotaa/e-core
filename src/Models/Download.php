@@ -4,11 +4,15 @@ namespace Vng\EvaCore\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Vng\EvaCore\Observers\DownloadObserver;
 use Vng\EvaCore\Services\Storage\DownloadStorageService;
+use Vng\EvaCore\Traits\HasOwner;
 
 class Download extends Model
 {
+    use HasOwner;
+
     protected $table = 'downloads';
 
     protected $fillable = [
@@ -36,8 +40,17 @@ class Download extends Model
         return parent::delete();
     }
 
+    /**
+     * @deprecated remove after migration
+     */
     public function instrument(): BelongsTo
     {
         return $this->belongsTo(Instrument::class);
+    }
+
+    public function instruments(): BelongsToMany
+    {
+        return $this->belongsToMany(Instrument::class, 'download_instrument')
+            ->withTimestamps();
     }
 }

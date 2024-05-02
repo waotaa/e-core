@@ -6,7 +6,7 @@ use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Contact;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ContactPolicy extends BasePolicy
+class ContactPolicy extends InstrumentPropertyPolicy
 {
     use HandlesAuthorization;
 
@@ -58,9 +58,6 @@ class ContactPolicy extends BasePolicy
         }
         return $user->managerCan('contact.delete');
     }
-
-    // attach instrument
-    // detach instrument
 
     // attach provider
     // detach provider

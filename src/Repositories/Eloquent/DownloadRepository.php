@@ -4,17 +4,19 @@ namespace Vng\EvaCore\Repositories\Eloquent;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Gate;
 use Vng\EvaCore\Http\Requests\DownloadCreateRequest;
 use Vng\EvaCore\Http\Requests\DownloadUpdateRequest;
 use Vng\EvaCore\Models\Download;
 use Vng\EvaCore\Models\Instrument;
+use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Repositories\DownloadRepositoryInterface;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 use Vng\EvaCore\Services\Storage\DownloadStorageService;
 
 class DownloadRepository extends BaseRepository implements DownloadRepositoryInterface
 {
-    use InstrumentOwnedEntityRepository;
+    use OwnedEntityRepository;
 
     public string $model = Download::class;
 
@@ -30,15 +32,11 @@ class DownloadRepository extends BaseRepository implements DownloadRepositoryInt
 
     public function saveFromRequest(Download $download, FormRequest $request): Download
     {
-        $instrumentRepository = app(InstrumentRepositoryInterface::class);
-        /** @var Instrument $instrument */
-        $instrument = $instrumentRepository->find($request->input('instrument_id'));
-        if (is_null($instrument)) {
-            throw new \Exception('invalid instrument provided');
-        }
-        $organisation = $instrument->organisation;
+        $organisationRepository = new OrganisationRepository();
+        /** @var Organisation $organisation */
+        $organisation = $organisationRepository->find($request->input('organisation_id'));
         if (is_null($organisation)) {
-            throw new \Exception('instrument requires an organisation');
+            throw new \Exception('invalid organisation provided');
         }
 
         if ($request->has('file')) {
@@ -62,8 +60,42 @@ class DownloadRepository extends BaseRepository implements DownloadRepositoryInt
         $download->fill([
             'label' => $request->input('label'),
         ]);
-        $download->instrument()->associate($request->input('instrument_id'));
+        $download->organisation()->associate($organisation);
         $download->save();
+        return $download;
+    }
+
+    public function attachInstruments(Download $download, string|array $instrumentIds): Download
+    {
+        $instrumentIds = (array) $instrumentIds;
+        /** @var InstrumentRepositoryInterface $instrumentRepository */
+        $instrumentRepository = app(InstrumentRepositoryInterface::class);
+        $instrumentRepository
+            ->findMany($instrumentIds)
+            ->each(
+                function (Instrument $instrument) use ($download) {
+                    Gate::authorize('attachInstrument', [$download, $instrument]);
+                }
+            );
+
+        $download->instruments()->syncWithoutDetaching($instrumentIds);
+        return $download;
+    }
+
+    public function detachInstruments(Download $download, string|array $instrumentIds): Download
+    {
+        $instrumentIds = (array) $instrumentIds;
+        /** @var InstrumentRepositoryInterface $instrumentRepository */
+        $instrumentRepository = app(InstrumentRepositoryInterface::class);
+        $instrumentRepository
+            ->findMany($instrumentIds)
+            ->each(
+                function (Instrument $instrument) use ($download) {
+                    Gate::authorize('detachInstrument', [$download, $instrument]);
+                }
+            );
+
+        $download->instruments()->detach($instrumentIds);
         return $download;
     }
 }

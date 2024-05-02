@@ -10,6 +10,7 @@ use Vng\EvaCore\Http\Requests\InstrumentCreateRequest;
 use Vng\EvaCore\Http\Requests\InstrumentUpdateRequest;
 use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\Contact;
+use Vng\EvaCore\Models\Download;
 use Vng\EvaCore\Models\GroupForm;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Neighbourhood;
@@ -19,6 +20,7 @@ use Vng\EvaCore\Models\Tile;
 use Vng\EvaCore\Models\Township;
 use Vng\EvaCore\Repositories\ClientCharacteristicRepositoryInterface;
 use Vng\EvaCore\Repositories\ContactRepositoryInterface;
+use Vng\EvaCore\Repositories\DownloadRepositoryInterface;
 use Vng\EvaCore\Repositories\GroupFormRepositoryInterface;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 use Vng\EvaCore\Repositories\NeighbourhoodRepositoryInterface;
@@ -183,6 +185,40 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
             );
 
         $instrument->clientCharacteristics()->detach($clientCharacteristicIds);
+        return $instrument;
+    }
+
+    public function attachDownloads(Instrument $instrument, string|array $downloadIds): Instrument
+    {
+        $downloadIds = (array) $downloadIds;
+        /** @var DownloadRepositoryInterface $downloadRepository */
+        $downloadRepository = app(DownloadRepositoryInterface::class);
+        $downloadRepository
+            ->findMany($downloadIds)
+            ->each(
+                function (Download $download) use ($instrument) {
+                    Gate::authorize('attachDownload', [$instrument, $download]);
+                }
+            );
+
+        $instrument->downloads()->syncWithoutDetaching($downloadIds);
+        return $instrument;
+    }
+
+    public function detachDownloads(Instrument $instrument, string|array $downloadIds): Instrument
+    {
+        $downloadIds = (array) $downloadIds;
+        /** @var DownloadRepositoryInterface $downloadRepository */
+        $downloadRepository = app(DownloadRepositoryInterface::class);
+        $downloadRepository
+            ->findMany($downloadIds)
+            ->each(
+                function (Download $download) use ($instrument) {
+                    Gate::authorize('detachDownload', [$instrument, $download]);
+                }
+            );
+
+        $instrument->downloads()->detach($downloadIds);
         return $instrument;
     }
 

@@ -17,6 +17,9 @@ interface InstrumentRepositoryInterface extends OwnedEntityRepositoryInterface, 
     public function attachClientCharacteristics(Instrument $instrument, string|array $clientCharacteristicIds): Instrument;
     public function detachClientCharacteristics(Instrument $instrument, string|array $clientCharacteristicIds): Instrument;
 
+    public function attachDownloads(Instrument $instrument, string|array $downloadIds): Instrument;
+    public function detachDownloads(Instrument $instrument, string|array $downloadIds): Instrument;
+
     public function attachGroupForms(Instrument $instrument, string|array $groupFormIds): Instrument;
     public function detachGroupForms(Instrument $instrument, string|array $groupFormIds): Instrument;
 

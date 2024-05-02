@@ -8,6 +8,7 @@ use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Address;
 use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\Contact;
+use Vng\EvaCore\Models\Download;
 use Vng\EvaCore\Models\GroupForm;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Location;
@@ -180,6 +181,19 @@ class InstrumentPolicy extends BasePolicy
         return $this->update($user, $instrument);
     }
     public function detachContact(IsManagerInterface $user, Instrument $instrument, Contact $contact): bool
+    {
+        return $this->update($user, $instrument);
+    }
+
+    public function attachAnyDownload(IsManagerInterface $user, Instrument $instrument): bool
+    {
+        return $this->update($user, $instrument);
+    }
+    public function attachDownload(IsManagerInterface $user, Instrument $instrument, Download $download): bool
+    {
+        return $this->update($user, $instrument);
+    }
+    public function detachDownload(IsManagerInterface $user, Instrument $instrument, Download $download): bool
     {
         return $this->update($user, $instrument);
     }
