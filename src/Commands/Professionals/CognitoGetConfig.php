@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 
 class CognitoGetConfig extends Command
 {
-    protected $signature = 'professionals:get-config {--environmentSlug} {--n|no-interaction}';
+    protected $signature = 'professionals:get-config {environmentSlug} {--n|no-interaction}';
     protected $description = 'Get the id of the userpool and client';
 
     public function handle(): int

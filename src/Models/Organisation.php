@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Collection;
 use Vng\EvaCore\Interfaces\AreaInterface;
+use Vng\EvaCore\Observers\OrganisationObserver;
 use Vng\EvaCore\Traits\HasContacts;
 
 class Organisation extends Model
@@ -21,6 +22,12 @@ class Organisation extends Model
     protected $table = 'organisations';
 
     protected $fillable = [];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(OrganisationObserver::class);
+    }
 
     public function getIdentifierAttribute()
     {

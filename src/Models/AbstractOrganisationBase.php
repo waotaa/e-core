@@ -62,16 +62,6 @@ abstract class AbstractOrganisationBase extends SearchableModel implements Organ
         return $this->getOrganisation()->hasMember($manager);
     }
 
-    public function delete()
-    {
-        if ($this->isForceDeleting()) {
-            $this->organisation()->withTrashed()->forceDelete();
-        } else {
-            $this->organisation()->delete();
-        }
-        parent::delete();
-    }
-
     public function restore()
     {
         $this->organisation()->withTrashed()->restore();
