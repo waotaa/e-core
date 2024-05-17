@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Services\Cognito;
 
+use Illuminate\Support\Facades\App;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\Professional;
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
@@ -147,6 +148,14 @@ class UserPoolService
         $args['PoolName'] = $environment->deriveUserPoolName();
         $args['AdminCreateUserConfig']['InviteMessageTemplate']['EmailMessage'] = static::getInvitationEmail($environment->url);
         $args['VerificationMessageTemplate']['EmailMessage'] = static::getValidationMessage($environment);
+
+        if (App::environment('local')) {
+            $args['EmailConfiguration'] = [
+                'EmailSendingAccount' => 'COGNITO_DEFAULT',
+//                'ReplyToEmailAddress' => 'no-reply@instrumentengids-eva.nl',
+            ];
+        }
+
         return $args;
     }
 
