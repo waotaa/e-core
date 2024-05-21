@@ -89,6 +89,7 @@ class InstrumentResource extends ElasticResource
 
             'available_areas' => AreaInterfaceResource::many($this->availableAreas),
             'available_areas_all' => AreaInterfaceResource::many($this->allAvailableAreas),
+//            'available_areas_townships' => AreaInterfaceResource::many($this->allAvailableTownships),
 
             // specified availability
             'available_areas_specified' => AreaInterfaceResource::many($this->specifiedAvailableAreas),

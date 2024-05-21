@@ -53,6 +53,13 @@ class Environment extends SearchableModel
         'dashboard_password_updated_at'
     ];
 
+    protected $with = [
+        'contact',
+        'featuredOrganisations',
+        'organisation',
+        'professionals'
+    ];
+
     protected static function boot()
     {
         parent::boot();

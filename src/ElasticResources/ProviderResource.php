@@ -24,8 +24,10 @@ class ProviderResource extends ElasticResource
             // relations
             'organisation' => OrganisationResource::one($this->whenLoaded('organisation')),
 
-            'address' => AddressResource::one($this->whenLoaded('address')),
-            'contacts' => ContactResource::many($this->whenLoaded('contacts')),
+//            'address' => AddressResource::one($this->whenLoaded('address')),
+            'address' => AddressResource::one($this->address),
+//            'contacts' => ContactResource::many($this->whenLoaded('contacts')),
+            'contacts' => ContactResource::many($this->contacts),
         ];
     }
 }

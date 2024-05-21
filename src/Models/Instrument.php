@@ -267,6 +267,13 @@ class Instrument extends SearchableModel
         return AreaService::getEncompassingAreasForCollection($this->availableAreas);
     }
 
+    public function getAllAvailableTownshipsAttribute(): Collection
+    {
+        $townshipType = (new Township())->getType();
+        return $this->getAttribute('allAvailableAreas')
+            ->filter(fn (AreaInterface $area) => $area->getType() === $townshipType);
+    }
+
     /**
      * Checks if every region is available in the available areas
      *

@@ -31,7 +31,6 @@ class SyncEnvironments extends Command
             ->with([
                 'contact',
                 'featuredOrganisations',
-                'newsItems',
                 'organisation',
                 'professionals'
             ])
