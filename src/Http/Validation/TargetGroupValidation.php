@@ -4,6 +4,7 @@ namespace Vng\EvaCore\Http\Validation;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
+use Vng\EvaCore\Http\Validation\Rule\SoftDeletedRule;
 
 class TargetGroupValidation extends ModelValidation
 {
@@ -23,6 +24,9 @@ class TargetGroupValidation extends ModelValidation
                 'required',
                 Rule::unique('target_groups', 'description')
                     ->where('organisation_id', $this->request->input('organisation_id'))
+                    ->withoutTrashed(),
+                (new SoftDeletedRule('description'))
+                    ->where('organisation_id', $this->request->input('organisation_id'))
             ]
         ];
     }
@@ -33,6 +37,9 @@ class TargetGroupValidation extends ModelValidation
             'description' => [
                 'required',
                 Rule::unique('target_groups', 'description')
+                    ->where('organisation_id', $this->request->input('organisation_id'))
+                    ->ignore($model->id),
+                (new SoftDeletedRule('description'))
                     ->where('organisation_id', $this->request->input('organisation_id'))
                     ->ignore($model->id)
             ]
