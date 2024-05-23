@@ -8,8 +8,8 @@ class ContactResource extends ElasticResource
     {
         $data = [
             'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => $this->formatDate($this->created_at),
+            'updated_at' => $this->formatDate($this->updated_at),
 
             'name' => $this->name,
             'phone' => $this->phone,

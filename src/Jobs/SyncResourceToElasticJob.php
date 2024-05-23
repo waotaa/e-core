@@ -4,6 +4,7 @@ namespace Vng\EvaCore\Jobs;
 
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\ElasticResources\ElasticResource;
 use Vng\EvaCore\Models\SyncAttempt;
 use Elasticsearch\Client;
@@ -41,6 +42,13 @@ class SyncResourceToElasticJob extends ElasticJob
             $this->updateAttemptStatusWithResult($result);
         } catch (NoNodesAvailableException $noNodesAvailableException) {
             $this->release(20);
+        } catch (\Exception $exception) {
+            Log::debug('Sync failed', [
+                'model_id' => $this->model->id,
+                'model' => $this->model,
+                'class' => $this->resourceClass
+            ]);
+            throw $exception;
         }
     }
 

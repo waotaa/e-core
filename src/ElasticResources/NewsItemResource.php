@@ -14,8 +14,8 @@ class NewsItemResource extends ElasticResource
     {
         return [
             'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => $this->formatDate($this->created_at),
+            'updated_at' => $this->formatDate($this->updated_at),
 
             'publish_from' => $this->publish_from,
             'publish_to' => $this->publish_to,

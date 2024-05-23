@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\ElasticResources;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class ElasticResource
@@ -67,5 +68,10 @@ class ElasticResource
         }
 
         return value($value);
+    }
+
+    protected function formatDate($date)
+    {
+        return $date instanceof Carbon ? $date->toIso8601String() : $date;
     }
 }

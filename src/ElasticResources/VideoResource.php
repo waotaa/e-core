@@ -8,8 +8,8 @@ class VideoResource extends ElasticResource
     {
         return [
             'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => $this->formatDate($this->created_at),
+            'updated_at' => $this->formatDate($this->updated_at),
 
             'provider' => $this->provider,
             'video_identifier' => $this->video_identifier,
