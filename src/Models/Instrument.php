@@ -271,7 +271,8 @@ class Instrument extends SearchableModel
     {
         $townshipType = (new Township())->getType();
         return $this->getAttribute('allAvailableAreas')
-            ->filter(fn (AreaInterface $area) => $area->getType() === $townshipType);
+            ->filter(fn (AreaInterface $area) => $area->getType() === $townshipType)
+            ->values();
     }
 
     /**

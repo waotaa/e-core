@@ -2,6 +2,8 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
+use Vng\EvaCore\ElasticResources\Region\TownshipResource as RegionTownshipResource;
+
 class RegionResource extends ElasticResource
 {
     public function toArray()
@@ -16,7 +18,7 @@ class RegionResource extends ElasticResource
             'slug' => $this->slug,
             'code' => $this->code,
 
-            'townships' => TownshipResource::many($this->townships),
+            'townships' => RegionTownshipResource::many($this->townships),
         ];
     }
 }

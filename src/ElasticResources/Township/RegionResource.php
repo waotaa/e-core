@@ -12,10 +12,7 @@ class RegionResource extends ElasticResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'description' => $this->description,
-            'color' => $this->color,
-            'cooperation_partners' => $this->cooperation_partners,
-            'townships' => $this->townships->pluck('name'),
+            'townships' => collect($this->townships)->pluck('name')->toArray(),
         ];
     }
 }
