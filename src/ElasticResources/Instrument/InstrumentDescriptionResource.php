@@ -13,10 +13,15 @@ class InstrumentDescriptionResource extends \Vng\EvaCore\ElasticResources\Instru
         $resource = parent::toArray();
         unset($resource['application_instructions']);
 
+        unset($resource['total_duration_value']);
+        unset($resource['total_duration_unit']);
+//        unset($resource['duration_description']);
+
+        unset($resource['intensity_hours_per_week']);
+//        unset($resource['intensity_description']);
+
         unset($resource['total_costs']);
         unset($resource['costs_description']);
-        unset($resource['duration_description']);
-        unset($resource['intensity_description']);
 
         unset($resource['contacts']);
         return $resource;
