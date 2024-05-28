@@ -1,6 +1,6 @@
 <?php
 
-namespace Vng\EvaCore\Jobs;
+namespace Vng\EvaCore\Jobs\ElasticPublic;
 
 use Elasticsearch\Client;
 use Vng\EvaCore\Services\ElasticSearch\ElasticPublicClientBuilder;

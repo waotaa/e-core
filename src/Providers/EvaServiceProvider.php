@@ -14,6 +14,7 @@ use Vng\EvaCore\Commands\Elastic\GetMapping;
 use Vng\EvaCore\Commands\Elastic\SyncAll;
 use Vng\EvaCore\Commands\Elastic\SyncClientCharacteristics;
 use Vng\EvaCore\Commands\Elastic\SyncEnvironments;
+use Vng\EvaCore\Commands\Elastic\SyncForApi;
 use Vng\EvaCore\Commands\Elastic\SyncInstruments;
 use Vng\EvaCore\Commands\Elastic\SyncInstrumentsDescription;
 use Vng\EvaCore\Commands\Elastic\SyncNewsItems;
@@ -164,6 +165,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         SyncAll::class,
         SyncClientCharacteristics::class,
         SyncEnvironments::class,
+        SyncForApi::class,
         SyncInstruments::class,
         SyncInstrumentsDescription::class,
         SyncNewsItems::class,

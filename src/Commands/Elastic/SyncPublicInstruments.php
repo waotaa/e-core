@@ -2,10 +2,10 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
-use Vng\EvaCore\ElasticResources\Shared\InstrumentResource;
-use Vng\EvaCore\Jobs\RemoveResourceFromPublicElasticJob;
-use Vng\EvaCore\Jobs\SyncResourceToPublicElasticJob;
 use Illuminate\Console\Command;
+use Vng\EvaCore\ElasticResources\Shared\InstrumentResource;
+use Vng\EvaCore\Jobs\ElasticPublic\RemoveResourceFromPublicElasticJob;
+use Vng\EvaCore\Jobs\ElasticPublic\SyncResourceToPublicElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 use Vng\EvaCore\Services\ElasticSearch\ElasticPublicClientBuilder;

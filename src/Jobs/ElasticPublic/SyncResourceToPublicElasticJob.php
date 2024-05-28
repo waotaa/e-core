@@ -1,7 +1,8 @@
 <?php
 
-namespace Vng\EvaCore\Jobs;
+namespace Vng\EvaCore\Jobs\ElasticPublic;
 
+use Vng\EvaCore\Jobs\SyncResourceToElasticJob;
 use Vng\EvaCore\Models\SearchableModel;
 use Vng\EvaCore\Models\SyncAttempt;
 

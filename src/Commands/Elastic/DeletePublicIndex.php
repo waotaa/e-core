@@ -3,7 +3,7 @@
 namespace Vng\EvaCore\Commands\Elastic;
 
 use Illuminate\Console\Command;
-use Vng\EvaCore\Jobs\DeletePublicIndexJob;
+use Vng\EvaCore\Jobs\ElasticPublic\DeletePublicIndexJob;
 
 class DeletePublicIndex extends Command
 {
