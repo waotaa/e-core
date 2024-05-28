@@ -64,6 +64,7 @@ return [
             'region' => env('AWS_REGION', 'eu-central-1'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT', 'https://'.env('AWS_BUCKET').'.s3-accelerate.amazonaws.com'),
         ],
 
         'geo-local' => [
@@ -77,7 +78,6 @@ return [
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_REGION', 'eu-central-1'),
             'bucket' => env('AWS_BUCKET_GEO'),
-            'url' => env('AWS_URL'),
         ]
     ],
 
