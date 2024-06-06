@@ -12,12 +12,16 @@ use Vng\EvaCore\Services\ElasticSearch\ElasticPublicClientBuilder;
 
 class SyncPublicInstruments extends Command
 {
-    protected $signature = 'elastic:sync-public-instruments';
+    protected $signature = 'elastic:sync-public-instruments {--f|fresh}';
     protected $description = 'Sync public instruments resources to public ES instance';
 
     public function handle(): int
     {
         $this->getOutput()->writeln('syncing public instruments');
+
+        if ($this->option('fresh')) {
+            $this->call(DeletePublicIndex::class, ['index' => 'instruments', '--force' => true]);
+        }
 
         if (!ElasticPublicClientBuilder::hasSettings()){
             $this->output->writeln('public instance settings missing');
