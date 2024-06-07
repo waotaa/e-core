@@ -12,9 +12,8 @@ trait PublicElasticClientTrait
         return ElasticPublicClientBuilder::make();
     }
 
-//    At this time we do prefix the public indexes as well
-//    protected function getFullIndex(): string
-//    {
-//        return $this->index;
-//    }
+    public static function prefixIndex($index): string
+    {
+        return 'stats-' . $index;
+    }
 }
