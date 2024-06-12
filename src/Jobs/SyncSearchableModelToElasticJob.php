@@ -12,8 +12,8 @@ class SyncSearchableModelToElasticJob extends SyncResourceToElasticJob
         parent::__construct($model, $model->getSearchIndex(), $model->getResourceClass(), $attempt);
     }
 
-    protected function getId(): string
-    {
-        return $this->model->getSearchId();
-    }
+//    protected function getId(): string
+//    {
+//        return $this->model->getSearchId();
+//    }
 }

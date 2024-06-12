@@ -69,7 +69,7 @@ class SyncResourceToElasticJob extends ElasticJob
 
     protected function getId(): string
     {
-        return $this->model->getKey();
+        return $this->model->getSearchId();
     }
 
     protected function getResource(): ElasticResource
