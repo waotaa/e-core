@@ -72,6 +72,10 @@ class ElasticResource
 
     protected function formatDate($date)
     {
-        return $date instanceof Carbon ? $date->toIso8601String() : $date;
+        if ($date instanceof Carbon) {
+            return $date->copy()->setTimezone('UTC')->format('Y-m-d\TH:i:s.u\Z');
+        }
+        return $date;
     }
+
 }
