@@ -268,6 +268,29 @@ $globalContactPermissions = [
     'contact.forceDelete'
 ];
 
+// Download
+$organisationDownloadPermissions = [
+    'download.viewAny',
+    'download.organisation.view',
+    'download.organisation.create',
+    'download.organisation.update',
+    'download.organisation.delete',
+    'download.organisation.restore',
+    'download.organisation.forceDelete',
+];
+
+$globalDownloadPermissions = [
+    ...$organisationDownloadPermissions,
+    'download.viewAny',
+    'download.viewAll',
+    'download.view',
+    'download.create',
+    'download.update',
+    'download.delete',
+    'download.restore',
+    'download.forceDelete'
+];
+
 // TargetGroup
 $organisationTargetGroupPermissions = [
     'targetGroup.viewAny',
@@ -447,6 +470,7 @@ return [
 
             ...$globalAddressPermissions,
             ...$globalContactPermissions,
+            ...$globalDownloadPermissions,
             ...$globalInstrumentPermissions,
             ...$globalProviderPermissions,
             ...$instrumentAdminRatingPermissions,
@@ -457,6 +481,7 @@ return [
             ...$generalPermissions,
             ...$globalAddressPermissions,
             ...$globalContactPermissions,
+            ...$globalDownloadPermissions,
             ...$globalInstrumentPermissions,
             ...$globalProviderPermissions,
         ],
@@ -464,6 +489,7 @@ return [
             ...$generalPermissions,
             ...$organisationAddressPermissions,
             ...$organisationContactPermissions,
+            ...$organisationDownloadPermissions,
             ...$organisationTargetGroupPermissions,
             ...$organisationInstrumentPermissions,
             ...$organisationProviderPermissions,
@@ -478,6 +504,7 @@ return [
             ...$organisationUserPermissions,
             ...$organisationAddressPermissions,
             ...$organisationContactPermissions,
+            ...$organisationDownloadPermissions,
             ...$organisationTargetGroupPermissions,
             ...$organisationInstrumentPermissions,
             ...$organisationProviderPermissions,
