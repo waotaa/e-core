@@ -20,6 +20,7 @@ use Vng\EvaCore\Commands\Elastic\SyncInstrumentsDescription;
 use Vng\EvaCore\Commands\Elastic\SyncNewsItems;
 use Vng\EvaCore\Commands\Elastic\SyncProfessionals;
 use Vng\EvaCore\Commands\Elastic\SyncProviders;
+use Vng\EvaCore\Commands\Elastic\SyncPublicEnvironments;
 use Vng\EvaCore\Commands\Elastic\SyncPublicInstruments;
 use Vng\EvaCore\Commands\Elastic\SyncRegions;
 use Vng\EvaCore\Commands\Elastic\SyncTiles;
@@ -171,6 +172,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         SyncNewsItems::class,
         SyncProfessionals::class,
         SyncProviders::class,
+        SyncPublicEnvironments::class,
         SyncPublicInstruments::class,
         SyncRegions::class,
         SyncTiles::class,

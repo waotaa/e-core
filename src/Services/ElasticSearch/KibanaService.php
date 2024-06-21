@@ -45,7 +45,7 @@ class KibanaService
         }
     }
 
-    private function getRoleName(): string
+    public function getRoleName(): string
     {
         $environmentSlug = $this->environment->getAttribute('slug');
         return 'view_' . $environmentSlug;
@@ -71,7 +71,7 @@ class KibanaService
         }
     }
 
-    private function getRoleRequestBody(): array
+    public function getRoleRequestBody(): array
     {
         $environmentSlug = $this->environment->getAttribute('slug');
 
