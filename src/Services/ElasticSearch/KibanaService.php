@@ -23,6 +23,14 @@ class KibanaService
         return new self($environment, $elasticApiService);
     }
 
+    public function healthCheck()
+    {
+        $endpoint = '_cluster/health';
+        $result = $this->elasticApiService->get($endpoint)->json();
+        Log::debug('kibana health result', $result);
+        return $result;
+    }
+
     public function ensureKibanaSetup()
     {
         try {
@@ -57,13 +65,14 @@ class KibanaService
         return preg_replace($pattern, '-', $this->environment->getAttribute('name'));
     }
 
-    public function updateOrCreateKibanaRoles(): void
+    public function updateOrCreateKibanaRoles(): array
     {
         try {
             $endpoint = '/_security/role/' . $this->getRoleName();
             $requestBody = $this->getRoleRequestBody();
             $result = $this->elasticApiService->put($endpoint, $requestBody);
             Log::debug('kibana roles result', $result);
+            return $result;
         }  catch (\Exception $e) {
             Log::error($e);
             throw $e;

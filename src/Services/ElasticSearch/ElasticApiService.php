@@ -48,6 +48,14 @@ class ElasticApiService
         // Set the authentication headers
         $headers = $this->getCommonHeaders();
         $url = $this->getPathForEndpoint($endpoint);
+
+        // Construeer de curl command
+//        $curlCommand = "curl -X PUT";
+//        foreach ($headers as $key => $value) {
+//            $curlCommand .= " -H '" . $key . ": " . $value . "'";
+//        }
+//        $curlCommand .= " -d '" . json_encode($data) . "' '" . $url . "'";
+
         $response = Http::withHeaders($headers)->put($url, $data);
 
         if ($response->failed()) {
