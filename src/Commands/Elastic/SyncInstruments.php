@@ -54,6 +54,9 @@ class SyncInstruments extends Command
             ])
             ->get();
 
+        $this->output->writeln($instruments->count() . ' instruments found');
+        $this->output->writeln('');
+
         foreach ($instruments as $instrument) {
             $this->output->write('.');
 //            $this->getOutput()->write('- ' . $instrument->name);

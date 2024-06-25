@@ -7,6 +7,7 @@ use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
 use Vng\EvaCore\Jobs\SyncResourceToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
+use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 
 class SyncInstrumentsDescription extends Command
@@ -51,12 +52,22 @@ class SyncInstrumentsDescription extends Command
             ])
             ->get();
 
+        $this->output->writeln($instruments->count() . ' instruments found');
+        $this->output->writeln('');
+
         foreach ($instruments as $instrument) {
             $this->getOutput()->write('.');
+
+            $attempt = new SyncAttempt();
+            $attempt->action = 'sync-description';
+            $attempt->resource()->associate($instrument);
+            $attempt->save();
+
             dispatch(new SyncResourceToElasticJob(
                 $instrument,
                 'instruments_description',
                 InstrumentDescriptionResource::class,
+                $attempt
             ));
         }
 
@@ -64,8 +75,8 @@ class SyncInstrumentsDescription extends Command
             dispatch(new RemoveResourceFromElasticJob('instruments_description', $instrument->getSearchId()));
         }
 
-        $this->output->writeln('');
-        $this->output->writeln('');
+        $this->output->newLine(2);
+        $this->output->writeln('syncing instruments description finished!');
         return 0;
     }
 }
