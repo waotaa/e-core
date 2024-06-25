@@ -14,9 +14,10 @@ trait IsManager
 
     public function getManager(): ?Manager
     {
-        /** @var ?Manager $manager */
-        $manager = $this->manager()->first();
-        return $manager;
+        if (!$this->relationLoaded('manager')) {
+            $this->load('manager');
+        }
+        return $this->getRelation('manager');
     }
 
     public function isAdministrator()
