@@ -41,6 +41,7 @@ class SyncResourceToElasticJob extends ElasticJob
             ]);
             $this->updateAttemptStatusWithResult($result);
         } catch (NoNodesAvailableException $noNodesAvailableException) {
+            $this->updateAttemptStatus('no nodes');
             Log::warning('No nodes available exception');
             $this->release(20);
         } catch (\Exception $exception) {
