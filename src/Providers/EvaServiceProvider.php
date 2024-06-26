@@ -76,6 +76,8 @@ use Vng\EvaCore\Commands\Setup\SeedCharacteristics;
 use Vng\EvaCore\Commands\Setup\Setup;
 use Vng\EvaCore\Commands\Setup\SetupAuthorizationMatrix;
 use Vng\EvaCore\Commands\Setup\Update;
+use Vng\EvaCore\Notifications\RatingStoredNotification;
+use Vng\EvaCore\Notifications\RatingStoredNotificationInterface;
 use Vng\EvaCore\Repositories\AddressRepositoryInterface;
 use Vng\EvaCore\Repositories\AssociateableRepositoryInterface;
 use Vng\EvaCore\Repositories\ClientCharacteristicRepositoryInterface;
@@ -245,6 +247,8 @@ class EvaServiceProvider extends AggregateServiceProvider
     {
         parent::register();
         $this->bindRepositoryInterfaces();
+
+        $this->app->bind(RatingStoredNotificationInterface::class, RatingStoredNotification::class);
     }
 
     public function boot()

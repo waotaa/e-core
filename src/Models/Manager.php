@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
 use Vng\EvaCore\Interfaces\IsInstrumentWatcherInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +15,7 @@ use Vng\EvaCore\Traits\IsInstrumentWatcher;
 
 class Manager extends Model implements IsInstrumentWatcherInterface
 {
-    use HasRoles, HasFactory, MutationLog, IsInstrumentWatcher;
+    use HasRoles, HasFactory, MutationLog, IsInstrumentWatcher, Notifiable;
 
     protected $guard_name = 'web';
 
