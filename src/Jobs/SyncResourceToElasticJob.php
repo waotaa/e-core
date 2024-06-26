@@ -40,16 +40,29 @@ class SyncResourceToElasticJob extends ElasticJob
                 'body' => $this->getResource()->toArray(),
             ]);
             $this->updateAttemptStatusWithResult($result);
+            Log::info('Document indexed successfully', [
+                'index' => $this->getFullIndex(),
+                'id' => $this->getId(),
+                'result' => $result,
+            ]);
         } catch (NoNodesAvailableException $noNodesAvailableException) {
+            Log::warning('No nodes available exception', [
+                'exception' => $noNodesAvailableException,
+                'index' => $this->getFullIndex(),
+                'id' => $this->getId(),
+            ]);
             $this->updateAttemptStatus('no nodes');
-            Log::warning('No nodes available exception');
             $this->release(20);
         } catch (\Exception $exception) {
-            Log::debug('Sync failed', [
+            Log::error('Sync failed', [
+                'exception' => $exception,
                 'model_id' => $this->model->id,
                 'model' => $this->model,
-                'class' => $this->resourceClass
+                'class' => $this->resourceClass,
+                'index' => $this->getFullIndex(),
+                'id' => $this->getId(),
             ]);
+            $this->updateAttemptStatus('failed');
             throw $exception;
         }
     }
