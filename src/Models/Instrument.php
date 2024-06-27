@@ -210,20 +210,20 @@ class Instrument extends SearchableModel
     {
         $areas = collect([]);
 
-        if ($this->availableRegions()->count() > 0) {
+        if ($this->availableRegions->isNotEmpty()) {
             $this->availableRegions()->each(function (Region $region) use ($areas) {
                 $areas->add($region);
             });
         }
 
-        if ($this->availableTownships()->count() > 0) {
+        if ($this->availableTownships->isNotEmpty()) {
             $this->availableTownships()->each(function (Township $township) use ($areas) {
                 $areas->add($township);
                 AreaService::removeAreaFromCollection($areas, $township->region);
             });
         }
 
-        if ($this->availableNeighbourhoods()->count() > 0) {
+        if ($this->availableNeighbourhoods->isNotEmpty()) {
             $this->availableNeighbourhoods()->each(function (Neighbourhood $neighbourhood) use ($areas) {
                 $areas->add($neighbourhood);
                 AreaService::removeAreaFromCollection($areas, $neighbourhood->township);

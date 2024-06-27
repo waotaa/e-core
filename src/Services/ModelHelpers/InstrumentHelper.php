@@ -53,24 +53,31 @@ class InstrumentHelper
             && $this->hasClientCharacteristic();
     }
 
-    public function hasProvider(): bool
-    {
-        return $this->instrument->providers()->count() > 0;
-    }
-
     public function hasTile(): bool
     {
-        return $this->instrument->tiles()->count() > 0;
+        if (!$this->instrument->relationLoaded('tiles')) {
+            $this->instrument->load('tiles');
+        }
+
+        return $this->instrument->tiles->isNotEmpty();
     }
 
     public function hasTargetGroup(): bool
     {
-        return $this->instrument->targetGroups()->count() > 0;
+        if (!$this->instrument->relationLoaded('targetGroups')) {
+            $this->instrument->load('targetGroups');
+        }
+
+        return $this->instrument->targetGroups->isNotEmpty();
     }
 
     public function hasClientCharacteristic(): bool
     {
-        return $this->instrument->clientCharacteristics()->count() > 0;
+        if (!$this->instrument->relationLoaded('clientCharacteristics')) {
+            $this->instrument->load('clientCharacteristics');
+        }
+
+        return $this->instrument->clientCharacteristics->isNotEmpty();
     }
 
     // Ratings

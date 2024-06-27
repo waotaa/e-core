@@ -6,6 +6,7 @@ use Illuminate\Support\AggregateServiceProvider;
 use Vng\EvaCore\Commands\ApiSpecs\GenerateSchema;
 use Vng\EvaCore\Commands\AssignRegions;
 use Vng\EvaCore\Commands\Dev\PasswordGenerationTest;
+use Vng\EvaCore\Commands\Dev\SyncInstrumentTest;
 use Vng\EvaCore\Commands\Dev\Test;
 use Vng\EvaCore\Commands\Elastic\DeleteIndex;
 use Vng\EvaCore\Commands\Elastic\DeletePublicIndex;
@@ -159,6 +160,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         GenerateSchema::class,
 
         PasswordGenerationTest::class,
+        SyncInstrumentTest::class,
         Test::class,
 
         DeleteIndex::class,
