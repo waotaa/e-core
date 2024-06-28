@@ -6,6 +6,7 @@ namespace Vng\EvaCore\Services;
 use Illuminate\Support\Collection;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Models\Region;
+use Vng\EvaCore\Repositories\Eloquent\CacheableRegionRepository;
 
 class AreaService
 {
@@ -73,7 +74,8 @@ class AreaService
 
     public static function getNationalAreas(): Collection
     {
-        return Region::all();
+        $regionRepo = new CacheableRegionRepository();
+        return $regionRepo->all();
     }
 }
 
