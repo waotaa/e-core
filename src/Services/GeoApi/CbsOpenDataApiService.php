@@ -20,8 +20,9 @@ class CbsOpenDataApiService extends GeoApiService
         // 84929NED (2021)
         // 85067NED (2022)
         // 85385NED (2023)
+        // 85755NED (2024)
         $client = new Client(['base_uri' => 'https://opendata.cbs.nl/ODataApi/odata/']);
-        $response = $client->request('GET', '85385NED/TypedDataSet', [
+        $response = $client->request('GET', '85755NED/TypedDataSet', [
             'query' => [
                 '$select' => 'RegioS,Code_1,Naam_2,Code_4,Naam_5',
             ]
