@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Vng\EvaCore\Http\Validation\ReleaseChangeValidation;
 use Vng\EvaCore\Models\Release;
-use Vng\EvaCore\Repositories\ReleaseRepositoryInterface;
+use Vng\EvaCore\Repositories\ReleaseChangeRepositoryInterface;
 
 class ReleaseChangeUpdateRequest extends BaseFormRequest implements FormRequestInterface
 {
@@ -29,8 +29,8 @@ class ReleaseChangeUpdateRequest extends BaseFormRequest implements FormRequestI
 
     protected function getReleaseChange(): ?Model
     {
-        /** @var ReleaseRepositoryInterface $releaseRepository */
-        $releaseRepository = App::make(ReleaseRepositoryInterface::class);
-        return $releaseRepository->find($this->getModelId());
+        /** @var ReleaseChangeRepositoryInterface $releaseChangeRepository */
+        $releaseChangeRepository = App::make(ReleaseChangeRepositoryInterface::class);
+        return $releaseChangeRepository->find($this->getModelId());
     }
 }
