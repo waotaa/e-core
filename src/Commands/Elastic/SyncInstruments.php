@@ -34,6 +34,7 @@ class SyncInstruments extends Command
             ->builder()
             ->with([
                 'organisation',
+                'organisation.featuringEnvironments',
                 'implementation',
                 'groupForms',
                 'locations',
