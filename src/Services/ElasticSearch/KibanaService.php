@@ -265,7 +265,7 @@ class KibanaService
     {
         return [
             'names' => [
-                'eva-prod-centraal-instruments'
+                'eva-production-centraal-instruments'
 //                'stats-instruments'
             ],
             'privileges' => [
@@ -283,7 +283,7 @@ class KibanaService
     {
         return [
             'names' => [
-                'eva-prod-centraal-environments'
+                'eva-production-centraal-environments'
 //                'stats-environments'
             ],
             'privileges' => [
