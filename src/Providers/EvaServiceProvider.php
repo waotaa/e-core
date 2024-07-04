@@ -207,14 +207,17 @@ class EvaServiceProvider extends AggregateServiceProvider
         TownshipsCreateDataSetFromApi::class,
         TownshipsUpdateDataFromSource::class,
 
-        AddNewsItem::class,
-        CleanContacts::class,
-        SetupGeoData::class,
+        ExportInstruments::class,
+        ExportInstrumentsCosts::class,
 
         AssignInstrumentTypes::class,
         InstrumentSignalingCheck::class,
 
         KibanaUsersPasswordExpirationCheck::class,
+
+        AddNewsItem::class,
+        CleanContacts::class,
+        SetupGeoData::class,
 
         CognitoFetchProfessionals::class,
         CognitoGetConfig::class,
@@ -238,8 +241,6 @@ class EvaServiceProvider extends AggregateServiceProvider
         Update::class,
 
         AssignRegions::class,
-        ExportInstruments::class,
-        ExportInstrumentsCosts::class,
         ExtractGeoData::class,
         ImportInstruments::class,
         ImportOldFormatInstruments::class,
