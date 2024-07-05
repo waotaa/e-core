@@ -7,6 +7,11 @@ class NationalPartyResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+
+            'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
+
+            // >> Current
             'id' => $this->id,
 
             'created_at' => $this->formatDate($this->created_at),

@@ -9,6 +9,13 @@ class RegionResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            'CdArbeidsmarktregio' => substr($this->code, 2, 4),
+            'NaamArbeidsmarktregio' => $this->name,
+
+            'Gemeenten' => RegionTownshipResource::many($this->townships),
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),

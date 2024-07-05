@@ -9,6 +9,16 @@ class ProviderResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            'NaamAanbieder' => $this->name,
+            'UuidAanbieder' => $this->uuid,
+
+            'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
+            // todo: type adres specificeren?
+            'Adres' => AddressResource::one($this->whenLoaded('address')),
+            'Contactpersonen' => ContactResource::many($this->whenLoaded('contacts')),
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),

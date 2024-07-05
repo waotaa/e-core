@@ -7,6 +7,11 @@ class GroupFormResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            'CdGroepsvorm' => $this->code,
+            // todo: custom groepsvormen toevoegen?
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),

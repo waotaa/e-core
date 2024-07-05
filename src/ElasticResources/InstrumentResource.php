@@ -14,6 +14,43 @@ class InstrumentResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            // Instrument
+            'DatBPublicatie' => $this->formatDate($this->publish_from),
+            'DatEPublicatie' => $this->formatDate($this->publish_to),
+            'IndPublicatie' => $this->is_active,
+            'NaamInstrument' => $this->name,
+            'UuidInstrument' => $this->uuid,
+
+            'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->organisation),
+
+            // Instrument Werknemersdienstverlening
+            'AantUrenIntensiteitPerWeek' => $this->intensity_hours_per_week,
+            'BedrTotaalKosten' => $this->total_costs,
+            'CdDuurTraject' => $this->total_duration_unit,  // todo: moet code worden
+            'DuurTraject' => $this->total_duration_value,
+            'OmsDoelInstrument' => $this->aim,
+            'OmsOnderscheidendeAanpak' => $this->distinctive_approach,
+            'OmsWerkafspraken' => $this->work_agreements,
+            'SamenvattingInstrument' => $this->summary,
+            'ToelDoelgroep' => $this->target_group_description,
+            'ToelDuurTraject' => $this->duration_description,
+            'ToelIntensiteit' => $this->intensity_description,
+            'ToelKosten' => $this->costs_description,
+            'ToelWerkwijzeInstrument' => $this->method,
+
+            // todo: deze overwegen..?
+            // application_instructions
+            // participation_conditions
+            // cooperation_partners
+            // additional_information
+
+            'Uitvoeringslocaties' => LocationResource::many($this->locations),
+            'Uitvoeringsvorm' => ImplementationResource::one($this->implementation),
+
+            // todo: beschikbaarheid?
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),

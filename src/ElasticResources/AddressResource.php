@@ -12,6 +12,26 @@ class AddressResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            'Locatieoms' => $this->name,
+            'Postcd' => $this->postcode,
+            'Woonplaatsnaam' => $this->woonplaats,
+
+            // Antwoordnradres
+            'Antwoordnummer' => $this->antwoordnummer,
+
+            // Postbusadres
+            'Postbusnr' => $this->postbusnummer,
+
+            // Straatadres
+            'Huisnr' => $this->huisnummer,
+//            'Huisnrtoevoeging' => ..., // todo: toevoegen?
+//            'NaamOpenbareRuimte' => ..., // todo: toevoegen?
+            'Straatnaam' => $this->straatnaam,
+
+            'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->resource->relationLoaded('organisation') ? $this->organisation : null),
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),

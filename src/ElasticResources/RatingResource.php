@@ -7,6 +7,20 @@ class RatingResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            'AlgemeneScore' => $this->general_score,
+            'AuteurBeoordeling' => $this->author,
+            'DatBeoordeling' => $this->formatDate($this->created_at),
+            'EmailadresAuteurBeoordeling' => $this->email,
+            'ResultaatScore' => $this->result_score,
+            'ToelAlgemeneScore' => $this->general_explanation,
+            'ToelResultaatScore' => $this->result_explanation,
+            'ToelUitvoeringsScore' => $this->execution_explanation,
+            'UitvoeringsScore' => $this->execution_score,
+
+            'Instrument' => InstrumentResource::one($this->whenLoaded('instrument')),
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),
