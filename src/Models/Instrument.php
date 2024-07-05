@@ -320,11 +320,6 @@ class Instrument extends SearchableModel
         return $this->belongsTo(Instrument::class);
     }
 
-    public function instrumentType(): BelongsTo
-    {
-        return $this->belongsTo(InstrumentType::class);
-    }
-
     public function provider(): BelongsTo
     {
         return $this->belongsTo(Provider::class);

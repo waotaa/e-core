@@ -319,7 +319,6 @@ $instrumentPropertyPermissions = [
     'clientCharacteristic.viewAny',
     'groupForm.viewAny',
     'implementation.viewAny',
-    'instrumentType.viewAny',
     'targetGroup.viewAny',
     'tile.viewAny',
 
@@ -332,7 +331,6 @@ $instrumentPropertyManagementPermissions = [
     'clientCharacteristic.view',
     'groupForm.view',
     'implementation.view',
-    'instrumentType.view',
     'targetGroup.view',
     'tile.view',
 
@@ -432,7 +430,6 @@ return [
         'implementation',
         'instrument',
         'instrument.organisation',
-        'instrumentType',
         'link',
         'localParty',
         'location',

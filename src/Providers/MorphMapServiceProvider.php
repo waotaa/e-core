@@ -46,7 +46,6 @@ class MorphMapServiceProvider extends ServiceProvider
         'group-form' => GroupForm::class,
         'implementation' => Implementation::class,
         'instrument' => Instrument::class,
-        'instrument-type' => InstrumentType::class,
         'instrument-tracker' => InstrumentTracker::class,
         'link' => Link::class,
         'local-party' => LocalParty::class,

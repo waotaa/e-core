@@ -33,18 +33,6 @@ class InstrumentObserver
         }
     }
 
-    public function saving(Instrument $instrument): void
-    {
-        $dedicatedType = config('eva-core.instrument.dedicatedType');
-        if ($dedicatedType) {
-            $instrumentType = InstrumentType::query()->where('name', $dedicatedType)->first();
-            if (is_null($instrumentType)) {
-                throw new \Exception('Cannot find instrument type with current dedicated instrument type config');
-            }
-            $instrument->instrumentType()->associate($instrumentType);
-        }
-    }
-
     public function deleted(Instrument $instrument): void
     {
         InstrumentRemoved::dispatch($instrument);
