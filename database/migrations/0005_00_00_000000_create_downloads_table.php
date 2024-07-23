@@ -14,6 +14,7 @@ class CreateDownloadsTable extends Migration
 
             $table->string('label')->nullable();
             $table->string('url')->nullable();
+            $table->string('filename')->nullable();
 
             $table->foreignId('instrument_id')->constrained()->cascadeOnDelete();
         });

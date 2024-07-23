@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Services\Storage;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 use League\Flysystem\Util;
@@ -21,6 +22,7 @@ abstract class AbstractOrganisationStorageService extends AbstractStorageService
     protected function ensureOrganisationIsSet(): void
     {
         if (!$this->organisation) {
+            Log::error('Attempted to use Storage Service without required organisation');
             throw new \Exception("Organisation must be set.");
         }
     }

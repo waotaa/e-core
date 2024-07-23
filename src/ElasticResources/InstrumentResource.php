@@ -13,6 +13,11 @@ class InstrumentResource extends ElasticResource
 
     public function toArray()
     {
+        $instrumentHelper = InstrumentHelper::create($this->resource);
+        $published = $instrumentHelper->isPublished();
+        $complete = $instrumentHelper->isComplete();
+        unset($instrumentHelper);
+
         return [
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
@@ -25,8 +30,8 @@ class InstrumentResource extends ElasticResource
             'publish' => $this->is_active,
             'publish_from' => $this->formatDate($this->publish_from),
             'publish_to' => $this->formatDate($this->publish_to),
-            'published' => InstrumentHelper::create($this->resource)->isPublished(),
-            'complete' => InstrumentHelper::create($this->resource)->isComplete(),
+            'published' => $published,
+            'complete' => $complete,
 
             // v2
 

@@ -87,5 +87,6 @@ return [
         'downloads' => env('FILESYSTEM_STORAGE_PATH_DOWNLOADS', 'downloads'),
         'logos' => env('FILESYSTEM_STORAGE_PATH_LOGOS', 'logos'),
         'releases' => env('FILESYSTEM_STORAGE_PATH_RELEASES', 'releases'),
+        'exports' => env('FILESYSTEM_STORAGE_PATH_EXPORTS', 'exports'),
     ]
 ];

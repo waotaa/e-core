@@ -10,13 +10,18 @@ class ProfessionalExportService extends AbstractEntityExportService
 {
     protected string $entity = 'professional';
 
-    public function handle(): string
+    public function getExportArray(): array
     {
-        $professionals = Professional::query()->with('environment')->get()
+        return Professional::query()->with('environment')->get()
             ->map(function(Professional $professional) {
                 return ProfessionalResource::make($professional)->jsonSerialize();
-//                return ProfessionalResource::make($professional)->toArray();
-            });
-        return $this->createExportJson($professionals);
+            })
+            ->toArray();
+    }
+
+    public function handle(): string
+    {
+        $json = json_encode($this->getExportArray(), JSON_PRETTY_PRINT);
+        return $this->storeExportJson($json);
     }
 }

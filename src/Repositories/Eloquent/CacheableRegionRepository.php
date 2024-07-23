@@ -14,4 +14,11 @@ class CacheableRegionRepository extends RegionRepository implements RegionReposi
             return parent::all();
         });
     }
+
+    public function allWithTownships(): Collection
+    {
+        return Cache::remember('regions.allWithTownships', 2*60, function () {
+            return parent::allWithTownships();
+        });
+    }
 }

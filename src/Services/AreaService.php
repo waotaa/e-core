@@ -75,7 +75,7 @@ class AreaService
     public static function getNationalAreas(): Collection
     {
         $regionRepo = new CacheableRegionRepository();
-        return $regionRepo->all();
+        return $regionRepo->allWithTownships();
     }
 }
 

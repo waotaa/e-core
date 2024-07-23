@@ -42,7 +42,7 @@ class DownloadRepository extends BaseRepository implements DownloadRepositoryInt
         if ($request->has('file')) {
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $request->file('file');
-            $storedFile = DownloadStorageService::make()->setOrganisation($organisation)->storeFile($uploadedFile);
+            $storedFile = DownloadStorageService::make()->setOrganisation($organisation)->storeUploadedFile($uploadedFile);
             $download->fill([
                 'filename' => $storedFile->getFilename(),
                 'url' => $storedFile->getPath()

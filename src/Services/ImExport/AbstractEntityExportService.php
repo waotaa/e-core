@@ -3,31 +3,28 @@
 namespace Vng\EvaCore\Services\ImExport;
 
 use Vng\EvaCore\Services\StorageService;
-use Illuminate\Support\Collection;
 
 abstract class AbstractEntityExportService
 {
     protected string $entity;
-    protected ?string $importMark;
+    protected ?string $exportMark;
     protected bool $dateMark = false;
 
-    public function __construct($importMark = null)
+    public function __construct($mark = null)
     {
-        $this->importMark = $importMark;
+        $this->exportMark = $mark;
     }
 
-    public static function make($importMark = null): self
+    public static function make($exportMark = null): self
     {
-        return new static($importMark);
+        return new static($exportMark);
     }
 
-    public static function export($importMark = null)
+    public static function export($exportMark = null)
     {
-        $service = static::make($importMark);
+        $service = static::make($exportMark);
         return $service->handle();
     }
-
-    abstract public function handle(): string;
 
     public function dateMarkFileName(): self
     {
@@ -35,9 +32,10 @@ abstract class AbstractEntityExportService
         return $this;
     }
 
-    protected function createExportJson(Collection $dataCollection): string
+    abstract public function handle();
+
+    protected function storeExportJson(string $json): string
     {
-        $json = json_encode($dataCollection, JSON_PRETTY_PRINT);
         $filePath = static::getFilePath();
         StorageService::getStorage()
             ->put($filePath, $json);
@@ -46,10 +44,15 @@ abstract class AbstractEntityExportService
 
     protected function getFilePath(): string
     {
+        return $this->getDirectory() . $this->getFileName();
+    }
+
+    public function getFileName()
+    {
         $filename = $this->entity;
-        $filename = !is_null($this->importMark) ? $this->importMark . '-' . $filename : $filename;
+        $filename = !is_null($this->exportMark) ? $this->exportMark . '-' . $filename : $filename;
         $filename = $this->dateMark ? date('dmy') . '-' . $filename : $filename;
-        return $this->getDirectory() . $filename.'.json';
+        return $filename.'.json';
     }
 
     protected function getDirectory(): string

@@ -9,6 +9,7 @@ use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\Contact;
 use Vng\EvaCore\Models\Download;
 use Vng\EvaCore\Models\Environment;
+use Vng\EvaCore\Models\Export;
 use Vng\EvaCore\Models\GroupForm;
 use Vng\EvaCore\Models\Implementation;
 use Vng\EvaCore\Models\Instrument;
@@ -41,6 +42,7 @@ use Vng\EvaCore\Policies\ClientCharacteristicPolicy;
 use Vng\EvaCore\Policies\ContactPolicy;
 use Vng\EvaCore\Policies\DownloadPolicy;
 use Vng\EvaCore\Policies\EnvironmentPolicy;
+use Vng\EvaCore\Policies\ExportPolicy;
 use Vng\EvaCore\Policies\GroupFormPolicy;
 use Vng\EvaCore\Policies\ImplementationPolicy;
 use Vng\EvaCore\Policies\InstrumentPolicy;
@@ -83,6 +85,7 @@ class AuthServiceProvider extends ServiceProvider
         Contact::class => ContactPolicy::class,
         Download::class => DownloadPolicy::class,
         Environment::class => EnvironmentPolicy::class,
+        Export::class => ExportPolicy::class,
         GroupForm::class => GroupFormPolicy::class,
         Implementation::class => ImplementationPolicy::class,
         Instrument::class => InstrumentPolicy::class,

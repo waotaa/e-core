@@ -6,7 +6,9 @@ use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use League\Flysystem\Util;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -40,15 +42,34 @@ abstract class AbstractStorageService
         return Util::normalizePath($basePath);
     }
 
-    public function storeFile(UploadedFile $uploadedFile): StoredFile
+    public function storeUploadedFile(UploadedFile $uploadedFile): StoredFile
     {
         $originalFileName = $uploadedFile->getClientOriginalName();
-        $storagePath = $this->getStorageDirectory();
-
-        $filePath = $this->getStorageDisk()
-            ->put($storagePath, $uploadedFile, $this->visibility);
+        // The storage directory here does not have a name.
+        $filePath = $this->storeFile($uploadedFile);
 
         return new StoredFile($originalFileName, $filePath);
+    }
+
+    public function storeFile($file, $filename = null): ?string
+    {
+        $storageDir = $this->getStorageDirectory();
+
+        $filePath = Str::finish($storageDir, '/');
+        if (!is_null($filename)) {
+            $filePath .= $filename;
+        }
+        $succeeded = $this->getStorageDisk()
+            ->put($filePath, $file, $this->visibility);
+        return $succeeded ? $filePath : null;
+    }
+
+    public function createStream(string $filename): FileStream
+    {
+        $filePath = $this->getStorageDirectory() . '/' . $filename;
+        $streamHandle = fopen('php://temp', 'w+');
+        $this->getStorageDisk()->writeStream($filePath, $streamHandle);
+        return new FileStream($streamHandle);
     }
 
     public function movePreUploadedFile(string $tempPath): string
@@ -68,7 +89,7 @@ abstract class AbstractStorageService
         return $this->getStorageDisk()->url($filePath);
     }
 
-    public function downloadFile($filePath, $fileName): StreamedResponse
+    public function downloadFile($filePath, $fileName = null): StreamedResponse
     {
         return $this->getStorageDisk()->download($filePath, $fileName);
     }
@@ -76,6 +97,21 @@ abstract class AbstractStorageService
     public function fileExists($path, $disk = null): bool
     {
         return $this->getStorageDisk($disk)->exists($path);
+    }
+
+    public function files($directory, $disk = null): array
+    {
+        $storageDir = $this->getStorageDirectory();
+        $filePath = Str::finish($storageDir, '/') . $directory;
+        Log::info("Getting filenames for directory {$filePath}");
+
+        if (!$this->fileExists($filePath)) {
+            Log::error("Directory does not exist: {$filePath}");
+        }
+
+        $files = $this->getStorageDisk($disk)->files($filePath);
+        Log::info(count($files) . " found");
+        return $files;
     }
 
     /**

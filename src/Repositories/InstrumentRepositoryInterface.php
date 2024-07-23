@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use Vng\EvaCore\Http\Requests\InstrumentCreateRequest;
 use Vng\EvaCore\Http\Requests\InstrumentUpdateRequest;
 use Vng\EvaCore\Models\Instrument;
@@ -41,4 +42,6 @@ interface InstrumentRepositoryInterface extends OwnedEntityRepositoryInterface, 
     public function attachAvailableNeighbourhoods(Instrument $instrument, string|array $neighbourhoodIds): Instrument;
     public function detachAvailableNeighbourhoods(Instrument $instrument, string|array $neighbourhoodIds): Instrument;
     public function syncAvailableNeighbourhoods(Instrument $instrument, string|array $neighbourhoodIds): Instrument;
+
+    public function getElasticResourceBuilder(): Builder;
 }

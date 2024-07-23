@@ -44,7 +44,7 @@ class ReleaseChangeRepository extends BaseRepository implements ReleaseChangeRep
             if ($image->isValid()) {
                 $storedFile = ReleaseImageStorageService::make()
                     ->setRelease($release)
-                    ->storeFile($image);
+                    ->storeUploadedFile($image);
                 $imagePath = $storedFile->getPath();
                 $releaseChange->fill([
                     'image' => $imagePath

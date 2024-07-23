@@ -52,7 +52,7 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
             if ($logo->isValid()) {
                 $storedFile = LogoStorageService::make()
                     ->setOrganisation($environment->organisation)
-                    ->storeFile($logo);
+                    ->storeUploadedFile($logo);
                 $logo = $storedFile->getPath();
                 $environment->fill([
                     'logo' => $logo
