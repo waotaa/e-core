@@ -11,8 +11,6 @@ class TargetGroupResource extends ElasticResource
             'IndEigenToevoegingDoelgroep' => $this->custom,
             'OmsDoelgroep' => $this->description,
 
-            // todo: code doelgroep toevoegen?
-
             // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),

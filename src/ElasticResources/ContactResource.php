@@ -16,7 +16,7 @@ class ContactResource extends ElasticResource
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
             // todo: instrument type specificeren?
             'Instrumenten' => InstrumentResource::many($this->whenLoaded('instruments')),
-            'Aanbieder' => ProviderResource::many($this->whenLoaded('providers')),
+            'Aanbieders' => ProviderResource::many($this->whenLoaded('providers')),
 
             // >> Current
             'id' => $this->id,

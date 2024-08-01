@@ -13,9 +13,12 @@ class AddressResource extends ElasticResource
     {
         return [
             // >> SGR
-            'Locatieoms' => $this->name,
-            'Postcd' => $this->postcode,
-            'Woonplaatsnaam' => $this->woonplaats,
+
+            'AdresNederland' => [
+                'Locatieoms' => $this->name,
+                'Postcd' => $this->postcode,
+                'Woonplaatsnaam' => $this->woonplaats,
+            ],
 
             // Antwoordnradres
             'Antwoordnummer' => $this->antwoordnummer,
@@ -29,7 +32,7 @@ class AddressResource extends ElasticResource
 //            'NaamOpenbareRuimte' => ..., // todo: toevoegen?
             'Straatnaam' => $this->straatnaam,
 
-            'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->resource->relationLoaded('organisation') ? $this->organisation : null),
+            'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
 
             // >> Current
             'id' => $this->id,

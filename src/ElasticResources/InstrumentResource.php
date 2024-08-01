@@ -26,7 +26,7 @@ class InstrumentResource extends ElasticResource
 
             // Instrument Werknemersdienstverlening
             'AantUrenIntensiteitPerWeek' => $this->intensity_hours_per_week,
-            'BedrTotaalKosten' => $this->total_costs,
+            'BedrTotaalKosten' => $this->total_costs, // todo: standaard bedrag type van maken
             'CdDuurTraject' => $this->total_duration_unit,  // todo: moet code worden
             'DuurTraject' => $this->total_duration_value,
             'OmsDoelInstrument' => $this->aim,
@@ -45,8 +45,19 @@ class InstrumentResource extends ElasticResource
             // cooperation_partners
             // additional_information
 
+            'Aanbieder' => ProviderResource::one($this->provider),
+            'Beoordelingen' => RatingResource::many($this->ratings),
+            'Contactpersonen' => ContactResource::many($this->contacts),
+            'Doelgroepen' => TargetGroupResource::many($this->targetGroups),
+            'Downloads' => DownloadResource::many($this->downloads),
+            'Groepsvormen' => GroupFormResource::many($this->groupForms),
+            'Klantkenmerken' => ClientCharacteristicResource::many($this->clientCharacteristics),
+            'Links' => LinkResource::many($this->links),
+            'Registratiecodes' => RegistrationCodeResource::many($this->registrationCodes),
             'Uitvoeringslocaties' => LocationResource::many($this->locations),
             'Uitvoeringsvorm' => ImplementationResource::one($this->implementation),
+            'Videos' => VideoResource::many($this->videos),
+            'WerklandschapTegels' => TileResource::many($this->tiles),
 
             // todo: beschikbaarheid?
 
