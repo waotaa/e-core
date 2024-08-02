@@ -33,11 +33,8 @@ class ExportInstrumentsJob implements ShouldQueue
         $query = $instrumentRepo->addOrganisationCondition($query, $organisation);
         $instruments = $query->cursor();
 
-        // todo: Export object meegeven aan export service
-        $mark = "{$organisation->id}-instruments-".date('dmyhis');
-
-        $exportService = InstrumentExportService::make($mark);
-        $exportService->setOrganisation($organisation);
+        $exportService = InstrumentExportService::make();
+        $exportService->setExport($this->export);
         $exportService->setItems($instruments);
 
         Log::info("Memory usage 1: " . $this->formatBytes(memory_get_usage()));

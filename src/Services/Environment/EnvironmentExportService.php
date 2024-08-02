@@ -8,7 +8,7 @@ use Vng\EvaCore\Services\ImExport\AbstractEntityExportService;
 
 class EnvironmentExportService extends AbstractEntityExportService
 {
-    protected string $entity = 'environment';
+    protected string $type = 'environment';
 
     public function getExportArray(): array
     {

@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\ElasticResources\InstrumentResource;
+use Vng\EvaCore\Models\Export;
 use Vng\EvaCore\Models\Instrument;
 
 class ProcessInstrumentJob implements ShouldQueue
@@ -22,28 +23,34 @@ class ProcessInstrumentJob implements ShouldQueue
         useTempLocalStorageTrait;
 
     public function __construct(
-        protected string $mark,
+        protected Export $export,
         protected Instrument $instrument
     )
     {}
 
     public function handle(): void
     {
+        $mark = $this->export->getAttribute('mark');
+
         if ($this->batch()->cancelled()) {
-            Log::warning("Skipped processing instrument {$this->instrument->id} for export {$this->mark}. Batch cancelled");
+            Log::warning("Skipped processing instrument {$this->instrument->id} for export {$mark}. Batch cancelled");
             return;
         }
 
-        Log::info("Processing instrument {$this->instrument->id} for export {$this->mark}");
+        Log::info("Processing instrument {$this->instrument->id} for export {$mark}");
 
         // Transform instrument to array
         $transformedItem = InstrumentResource::make($this->instrument)->toArray();
         $jsonItem = json_encode($transformedItem, JSON_PRETTY_PRINT);
 
-        $result = $this->storeFile($jsonItem, $this->mark, "{$this->instrument->id}.json");
+        $result = $this->storeFile($jsonItem, $mark, "{$this->instrument->id}.json");
 
         Log::debug('done', [
             'success' => !is_null($result)
         ]);
+
+        $this->export->fill([
+            'progress' => $this->batch()->progress()
+        ])->saveQuietly();
     }
 }

@@ -6,10 +6,11 @@ use Vng\EvaCore\Services\StorageService;
 
 abstract class AbstractEntityExportService
 {
-    protected string $entity;
+    protected string $type;
     protected ?string $exportMark;
     protected bool $dateMark = false;
 
+    // todo: replace exportMark with Export entity
     public function __construct($mark = null)
     {
         $this->exportMark = $mark;
@@ -49,7 +50,7 @@ abstract class AbstractEntityExportService
 
     public function getFileName()
     {
-        $filename = $this->entity;
+        $filename = $this->type;
         $filename = !is_null($this->exportMark) ? $this->exportMark . '-' . $filename : $filename;
         $filename = $this->dateMark ? date('dmy') . '-' . $filename : $filename;
         return $filename.'.json';

@@ -8,7 +8,7 @@ use Vng\EvaCore\Services\ImExport\AbstractEntityExportService;
 
 class ProfessionalExportService extends AbstractEntityExportService
 {
-    protected string $entity = 'professional';
+    protected string $type = 'professional';
 
     public function getExportArray(): array
     {

@@ -11,11 +11,23 @@ class Export extends Model
 {
     use HasOwner;
 
+    const TYPE_INSTRUMENTS = 'instruments';
+
+    const STATUS_INITIATED = 'initiated';
+    const STATUS_FAILED = 'failed';
+    const STATUS_DONE = 'done';
+
     protected $table = 'exports';
 
     protected $fillable = [
         'label',
+
+        'type',
+        'mark',
+
         'status',
+        'progress',
+
         'file'
     ];
 

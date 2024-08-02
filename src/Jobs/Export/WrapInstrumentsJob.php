@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Vng\EvaCore\Models\Export;
 use Vng\EvaCore\Services\Storage\TempLocalStorageService;
 
 class WrapInstrumentsJob implements ShouldQueue
@@ -22,15 +23,17 @@ class WrapInstrumentsJob implements ShouldQueue
         useTempLocalStorageTrait;
 
     public function __construct(
-        protected string $mark,
+        protected Export $export,
     )
     {}
 
     public function handle(): void
     {
-        Log::info("Wrapping for {$this->mark}");
+        $mark = $this->export->getAttribute('mark');
 
-        $exportPath = $this->getDirectory($this->mark) . "/wrapped.json";
+        Log::info("Wrapping for {$mark}");
+
+        $exportPath = $this->getDirectory($mark) . "/wrapped.json";
 
         $storageService = TempLocalStorageService::make();
         $storageDisk = $storageService->getStorageDisk();
@@ -40,7 +43,7 @@ class WrapInstrumentsJob implements ShouldQueue
         Log::debug("At path {$exportPath}");
 
 
-        $files = $this->getAllFiles($this->mark);
+        $files = $this->getAllFiles($mark);
         $storageDisk->put($exportPath, '[');
 
         $first = true;
@@ -55,5 +58,9 @@ class WrapInstrumentsJob implements ShouldQueue
 
         $storageDisk->append($exportPath, ']');
         $storageDisk->delete($files);
+
+        $this->export->fill([
+            'progress' => $this->batch()->progress()
+        ])->saveQuietly();
     }
 }

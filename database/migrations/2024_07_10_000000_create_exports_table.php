@@ -13,7 +13,13 @@ class CreateExportsTable extends Migration
             $table->timestamps();
 
             $table->string('label')->nullable();
+
+            $table->string('type')->nullable();
+            $table->string('mark')->nullable();
+
             $table->string('status')->nullable();
+            $table->string('progress')->nullable();
+
             $table->string('file')->nullable();
 
             $table->foreignId('organisation_id')
