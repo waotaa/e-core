@@ -3,7 +3,7 @@
 namespace Vng\EvaCore\Services\Instrument;
 
 use Illuminate\Support\Collection;
-use Vng\EvaCore\ElasticResources\InstrumentResource;
+use Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Services\ImExport\AbstractEntityExportService;
 
@@ -22,7 +22,7 @@ class InstrumentExportService extends AbstractEntityExportService
         $instruments = $this->items->map(function(Instrument $instrument) {
             $instrument->import_mark = $this->importMark;
 //            return InstrumentTestResource::make($instrument)->toArray();
-            return InstrumentResource::make($instrument)->toArray();
+            return InstrumentWerknemersdienstverleningResource::make($instrument)->toArray();
         });
         return $this->createExportJson($instruments);
     }

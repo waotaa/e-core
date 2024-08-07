@@ -1,14 +1,14 @@
 <?php
 
 return [
-    "Landbouw, Natuur, Milieu" => "A",
-    "Bouw" => "F",
-    "Detailhandel" => "G",
-    "Administratie, Automatisering, ICT" => "J",
-    "Horeca en Toerisme" => "I",
-    "Techniek" => "C",
-    "Overheid" => "O",
-    "Onderwijs" => "P",
-    "Transport en Logistiek" => "H",
-    "Zorg en Welzijn" => "Q",
+    "A" => "Landbouw, Natuur, Milieu",
+    "C" => "Techniek",
+    "F" => "Bouw",
+    "G" => "Detailhandel",
+    "H" => "Transport en Logistiek",
+    "I" => "Horeca en Toerisme",
+    "J" => "Administratie, Automatisering, ICT",
+    "O" => "Overheid",
+    "P" => "Onderwijs",
+    "Q" => "Zorg en Welzijn",
 ];

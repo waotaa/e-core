@@ -2,21 +2,20 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
+use Vng\EvaCore\Helpers\Codelijsten;
+
 class LocationResource extends ElasticResource
 {
     public function toArray()
     {
         return [
             // >> SGR
-            'CdTypeUitvoeringslocatie' => $this->type, // todo: code van maken
+            'CdTypeUitvoeringslocatie' => Codelijsten::getUitvoeringLocatieCode($this->type),
             'IndUitvoeringslocatieActief' => $this->is_active,
             'NaamUitvoeringslocatie' => $this->name,
             'ToelUitvoeringslocatie' => $this->description,
-
-            // todo: moet ik hier weten wat voor type adres het is?
             'Adres' => AddressResource::one($this->whenLoaded('address')),
-            // todo: moet ik hier specificeren dat het een werknemersinstrument is?
-            'Instrument' => InstrumentResource::one($this->whenLoaded('instrument')),
+            'InstrumentWerknemersdienstverlening' => InstrumentWerknemersdienstverleningResource::one($this->whenLoaded('instrument')),
 
             // >> Current
             'id' => $this->id,
@@ -32,7 +31,7 @@ class LocationResource extends ElasticResource
             'description' => $this->description,
 
             'address' => AddressResource::one($this->whenLoaded('address')),
-            'instrument' => InstrumentResource::one($this->whenLoaded('instrument'))
+            'instrument' => InstrumentWerknemersdienstverleningResource::one($this->whenLoaded('instrument'))
         ];
     }
 }

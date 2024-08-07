@@ -17,6 +17,7 @@ class AddressResource extends JsonResource
 
             'straatnaam' => $this->straatnaam,
             'huisnummer' => $this->huisnummer,
+            'huisnummertoevoeging' => $this->huisnummertoevoeging,
             'postbusnummer' => $this->postbusnummer,
             'antwoordnummer' => $this->antwoordnummer,
             'postcode' => $this->postcode,

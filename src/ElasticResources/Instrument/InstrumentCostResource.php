@@ -12,7 +12,13 @@ class InstrumentCostResource extends ElasticResource
         return [
             // >> SGR
             'NaamInstrument' => $this->name,
-            'BedrTotaalKosten' => $this->total_costs,
+
+            'BedrTotaalKosten' => [
+                'CdMunteenheid' => 'EUR',
+                'CdPositiefNegatief' => '1',
+                'WaardeBedr' => $this->total_costs,
+            ],
+
             'Aanbieder' => ProviderNameResource::many($this->provider),
 
             // >> Current

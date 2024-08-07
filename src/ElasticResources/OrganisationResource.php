@@ -18,7 +18,7 @@ class OrganisationResource extends ElasticResource
             'NationalePartij' => NationalPartyResource::one($this->whenLoaded('nationalParty')),
             'Samenwerking' => PartnershipResource::one($this->whenLoaded('partnership')),
 
-            'Contactpersonen' => ContactResource::many($this->whenLoaded('contacts')),
+            'Contactpersoon' => ContactResource::many($this->whenLoaded('contacts')),
 
             // >> Current
             'id' => $this->id,

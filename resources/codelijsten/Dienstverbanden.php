@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "Regulier arbeidsovereenkomst" => "DV01",
-    "BBL arbeidsovereenkomst" => "DV02",
-    "Stage (met stagevergoeding)" => "DV03",
-    "Werkervaring" => "DV04",
+    "DV01" => "Regulier arbeidsovereenkomst",
+    "DV02" => "BBL arbeidsovereenkomst",
+    "DV03" => "Stage (met stagevergoeding)",
+    "DV04" => "Werkervaring",
 ];

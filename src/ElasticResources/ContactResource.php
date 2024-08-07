@@ -2,21 +2,25 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
+use Vng\EvaCore\Helpers\Codelijsten;
+
 class ContactResource extends ElasticResource
 {
-    public function toArray()
+    public function toArray(): array
     {
+        $pivot = $this->resource->pivot;
+        $codeType = $pivot ? Codelijsten::getTypeContactPersoonRelatieCode($pivot->type) : null;
+
         $data = [
             // >> SGR
-            'CdTypeContactpersoonRelatie' => null, // todo: add code for type
+            'CdTypeContactpersoonRelatie' => $codeType,
             'EmailadresContactpersoon' => $this->email,
             'NaamContactpersoon' => $this->name,
             'TelefoonnummerContactpersoon' => $this->phone,
 
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
-            // todo: instrument type specificeren?
-            'Instrumenten' => InstrumentResource::many($this->whenLoaded('instruments')),
-            'Aanbieders' => ProviderResource::many($this->whenLoaded('providers')),
+            'InstrumentWerknemersdienstverlening' => InstrumentWerknemersdienstverleningResource::many($this->whenLoaded('instruments')),
+            'Aanbieder' => ProviderResource::many($this->whenLoaded('providers')),
 
             // >> Current
             'id' => $this->id,
@@ -31,7 +35,7 @@ class ContactResource extends ElasticResource
 
             'organisation' => OrganisationResource::one($this->whenLoaded('organisation')),
 
-            'instruments' => InstrumentResource::many($this->whenLoaded('instruments')),
+            'instruments' => InstrumentWerknemersdienstverleningResource::many($this->whenLoaded('instruments')),
             'providers' => ProviderResource::many($this->whenLoaded('providers')),
         ];
 

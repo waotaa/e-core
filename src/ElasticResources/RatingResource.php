@@ -18,7 +18,7 @@ class RatingResource extends ElasticResource
             'ToelUitvoeringsScore' => $this->execution_explanation,
             'UitvoeringsScore' => $this->execution_score,
 
-            'Instrument' => InstrumentResource::one($this->whenLoaded('instrument')),
+            'InstrumentWerknemersdienstverlening' => InstrumentWerknemersdienstverleningResource::one($this->whenLoaded('instrument')),
 
             // >> Current
             'id' => $this->id,
@@ -37,7 +37,7 @@ class RatingResource extends ElasticResource
             'instrument_id' => $this->instrument_id,
 
             // relations
-            'instrument' => InstrumentResource::one($this->whenLoaded('instrument')),
+            'instrument' => InstrumentWerknemersdienstverleningResource::one($this->whenLoaded('instrument')),
             'professional' => ProfessionalResource::one($this->whenLoaded('professional')),
 
             // shared for dashboard

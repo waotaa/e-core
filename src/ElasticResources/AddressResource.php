@@ -11,26 +11,35 @@ class AddressResource extends ElasticResource
 
     public function toArray()
     {
+        $adresNederland = [];
+
+        if ($this->resource->isPostbusAdres()) {
+            $adresNederland['Postadres'] = [
+                'Postbusnr' => $this->postbusnummer
+            ];
+        }
+        if ($this->resource->isAntwoordNrAdres()) {
+            $adresNederland['Antwoordnradres'] = [
+                'Antwoordnummer' => $this->antwoordnummer,
+            ];
+        }
+        if ($this->resource->isStraatAdres()) {
+            $adresNederland['Straatadres'] = [
+                'Huisnr' => $this->huisnummer,
+                'Huisnrtoevoeging' => $this->huisnummertoevoeging,
+                'NaamOpenbareRuimte' => $this->straatnaam,      // max 80 characters
+                'Straatnaam' => $this->straatnaam,              // max 24 characters
+            ];
+        }
+
         return [
             // >> SGR
-
             'AdresNederland' => [
                 'Locatieoms' => $this->name,
                 'Postcd' => $this->postcode,
                 'Woonplaatsnaam' => $this->woonplaats,
+                ...$adresNederland
             ],
-
-            // Antwoordnradres
-            'Antwoordnummer' => $this->antwoordnummer,
-
-            // Postbusadres
-            'Postbusnr' => $this->postbusnummer,
-
-            // Straatadres
-            'Huisnr' => $this->huisnummer,
-//            'Huisnrtoevoeging' => ..., // todo: toevoegen?
-//            'NaamOpenbareRuimte' => ..., // todo: toevoegen?
-            'Straatnaam' => $this->straatnaam,
 
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
 

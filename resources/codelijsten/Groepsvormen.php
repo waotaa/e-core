@@ -1,6 +1,6 @@
 <?php
 
 return [
-    "Individueel" => "GV01",
-    "Groep" => "GV02",
+    "GV01" => "Individueel",
+    "GV02" => "Groep" ,
 ];

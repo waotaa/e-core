@@ -8,9 +8,8 @@ class PartnershipResource extends ElasticResource
     {
         return [
             // >> SGR
-
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
-            'Gemeenten' => TownshipResource::many($this->whenLoaded('townships')),
+            'Gemeente' => TownshipResource::many($this->whenLoaded('townships')),
 
             // >> Current
             'id' => $this->id,

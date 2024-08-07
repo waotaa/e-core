@@ -8,7 +8,6 @@ class LocalPartyResource extends ElasticResource
     {
         return [
             // >> SGR
-
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
             'Gemeente' => TownshipResource::one($this->whenLoaded('township')),
 

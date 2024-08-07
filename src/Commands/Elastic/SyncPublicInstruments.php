@@ -3,7 +3,7 @@
 namespace Vng\EvaCore\Commands\Elastic;
 
 use Illuminate\Console\Command;
-use Vng\EvaCore\ElasticResources\Shared\InstrumentResource;
+use Vng\EvaCore\ElasticResources\Shared\InstrumentWerknemersdienstverleningResource;
 use Vng\EvaCore\Jobs\ElasticPublic\RemoveResourceFromPublicElasticJob;
 use Vng\EvaCore\Jobs\ElasticPublic\SyncResourceToPublicElasticJob;
 use Vng\EvaCore\Models\Instrument;
@@ -61,7 +61,7 @@ class SyncPublicInstruments extends Command
             dispatch(new SyncResourceToPublicElasticJob(
                 $instrument,
                 'instruments',
-                InstrumentResource::class,
+                InstrumentWerknemersdienstverleningResource::class,
             ));
         }
 

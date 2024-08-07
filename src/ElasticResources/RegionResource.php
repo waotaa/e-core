@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\ElasticResources;
 
 use Vng\EvaCore\ElasticResources\Region\TownshipResource as RegionTownshipResource;
+use Vng\EvaCore\Helpers\Codelijsten;
 
 class RegionResource extends ElasticResource
 {
@@ -11,9 +12,10 @@ class RegionResource extends ElasticResource
         return [
             // >> SGR
             'CdArbeidsmarktregio' => substr($this->code, 2, 4),
-            'NaamArbeidsmarktregio' => $this->name,
+            'NaamArbeidsmarktregio' => Codelijsten::getArbeidsmarktregioName($this->code),
+//            'NaamArbeidsmarktregio' => $this->name, // API name, codelist is leading
 
-            'Gemeenten' => RegionTownshipResource::many($this->townships),
+            'Gemeente' => RegionTownshipResource::many($this->townships),
 
             // >> Current
             'id' => $this->id,

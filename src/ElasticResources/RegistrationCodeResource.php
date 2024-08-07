@@ -9,11 +9,11 @@ class RegistrationCodeResource extends ElasticResource
         return [
             // >> SGR
             'Registratiecode' => $this->code,
-            'RegistratiecodeLabel' => $this->label,
+            'Registratiecodelabel' => $this->label,
 
             // todo: is_displayed toevoegen?
 
-            'Instrument' => InstrumentResource::one($this->whenLoaded('instrument')),
+            'InstrumentWerknemersdienstverlening' => InstrumentWerknemersdienstverleningResource::one($this->whenLoaded('instrument')),
 
             // >> Current
             'id' => $this->id,
@@ -24,7 +24,7 @@ class RegistrationCodeResource extends ElasticResource
             'label' => $this->label,
             'is_displayed' => $this->is_displayed,
 
-            'instrument' => InstrumentResource::one($this->whenLoaded('instrument'))
+            'instrument' => InstrumentWerknemersdienstverleningResource::one($this->whenLoaded('instrument'))
         ];
     }
 }

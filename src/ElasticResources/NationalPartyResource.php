@@ -8,7 +8,6 @@ class NationalPartyResource extends ElasticResource
     {
         return [
             // >> SGR
-
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
 
             // >> Current

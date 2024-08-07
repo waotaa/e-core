@@ -5,7 +5,7 @@ namespace Vng\EvaCore\Models;
 use Database\Factories\InstrumentFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Vng\EvaCore\Casts\CleanedHtml;
-use Vng\EvaCore\ElasticResources\InstrumentResource;
+use Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource;
 use Vng\EvaCore\Enums\DurationUnitEnum;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Interfaces\IsMemberInterface;
@@ -32,7 +32,7 @@ class Instrument extends SearchableModel
     const REACH_NATIONAL = 'national';
 
     protected $table = 'instruments';
-    protected string $elasticResource = InstrumentResource::class;
+    protected string $elasticResource = InstrumentWerknemersdienstverleningResource::class;
     protected $fillable = [
         'created_at',
         'updated_at',

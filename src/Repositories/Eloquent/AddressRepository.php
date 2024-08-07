@@ -37,6 +37,7 @@ class  AddressRepository extends BaseRepository implements AddressRepositoryInte
             'name' => $request->input('name'),
             'straatnaam' => $request->input('straatnaam'),
             'huisnummer' => $request->input('huisnummer'),
+            'huisnummertoevoeging' => $request->input('huisnummertoevoeging'),
             'postbusnummer' => $request->input('postbusnummer'),
             'antwoordnummer' => $request->input('antwoordnummer'),
             'postcode' => $request->input('postcode'),

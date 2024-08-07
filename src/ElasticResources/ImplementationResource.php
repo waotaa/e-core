@@ -2,6 +2,8 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
+use Vng\EvaCore\Helpers\Codelijsten;
+
 class ImplementationResource extends ElasticResource
 {
     public function toArray()
@@ -10,8 +12,7 @@ class ImplementationResource extends ElasticResource
             // >> SGR
             'CdUitvoeringsvorm' => $this->code,
             'IndEigenToevoegingUitvoeringsvorm' => $this->custom,
-            'OmsUitvoeringsvorm' => $this->name, // todo: niet omschrijving maar naam
-
+            'NaamUitvoeringsvorm' => Codelijsten::getUitvoeringsVormName($this->code),
 
             // >> Current
             'id' => $this->id,

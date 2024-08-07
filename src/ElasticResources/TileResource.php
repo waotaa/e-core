@@ -2,6 +2,8 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
+use Vng\EvaCore\Helpers\Codelijsten;
+
 class TileResource extends ElasticResource
 {
     public function toArray()
@@ -9,6 +11,9 @@ class TileResource extends ElasticResource
         return [
             // >> SGR
             'CdWerklandschapTegel' => $this->code,
+
+            // Bonus
+            'NaamWerklandschapTegel' => Codelijsten::getWerklandschapTegelName($this->code),
 
             // >> Current
             'id' => $this->id,

@@ -14,7 +14,7 @@ class LinkResource extends ElasticResource
             'label' => $this->label,
             'url' => $this->url,
 
-            'instrument' => InstrumentResource::one($this->whenLoaded('instrument')),
+            'instrument' => InstrumentWerknemersdienstverleningResource::one($this->whenLoaded('instrument')),
         ];
     }
 }

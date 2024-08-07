@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "Dag(en)" => "01",
-    "We(e)k(en)" => "02",
-    "Maand(en)" => "03",
-    "Uur" => "04",
+    "01" => "Dag(en)",
+    "02" => "We(e)k(en)",
+    "03" => "Maand(en)",
+    "04" => "Uur",
 ];

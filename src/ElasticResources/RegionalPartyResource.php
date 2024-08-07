@@ -8,7 +8,6 @@ class RegionalPartyResource extends ElasticResource
     {
         return [
             // >> SGR
-
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
             'Arbeidsmarktregio' => RegionResource::one($this->whenLoaded('region')),
 

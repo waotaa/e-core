@@ -1,6 +1,6 @@
 <?php
 
 return [
-    "Extern" => "01",
-    "Intern" => "02",
+    "01" => "Extern",
+    "02" => "Intern",
 ];

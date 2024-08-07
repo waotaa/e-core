@@ -1,9 +1,9 @@
 <?php
 
 return [
-    "Adres" => "05",
-    "Aanbieder" => "01",
-    "Werkgever" => "02",
-    "Gemeente" => "03",
-    "Klant thuis" => "04",
+    "01" => "Aanbieder",
+    "02" => "Werkgever",
+    "03" => "Gemeente",
+    "04" => "Klant thuis",
+    "05" => "Adres",
 ];

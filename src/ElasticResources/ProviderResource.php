@@ -14,9 +14,8 @@ class ProviderResource extends ElasticResource
             'UuidAanbieder' => $this->uuid,
 
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
-            // todo: type adres specificeren?
             'Adres' => AddressResource::one($this->whenLoaded('address')),
-            'Contactpersonen' => ContactResource::many($this->whenLoaded('contacts')),
+            'Contactpersoon' => ContactResource::many($this->whenLoaded('contacts')),
 
             // >> Current
             'id' => $this->id,
