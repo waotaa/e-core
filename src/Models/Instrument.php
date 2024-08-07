@@ -5,7 +5,7 @@ namespace Vng\EvaCore\Models;
 use Database\Factories\InstrumentFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Vng\EvaCore\Casts\CleanedHtml;
-use Vng\EvaCore\ElasticResources\InstrumentResource;
+use Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource;
 use Vng\EvaCore\Enums\DurationUnitEnum;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Interfaces\IsMemberInterface;
@@ -32,7 +32,7 @@ class Instrument extends SearchableModel
     const REACH_NATIONAL = 'national';
 
     protected $table = 'instruments';
-    protected string $elasticResource = InstrumentResource::class;
+    protected string $elasticResource = InstrumentWerknemersdienstverleningResource::class;
     protected $fillable = [
         'created_at',
         'updated_at',
@@ -320,11 +320,6 @@ class Instrument extends SearchableModel
         return $this->belongsTo(Instrument::class);
     }
 
-    public function instrumentType(): BelongsTo
-    {
-        return $this->belongsTo(InstrumentType::class);
-    }
-
     public function provider(): BelongsTo
     {
         return $this->belongsTo(Provider::class);
@@ -401,7 +396,8 @@ class Instrument extends SearchableModel
     public function downloads(): BelongsToMany
     {
         return $this->belongsToMany(Download::class, 'download_instrument')
-            ->withTimestamps();
+            ->withTimestamps()
+            ->using(DownloadInstrument::class);
     }
 
     public function instrumentTrackers(): HasMany
@@ -411,7 +407,8 @@ class Instrument extends SearchableModel
 
     public function watchingUsers()
     {
-        return $this->belongsToMany(Manager::class, 'instrument_trackers')->using(InstrumentTracker::class);
+        return $this->belongsToMany(Manager::class, 'instrument_trackers')
+            ->using(InstrumentTracker::class);
     }
 
 

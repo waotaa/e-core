@@ -54,8 +54,5 @@ properties:
     type: integer
   implementation_id:
     type: integer
-  instrument_type_id:
-    type: integer
-    nullable: true
   provider_id:
     type: integer

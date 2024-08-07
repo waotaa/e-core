@@ -2,11 +2,21 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
+use Vng\EvaCore\Helpers\Codelijsten;
+
 class GroupFormResource extends ElasticResource
 {
     public function toArray()
     {
         return [
+            // >> SGR
+            'CdGroepsvorm' => $this->code,
+            'IndEigenToevoegingGroepsvorm' => $this->custom,
+
+            // Bonus
+            'NaamGroepsvorm' => Codelijsten::getGroepsvormName($this->code),
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),

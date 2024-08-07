@@ -9,6 +9,18 @@ class OrganisationResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            'NaamInstrumentBeherendeOrganisatie' => $this->name,
+            'OrganisatieSlug' => $this->slug,
+
+            'LokalePartij' => LocalPartyResource::one($this->whenLoaded('localParty')),
+            'RegionalePartij' => RegionalPartyResource::one($this->whenLoaded('regionalParty')),
+            'NationalePartij' => NationalPartyResource::one($this->whenLoaded('nationalParty')),
+            'Samenwerking' => PartnershipResource::one($this->whenLoaded('partnership')),
+
+            'Contactpersoon' => ContactResource::many($this->whenLoaded('contacts')),
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),

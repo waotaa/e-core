@@ -20,7 +20,7 @@ class DownloadResource extends ElasticResource
             'url' => $this->url,
             'filename' => $this->filename,
 
-            'instrument' => InstrumentResource::one($this->whenLoaded('instrument')),
+            'instrument' => InstrumentWerknemersdienstverleningResource::many($this->whenLoaded('instruments')),
         ];
     }
 }

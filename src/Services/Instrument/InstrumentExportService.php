@@ -14,6 +14,9 @@ use Vng\EvaCore\Jobs\Export\StoreInstrumentsExportJob;
 use Vng\EvaCore\Jobs\Export\WrapInstrumentsJob;
 use Vng\EvaCore\Models\Export;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
+use Illuminate\Support\Collection;
+use Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource;
+use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Services\ImExport\AbstractEntityExportService;
 
 class InstrumentExportService extends AbstractEntityExportService

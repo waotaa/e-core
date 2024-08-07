@@ -9,6 +9,13 @@ class TownshipResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            'CdGemeente' => substr($this->code, 2, 4),
+            'NaamGemeente' => $this->name,
+
+            'Arbeidsmarktregio' => $this->region ? TownshipRegionResource::one($this->region) : null,
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),

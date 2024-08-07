@@ -7,6 +7,11 @@ class PartnershipResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
+            'Gemeente' => TownshipResource::many($this->whenLoaded('townships')),
+
+            // >> Current
             'id' => $this->id,
 
             'created_at' => $this->formatDate($this->created_at),

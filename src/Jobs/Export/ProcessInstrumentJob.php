@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Vng\EvaCore\ElasticResources\InstrumentResource;
+use Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource;
 use Vng\EvaCore\Models\Export;
 use Vng\EvaCore\Models\Instrument;
 
@@ -40,7 +40,7 @@ class ProcessInstrumentJob implements ShouldQueue
         Log::info("Processing instrument {$this->instrument->id} for export {$mark}");
 
         // Transform instrument to array
-        $transformedItem = InstrumentResource::make($this->instrument)->toArray();
+        $transformedItem = InstrumentWerknemersdienstverleningResource::make($this->instrument)->toArray();
         $jsonItem = json_encode($transformedItem, JSON_PRETTY_PRINT);
 
         $result = $this->storeFile($jsonItem, $mark, "{$this->instrument->id}.json");

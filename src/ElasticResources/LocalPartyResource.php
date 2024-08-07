@@ -7,6 +7,11 @@ class LocalPartyResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
+            'Gemeente' => TownshipResource::one($this->whenLoaded('township')),
+
+            // >> Current
             'id' => $this->id,
 
             'created_at' => $this->formatDate($this->created_at),

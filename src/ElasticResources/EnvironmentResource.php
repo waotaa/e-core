@@ -7,6 +7,8 @@ class EnvironmentResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> Niet in SGR
+
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),

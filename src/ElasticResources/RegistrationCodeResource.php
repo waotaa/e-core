@@ -7,6 +7,15 @@ class RegistrationCodeResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            'Registratiecode' => $this->code,
+            'Registratiecodelabel' => $this->label,
+
+            // todo: is_displayed toevoegen?
+
+            'InstrumentWerknemersdienstverlening' => InstrumentWerknemersdienstverleningResource::one($this->whenLoaded('instrument')),
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),
@@ -15,7 +24,7 @@ class RegistrationCodeResource extends ElasticResource
             'label' => $this->label,
             'is_displayed' => $this->is_displayed,
 
-            'instrument' => InstrumentResource::one($this->whenLoaded('instrument'))
+            'instrument' => InstrumentWerknemersdienstverleningResource::one($this->whenLoaded('instrument'))
         ];
     }
 }

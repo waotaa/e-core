@@ -2,11 +2,20 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
+use Vng\EvaCore\Helpers\Codelijsten;
+
 class ClientCharacteristicResource extends ElasticResource
 {
     public function toArray()
     {
         return [
+            // >> SGR
+            'CdKlantkenmerk' => $this->code,
+
+            // Bonus
+            'NaamKlantkenmerk' => Codelijsten::getKlantkenmerkName($this->code),
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),

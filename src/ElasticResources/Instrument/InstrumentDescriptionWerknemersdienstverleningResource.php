@@ -6,7 +6,7 @@ namespace Vng\EvaCore\ElasticResources\Instrument;
  * An Instrument Resource with some properties withheld.
  * Used for sharing instruments
  */
-class InstrumentDescriptionResource extends \Vng\EvaCore\ElasticResources\InstrumentResource
+class InstrumentDescriptionWerknemersdienstverleningResource extends \Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource
 {
     public function toArray(): array
     {

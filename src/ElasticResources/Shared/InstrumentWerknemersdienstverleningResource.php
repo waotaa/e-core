@@ -6,7 +6,7 @@ namespace Vng\EvaCore\ElasticResources\Shared;
  * An Instrument Resource with some properties withheld.
  * Used for the public index (used on kibana board)
  */
-class InstrumentResource extends \Vng\EvaCore\ElasticResources\InstrumentResource
+class InstrumentWerknemersdienstverleningResource extends \Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource
 {
     public function toArray(): array
     {

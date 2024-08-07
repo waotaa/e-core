@@ -7,6 +7,11 @@ class RegionalPartyResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
+            'Arbeidsmarktregio' => RegionResource::one($this->whenLoaded('region')),
+
+            // >> Current
             'id' => $this->id,
 
             'created_at' => $this->formatDate($this->created_at),

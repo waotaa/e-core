@@ -88,10 +88,6 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
             $instrument->implementation()->associate($request->input('implementation_id'));
         }
 
-        if ($request->input('instrument_type_id')) {
-            $instrument->instrumentType()->associate($request->input('instrument_type_id'));
-        }
-
         if ($request->input('provider_id')) {
             $instrument->provider()->associate($request->input('provider_id'));
         }

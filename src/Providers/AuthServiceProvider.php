@@ -90,7 +90,6 @@ class AuthServiceProvider extends ServiceProvider
         Implementation::class => ImplementationPolicy::class,
         Instrument::class => InstrumentPolicy::class,
         InstrumentTracker::class => InstrumentTrackerPolicy::class,
-        InstrumentType::class => InstrumentTypePolicy::class,
         Link::class => LinkPolicy::class,
         LocalParty::class => LocalPartyPolicy::class,
         Location::class => LocationPolicy::class,

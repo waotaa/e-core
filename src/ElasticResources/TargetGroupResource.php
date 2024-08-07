@@ -2,11 +2,22 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
+use Vng\EvaCore\Helpers\Codelijsten;
+
 class TargetGroupResource extends ElasticResource
 {
     public function toArray()
     {
         return [
+            // >> SGR
+            // todo: methode bepalen. Met codelijst of niet..?
+            'IndEigenToevoegingDoelgroep' => $this->custom,
+            'CdDoelgroep' => $this->code,
+
+            // Bonus
+            'NaamDoelgroep' => Codelijsten::getDoelgroepName($this->code),
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),

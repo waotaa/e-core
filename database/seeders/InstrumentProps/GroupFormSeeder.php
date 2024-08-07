@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\InstrumentProps;
 
+use Vng\EvaCore\Helpers\Codelijsten;
 use Vng\EvaCore\Models\GroupForm;
 use Illuminate\Database\Seeder;
 
@@ -12,19 +13,32 @@ class GroupFormSeeder extends Seeder
 {
     public function run(): void
     {
+
+
         GroupForm::withoutEvents(function () {
-            GroupForm::query()->updateOrCreate([
-                'name' => 'Individueel',
-            ], [
-                'code' => 'GV01',
-                'custom' => false
-            ]);
-            GroupForm::query()->updateOrCreate([
-                'name' => 'Groep',
-            ], [
-                'code' => 'GV02',
-                'custom' => false
-            ]);
+            $groepsvormen = Codelijsten::get('Groepsvormen');
+            foreach ($groepsvormen as $codeGroepsvorm => $naamGroepsvorm) {
+                GroupForm::query()->updateOrCreate(
+                    ['code' => $codeGroepsvorm],
+                    [
+                        'name' => $naamGroepsvorm,
+                        'custom' => false
+                    ]
+                );
+            }
+
+//            GroupForm::query()->updateOrCreate([
+//                'name' => 'Individueel',
+//            ], [
+//                'code' => 'GV01',
+//                'custom' => false
+//            ]);
+//            GroupForm::query()->updateOrCreate([
+//                'name' => 'Groep',
+//            ], [
+//                'code' => 'GV02',
+//                'custom' => false
+//            ]);
         });
     }
 }

@@ -20,6 +20,7 @@ class Address extends Model
         'name',
         'straatnaam',
         'huisnummer',
+        'huisnummertoevoeging',
         'postbusnummer',
         'antwoordnummer',
         'postcode',
@@ -45,6 +46,21 @@ class Address extends Model
         return $this->getAttribute('name');
     }
 
+    public function isStraatAdres()
+    {
+        return !$this->isAntwoordNrAdres() && !$this->isPostbusAdres();
+    }
+
+    public function isPostbusAdres()
+    {
+        return !!$this->getAttribute('postbusnummer');
+    }
+
+    public function isAntwoordNrAdres()
+    {
+        return !!$this->getAttribute('antwoordnummer');
+    }
+
     public function getAddressLineAttribute()
     {
         $result = $this->getAttribute('straatnaam');
@@ -52,11 +68,27 @@ class Address extends Model
             $result .= ' ' . $this->getAttribute('huisnummer');
         }
 
+        if ($this->getAttribute('huisnummertoevoeging')) {
+            $result .= ' ' . $this->getAttribute('huisnummertoevoeging');
+        }
+
         if ($this->getAttribute('woonplaats')) {
             $result .= $result ? ', ' : '';
             $result .= $this->getAttribute('woonplaats');
         }
         return $result;
+    }
+
+    public function getCompleetHuisnummerAttribute()
+    {
+        if (!$this->getAttribute('huisnummer')) {
+            return null;
+        }
+        $huisnummer = $this->getAttribute('huisnummer');
+        if ($this->getAttribute('huisnummertoevoeging')) {
+            $huisnummer .= ' ' . $this->getAttribute('huisnummertoevoeging');
+        }
+        return $huisnummer;
     }
 
     public function providers(): HasMany
