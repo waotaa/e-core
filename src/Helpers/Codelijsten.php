@@ -17,36 +17,42 @@ class Codelijsten
         return [];
     }
 
-    public static function getName(string $listName, string $code): ?string
+    public static function getName(string $listName, ?string $code = null): ?string
     {
+        if (is_null($code)) {
+            return null;
+        }
         $list = self::get($listName);
         return $list[$code] ?? null;
     }
 
     // Careful with werklandschap tegels, has non-unique names
-    public static function getCode(string $listName, string $name): ?string
+    public static function getCode(string $listName, ?string $name = null): ?string
     {
+        if (is_null($name)) {
+            return null;
+        }
         $list = self::get($listName);
         $list = array_flip($list);
         return $list[$name] ?? null;
     }
 
-    public static function getArbeidsmarktregioName(string $key): ?string
+    public static function getArbeidsmarktregioName(?string $key = null): ?string
     {
         return self::getName('Arbeidsmarktregios', $key);
     }
 
-    public static function getDienstverbandName(string $key): ?string
+    public static function getDienstverbandName(?string $key = null): ?string
     {
         return self::getName('Dienstverbanden', $key);
     }
 
-    public static function getDoelgroepName(string $key): ?string
+    public static function getDoelgroepName(?string $key = null): ?string
     {
         return self::getName('Doelgroepen', $key);
     }
 
-    public static function getDoelgroepenDennis(): ?string
+    public static function getDoelgroepenDennis(): array
     {
         $doelgroepen = self::get('Doelgroepen');
         return array_filter($doelgroepen, function($key) {
@@ -54,7 +60,7 @@ class Codelijsten
         }, ARRAY_FILTER_USE_KEY);
     }
 
-    public static function getDoelgroepenEva(): ?string
+    public static function getDoelgroepenEva(): array
     {
         $doelgroepen = self::get('Doelgroepen');
         return array_filter($doelgroepen, function($key) {
@@ -62,17 +68,17 @@ class Codelijsten
         }, ARRAY_FILTER_USE_KEY);
     }
 
-    public static function getGroepsvormName(string $key): ?string
+    public static function getGroepsvormName(?string $key = null): ?string
     {
         return self::getName('Groepsvormen', $key);
     }
 
-    public static function getIndicatieJaNeeName(string $key): ?string
+    public static function getIndicatieJaNeeName(?string $key = null): ?string
     {
         return self::getName('StdIndNvt', $key);
     }
 
-    public static function getIndicatieJaNeeNvtName(string $key): ?string
+    public static function getIndicatieJaNeeNvtName(?string $key = null): ?string
     {
         return self::getName('StdIndNvt', $key);
     }
@@ -86,57 +92,57 @@ class Codelijsten
         return self::getCode('StdIndNvt', $naam);
     }
 
-    public static function getKlantkenmerkName(string $key): ?string
+    public static function getKlantkenmerkName(?string $key = null): ?string
     {
         return self::getName('Klantkenmerken', $key);
     }
 
-    public static function getLeeftijdsgroepName(string $key): ?string
+    public static function getLeeftijdsgroepName(?string $key = null): ?string
     {
         return self::getName('Leeftijdsgroepen', $key);
     }
 
-    public static function getSectorName(string $key): ?string
+    public static function getSectorName(?string $key = null): ?string
     {
         return self::getName('Sectoren', $key);
     }
 
-    public static function getTrajectDuurEenheidName(string $key): ?string
+    public static function getTrajectDuurEenheidName(?string $key = null): ?string
     {
         return self::getName('TrajectDuurEenheden', $key);
     }
 
-    public static function getTrajectDuurEenheidCode(string $key): ?string
+    public static function getTrajectDuurEenheidCode(?string $key = null): ?string
     {
         return self::getCode('TrajectDuurEenheden', $key);
     }
 
-    public static function getTypeContactPersoonRelatieName(string $key): ?string
+    public static function getTypeContactPersoonRelatieName(?string $key = null): ?string
     {
         return self::getName('TypeContactPersoonRelaties', $key);
     }
 
-    public static function getTypeContactPersoonRelatieCode(string $key): ?string
+    public static function getTypeContactPersoonRelatieCode(?string $key = null): ?string
     {
         return self::getCode('TypeContactPersoonRelaties', $key);
     }
 
-    public static function getUitvoeringLocatieName(string $key): ?string
+    public static function getUitvoeringLocatieName(?string $key = null): ?string
     {
         return self::getName('TypeUitvoeringsLocaties', $key);
     }
 
-    public static function getUitvoeringLocatieCode(string $key): ?string
+    public static function getUitvoeringLocatieCode(?string $key = null): ?string
     {
         return self::getCode('TypeUitvoeringsLocaties', $key);
     }
 
-    public static function getUitvoeringsVormName(string $key): ?string
+    public static function getUitvoeringsVormName(?string $key = null): ?string
     {
         return self::getName('TypeUitvoeringsVormen', $key);
     }
 
-    public static function getWerklandschapTegelName(string $key): ?string
+    public static function getWerklandschapTegelName(?string $key = null): ?string
     {
         return self::getName('WerklandschapTegels', $key);
     }
