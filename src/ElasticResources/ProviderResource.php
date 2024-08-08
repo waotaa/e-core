@@ -10,8 +10,8 @@ class ProviderResource extends ElasticResource
     {
         return [
             // >> SGR
-            'NaamAanbieder' => $this->name,
-            'UuidAanbieder' => $this->uuid,
+            'NaamAanbieder' => $this->name, // AN..200
+            'UuidAanbieder' => $this->uuid, // AN36
 
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
             'Adres' => AddressResource::one($this->whenLoaded('address')),

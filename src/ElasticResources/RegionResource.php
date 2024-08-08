@@ -12,7 +12,7 @@ class RegionResource extends ElasticResource
         return [
             // >> SGR
             'CdArbeidsmarktregio' => substr($this->code, 2, 4),
-            'NaamArbeidsmarktregio' => Codelijsten::getArbeidsmarktregioName($this->code),
+            'NaamArbeidsmarktregio' => Codelijsten::getArbeidsmarktregioName($this->code), // AN..200
 //            'NaamArbeidsmarktregio' => $this->name, // API name, codelist is leading
 
             'Gemeente' => RegionTownshipResource::many($this->townships),

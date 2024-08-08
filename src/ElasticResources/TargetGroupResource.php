@@ -11,11 +11,11 @@ class TargetGroupResource extends ElasticResource
         return [
             // >> SGR
             // todo: methode bepalen. Met codelijst of niet..?
-            'IndEigenToevoegingDoelgroep' => $this->custom,
+            'IndEigenToevoegingDoelgroep' => $this->custom, // StdIndJN
             'CdDoelgroep' => $this->code,
 
             // Bonus
-            'NaamDoelgroep' => Codelijsten::getDoelgroepName($this->code),
+            'NaamDoelgroep' => Codelijsten::getDoelgroepName($this->code),  // AN..200
 
             // >> Current
             'id' => $this->id,

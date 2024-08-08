@@ -14,17 +14,17 @@ class InstrumentResource extends ElasticResource
         return [
             // >> SGR
             // Instrument
-            'DatBPublicatie' => $this->formatDate($this->publish_from),
-            'DatEPublicatie' => $this->formatDate($this->publish_to),
-            'IndPublicatie' => $this->is_active,
-            'NaamInstrument' => $this->name,
-            'UuidInstrument' => $this->uuid,
+            'DatBPublicatie' => $this->formatDate($this->publish_from), // DATUM
+            'DatEPublicatie' => $this->formatDate($this->publish_to),   // DATUM
+            'IndPublicatie' => $this->is_active,                        // StdIndJN
+            'NaamInstrument' => $this->name,                            // AN..200
+            'UuidInstrument' => $this->uuid,                            // AN36
 
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->organisation),
 
-            'DatAangemaakt' => $this->formatDate($this->created_at),
-            'DatGewijzigd' => $this->formatDate($this->updated_at),
-            'DatVerwijderd' => $this->formatDate($this->deleted_at),
+            'DatAangemaakt' => $this->formatDate($this->created_at),    // DATUMTIJD
+            'DatGewijzigd' => $this->formatDate($this->updated_at),     // DATUMTIJD
+            'DatVerwijderd' => $this->formatDate($this->deleted_at),    // DATUMTIJD
         ];
     }
 }

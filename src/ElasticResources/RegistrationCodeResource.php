@@ -8,8 +8,8 @@ class RegistrationCodeResource extends ElasticResource
     {
         return [
             // >> SGR
-            'Registratiecode' => $this->code,
-            'Registratiecodelabel' => $this->label,
+            'Registratiecode' => $this->code,       // AN..34
+            'Registratiecodelabel' => $this->label, // AN..200
 
             // todo: is_displayed toevoegen?
 

@@ -16,7 +16,7 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
     {
         return [
             // >> SGR
-            'AantUrenIntensiteitPerWeek' => $this->intensity_hours_per_week,
+            'AantUrenIntensiteitPerWeek' => $this->intensity_hours_per_week,    // N..4
             'BedrTotaalKosten' => [
                 'CdMunteenheid' => 'EUR',
                 'CdPositiefNegatief' => '1',
@@ -24,22 +24,22 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
             ],
             'CdDuurTraject' => Codelijsten::getTrajectDuurEenheidCode($this->total_duration_unit),
 //            'EenheidDuurTraject' => $this->total_duration_unit,
-            'DuurTraject' => $this->total_duration_value,
-            'OmsDoelInstrument' => $this->aim,
-            'OmsOnderscheidendeAanpak' => $this->distinctive_approach,
-            'OmsWerkafspraken' => $this->work_agreements,
-            'SamenvattingInstrument' => $this->summary,
-            'ToelDoelgroep' => $this->target_group_description,
-            'ToelDuurTraject' => $this->duration_description,
-            'ToelIntensiteit' => $this->intensity_description,
-            'ToelKosten' => $this->costs_description,
-            'ToelWerkwijzeInstrument' => $this->method,
+            'DuurTraject' => $this->total_duration_value,               // N..4
+            'OmsDoelInstrument' => $this->aim,                          // AN..320 - 4600
+            'OmsOnderscheidendeAanpak' => $this->distinctive_approach,  // AN..320 - 3891
+            'OmsWerkafspraken' => $this->work_agreements,               // AN..320 - 5374
+            'SamenvattingInstrument' => $this->summary,                 // AN..320 - 2035 (validatie zegt max 500)
+            'ToelDoelgroep' => $this->target_group_description,         // AN..320 - 7023
+            'ToelDuurTraject' => $this->duration_description,           // AN..320 - 1260
+            'ToelIntensiteit' => $this->intensity_description,          // AN..320 - 1863
+            'ToelKosten' => $this->costs_description,                   // AN..320 - 2403
+            'ToelWerkwijzeInstrument' => $this->method,                 // AN..320 - 12667
 
             // todo: deze overwegen..?
-            // application_instructions
-            // participation_conditions
-            // cooperation_partners
-            // additional_information
+            // application_instructions     // meeste karakters 11480, meeste zitten onder de 5000
+            // participation_conditions     // meeste karakters 7886
+            // cooperation_partners         // meeste karakters 1690
+            // additional_information       // meeste karakters 12065
 
             'Instrument' => InstrumentResource::one($this->resource),
 

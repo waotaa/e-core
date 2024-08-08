@@ -14,9 +14,9 @@ class ContactResource extends ElasticResource
         $data = [
             // >> SGR
             'CdTypeContactpersoonRelatie' => $codeType,
-            'EmailadresContactpersoon' => $this->email,
-            'NaamContactpersoon' => $this->name,
-            'TelefoonnummerContactpersoon' => $this->phone,
+            'EmailadresContactpersoon' => $this->email,         // AN..320
+            'NaamContactpersoon' => $this->name,                // AN..200
+            'TelefoonnummerContactpersoon' => $this->phone,     // AN..14
 
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
             'InstrumentWerknemersdienstverlening' => InstrumentWerknemersdienstverleningResource::many($this->whenLoaded('instruments')),

@@ -13,7 +13,7 @@ class ClientCharacteristicResource extends ElasticResource
             'CdKlantkenmerk' => $this->code,
 
             // Bonus
-            'NaamKlantkenmerk' => Codelijsten::getKlantkenmerkName($this->code),
+            'NaamKlantkenmerk' => Codelijsten::getKlantkenmerkName($this->code), // AN..200
 
             // >> Current
             'id' => $this->id,

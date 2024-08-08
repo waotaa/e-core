@@ -11,7 +11,7 @@ class TownshipResource extends ElasticResource
         return [
             // >> SGR
             'CdGemeente' => substr($this->code, 2, 4),
-            'NaamGemeente' => $this->name,
+            'NaamGemeente' => $this->name,              // AN..200
 
             'Arbeidsmarktregio' => $this->region ? TownshipRegionResource::one($this->region) : null,
 

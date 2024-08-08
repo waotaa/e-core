@@ -13,7 +13,7 @@ class TileResource extends ElasticResource
             'CdWerklandschapTegel' => $this->code,
 
             // Bonus
-            'NaamWerklandschapTegel' => Codelijsten::getWerklandschapTegelName($this->code),
+            'NaamWerklandschapTegel' => Codelijsten::getWerklandschapTegelName($this->code), // AN..200
 
             // >> Current
             'id' => $this->id,

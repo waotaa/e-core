@@ -11,9 +11,9 @@ class LocationResource extends ElasticResource
         return [
             // >> SGR
             'CdTypeUitvoeringslocatie' => Codelijsten::getUitvoeringLocatieCode($this->type),
-            'IndUitvoeringslocatieActief' => $this->is_active,
-            'NaamUitvoeringslocatie' => $this->name,
-            'ToelUitvoeringslocatie' => $this->description,
+            'IndUitvoeringslocatieActief' => $this->is_active,  // StdIndJN
+            'NaamUitvoeringslocatie' => $this->name,            // AN..200
+            'ToelUitvoeringslocatie' => $this->description,     // AN..320
             'Adres' => AddressResource::one($this->whenLoaded('address')),
             'InstrumentWerknemersdienstverlening' => InstrumentWerknemersdienstverleningResource::one($this->whenLoaded('instrument')),
 

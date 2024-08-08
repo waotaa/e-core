@@ -8,15 +8,15 @@ class RatingResource extends ElasticResource
     {
         return [
             // >> SGR
-            'AlgemeneScore' => $this->general_score,
-            'AuteurBeoordeling' => $this->author,
-            'DatBeoordeling' => $this->formatDate($this->created_at),
-            'EmailadresAuteurBeoordeling' => $this->email,
-            'ResultaatScore' => $this->result_score,
-            'ToelAlgemeneScore' => $this->general_explanation,
-            'ToelResultaatScore' => $this->result_explanation,
-            'ToelUitvoeringsScore' => $this->execution_explanation,
-            'UitvoeringsScore' => $this->execution_score,
+            'AlgemeneScore' => $this->general_score,                    // N1
+            'AuteurBeoordeling' => $this->author,                       // AN..200
+            'DatBeoordeling' => $this->formatDate($this->created_at),   // DATUMTIJDSTIP
+            'EmailadresAuteurBeoordeling' => $this->email,              // AN..320
+            'ResultaatScore' => $this->result_score,                    // N1
+            'ToelAlgemeneScore' => $this->general_explanation,          // AN..320
+            'ToelResultaatScore' => $this->result_explanation,          // AN..320
+            'ToelUitvoeringsScore' => $this->execution_explanation,     // AN..320
+            'UitvoeringsScore' => $this->execution_score,               // N1
 
             'InstrumentWerknemersdienstverlening' => InstrumentWerknemersdienstverleningResource::one($this->whenLoaded('instrument')),
 

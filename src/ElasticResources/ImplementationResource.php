@@ -11,8 +11,8 @@ class ImplementationResource extends ElasticResource
         return [
             // >> SGR
             'CdUitvoeringsvorm' => $this->code,
-            'IndEigenToevoegingUitvoeringsvorm' => $this->custom,
-            'NaamUitvoeringsvorm' => Codelijsten::getUitvoeringsVormName($this->code),
+            'IndEigenToevoegingUitvoeringsvorm' => $this->custom, // StdIndJN
+            'NaamUitvoeringsvorm' => Codelijsten::getUitvoeringsVormName($this->code),  // AN..200
 
             // >> Current
             'id' => $this->id,

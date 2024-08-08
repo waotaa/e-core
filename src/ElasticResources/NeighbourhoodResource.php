@@ -8,7 +8,7 @@ class NeighbourhoodResource extends ElasticResource
     {
         return [
             // >> SGR
-            'NaamWijk' => $this->name,
+            'NaamWijk' => $this->name,  // AN..200
 
             'Gemeente' => TownshipResource::one($this->township),
 

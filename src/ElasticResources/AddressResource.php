@@ -15,29 +15,29 @@ class AddressResource extends ElasticResource
 
         if ($this->resource->isPostbusAdres()) {
             $adresNederland['Postadres'] = [
-                'Postbusnr' => $this->postbusnummer
+                'Postbusnr' => $this->postbusnummer         // N5
             ];
         }
         if ($this->resource->isAntwoordNrAdres()) {
             $adresNederland['Antwoordnradres'] = [
-                'Antwoordnummer' => $this->antwoordnummer,
+                'Antwoordnummer' => $this->antwoordnummer,  // N5
             ];
         }
         if ($this->resource->isStraatAdres()) {
             $adresNederland['Straatadres'] = [
-                'Huisnr' => $this->huisnummer,
-                'Huisnrtoevoeging' => $this->huisnummertoevoeging,
-                'NaamOpenbareRuimte' => $this->straatnaam,      // max 80 characters
-                'Straatnaam' => $this->straatnaam,              // max 24 characters
+                'Huisnr' => $this->huisnummer,                      // N..5
+                'Huisnrtoevoeging' => $this->huisnummertoevoeging,  // AN..6
+                'NaamOpenbareRuimte' => $this->straatnaam,          // AN..80
+                'Straatnaam' => $this->straatnaam,                  // AN..24
             ];
         }
 
         return [
             // >> SGR
             'AdresNederland' => [
-                'Locatieoms' => $this->name,
-                'Postcd' => $this->postcode,
-                'Woonplaatsnaam' => $this->woonplaats,
+                'Locatieoms' => $this->name,                // AN..70
+                'Postcd' => $this->postcode,                // AN6
+                'Woonplaatsnaam' => $this->woonplaats,      // AN..80
                 ...$adresNederland
             ],
 
