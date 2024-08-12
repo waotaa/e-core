@@ -51,6 +51,7 @@ class Download extends Model
     public function instruments(): BelongsToMany
     {
         return $this->belongsToMany(Instrument::class, 'download_instrument')
+            ->using(DownloadInstrument::class)
             ->withTimestamps();
     }
 }
