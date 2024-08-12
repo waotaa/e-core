@@ -20,6 +20,7 @@ class ClientCharacteristic extends SearchableModel
 
     public function instruments(): BelongsToMany
     {
-        return $this->belongsToMany(Instrument::class, 'client_characteristic_instrument')->using(ClientCharacteristicInstrument::class);
+        return $this->belongsToMany(Instrument::class, 'client_characteristic_instrument')
+            ->using(ClientCharacteristicInstrument::class);
     }
 }

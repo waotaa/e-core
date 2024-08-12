@@ -401,6 +401,7 @@ class Instrument extends SearchableModel
     public function downloads(): BelongsToMany
     {
         return $this->belongsToMany(Download::class, 'download_instrument')
+            ->using(DownloadInstrument::class)
             ->withTimestamps();
     }
 
