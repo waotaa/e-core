@@ -146,4 +146,20 @@ class Codelijsten
     {
         return self::getName('WerklandschapTegels', $key);
     }
+
+    public static function getWerklandschapTegelsDennis(): array
+    {
+        $doelgroepen = self::get('WerklandschapTegels');
+        return array_filter($doelgroepen, function($key) {
+            return str_starts_with($key, 'DW');
+        }, ARRAY_FILTER_USE_KEY);
+    }
+
+    public static function getWerklandschapTegelsEva(): array
+    {
+        $doelgroepen = self::get('WerklandschapTegels');
+        return array_filter($doelgroepen, function($key) {
+            return str_starts_with($key, 'EW');
+        }, ARRAY_FILTER_USE_KEY);
+    }
 }
