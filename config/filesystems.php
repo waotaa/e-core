@@ -83,6 +83,8 @@ return [
 
     'storage' => env('STORAGE', 's3'),
 
+    'cdn' => env('FILESYSTEM_CDN', env('FILESTORAGE_CDN')),
+
     'storage_paths' => [
         'downloads' => env('FILESYSTEM_STORAGE_PATH_DOWNLOADS', 'downloads'),
         'logos' => env('FILESYSTEM_STORAGE_PATH_LOGOS', 'logos'),
