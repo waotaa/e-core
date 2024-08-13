@@ -43,9 +43,9 @@ class Download extends Model
 
     public function getCdnUrlAttribute()
     {
-        $urlAttribute = $this->getAttribute('url');
-        $cdn = config('filesystems.cdn');
-        return $cdn ? Str::finish($cdn, '/') . $urlAttribute : $urlAttribute;
+        return DownloadStorageService::make()
+            ->setOrganisation($this->organisation)
+            ->getFileUrl($this->attributes['url']);
     }
 
     /**

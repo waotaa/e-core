@@ -2,7 +2,6 @@
 
 namespace Vng\EvaCore\ElasticResources;
 
-use Illuminate\Support\Str;
 use Vng\EvaCore\Models\Download;
 
 class DownloadResource extends ElasticResource
