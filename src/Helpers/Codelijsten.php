@@ -73,17 +73,23 @@ class Codelijsten
         return self::getName('Groepsvormen', $key);
     }
 
-    public static function getIndicatieJaNeeName(?string $key = null): ?string
+    public static function getJaNeeIndicatieName(?string $key = null): ?string
+    {
+        return self::getName('StdIndJN', $key);
+    }
+
+    public static function getJaNeeIndicatieCode(bool $bool): ?string
+    {
+        $naam = $bool ? 'Ja' : 'Nee';
+        return self::getCode('StdIndJN', $naam);
+    }
+
+    public static function getJaNeeNvtIndicatieName(?string $key = null): ?string
     {
         return self::getName('StdIndNvt', $key);
     }
 
-    public static function getIndicatieJaNeeNvtName(?string $key = null): ?string
-    {
-        return self::getName('StdIndNvt', $key);
-    }
-
-    public static function getIndicatieCode(?bool $bool = null): ?string
+    public static function getJaNeeNvtIndicatieCode(?bool $bool = null): ?string
     {
         $naam = 'Niet van toepassing';
         if (!is_null($bool)) {

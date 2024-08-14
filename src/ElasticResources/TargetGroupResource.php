@@ -11,7 +11,7 @@ class TargetGroupResource extends ElasticResource
         return [
             // >> SGR
             // todo: methode bepalen. Met codelijst of niet..?
-            'IndEigenToevoegingDoelgroep' => $this->custom, // StdIndJN
+            'IndEigenToevoegingDoelgroep' => Codelijsten::getJaNeeIndicatieCode($this->custom), // StdIndJN
             'CdDoelgroep' => $this->code,
 
             // Bonus

@@ -19,10 +19,10 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
             'AantUrenIntensiteitPerWeek' => $this->intensity_hours_per_week,    // N..4
             'BedrTotaalKosten' => [
                 'CdMunteenheid' => 'EUR',
-                'CdPositiefNegatief' => '1',
+                'CdPositiefNegatief' => '+',
                 'WaardeBedr' => $this->total_costs,
             ],
-            'CdDuurTraject' => Codelijsten::getTrajectDuurEenheidCode($this->total_duration_unit),
+            'CdEenheidDuurTraject' => Codelijsten::getTrajectDuurEenheidCode($this->total_duration_unit),
 //            'EenheidDuurTraject' => $this->total_duration_unit,
             'DuurTraject' => $this->total_duration_value,               // N..4
             'OmsDoelInstrument' => $this->aim,                          // AN..320 - 4600
@@ -34,12 +34,10 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
             'ToelIntensiteit' => $this->intensity_description,          // AN..320 - 1863
             'ToelKosten' => $this->costs_description,                   // AN..320 - 2403
             'ToelWerkwijzeInstrument' => $this->method,                 // AN..320 - 12667
-
-            // todo: deze overwegen..?
-            // application_instructions     // meeste karakters 11480, meeste zitten onder de 5000
-            // participation_conditions     // meeste karakters 7886
-            // cooperation_partners         // meeste karakters 1690
-            // additional_information       // meeste karakters 12065
+            'OmsAanmeldinstructgies' => $this->application_instructions,// meeste karakters 11480, meeste zitten onder de 5000
+            'OmsVoorwaardenDeelname' => $this->participation_conditions,// meeste karakters 7886
+            'OmsSamenwerkingsPartners' => $this->cooperation_partners,  // meeste karakters 1690
+            'OmsAanvullendeInfo' => $this->additional_information,      // meeste karakters 12065
 
             'Instrument' => InstrumentResource::one($this->resource),
 
