@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Observers;
 use Vng\EvaCore\Events\ElasticRelatedResourceChanged;
 use Vng\EvaCore\Events\InstrumentSaved;
 use Vng\EvaCore\Models\Download;
+use Vng\EvaCore\Models\Instrument;
 
 class DownloadObserver
 {
@@ -30,9 +31,11 @@ class DownloadObserver
 
     private function syncConnectedElasticResources(Download $download): void
     {
-        if (!is_null($download->instrument)) {
-            ElasticRelatedResourceChanged::dispatch($download->instrument, $download);
-            InstrumentSaved::dispatch($download->instrument);
-        }
+        $download->instruments->each(
+            function(Instrument $instrument) use ($download) {
+                ElasticRelatedResourceChanged::dispatch($instrument, $download);
+                InstrumentSaved::dispatch($instrument);
+            }
+        );
     }
 }
