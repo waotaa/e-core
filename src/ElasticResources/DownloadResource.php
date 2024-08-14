@@ -17,7 +17,7 @@ class DownloadResource extends ElasticResource
             'updated_at' => $this->formatDate($this->updated_at),
 
             'label' => $this->label,
-            'url' => $this->url,
+            'url' => $this->cdnUrl,
             'filename' => $this->filename,
 
             'instrument' => InstrumentWerknemersdienstverleningResource::many($this->whenLoaded('instruments')),

@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 use Vng\EvaCore\Observers\DownloadObserver;
 use Vng\EvaCore\Services\Storage\DownloadStorageService;
 use Vng\EvaCore\Traits\HasOwner;
@@ -38,6 +39,13 @@ class Download extends Model
             }
         }
         return parent::delete();
+    }
+
+    public function getCdnUrlAttribute()
+    {
+        return DownloadStorageService::make()
+            ->setOrganisation($this->organisation)
+            ->getFileUrl($this->attributes['url']);
     }
 
     /**
