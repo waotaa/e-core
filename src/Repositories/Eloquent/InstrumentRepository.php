@@ -525,7 +525,7 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
 
                 'provider',
                 'provider.address',
-                'provider.contact',
+                'provider.contacts',
 
                 'contacts',
                 'availableRegions',

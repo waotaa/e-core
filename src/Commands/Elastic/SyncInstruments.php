@@ -31,28 +31,7 @@ class SyncInstruments extends Command
         /** @var InstrumentRepositoryInterface $instrumentRepository */
         $instrumentRepository = app(InstrumentRepositoryInterface::class);
         $instruments = $instrumentRepository
-            ->builder()
-            ->with([
-                'organisation',
-                'organisation.featuringEnvironments',
-                'implementation',
-                'groupForms',
-                'locations',
-                'registrationCodes',
-                'ratings',
-                'tiles',
-                'targetGroups',
-                'clientCharacteristics',
-                'links',
-                'videos',
-                'downloads',
-                'provider',
-                'contacts',
-                'availableRegions',
-                'availableTownships',
-                'availableNeighbourhoods',
-                'parentInstrument'
-            ])
+            ->getElasticResourceBuilder()
             ->get();
 
         $this->output->writeln($instruments->count() . ' instruments found');
