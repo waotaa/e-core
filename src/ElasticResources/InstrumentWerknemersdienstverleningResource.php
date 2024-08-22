@@ -25,7 +25,7 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
             'CdEenheidDuurTraject' => Codelijsten::getTrajectDuurEenheidCode($this->total_duration_unit),
 //            'EenheidDuurTraject' => $this->total_duration_unit,
             'DuurTraject' => $this->total_duration_value,               // N..4
-            'OmsDoelInstrument' => $this->aim,                          // AN..320 - 4600
+            'OmsDoelInstrument' => $this->aim,                          // AN..320
             'OmsOnderscheidendeAanpak' => $this->distinctive_approach,  // AN..320 - 3891
             'OmsWerkafspraken' => $this->work_agreements,               // AN..320 - 5374
             'SamenvattingInstrument' => $this->summary,                 // AN..320 - 2035 (validatie zegt max 500)

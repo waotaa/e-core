@@ -11,7 +11,7 @@ class Export extends Model
 {
     use HasOwner;
 
-    const TYPE_INSTRUMENTS = 'instruments';
+    const TYPE_INSTRUMENT = 'instrument';
 
     const STATUS_INITIATED = 'initiated';
     const STATUS_FAILED = 'failed';

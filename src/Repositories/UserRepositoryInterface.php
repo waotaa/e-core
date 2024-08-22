@@ -15,4 +15,6 @@ interface UserRepositoryInterface extends BaseRepositoryInterface, SoftDeletable
     public function addViewAllCondition(Builder $query): Builder;
     public function addViewSelfCondition(Builder $query, EvaUserInterface $user): Builder;
     public function addViewCreatedByCondition(Builder $query, IsManagerInterface $isManager): Builder;
+
+    public function getElasticResourceBuilder(): Builder;
 }

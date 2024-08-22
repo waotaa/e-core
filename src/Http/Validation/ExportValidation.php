@@ -11,6 +11,10 @@ class ExportValidation extends ModelValidation
                 'nullable',
                 'string'
             ],
+            'type' => [
+                'nullable',
+                'string'
+            ],
             'organisation_id' => [
                 'required'
             ],
