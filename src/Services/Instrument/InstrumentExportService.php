@@ -57,7 +57,12 @@ class InstrumentExportService extends AbstractRegisteredExportService
         ])
             ->name($batchName)
             ->then(function (Batch $batch) use ($batchName) {
-                Log::info("Exp.Instruments Batch {$batchName} done");
+                $progress = $batch->progress();
+                Log::info("Exp.Instruments Batch {$batchName} done - progress: $progress");
+//                $this->export->fill([
+//                    'progress' => $batch->progress()
+//                ])->saveQuietly();
+
                 Bus::chain([
                     new WrapInstrumentsJob($this->export),
                     new StoreInstrumentsExportJob($this->export),
