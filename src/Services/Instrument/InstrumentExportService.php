@@ -52,21 +52,22 @@ class InstrumentExportService extends AbstractRegisteredExportService
         }
 
         Bus::batch([
-            $jobs,
-            new WrapInstrumentsJob($this->export),
-            new StoreInstrumentsExportJob($this->export)
+            $jobs
         ])
             ->then(function (Batch $batch) {
-                Log::info('Instrument export done');
+                WrapInstrumentsJob::dispatch($this->export)
+                    ->chain([
+                        StoreInstrumentsExportJob::dispatch($this->export),
+                    ])
+                    ->then(function () {
+                        Log::info('Instrument export done');
+                        $this->updateExportStatusToFinished();
+                    });
             })
             ->catch(function (Batch $batch, Throwable $e) {
                 Log::error('Instrument export failed');
             })
             ->name($this->export->getAttribute('mark'))
             ->dispatch();
-
-        $this->updateExportStatusToFinished();
     }
-
-
 }
