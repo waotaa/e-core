@@ -51,23 +51,25 @@ class InstrumentExportService extends AbstractRegisteredExportService
             $jobs[] = new ProcessInstrumentJob($this->export, $instrument);
         }
 
+        $batchName = $this->export->getAttribute('mark');
         Bus::batch([
             $jobs
         ])
-            ->then(function (Batch $batch) {
-                WrapInstrumentsJob::dispatch($this->export)
-                    ->chain([
-                        StoreInstrumentsExportJob::dispatch($this->export),
-                    ])
-                    ->then(function () {
+            ->name($batchName)
+            ->then(function (Batch $batch) use ($batchName) {
+                Log::info("Exp.Instruments Batch {$batchName} done");
+                Bus::chain([
+                    new WrapInstrumentsJob($this->export),
+                    new StoreInstrumentsExportJob($this->export),
+                    function() {
                         Log::info('Instrument export done');
                         $this->updateExportStatusToFinished();
-                    });
+                    }
+                ])->dispatch();
             })
             ->catch(function (Batch $batch, Throwable $e) {
                 Log::error('Instrument export failed');
             })
-            ->name($this->export->getAttribute('mark'))
-            ->dispatch();
+            ->onQueue('exports');
     }
 }

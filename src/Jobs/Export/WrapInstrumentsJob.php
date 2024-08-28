@@ -18,17 +18,17 @@ class WrapInstrumentsJob implements ShouldQueue
     use Dispatchable,
         InteractsWithQueue,
         Queueable,
-        Batchable,
         SerializesModels,
+        useExportEntityTrait,
         useTempLocalStorageTrait;
 
     public function __construct(
-        protected Export $export,
-    )
-    {}
+        protected $exportId
+    ) {}
 
     public function handle(): void
     {
+        $this->findExport($this->exportId);
         $mark = $this->export->getAttribute('mark');
 
         Log::info("Wrapping for {$mark}");
@@ -41,7 +41,6 @@ class WrapInstrumentsJob implements ShouldQueue
         $exportPath = Str::finish($storageDir, '/') . $exportPath;
 
         Log::debug("At path {$exportPath}");
-
 
         $files = $this->getAllFiles($mark);
         $storageDisk->put($exportPath, '[');
@@ -58,9 +57,5 @@ class WrapInstrumentsJob implements ShouldQueue
 
         $storageDisk->append($exportPath, ']');
         $storageDisk->delete($files);
-
-        $this->export->fill([
-            'progress' => $this->batch()->progress()
-        ])->saveQuietly();
     }
 }

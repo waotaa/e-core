@@ -19,17 +19,17 @@ class StoreInstrumentsExportJob implements ShouldQueue
     use Dispatchable,
         InteractsWithQueue,
         Queueable,
-        Batchable,
         SerializesModels,
+        useExportEntityTrait,
         useTempLocalStorageTrait;
 
     public function __construct(
-        protected Export $export,
-    )
-    {}
+        protected $exportId
+    ) {}
 
     public function handle(): void
     {
+        $this->findExport($this->exportId);
         $mark = $this->export->getAttribute('mark');
 
         Log::info("Storing export for {$mark}");
@@ -53,7 +53,6 @@ class StoreInstrumentsExportJob implements ShouldQueue
         $storageDisk->delete($wrappedFile);
 
         $this->export->fill([
-            'progress' => $this->batch()->progress(),
             'file' => $filePath
         ])->saveQuietly();
     }

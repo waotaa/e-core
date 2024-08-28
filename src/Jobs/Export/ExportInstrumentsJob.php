@@ -8,7 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Vng\EvaCore\Models\Export;
+use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 use Vng\EvaCore\Services\Instrument\InstrumentExportService;
@@ -16,13 +16,22 @@ use function app;
 
 class ExportInstrumentsJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable,
+        InteractsWithQueue,
+        Queueable,
+        SerializesModels,
+        useExportEntityTrait;
 
-    public function __construct(protected Export $export)
-    {}
+    public function __construct(
+        protected $exportId
+    ) {}
+
+    protected ?Instrument $instrument;
 
     public function handle(): void
     {
+        $this->findExport($this->exportId);
+
         /** @var Organisation $organisation */
         $organisation = $this->export->organisation;
 

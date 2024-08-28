@@ -10,8 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource;
-use Vng\EvaCore\Models\Export;
-use Vng\EvaCore\Models\Instrument;
+use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 
 class ProcessInstrumentJob implements ShouldQueue
 {
@@ -20,16 +19,22 @@ class ProcessInstrumentJob implements ShouldQueue
         Queueable,
         Batchable,
         SerializesModels,
+        useExportEntityTrait,
         useTempLocalStorageTrait;
 
     public function __construct(
-        protected Export $export,
-        protected Instrument $instrument
-    )
-    {}
+        protected $exportId,
+        protected $instrumentId
+    ) {}
 
     public function handle(): void
     {
+        $this->findExport($this->exportId);
+
+        /** @var InstrumentRepositoryInterface $instrumentRepo */
+        $instrumentRepo = app(InstrumentRepositoryInterface::class);
+        $this->instrument = $instrumentRepo->find($this->instrumentId);
+
         $mark = $this->export->getAttribute('mark');
 
         if ($this->batch()->cancelled()) {
