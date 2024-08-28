@@ -1,10 +1,10 @@
 <?php
 
-namespace Vng\EvaCore\Services\Environment;
+namespace Vng\EvaCore\Services\Export;
 
 use Vng\EvaCore\ElasticResources\EnvironmentResource;
 use Vng\EvaCore\Models\Environment;
-use Vng\EvaCore\Services\ImExport\AbstractEntityExportService;
+use Vng\EvaCore\Services\Export\Base\AbstractEntityExportService;
 
 class EnvironmentExportService extends AbstractEntityExportService
 {

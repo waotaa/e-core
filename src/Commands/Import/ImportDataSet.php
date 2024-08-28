@@ -1,6 +1,6 @@
 <?php
 
-namespace Vng\EvaCore\Commands\ImExport;
+namespace Vng\EvaCore\Commands\Import;
 
 use Illuminate\Console\Command;
 use Vng\EvaCore\Services\ImExport\ImportService;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Vng\EvaCore\Services\Professional;
+namespace Vng\EvaCore\Services\Export;
 
 use Vng\EvaCore\Http\Resources\ProfessionalResource;
 use Vng\EvaCore\Models\Professional;
-use Vng\EvaCore\Services\ImExport\AbstractEntityExportService;
+use Vng\EvaCore\Services\Export\Base\AbstractEntityExportService;
 
 class ProfessionalExportService extends AbstractEntityExportService
 {

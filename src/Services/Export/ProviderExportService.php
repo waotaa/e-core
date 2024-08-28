@@ -1,10 +1,10 @@
 <?php
 
-namespace Vng\EvaCore\Services\Provider;
+namespace Vng\EvaCore\Services\Export;
 
 use Vng\EvaCore\ElasticResources\ProviderResource;
 use Vng\EvaCore\Models\Provider;
-use Vng\EvaCore\Services\ImExport\AbstractEntityExportService;
+use Vng\EvaCore\Services\Export\Base\AbstractEntityExportService;
 
 class ProviderExportService extends AbstractEntityExportService
 {

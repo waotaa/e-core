@@ -1,6 +1,6 @@
 <?php
 
-namespace Vng\EvaCore\Jobs\Export;
+namespace Vng\EvaCore\Jobs\Export\Instrument;
 
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource;
+use Vng\EvaCore\Jobs\Export\useTempLocalStorageTrait;
 use Vng\EvaCore\Models\Export;
 use Vng\EvaCore\Models\Instrument;
 

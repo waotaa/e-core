@@ -1,20 +1,21 @@
 <?php
 
-namespace Vng\EvaCore\Services\Instrument;
+namespace Vng\EvaCore\Services\Export;
 
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Enumerable;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
 use Throwable;
-use Vng\EvaCore\Jobs\Export\ProcessInstrumentJob;
-use Vng\EvaCore\Jobs\Export\StoreInstrumentsExportJob;
-use Vng\EvaCore\Jobs\Export\WrapInstrumentsJob;
+use Vng\EvaCore\Jobs\Export\Instrument\ProcessInstrumentJob;
+use Vng\EvaCore\Jobs\Export\Instrument\StoreInstrumentsExportJob;
+use Vng\EvaCore\Jobs\Export\Instrument\WrapInstrumentsJob;
 use Vng\EvaCore\Models\Export;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
-use Vng\EvaCore\Services\ImExport\AbstractRegisteredExportService;
+use Vng\EvaCore\Services\Export\Base\AbstractEntityExportService;
+use function app;
 
-class InstrumentExportService extends AbstractRegisteredExportService
+class InstrumentExportService extends AbstractEntityExportService
 {
     protected string $type = Export::TYPE_INSTRUMENT;
 
@@ -58,14 +59,13 @@ class InstrumentExportService extends AbstractRegisteredExportService
         ])
             ->then(function (Batch $batch) {
                 Log::info('Instrument export done');
+                $this->updateExportStatusToFinished();
             })
             ->catch(function (Batch $batch, Throwable $e) {
                 Log::error('Instrument export failed');
             })
             ->name($this->export->getAttribute('mark'))
             ->dispatch();
-
-        $this->updateExportStatusToFinished();
     }
 
 

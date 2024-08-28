@@ -1,10 +1,11 @@
 <?php
 
-namespace Vng\EvaCore\Commands\ImExport;
+namespace Vng\EvaCore\Commands\Export;
 
 use Illuminate\Console\Command;
 use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
-use Vng\EvaCore\Services\Instrument\InstrumentExportService;
+use Vng\EvaCore\Services\Export\InstrumentExportService;
+use function app;
 
 class ExportInstruments extends Command
 {

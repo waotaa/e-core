@@ -1,9 +1,9 @@
 <?php
 
-namespace Vng\EvaCore\Commands\ImExport;
+namespace Vng\EvaCore\Commands\Export;
 
 use Illuminate\Console\Command;
-use Vng\EvaCore\Services\ImExport\ExportService;
+use Vng\EvaCore\Services\Export\ExportService;
 
 class ExportDataSet extends Command
 {

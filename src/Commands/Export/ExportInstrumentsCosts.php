@@ -1,6 +1,6 @@
 <?php
 
-namespace Vng\EvaCore\Commands\ImExport;
+namespace Vng\EvaCore\Commands\Export;
 
 use Illuminate\Console\Command;
 use Vng\EvaCore\ElasticResources\Instrument\InstrumentCostResource;
