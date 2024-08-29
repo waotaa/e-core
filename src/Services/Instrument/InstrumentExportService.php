@@ -82,6 +82,7 @@ class InstrumentExportService extends AbstractRegisteredExportService
             ->catch(function (Batch $batch, Throwable $e) {
                 Log::error('Instrument export failed');
             })
-            ->onQueue('exports');
+            ->onQueue('exports')
+            ->dispatch();
     }
 }
