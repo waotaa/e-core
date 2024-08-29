@@ -64,6 +64,7 @@ class WrapInstrumentsJob implements ShouldQueue
 
     public function failed(Throwable $exception)
     {
+        $this->findExport($this->exportId);
         $this->export->fill([
             'status' => Export::STATUS_FAILED
         ])->saveQuietly();
