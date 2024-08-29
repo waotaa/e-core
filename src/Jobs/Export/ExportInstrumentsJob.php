@@ -23,7 +23,7 @@ class ExportInstrumentsJob implements ShouldQueue
         useExportEntityTrait;
 
     public function __construct(
-        protected $exportId
+        protected int $exportId
     ) {}
 
     protected ?Instrument $instrument;

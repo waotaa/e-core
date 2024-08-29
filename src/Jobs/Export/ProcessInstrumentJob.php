@@ -23,8 +23,8 @@ class ProcessInstrumentJob implements ShouldQueue
         useTempLocalStorageTrait;
 
     public function __construct(
-        protected $exportId,
-        protected $instrumentId
+        protected int $exportId,
+        protected int $instrumentId
     ) {}
 
     public function handle(): void

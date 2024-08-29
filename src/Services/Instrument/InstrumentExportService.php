@@ -48,7 +48,7 @@ class InstrumentExportService extends AbstractRegisteredExportService
 
         $jobs = [];
         foreach ($this->items as $instrument) {
-            $jobs[] = new ProcessInstrumentJob($this->export, $instrument);
+            $jobs[] = new ProcessInstrumentJob($this->export->id, $instrument);
         }
 
         $batchName = $this->export->getAttribute('mark');
@@ -64,8 +64,8 @@ class InstrumentExportService extends AbstractRegisteredExportService
 //                ])->saveQuietly();
 
                 Bus::chain([
-                    new WrapInstrumentsJob($this->export),
-                    new StoreInstrumentsExportJob($this->export),
+                    new WrapInstrumentsJob($this->export->id),
+                    new StoreInstrumentsExportJob($this->export->id),
                     function() {
                         Log::info('Instrument export done');
                         $this->updateExportStatusToFinished();

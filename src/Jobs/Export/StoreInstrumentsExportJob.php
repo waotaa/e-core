@@ -24,7 +24,7 @@ class StoreInstrumentsExportJob implements ShouldQueue
         useTempLocalStorageTrait;
 
     public function __construct(
-        protected $exportId
+        protected int $exportId
     ) {}
 
     public function handle(): void
