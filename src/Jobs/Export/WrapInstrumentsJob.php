@@ -29,9 +29,11 @@ class WrapInstrumentsJob implements ShouldQueue
     public function handle(): void
     {
         $this->findExport($this->exportId);
+        Log::info('Exp.Instruments WrapInstrumentsJob started');
+
         $mark = $this->export->getAttribute('mark');
 
-        Log::info("Wrapping for {$mark}");
+        Log::debug("Exp.Instruments Wrapping for {$mark}");
 
         $exportPath = $this->getDirectory($mark) . "/wrapped.json";
 
@@ -40,7 +42,7 @@ class WrapInstrumentsJob implements ShouldQueue
         $storageDir = $storageService->getStorageDirectory();
         $exportPath = Str::finish($storageDir, '/') . $exportPath;
 
-        Log::debug("At path {$exportPath}");
+        Log::debug("Exp.Instruments At path {$exportPath}");
 
         $files = $this->getAllFiles($mark);
         $storageDisk->put($exportPath, '[');

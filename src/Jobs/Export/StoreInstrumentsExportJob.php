@@ -30,9 +30,11 @@ class StoreInstrumentsExportJob implements ShouldQueue
     public function handle(): void
     {
         $this->findExport($this->exportId);
+        Log::info('Exp.Instruments StoreInstrumentsExportJob started');
+
         $mark = $this->export->getAttribute('mark');
 
-        Log::info("Storing export for {$mark}");
+        Log::debug("Exp.Instruments Storing export for {$mark}");
         $wrappedFile = $this->getDirectory($mark) . "/wrapped.json";
 
         $storageService = TempLocalStorageService::make();
@@ -41,7 +43,7 @@ class StoreInstrumentsExportJob implements ShouldQueue
         $wrappedFile = Str::finish($storageDir, '/') . $wrappedFile;
 
         $diskName = $storageService->getStorageDiskName();
-        Log::debug("Looking for wrapped file at disk {$diskName} path {$wrappedFile}");
+        Log::debug("Exp.Instruments Looking for wrapped file at disk {$diskName} path {$wrappedFile}");
 
         $contents = $storageDisk->get($wrappedFile);
 

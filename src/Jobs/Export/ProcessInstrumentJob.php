@@ -30,6 +30,7 @@ class ProcessInstrumentJob implements ShouldQueue
     public function handle(): void
     {
         $this->findExport($this->exportId);
+        Log::info('Exp.Instruments ProcessInstrumentJob started');
 
         /** @var InstrumentRepositoryInterface $instrumentRepo */
         $instrumentRepo = app(InstrumentRepositoryInterface::class);
@@ -38,11 +39,11 @@ class ProcessInstrumentJob implements ShouldQueue
         $mark = $this->export->getAttribute('mark');
 
         if ($this->batch()->cancelled()) {
-            Log::warning("Skipped processing instrument {$this->instrument->id} for export {$mark}. Batch cancelled");
+            Log::warning("Exp.Instruments Skipped instrument {$this->instrument->id} for export {$mark}. Batch cancelled");
             return;
         }
 
-        Log::info("Processing instrument {$this->instrument->id} for export {$mark}");
+        Log::debug("Exp.Instruments Processing instrument {$this->instrument->id} for export {$mark}");
 
         // Transform instrument to array
         $transformedItem = InstrumentWerknemersdienstverleningResource::make($this->instrument)->toArray();

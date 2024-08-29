@@ -31,6 +31,7 @@ class ExportInstrumentsJob implements ShouldQueue
     public function handle(): void
     {
         $this->findExport($this->exportId);
+        Log::info('Exp.Instruments ExportInstrumentsJob started');
 
         /** @var Organisation $organisation */
         $organisation = $this->export->organisation;
