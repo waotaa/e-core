@@ -39,11 +39,18 @@ class InstrumentExportService extends AbstractRegisteredExportService
      */
     public function handle()
     {
+        Log::info("Exp.Instruments InstrumentExportService started");
         $this->startExport();
         $this->updateExportStatusToInitiated();
 
         if (is_null($this->items)) {
             $this->setDefaultItems();
+        }
+
+        if (empty($this->items)) {
+            $this->updateExportStatusToFailed();
+            Log::warning("Exp.Instruments Export items is empty");
+            return;
         }
 
         $jobs = [];
