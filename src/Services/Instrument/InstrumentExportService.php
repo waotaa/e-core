@@ -48,7 +48,7 @@ class InstrumentExportService extends AbstractRegisteredExportService
 
         $jobs = [];
         foreach ($this->items as $instrument) {
-            $jobs[] = new ProcessInstrumentJob($this->export->id, $instrument);
+            $jobs[] = new ProcessInstrumentJob($this->export->id, $instrument->id);
         }
 
         $batchName = $this->export->getAttribute('mark');
