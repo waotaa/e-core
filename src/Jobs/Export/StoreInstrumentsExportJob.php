@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Throwable;
 use Vng\EvaCore\Models\Export;
 use Vng\EvaCore\Services\Storage\ExportStorageService;
 use Vng\EvaCore\Services\Storage\TempLocalStorageService;
@@ -61,6 +62,13 @@ class StoreInstrumentsExportJob implements ShouldQueue
 
         $this->export->fill([
             'file' => $filePath
+        ])->saveQuietly();
+    }
+
+    public function failed(Throwable $exception)
+    {
+        $this->export->fill([
+            'status' => Export::STATUS_FAILED
         ])->saveQuietly();
     }
 }
