@@ -52,6 +52,11 @@ class StoreInstrumentsExportJob implements ShouldQueue
             $exportStorageService->setOrganisation($this->export->organisation);
         }
         $filePath = $exportStorageService->storeFile($contents, "{$mark}.json");
+        if (is_null($filePath)) {
+            $this->export->fill([
+                'status' => Export::STATUS_FAILED
+            ]);
+        }
         $storageDisk->delete($wrappedFile);
 
         $this->export->fill([
