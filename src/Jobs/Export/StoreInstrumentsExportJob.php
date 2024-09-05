@@ -2,7 +2,6 @@
 
 namespace Vng\EvaCore\Jobs\Export;
 
-use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -11,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
-use Vng\EvaCore\Models\Export;
+use Vng\EvaCore\Enums\ExportStatusEnum;
 use Vng\EvaCore\Services\Storage\ExportStorageService;
 use Vng\EvaCore\Services\Storage\TempLocalStorageService;
 
@@ -30,10 +29,10 @@ class StoreInstrumentsExportJob implements ShouldQueue
 
     public function handle(): void
     {
-        $this->findExport($this->exportId);
+        $export = $this->findExport($this->exportId);
         Log::info('Exp.Instruments StoreInstrumentsExportJob started');
 
-        $mark = $this->export->getAttribute('mark');
+        $mark = $export->getAttribute('mark');
 
         Log::debug("Exp.Instruments Storing export for {$mark}");
         $wrappedFile = $this->getDirectory($mark) . "/wrapped.json";
@@ -49,27 +48,27 @@ class StoreInstrumentsExportJob implements ShouldQueue
         $contents = $storageDisk->get($wrappedFile);
 
         $exportStorageService = ExportStorageService::make();
-        if (!is_null($this->export->organisation)) {
-            $exportStorageService->setOrganisation($this->export->organisation);
+        if (!is_null($export->organisation)) {
+            $exportStorageService->setOrganisation($export->organisation);
         }
         $filePath = $exportStorageService->storeFile($contents, "{$mark}.json");
         if (is_null($filePath)) {
-            $this->export->fill([
-                'status' => Export::STATUS_FAILED
+            $export->fill([
+                'status' => ExportStatusEnum::failed()->getKey()
             ]);
         }
         $storageDisk->delete($wrappedFile);
 
-        $this->export->fill([
+        $export->fill([
             'file' => $filePath
         ])->saveQuietly();
     }
 
     public function failed(Throwable $exception)
     {
-        $this->findExport($this->exportId);
-        $this->export->fill([
-            'status' => Export::STATUS_FAILED
+        $export = $this->findExport($this->exportId);
+        $export->fill([
+            'status' => ExportStatusEnum::failed()->getKey()
         ])->saveQuietly();
     }
 }

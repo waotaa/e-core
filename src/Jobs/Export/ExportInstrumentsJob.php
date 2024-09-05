@@ -30,11 +30,11 @@ class ExportInstrumentsJob implements ShouldQueue
 
     public function handle(): void
     {
-        $this->findExport($this->exportId);
+        $export = $this->findExport($this->exportId);
         Log::info('Exp.Instruments ExportInstrumentsJob started');
 
         /** @var Organisation $organisation */
-        $organisation = $this->export->organisation;
+        $organisation = $export->organisation;
 
         /** @var InstrumentRepositoryInterface $instrumentRepo */
         $instrumentRepo = app(InstrumentRepositoryInterface::class);
@@ -44,7 +44,7 @@ class ExportInstrumentsJob implements ShouldQueue
         $instruments = $query->cursor();
 
         $exportService = InstrumentExportService::make();
-        $exportService->setExport($this->export);
+        $exportService->setExport($export);
         $exportService->setItems($instruments);
 
         Log::info("Memory usage 1: " . $this->formatBytes(memory_get_usage()));

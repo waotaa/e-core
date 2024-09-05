@@ -13,10 +13,6 @@ class Export extends Model
 
     const TYPE_INSTRUMENT = 'instrument';
 
-    const STATUS_INITIATED = 'initiated';
-    const STATUS_FAILED = 'failed';
-    const STATUS_DONE = 'done';
-
     protected $table = 'exports';
 
     protected $fillable = [

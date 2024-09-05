@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
+use Vng\EvaCore\Enums\ExportStatusEnum;
 use Vng\EvaCore\Models\Export;
 use Vng\EvaCore\Services\Storage\TempLocalStorageService;
 
@@ -29,10 +30,10 @@ class WrapInstrumentsJob implements ShouldQueue
 
     public function handle(): void
     {
-        $this->findExport($this->exportId);
+        $export = $this->findExport($this->exportId);
         Log::info('Exp.Instruments WrapInstrumentsJob started');
 
-        $mark = $this->export->getAttribute('mark');
+        $mark = $export->getAttribute('mark');
 
         Log::debug("Exp.Instruments Wrapping for {$mark}");
 
@@ -64,9 +65,9 @@ class WrapInstrumentsJob implements ShouldQueue
 
     public function failed(Throwable $exception)
     {
-        $this->findExport($this->exportId);
-        $this->export->fill([
-            'status' => Export::STATUS_FAILED
+        $export = $this->findExport($this->exportId);
+        $export->fill([
+            'status' => ExportStatusEnum::failed()->getKey()
         ])->saveQuietly();
     }
 }

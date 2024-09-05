@@ -4,6 +4,7 @@ namespace Vng\EvaCore\Services\ImExport;
 
 use Exception;
 use Illuminate\Support\Facades\App;
+use Vng\EvaCore\Enums\ExportStatusEnum;
 use Vng\EvaCore\Models\Export;
 
 /**
@@ -42,12 +43,12 @@ abstract class AbstractRegisteredExportService extends AbstractEntityExportServi
         return $this;
     }
 
-    protected function updateExportStatusToInitiated(): static
+    protected function updateExportStatusToInProgress(): static
     {
         $this->export->fill([
             'type' => $this->type,
             'mark' => $this->getMark(),
-            'status' => Export::STATUS_INITIATED
+            'status' => ExportStatusEnum::inProgress()->getKey()
         ])->saveQuietly();
         return $this;
     }
@@ -55,7 +56,7 @@ abstract class AbstractRegisteredExportService extends AbstractEntityExportServi
     protected function updateExportStatusToFailed(): static
     {
         $this->export->fill([
-            'status' => Export::STATUS_FAILED
+            'status' => ExportStatusEnum::failed()->getKey()
         ])->saveQuietly();
         return $this;
     }
@@ -63,7 +64,7 @@ abstract class AbstractRegisteredExportService extends AbstractEntityExportServi
     protected function updateExportStatusToFinished(): static
     {
         $this->export->fill([
-            'status' => Export::STATUS_DONE
+            'status' => ExportStatusEnum::done()->getKey()
         ])->saveQuietly();
         return $this;
     }
