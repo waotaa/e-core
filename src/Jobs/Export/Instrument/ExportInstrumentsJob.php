@@ -7,8 +7,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Vng\EvaCore\Jobs\Export\useExportEntityTrait;
 use Vng\EvaCore\Jobs\Export\useMemoryUsageTrait;
-use Vng\EvaCore\Models\Export;
+use Illuminate\Support\Facades\Log;
+use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 use Vng\EvaCore\Services\Export\InstrumentExportService;
@@ -20,15 +22,22 @@ class ExportInstrumentsJob implements ShouldQueue
         InteractsWithQueue,
         Queueable,
         SerializesModels,
+        useExportEntityTrait,
         useMemoryUsageTrait;
 
-    public function __construct(protected Export $export)
-    {}
+    public function __construct(
+        protected int $exportId
+    ) {}
+
+    protected ?Instrument $instrument;
 
     public function handle(): void
     {
+        $export = $this->findExport($this->exportId);
+        Log::info('Exp.Instruments ExportInstrumentsJob started');
+
         /** @var Organisation $organisation */
-        $organisation = $this->export->organisation;
+        $organisation = $export->organisation;
 
         /** @var InstrumentRepositoryInterface $instrumentRepo */
         $instrumentRepo = app(InstrumentRepositoryInterface::class);
@@ -37,7 +46,7 @@ class ExportInstrumentsJob implements ShouldQueue
         $query = $instrumentRepo->addOrganisationCondition($query, $organisation);
         $instruments = $query->cursor();
 
-        $exportService = InstrumentExportService::make($this->export);
+        $exportService = InstrumentExportService::make($export);
         $exportService->setItems($instruments);
 
         $this->logMemoryUsage();

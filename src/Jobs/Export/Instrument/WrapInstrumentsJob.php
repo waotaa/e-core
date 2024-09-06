@@ -10,8 +10,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Throwable;
+use Vng\EvaCore\Enums\ExportStatusEnum;
+use Vng\EvaCore\Jobs\Export\useExportEntityTrait;
 use Vng\EvaCore\Jobs\Export\useTempLocalStorageTrait;
-use Vng\EvaCore\Models\Export;
 use Vng\EvaCore\Services\Storage\TempLocalStorageService;
 
 class WrapInstrumentsJob implements ShouldQueue
@@ -19,20 +21,22 @@ class WrapInstrumentsJob implements ShouldQueue
     use Dispatchable,
         InteractsWithQueue,
         Queueable,
-        Batchable,
         SerializesModels,
+        useExportEntityTrait,
         useTempLocalStorageTrait;
 
     public function __construct(
-        protected Export $export,
-    )
-    {}
+        protected int $exportId
+    ) {}
 
     public function handle(): void
     {
-        $mark = $this->export->getAttribute('mark');
+        $export = $this->findExport($this->exportId);
+        Log::info('Exp.Instruments WrapInstrumentsJob started');
 
-        Log::info("Wrapping for {$mark}");
+        $mark = $export->getAttribute('mark');
+
+        Log::debug("Exp.Instruments Wrapping for {$mark}");
 
         $exportPath = $this->getDirectory($mark) . "/wrapped.json";
 
@@ -42,7 +46,7 @@ class WrapInstrumentsJob implements ShouldQueue
         $storageDir = $storageService->getStorageDirectory();
         $exportPath = Str::finish($storageDir, '/') . $exportPath;
 
-        Log::debug("On disk {$diskName}, At path {$exportPath}");
+        Log::debug("Exp.Instruments On disk {$diskName}, At path {$exportPath}");
 
         $files = $this->getAllFiles($mark);
         $storageDisk->put($exportPath, '[');
@@ -59,9 +63,13 @@ class WrapInstrumentsJob implements ShouldQueue
 
         $storageDisk->append($exportPath, ']');
         $storageDisk->delete($files);
+    }
 
-        $this->export->fill([
-            'progress' => $this->batch()->progress()
+    public function failed(Throwable $exception)
+    {
+        $export = $this->findExport($this->exportId);
+        $export->fill([
+            'status' => ExportStatusEnum::failed()->getKey()
         ])->saveQuietly();
     }
 }

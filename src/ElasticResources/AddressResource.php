@@ -11,7 +11,11 @@ class AddressResource extends ElasticResource
 
     public function toArray()
     {
-        $adresNederland = [];
+        $adresNederland = [
+            'Locatieoms' => $this->name,                // AN..70
+            'Postcd' => $this->postcode,                // AN6
+            'Woonplaatsnaam' => $this->woonplaats,      // AN..80
+        ];
 
         if ($this->resource->isPostbusAdres()) {
             $adresNederland['Postadres'] = [
@@ -32,14 +36,10 @@ class AddressResource extends ElasticResource
             ];
         }
 
+
         return [
             // >> SGR
-            'AdresNederland' => [
-                'Locatieoms' => $this->name,                // AN..70
-                'Postcd' => $this->postcode,                // AN6
-                'Woonplaatsnaam' => $this->woonplaats,      // AN..80
-                ...$adresNederland
-            ],
+            'AdresNederland' => $adresNederland,
 
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
 

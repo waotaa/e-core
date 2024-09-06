@@ -18,7 +18,7 @@ class SyncForApi extends Command
     protected $description = 'Sync api entities to ES';
 
     protected $environmentSlugs = [
-//        'local-env',
+        'weenerxl',
         'amsterdam'
     ];
 

@@ -33,7 +33,7 @@ class ExportRepository extends BaseRepository implements ExportRepositoryInterfa
         $export->fill([
             'label' => $request->input('label'),
             'type' => $request->input('type'),
-            'status' => ExportStatusEnum::created()
+            'status' => ExportStatusEnum::created()->getKey()
         ]);
         $export->organisation()->associate($organisation);
         $export->save();

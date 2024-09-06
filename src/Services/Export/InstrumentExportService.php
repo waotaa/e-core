@@ -40,33 +40,55 @@ class InstrumentExportService extends AbstractEntityExportService
      */
     public function handle()
     {
+        Log::info("Exp.Instruments InstrumentExportService started");
         $this->startExport();
-        $this->updateExportStatusToInitiated();
+        $this->updateExportStatusToInProgress();
 
         if (is_null($this->items)) {
             $this->setDefaultItems();
         }
 
-        $jobs = [];
-        foreach ($this->items as $instrument) {
-            $jobs[] = new ProcessInstrumentJob($this->export, $instrument);
+        if (empty($this->items)) {
+            $this->updateExportStatusToFailed();
+            Log::warning("Exp.Instruments Export items is empty");
+            return;
         }
 
+        $jobs = [];
+        foreach ($this->items as $instrument) {
+            $jobs[] = new ProcessInstrumentJob(
+                $this->export->id,
+//                $instrument->id
+            );
+        }
+
+        $batchName = $this->export->getAttribute('mark');
+        $export = $this->export;
         Bus::batch([
-            $jobs,
-            new WrapInstrumentsJob($this->export),
-            new StoreInstrumentsExportJob($this->export)
+            $jobs
         ])
-            ->then(function (Batch $batch) {
-                Log::info('Instrument export done');
-                $this->updateExportStatusToFinished();
-            })
+            ->name($batchName)
+//            ->then(function (Batch $batch) use ($batchName, $export) {
+//                $progress = $batch->progress();
+//                Log::info("Exp.Instruments Batch {$batchName} done - progress: $progress");
+//                $export->fill([
+//                    'progress' => $batch->progress()
+//                ])->saveQuietly();
+
+//                Bus::chain([
+//                    new WrapInstrumentsJob($export->id),
+//                    new StoreInstrumentsExportJob($export->id),
+//                    function() {
+////                        Log::info('Instrument export done');
+////                        $this->updateExportStatusToFinished();
+//                    }
+//                ])->dispatch();
+//            })
             ->catch(function (Batch $batch, Throwable $e) {
-                Log::error('Instrument export failed');
+//                Log::error('Instrument export failed');
+//                $this->updateExportStatusToFailed();
             })
-            ->name($this->export->getAttribute('mark'))
+//            ->onQueue('exports')
             ->dispatch();
     }
-
-
 }
