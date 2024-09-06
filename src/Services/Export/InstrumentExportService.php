@@ -42,14 +42,14 @@ class InstrumentExportService extends AbstractEntityExportService
     {
         Log::info("Exp.Instruments InstrumentExportService started");
         $this->startExport();
-        $this->updateExportStatusToInProgress();
+        self::updateExportStatusToInProgress($this->export);
 
         if (is_null($this->items)) {
             $this->setDefaultItems();
         }
 
         if (empty($this->items)) {
-            $this->updateExportStatusToFailed();
+            self::updateExportStatusToFailed($this->export);
             Log::warning("Exp.Instruments Export items is empty");
             return;
         }
@@ -58,7 +58,7 @@ class InstrumentExportService extends AbstractEntityExportService
         foreach ($this->items as $instrument) {
             $jobs[] = new ProcessInstrumentJob(
                 $this->export->id,
-//                $instrument->id
+                $instrument->id
             );
         }
 
@@ -68,27 +68,28 @@ class InstrumentExportService extends AbstractEntityExportService
             $jobs
         ])
             ->name($batchName)
-//            ->then(function (Batch $batch) use ($batchName, $export) {
-//                $progress = $batch->progress();
-//                Log::info("Exp.Instruments Batch {$batchName} done - progress: $progress");
-//                $export->fill([
-//                    'progress' => $batch->progress()
-//                ])->saveQuietly();
+            ->then(function (Batch $batch) use ($batchName, $export) {
+                $progress = $batch->progress();
+                Log::info("Exp.Instruments Batch {$batchName} done - progress: $progress");
+                $export->fill([
+                    'progress' => $batch->progress()
+                ])->saveQuietly();
 
-//                Bus::chain([
-//                    new WrapInstrumentsJob($export->id),
-//                    new StoreInstrumentsExportJob($export->id),
-//                    function() {
-////                        Log::info('Instrument export done');
-////                        $this->updateExportStatusToFinished();
-//                    }
-//                ])->dispatch();
-//            })
-            ->catch(function (Batch $batch, Throwable $e) {
-//                Log::error('Instrument export failed');
-//                $this->updateExportStatusToFailed();
+                Bus::chain([
+                    new WrapInstrumentsJob($export->id),
+                    new StoreInstrumentsExportJob($export->id),
+                    function() use ($export) {
+                        Log::info('Instrument export done');
+                        self::updateExportStatusToFinished($export);
+                    }
+                ])->dispatch();
             })
-//            ->onQueue('exports')
+            ->catch(function (Batch $batch, Throwable $e) use ($export) {
+                $exportId = $export->id;
+                Log::error("Instrument export failed: {$exportId}");
+                self::updateExportStatusToFailed($export);
+            })
+            ->onQueue(config('eva-core.queues.export'))
             ->dispatch();
     }
 }

@@ -9,7 +9,6 @@ use Vng\EvaCore\Models\Export;
 abstract class AbstractEntityExportService
 {
     protected string $type;
-    protected ?string $exportMark;
     protected bool $dateMark = false;
     protected Export $export;
 
@@ -57,42 +56,40 @@ abstract class AbstractEntityExportService
             ini_set('memory_limit', '2G');
             set_time_limit(3000);
         }
-        return $this;
-    }
 
-    protected function updateExportStatusToInitiated(): static
-    {
         $this->export->fill([
             'type' => $this->type,
             'mark' => $this->getMark(),
+        ])->saveQuietly();
+
+        return $this;
+    }
+
+    protected static function updateExportStatusToInitiated(Export $export)
+    {
+        $export->fill([
             'status' => ExportStatusEnum::initiated()->getKey()
         ])->saveQuietly();
-        return $this;
     }
 
-    protected function updateExportStatusToInProgress(): static
+    protected static function updateExportStatusToInProgress(Export $export)
     {
-        $this->export->fill([
-            'type' => $this->type,
-            'mark' => $this->getMark(),
+        $export->fill([
             'status' => ExportStatusEnum::inProgress()->getKey()
         ])->saveQuietly();
-        return $this;
     }
 
-    protected function updateExportStatusToFailed(): static
+    protected static function updateExportStatusToFailed(Export $export)
     {
-        $this->export->fill([
+        $export->fill([
             'status' => ExportStatusEnum::failed()->getKey()
         ])->saveQuietly();
-        return $this;
     }
 
-    protected function updateExportStatusToFinished(): static
+    protected static function updateExportStatusToFinished(Export $export)
     {
-        $this->export->fill([
+        $export->fill([
             'status' => ExportStatusEnum::done()->getKey()
         ])->saveQuietly();
-        return $this;
     }
 }

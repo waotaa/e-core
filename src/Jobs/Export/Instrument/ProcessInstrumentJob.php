@@ -22,13 +22,13 @@ class ProcessInstrumentJob implements ShouldQueue
         InteractsWithQueue,
         Queueable,
         Batchable,
-        useExportEntityTrait;
-//        SerializesModels,
-//        useTempLocalStorageTrait;
+        useExportEntityTrait,
+        SerializesModels,
+        useTempLocalStorageTrait;
 
     public function __construct(
         protected int $exportId,
-//        protected int $instrumentId
+        protected int $instrumentId
     ) {}
 
     public function handle(): void
@@ -36,28 +36,28 @@ class ProcessInstrumentJob implements ShouldQueue
         $export = $this->findExport($this->exportId);
         Log::info('Exp.Instruments ProcessInstrumentJob started');
 
-//        /** @var InstrumentRepositoryInterface $instrumentRepo */
-//        $instrumentRepo = app(InstrumentRepositoryInterface::class);
-//        $instrument = $instrumentRepo->find($this->instrumentId);
-//
-//        $mark = $export->getAttribute('mark');
-//
-//        if ($this->batch()->cancelled()) {
-//            Log::warning("Exp.Instruments Skipped instrument {$instrument->id} for export {$mark}. Batch cancelled");
-//            return;
-//        }
-//
-//        Log::debug("Exp.Instruments Processing instrument {$instrument->id} for export {$mark}");
-//
-//        // Transform instrument to array
-//        $transformedItem = InstrumentWerknemersdienstverleningResource::make($instrument)->toArray();
-//        $jsonItem = json_encode($transformedItem, JSON_PRETTY_PRINT);
-//
-//        $result = $this->storeFile($jsonItem, $mark, "{$instrument->id}.json");
-//
-//        Log::debug('done', [
-//            'success' => !is_null($result)
-//        ]);
+        /** @var InstrumentRepositoryInterface $instrumentRepo */
+        $instrumentRepo = app(InstrumentRepositoryInterface::class);
+        $instrument = $instrumentRepo->find($this->instrumentId);
+
+        $mark = $export->getAttribute('mark');
+
+        if ($this->batch()->cancelled()) {
+            Log::warning("Exp.Instruments Skipped instrument {$instrument->id} for export {$mark}. Batch cancelled");
+            return;
+        }
+
+        Log::debug("Exp.Instruments Processing instrument {$instrument->id} for export {$mark}");
+
+        // Transform instrument to array
+        $transformedItem = InstrumentWerknemersdienstverleningResource::make($instrument)->toArray();
+        $jsonItem = json_encode($transformedItem, JSON_PRETTY_PRINT);
+
+        $result = $this->storeFile($jsonItem, $mark, "{$instrument->id}.json");
+
+        Log::debug('done', [
+            'success' => !is_null($result)
+        ]);
 
         $export->fill([
             'progress' => $this->batch()->progress()
