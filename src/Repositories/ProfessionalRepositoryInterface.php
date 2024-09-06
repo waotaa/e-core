@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Vng\EvaCore\Http\Requests\ProfessionalCreateRequest;
 use Vng\EvaCore\Http\Requests\ProfessionalUpdateRequest;
@@ -13,4 +14,6 @@ interface ProfessionalRepositoryInterface extends BaseRepositoryInterface
     public function update(Professional $partnership, ProfessionalUpdateRequest $request): Professional;
 
     public function getLastSeenProfessionals($limit = 200, $daysAgoThreshold = null): Collection|array;
+
+    public function getElasticResourceBuilder(): Builder;
 }

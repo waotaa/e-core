@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use Vng\EvaCore\Http\Requests\ProviderCreateRequest;
 use Vng\EvaCore\Http\Requests\ProviderUpdateRequest;
 use Vng\EvaCore\Models\Provider;
@@ -13,4 +14,6 @@ interface ProviderRepositoryInterface extends OwnedEntityRepositoryInterface, So
 
     public function attachContacts(Provider $provider, string|array $contactIds, ?string $type = null, ?string $label = null): Provider;
     public function detachContacts(Provider $provider, string|array $contactIds): Provider;
+
+    public function getElasticResourceBuilder(): Builder;
 }

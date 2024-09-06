@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Repositories\Eloquent;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
 use Vng\EvaCore\Http\Requests\EnvironmentCreateRequest;
@@ -95,5 +96,17 @@ class EnvironmentRepository extends BaseRepository implements EnvironmentReposit
     {
         $environment->featuredOrganisations()->detach((array) $organisationIds);
         return $environment;
+    }
+
+    public function getElasticResourceBuilder(): Builder
+    {
+        return $this
+            ->builder()
+            ->with([
+                'contact',
+                'featuredOrganisations',
+                'organisation',
+                'professionals'
+            ]);
     }
 }

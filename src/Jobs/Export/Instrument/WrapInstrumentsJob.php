@@ -38,7 +38,7 @@ class WrapInstrumentsJob implements ShouldQueue
 
         Log::debug("Exp.Instruments Wrapping for {$mark}");
 
-        $exportPath = $this->getDirectory($mark) . "/wrapped.json";
+        $exportPath = $this->getTempDirectory($mark) . "/wrapped.json";
 
         $storageService = TempLocalStorageService::make();
         $diskName = $storageService->getStorageDiskName();
@@ -48,7 +48,7 @@ class WrapInstrumentsJob implements ShouldQueue
 
         Log::debug("Exp.Instruments On disk {$diskName}, At path {$exportPath}");
 
-        $files = $this->getAllFiles($mark);
+        $files = $this->getAllTempFiles($mark);
         $storageDisk->put($exportPath, '[');
 
         $first = true;

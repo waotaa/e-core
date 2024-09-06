@@ -37,7 +37,7 @@ class StoreInstrumentsExportJob implements ShouldQueue
         $mark = $export->getAttribute('mark');
 
         Log::debug("Exp.Instruments Storing export for {$mark}");
-        $wrappedFile = $this->getDirectory($mark) . "/wrapped.json";
+        $wrappedFile = $this->getTempDirectory($mark) . "/wrapped.json";
 
         $storageService = TempLocalStorageService::make();
         $storageDisk = $storageService->getStorageDisk();

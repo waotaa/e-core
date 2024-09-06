@@ -11,7 +11,10 @@ class Export extends Model
 {
     use HasOwner;
 
+    const TYPE_ENVIRONMENT = 'environment';
     const TYPE_INSTRUMENT = 'instrument';
+    const TYPE_PROFESSIONAL = 'professional';
+    const TYPE_PROVIDER = 'provider';
 
     protected $table = 'exports';
 

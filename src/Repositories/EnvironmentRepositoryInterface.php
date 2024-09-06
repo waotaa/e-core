@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use Vng\EvaCore\Http\Requests\EnvironmentCreateRequest;
 use Vng\EvaCore\Http\Requests\EnvironmentDetailsUpdateRequest;
 use Vng\EvaCore\Http\Requests\EnvironmentUpdateRequest;
@@ -15,4 +16,6 @@ interface EnvironmentRepositoryInterface extends OwnedEntityRepositoryInterface,
 
     public function attachFeaturedOrganisations(Environment $environment, string|array $organisationIds): Environment;
     public function detachFeaturedOrganisations(Environment $environment, string|array $organisationIds): Environment;
+
+    public function getElasticResourceBuilder(): Builder;
 }

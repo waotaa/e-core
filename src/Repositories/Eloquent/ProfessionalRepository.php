@@ -72,4 +72,13 @@ class ProfessionalRepository extends BaseRepository implements ProfessionalRepos
 
         return $query->get();
     }
+
+    public function getElasticResourceBuilder(): Builder
+    {
+        return $this
+            ->builder()
+            ->with([
+                'environment',
+            ]);
+    }
 }

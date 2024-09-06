@@ -40,7 +40,7 @@ class InstrumentExportService extends AbstractEntityExportService
      */
     public function handle()
     {
-        Log::info("Exp.Instruments InstrumentExportService started");
+        Log::info("Exp.Instruments ExportService started");
         $this->startExport();
         self::updateExportStatusToInProgress($this->export);
 

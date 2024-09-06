@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource;
 use Vng\EvaCore\Jobs\Export\useExportEntityTrait;
 use Vng\EvaCore\Jobs\Export\useTempLocalStorageTrait;
-use Vng\EvaCore\Models\Export;
-use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 
 class ProcessInstrumentJob implements ShouldQueue
@@ -39,8 +37,8 @@ class ProcessInstrumentJob implements ShouldQueue
         /** @var InstrumentRepositoryInterface $instrumentRepo */
         $instrumentRepo = app(InstrumentRepositoryInterface::class);
         $instrument = $instrumentRepo->find($this->instrumentId);
-
         $mark = $export->getAttribute('mark');
+        $instrument->import_mark = $mark;
 
         if ($this->batch()->cancelled()) {
             Log::warning("Exp.Instruments Skipped instrument {$instrument->id} for export {$mark}. Batch cancelled");
@@ -53,7 +51,7 @@ class ProcessInstrumentJob implements ShouldQueue
         $transformedItem = InstrumentWerknemersdienstverleningResource::make($instrument)->toArray();
         $jsonItem = json_encode($transformedItem, JSON_PRETTY_PRINT);
 
-        $result = $this->storeFile($jsonItem, $mark, "{$instrument->id}.json");
+        $result = $this->storeTempFile($jsonItem, $mark, "{$instrument->id}.json");
 
         Log::debug('done', [
             'success' => !is_null($result)

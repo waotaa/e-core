@@ -2,18 +2,10 @@
 
 namespace Vng\EvaCore\Services\Export;
 
-use Illuminate\Bus\Batch;
-use Illuminate\Support\Enumerable;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
-use Throwable;
-use Vng\EvaCore\Jobs\Export\Instrument\ProcessInstrumentJob;
-use Vng\EvaCore\Jobs\Export\Instrument\StoreInstrumentsExportJob;
-use Vng\EvaCore\Jobs\Export\Instrument\WrapInstrumentsJob;
 use Vng\EvaCore\Models\Export;
 use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
-use Vng\EvaCore\Services\Export\Base\AbstractEntityExportService;
 use function app;
 
 class InstrumentExportFactory
@@ -34,7 +26,6 @@ class InstrumentExportFactory
 
         $exportService = InstrumentExportService::make($export);
         $exportService->setItems($instruments);
-
         $exportService->handle();
     }
 }

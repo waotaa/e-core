@@ -72,4 +72,14 @@ class ProviderRepository extends BaseRepository implements ProviderRepositoryInt
         $provider->contacts()->detach((array) $contactIds);
         return $provider;
     }
+
+    public function getElasticResourceBuilder(): Builder
+    {
+        return $this
+            ->builder()
+            ->with([
+                'organisation',
+                'address'
+            ]);
+    }
 }
