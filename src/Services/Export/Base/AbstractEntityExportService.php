@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Services\Export\Base;
 
 use Illuminate\Support\Facades\App;
+use Vng\EvaCore\Enums\ExportStatusEnum;
 use Vng\EvaCore\Models\Export;
 
 abstract class AbstractEntityExportService
@@ -64,7 +65,17 @@ abstract class AbstractEntityExportService
         $this->export->fill([
             'type' => $this->type,
             'mark' => $this->getMark(),
-            'status' => Export::STATUS_INITIATED
+            'status' => ExportStatusEnum::initiated()->getKey()
+        ])->saveQuietly();
+        return $this;
+    }
+
+    protected function updateExportStatusToInProgress(): static
+    {
+        $this->export->fill([
+            'type' => $this->type,
+            'mark' => $this->getMark(),
+            'status' => ExportStatusEnum::inProgress()->getKey()
         ])->saveQuietly();
         return $this;
     }
@@ -72,7 +83,7 @@ abstract class AbstractEntityExportService
     protected function updateExportStatusToFailed(): static
     {
         $this->export->fill([
-            'status' => Export::STATUS_FAILED
+            'status' => ExportStatusEnum::failed()->getKey()
         ])->saveQuietly();
         return $this;
     }
@@ -80,34 +91,8 @@ abstract class AbstractEntityExportService
     protected function updateExportStatusToFinished(): static
     {
         $this->export->fill([
-            'status' => Export::STATUS_DONE
+            'status' => ExportStatusEnum::done()->getKey()
         ])->saveQuietly();
         return $this;
     }
-
-//    protected function storeExportJson(string $json): string
-//    {
-//        $filePath = static::getFilePath();
-//        StorageService::getStorage()
-//            ->put($filePath, $json);
-//        return $filePath;
-//    }
-//
-//    protected function getFilePath(): string
-//    {
-//        return $this->getDirectory() . $this->getFileName();
-//    }
-//
-//    public function getFileName()
-//    {
-//        $filename = $this->type;
-//        $filename = !is_null($this->exportMark) ? $this->exportMark . '-' . $filename : $filename;
-//        $filename = $this->dateMark ? date('dmy') . '-' . $filename : $filename;
-//        return $filename.'.json';
-//    }
-//
-//    protected function getDirectory(): string
-//    {
-//        return 'exports/';
-//    }
 }
