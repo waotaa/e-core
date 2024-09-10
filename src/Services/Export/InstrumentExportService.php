@@ -85,9 +85,13 @@ class InstrumentExportService extends AbstractEntityExportService
                 ])->dispatch();
             })
             ->catch(function (Batch $batch, Throwable $e) use ($export) {
+                $batch->cancel();
+
                 $exportId = $export->id;
-                Log::error("Instrument export failed: {$exportId}");
                 self::updateExportStatusToFailed($export);
+
+                Log::error("Instrument export batch failed: {$exportId}");
+                Log::error("Batch failed with exception: {$e->getMessage()}");
             })
             ->onQueue(config('eva-core.queues.export'))
             ->dispatch();

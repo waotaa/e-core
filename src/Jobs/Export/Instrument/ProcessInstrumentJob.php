@@ -9,7 +9,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 use Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource;
+use Vng\EvaCore\Enums\ExportStatusEnum;
 use Vng\EvaCore\Jobs\Export\useExportEntityTrait;
 use Vng\EvaCore\Jobs\Export\useTempLocalStorageTrait;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
@@ -61,4 +63,16 @@ class ProcessInstrumentJob implements ShouldQueue
             'progress' => $this->batch()->progress()
         ])->saveQuietly();
     }
+
+    public function failed(Throwable $exception)
+    {
+        $export = $this->findExport($this->exportId);
+        $export->fill([
+            'status' => ExportStatusEnum::failed()->getKey()
+        ])->saveQuietly();
+
+        Log::error("ProcessInstrumentJob failed: export {$this->exportId}, instrument {$this->instrumentId}, error: {$exception->getMessage()}");
+        Log::error($exception->getTraceAsString());
+    }
+
 }
