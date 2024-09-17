@@ -34,7 +34,7 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
             'ToelIntensiteit' => $this->intensity_description,          // AN..320 - 1863
             'ToelKosten' => $this->costs_description,                   // AN..320 - 2403
             'ToelWerkwijzeInstrument' => $this->method,                 // AN..320 - 12667
-            'OmsAanmeldinstructgies' => $this->application_instructions,// meeste karakters 11480, meeste zitten onder de 5000
+            'OmsAanmeldinstructies' => $this->application_instructions,// meeste karakters 11480, meeste zitten onder de 5000
             'OmsVoorwaardenDeelname' => $this->participation_conditions,// meeste karakters 7886
             'OmsSamenwerkingsPartners' => $this->cooperation_partners,  // meeste karakters 1690
             'OmsAanvullendeInfo' => $this->additional_information,      // meeste karakters 12065

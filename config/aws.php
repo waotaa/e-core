@@ -25,4 +25,10 @@ return [
     'ua_append' => [
         'L5MOD/' . AwsServiceProvider::VERSION,
     ],
+    'services' => [
+        'cloudfront' => [
+            'distribution_id' => env('AWS_CLOUDFRONT_DISTRIBUTION_ID'),
+            'target_origin_id' => env('AWS_CLOUDFRONT_TARGET_ORIGIN_ID')
+        ]
+    ]
 ];

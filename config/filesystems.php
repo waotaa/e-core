@@ -14,7 +14,9 @@ return [
     */
 
     'default' => env('FILESYSTEM_DRIVER', 'local'),
+
     'geo' => env('FILESYSTEM_GEO', 'geo-local'),
+    'temp' => env('FILESYSTEM_TEMP', 's3'),
 
     /*
     |--------------------------------------------------------------------------

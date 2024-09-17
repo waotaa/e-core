@@ -13,9 +13,6 @@ class TempLocalStorageService extends AbstractStorageService
 
     public function getStorageDiskName(): string
     {
-        if (App::environment('local')) {
-            return 'local';
-        }
-        return config('filesystems.cloud', 's3');
+        return config('filesystems.temp', 's3');
     }
 }
