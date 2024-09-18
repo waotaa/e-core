@@ -25,6 +25,13 @@ class WrapInstrumentsJob implements ShouldQueue
         useExportEntityTrait,
         useTempLocalStorageTrait;
 
+    /**
+     * The maximum number of seconds the job can run.
+     *
+     * @var int
+     */
+    public $timeout = 600;
+
     public function __construct(
         protected int $exportId
     ) {}

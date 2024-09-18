@@ -86,7 +86,7 @@ abstract class AbstractEntityExportService
         ])->saveQuietly();
     }
 
-    protected static function updateExportStatusToFinished(Export $export)
+    protected static function updateExportStatusToDone(Export $export)
     {
         $export->fill([
             'status' => ExportStatusEnum::done()->getKey()

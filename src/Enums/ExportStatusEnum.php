@@ -10,5 +10,5 @@ class ExportStatusEnum extends Enum
     private const initiated = 'Initiated';
     private const inProgress = 'In Progress';
     private const failed = 'Failed';
-    private const finished = 'Finished';
+    private const done = 'Done';
 }

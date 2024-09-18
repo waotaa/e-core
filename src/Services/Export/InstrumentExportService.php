@@ -80,7 +80,7 @@ class InstrumentExportService extends AbstractEntityExportService
                     new StoreInstrumentsExportJob($export->id),
                     function() use ($export) {
                         Log::info('Instrument export done');
-                        self::updateExportStatusToFinished($export);
+                        self::updateExportStatusToDone($export);
                     }
                 ])->dispatch();
             })

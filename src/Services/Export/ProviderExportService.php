@@ -55,7 +55,7 @@ class ProviderExportService extends AbstractEntityExportService
             })->toArray();
             $json = json_encode($data, JSON_PRETTY_PRINT);
             $this->storeFile($json);
-            self::updateExportStatusToFinished($this->export);
+            self::updateExportStatusToDone($this->export);
         } catch (Throwable $e) {
             $exportId = $this->export->id;
             Log::error("User export failed: {$exportId}");
