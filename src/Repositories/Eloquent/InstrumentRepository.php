@@ -505,7 +505,7 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
                 'organisation.regionalParty',
                 'organisation.regionalParty.region',
                 'organisation.localParty',
-                'organisation.localParty.townships',
+                'organisation.localParty.township',
                 'organisation.partnership',
                 'organisation.partnership.townships',
 
