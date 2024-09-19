@@ -5,16 +5,51 @@ namespace Vng\EvaCore\Commands\Setup;
 use Aws\AwsClientInterface;
 use Aws\Laravel\AwsFacade;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
+use Vng\EvaCore\Models\Organisation;
+use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
+use Vng\EvaCore\Services\Storage\DownloadStorageService;
 
 class UpdateCloudfrontCacheSettings extends Command
 {
-    protected $signature = 'eva-core:update-cloudfront';
+    protected $signature = 'eva-core:update-cloudfront
+                            {--o|org= : Option; if given execute command for specified organisation}';
+
     protected $description = 'Setup or update the Cloudfront cache settings';
 
     public function handle(): int
     {
         $this->info("\n[ Setting up CloudFront distribution ]\n");
 
+        $organisations = $this->getOrganisations();
+
+        foreach ($organisations as $organisation) {
+            $this->addCacheBehaviourForOrganisation($organisation);
+        }
+
+        $this->info('CloudFront distribution updated successfully.');
+        return 0;
+    }
+
+    protected function getOrganisations(): Collection
+    {
+        /** @var OrganisationRepositoryInterface $orgRepo */
+        $orgRepo = app(OrganisationRepositoryInterface::class);
+        $organisationOption = $this->option('org');
+        if ($organisationOption) {
+            if (is_numeric($organisationOption)) {
+                return new Collection([
+                    $orgRepo->find($organisationOption)
+                ]);
+            } else {
+                return $orgRepo->addSlugCondition($orgRepo->builder(), $organisationOption)->get();
+            }
+        }
+        return $orgRepo->all();
+    }
+
+    protected function addCacheBehaviourForOrganisation(Organisation $organisation)
+    {
         /** @var AwsClientInterface $awsClient */
         // Verkrijg de CloudFront client
         $cloudFrontClient = AwsFacade::createClient('cloudfront');
@@ -39,9 +74,13 @@ class UpdateCloudfrontCacheSettings extends Command
         $distributionConfig = $result['Distribution']['DistributionConfig'];
         $eTag = $result['ETag'];
 
+        $downloadStorageService = new DownloadStorageService();
+        $downloadStorageService->setOrganisation($organisation);
+        $storageDir = $downloadStorageService->getStorageDirectory();
+
         // Voeg de nieuwe cache behavior toe
         $newCacheBehavior = [
-            'PathPattern' => '/downloads/40-rheden/*',
+            'PathPattern' => "{$storageDir}/*",
             'TargetOriginId' => $targetOriginId,
             'TrustedSigners' => [
                 'Enabled' => false,
@@ -89,8 +128,5 @@ class UpdateCloudfrontCacheSettings extends Command
             'IfMatch' => $eTag,
             'DistributionConfig' => $distributionConfig,
         ]);
-
-        $this->info('CloudFront distribution updated successfully.');
-        return 0;
     }
 }
