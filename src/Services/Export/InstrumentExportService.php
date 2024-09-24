@@ -93,7 +93,6 @@ class InstrumentExportService extends AbstractEntityExportService
                 Log::error("Instrument export batch failed: {$exportId}");
                 Log::error("Batch failed with exception: {$e->getMessage()}");
             })
-            ->onConnection('sqs_for_export')
             ->onQueue(config('eva-core.queues.export'))
             ->dispatch();
     }
