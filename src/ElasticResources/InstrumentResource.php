@@ -28,7 +28,7 @@ class InstrumentResource extends ElasticResource
             'DatVerwijderd' => $this->formatDate($this->deleted_at),    // DATUMTIJD
 
             // Nog invoeren
-            'InstrumentSlug' => $this->slug,                                            // AN36
+            'SlugInstrument' => $this->slug,                                            // AN36
         ];
     }
 }

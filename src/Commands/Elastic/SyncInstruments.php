@@ -2,6 +2,8 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
+use Illuminate\Support\Facades\Bus;
+use Vng\EvaCore\Jobs\FetchNewInstrumentRatingsJob;
 use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
 use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Instrument;
@@ -11,14 +13,11 @@ use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 
 class SyncInstruments extends Command
 {
-    protected $signature = 'elastic:sync-instruments {--f|fresh}';
+    protected $signature = 'elastic:sync-instruments {--f|fresh} {--p|pure}';
     protected $description = 'Sync all instruments to ES';
 
     public function handle(): int
     {
-        $this->output->info('fetch ratings first');
-        $this->call(FetchNewInstrumentRatings::class);
-
         $this->output->writeln('syncing instruments...');
         $this->output->writeln('used index-prefix: ' . config('elastic.prefix'));
 
@@ -46,7 +45,13 @@ class SyncInstruments extends Command
             $attempt->resource()->associate($instrument);
             $attempt->save();
 
-            dispatch(new SyncSearchableModelToElasticJob($instrument, $attempt));
+            $jobs = [];
+            // If not pure, then fetch rating first
+            if (!$this->option('pure')) {
+                $jobs[] = new FetchNewInstrumentRatingsJob($instrument);
+            }
+            $jobs[] = new SyncSearchableModelToElasticJob($instrument, $attempt);
+            Bus::chain($jobs)->dispatch();
         }
 
         foreach (Instrument::onlyTrashed()->get() as $instrument) {

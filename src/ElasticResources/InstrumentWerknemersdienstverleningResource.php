@@ -56,6 +56,12 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
             'WerklandschapTegel' => TileResource::many($this->tiles),
 
             // todo: beschikbaarheid?
+            // Wens SGR
+
+            'IndLandelijk' => $this->resource->isNational(),
+            'IndRegionaal' => $this->resource->isRegional(),
+            'IndLokaal' => $this->resource->isLocal(),
+            'Bereik' => $this->resource->getReach(),
 
             // >> Current
             'id' => $this->id,

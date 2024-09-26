@@ -16,7 +16,7 @@ return [
     'default' => env('FILESYSTEM_DRIVER', 'local'),
 
     'geo' => env('FILESYSTEM_GEO', 'geo-local'),
-    'temp' => env('FILESYSTEM_TEMP', 's3'),
+    'temp' => env('FILESYSTEM_TEMP', 'temp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -49,6 +49,16 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
+        ],
+
+        'temp-local' => [
+            'driver' => 'local',
+            'root' => storage_path('app/temp'),
+        ],
+
+        'temp' => [
+            'driver' => 'local',
+            'root' => '/mnt/local'
         ],
 
         'public' => [
