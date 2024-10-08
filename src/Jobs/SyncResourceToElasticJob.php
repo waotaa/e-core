@@ -67,7 +67,7 @@ class SyncResourceToElasticJob extends ElasticJob
                 'id' => $this->getId(),
             ]);
             $this->updateAttemptStatus('failed');
-            throw new Exception('Syncing resource ['. $this->resourceClass .'] with model id ['. $this->model->id .'] to index ['. $this->getFullIndex() .'] failed', $exception);
+            throw new Exception('Syncing resource ['. $this->resourceClass .'] with model id ['. $this->model->id .'] to index ['. $this->getFullIndex() .'] failed', 0, $exception);
 //            throw $exception;
         }
     }
