@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Jobs;
 
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\ElasticResources\ElasticResource;
@@ -32,6 +33,9 @@ class SyncResourceToElasticJob extends ElasticJob
     protected function indexDocument()
     {
         $elasticSearchClient = $this->getClient();
+
+        Log::info('Syncing resource ['. get_class($this->getResource()) .'] with id ['. $this->getId() .'] to index ['. $this->getFullIndex() .']');
+
         try {
             $result = $elasticSearchClient->index([
                 'index' => $this->getFullIndex(),
@@ -53,7 +57,7 @@ class SyncResourceToElasticJob extends ElasticJob
             ]);
             $this->updateAttemptStatus('no nodes');
             $this->release(20);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             Log::error('Sync failed', [
                 'exception' => $exception,
                 'model_id' => $this->model->id,
@@ -63,7 +67,8 @@ class SyncResourceToElasticJob extends ElasticJob
                 'id' => $this->getId(),
             ]);
             $this->updateAttemptStatus('failed');
-            throw $exception;
+            throw new Exception('Syncing resource ['. $this->resourceClass .'] with model id ['. $this->model->id .'] to index ['. $this->getFullIndex() .'] failed', $exception);
+//            throw $exception;
         }
     }
 
@@ -91,7 +96,7 @@ class SyncResourceToElasticJob extends ElasticJob
     {
         $resource = $this->resourceClass::make($this->model);
         if (!$resource instanceof ElasticResource) {
-            throw new \Exception('Invalid resource class provided');
+            throw new Exception('Invalid resource class provided');
         }
         return $resource;
     }

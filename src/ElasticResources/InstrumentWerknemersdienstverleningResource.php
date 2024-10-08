@@ -41,27 +41,15 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
 
             'Instrument' => InstrumentResource::one($this->resource),
 
-            'Aanbieder' => ProviderResource::one($this->provider),
             'Beoordeling' => RatingResource::many($this->ratings),
-            'Contactpersoon' => ContactResource::many($this->contacts),
-            'Doelgroep' => TargetGroupResource::many($this->targetGroups),
-            'Download' => DownloadResource::many($this->downloads),
             'Groepsvorm' => GroupFormResource::many($this->groupForms),
             'Klantkenmerk' => ClientCharacteristicResource::many($this->clientCharacteristics),
-            'Link' => LinkResource::many($this->links),
-            'Registratiecode' => RegistrationCodeResource::many($this->registrationCodes),
-            'Uitvoeringslocatie' => LocationResource::many($this->locations),
             'Uitvoeringsvorm' => ImplementationResource::one($this->implementation),
-            'Video' => VideoResource::many($this->videos),
+
+            'Doelgroep' => TargetGroupResource::many($this->targetGroups),
             'WerklandschapTegel' => TileResource::many($this->tiles),
 
             // todo: beschikbaarheid?
-            // Wens SGR
-
-            'IndLandelijk' => $this->resource->isNational(),
-            'IndRegionaal' => $this->resource->isRegional(),
-            'IndLokaal' => $this->resource->isLocal(),
-            'Bereik' => $this->resource->getReach(),
 
             // >> Current
             'id' => $this->id,

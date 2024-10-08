@@ -27,8 +27,25 @@ class InstrumentResource extends ElasticResource
             'DatGewijzigd' => $this->formatDate($this->updated_at),     // DATUMTIJD
             'DatVerwijderd' => $this->formatDate($this->deleted_at),    // DATUMTIJD
 
-            // Nog invoeren
             'SlugInstrument' => $this->slug,                                            // AN36
+
+            'Aanbieder' => ProviderResource::one($this->provider),
+            'Contactpersoon' => ContactResource::many($this->contacts),
+            'Download' => DownloadResource::many($this->downloads),
+            'Link' => LinkResource::many($this->links),
+            'Registratiecode' => RegistrationCodeResource::many($this->registrationCodes),
+            'Uitvoeringslocatie' => LocationResource::many($this->locations),
+            'Video' => VideoResource::many($this->videos),
+
+            // Wens SGR
+            'IndLandelijk' => $this->resource->isNational(),
+            'IndRegionaal' => $this->resource->isRegional(),
+            'IndLokaal' => $this->resource->isLocal(),
+            'Bereik' => $this->resource->getReach(),
+
+            'BeschikbareGebieden' => AreaInterfaceResource::many($this->availableAreas),
+            'OmvatteBeschikbareGebieden' => AreaInterfaceResource::many($this->allAvailableAreas),
+            'OmvatteBeschikbareGebiedenGemeenten' => AreaInterfaceResource::many($this->allAvailableTownships),
         ];
     }
 }

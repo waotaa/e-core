@@ -8,10 +8,18 @@ use Vng\EvaCore\Commands\AssignRegions;
 use Vng\EvaCore\Commands\Dev\PasswordGenerationTest;
 use Vng\EvaCore\Commands\Dev\SyncInstrumentTest;
 use Vng\EvaCore\Commands\Dev\Test;
+use Vng\EvaCore\Commands\Elastic\CreateIndex;
 use Vng\EvaCore\Commands\Elastic\DeleteIndex;
 use Vng\EvaCore\Commands\Elastic\DeletePublicIndex;
 use Vng\EvaCore\Commands\Elastic\FetchNewInstrumentRatings;
+use Vng\EvaCore\Commands\Elastic\GetAllDocuments;
+use Vng\EvaCore\Commands\Elastic\GetDocument;
+use Vng\EvaCore\Commands\Elastic\GetElasticsearchClusterSettings;
+use Vng\EvaCore\Commands\Elastic\GetIndexSettings;
+use Vng\EvaCore\Commands\Elastic\GetIndexTemplates;
 use Vng\EvaCore\Commands\Elastic\GetMapping;
+use Vng\EvaCore\Commands\Elastic\ListIndexes;
+use Vng\EvaCore\Commands\Elastic\SetFieldsLimit;
 use Vng\EvaCore\Commands\Elastic\SyncAll;
 use Vng\EvaCore\Commands\Elastic\SyncClientCharacteristics;
 use Vng\EvaCore\Commands\Elastic\SyncEnvironments;
@@ -162,10 +170,18 @@ class EvaServiceProvider extends AggregateServiceProvider
         SyncInstrumentTest::class,
         Test::class,
 
+        CreateIndex::class,
         DeleteIndex::class,
         DeletePublicIndex::class,
         FetchNewInstrumentRatings::class,
+        GetAllDocuments::class,
+        GetDocument::class,
+        GetElasticsearchClusterSettings::class,
+        GetIndexSettings::class,
+        GetIndexTemplates::class,
         GetMapping::class,
+        ListIndexes::class,
+        SetFieldsLimit::class,
         SyncAll::class,
         SyncClientCharacteristics::class,
         SyncEnvironments::class,

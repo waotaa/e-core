@@ -12,6 +12,9 @@ class AreaInterfaceResource extends ElasticResource
     public function toArray()
     {
         return [
+            'NaamGebied' => $this->resource->getName(),
+            'TypeGebied' => $this->resource->getType(),
+
             'identifier' => $this->resource->getAreaIdentifier(),
             'name' => $this->resource->getName(),
             'slug' => $this->resource->getSlug(),

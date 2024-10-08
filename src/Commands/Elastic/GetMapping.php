@@ -6,6 +6,7 @@ use Elasticsearch\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Vng\EvaCore\Services\ElasticSearch\ElasticClientBuilder;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class GetMapping extends Command
 {
@@ -22,17 +23,20 @@ class GetMapping extends Command
             $index = $prefix . '-' . $index;
         }
 
-        $elasticsearch = ElasticClientBuilder::make();
-
-        $params = ['index' => $index];
-        $exists = $elasticsearch->indices()->exists($params);
-        if (!$exists) {
-            $this->getOutput()->writeln('requested index does not exists');
+        if (!ElasticsearchEndpointService::make()->indexExists($index)) {
+            $this->getOutput()->writeln('Requested index does not exist');
             return 1;
         }
-        $response = $elasticsearch->indices()->getMapping($params);
 
-        var_dump($response);
+        $mapping = ElasticsearchEndpointService::make()->getMapping($index);
+
+        if ($mapping) {
+            // Use json_encode with JSON_PRETTY_PRINT to display formatted output
+            $this->getOutput()->writeln(json_encode($mapping, JSON_PRETTY_PRINT));
+        } else {
+            $this->getOutput()->writeln('No mapping found or an error occurred');
+            return 1;
+        }
 
         $this->getOutput()->writeln('getting mapping finished!');
         return 0;

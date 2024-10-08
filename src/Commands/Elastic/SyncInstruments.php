@@ -10,6 +10,7 @@ use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class SyncInstruments extends Command
 {
@@ -26,6 +27,17 @@ class SyncInstruments extends Command
         }
 
         $this->output->writeln('');
+
+        $index = 'instruments';
+        $prefix = config('elastic.prefix');
+        if ($prefix) {
+            $index = $prefix . '-' . $index;
+        }
+        if (!ElasticsearchEndpointService::make()->indexExists($index)) {
+            $this->call(CreateIndex::class, [
+                'index' => 'instruments'
+            ]);
+        }
 
         /** @var InstrumentRepositoryInterface $instrumentRepository */
         $instrumentRepository = app(InstrumentRepositoryInterface::class);
