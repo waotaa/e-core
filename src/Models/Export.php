@@ -40,12 +40,18 @@ class Export extends Model
     {
         if ($deleteFile) {
             try {
-                ExportStorageService::make()->deleteFile($this->filename);
+                ExportStorageService::make()->deleteFile($this->file);
             } catch (\Exception $e) {
                 // accept for now that deleting the file failed.
                 // We still want to delete the download entity though
             }
         }
         return parent::delete();
+    }
+
+    public function getCdnUrlAttribute()
+    {
+        return ExportStorageService::make()
+            ->getFileUrl($this->attributes['file']);
     }
 }
