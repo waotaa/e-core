@@ -7,14 +7,14 @@ use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class CreateIndex extends Command
 {
-    protected $signature = 'elastic:create-index {name}';
+    protected $signature = 'elastic:create-index {index}';
     protected $description = 'Create an empty index in Elasticsearch';
 
     public function handle(): int
     {
         $this->getOutput()->writeln('Creating index...');
 
-        $indexName = $this->argument('name');
+        $indexName = $this->argument('index');
 
         // Voeg een prefix toe als dat is geconfigureerd
         $prefix = config('elastic.prefix');
