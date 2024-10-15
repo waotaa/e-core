@@ -55,15 +55,17 @@ class StoreInstrumentsExportJob implements ShouldQueue
         }
         $filePath = $exportStorageService->storeFile($contents, "{$mark}.json");
         if (is_null($filePath)) {
+            Log::error("Exp.Instruments Storing file failed");
             $export->fill([
                 'status' => ExportStatusEnum::failed()->getKey()
-            ]);
+            ])->saveQuietly();
         }
         $storageDisk->delete($wrappedFile);
 
         $export->fill([
             'file' => $filePath
         ])->saveQuietly();
+        Log::info('Exp.Instruments StoreInstrumentsExportJob finished');
     }
 
     public function failed(Throwable $exception)

@@ -70,6 +70,7 @@ class WrapInstrumentsJob implements ShouldQueue
 
         $storageDisk->append($exportPath, ']');
         $storageDisk->delete($files);
+        Log::info('Exp.Instruments WrapInstrumentsJob finished');
     }
 
     public function failed(Throwable $exception)
