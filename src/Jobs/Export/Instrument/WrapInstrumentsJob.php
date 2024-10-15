@@ -75,6 +75,7 @@ class WrapInstrumentsJob implements ShouldQueue
 
     public function failed(Throwable $exception)
     {
+        Log::error('Exp.Instruments WrapInstrumentsJob failed');
         $export = $this->findExport($this->exportId);
         $export->fill([
             'status' => ExportStatusEnum::failed()->getKey()

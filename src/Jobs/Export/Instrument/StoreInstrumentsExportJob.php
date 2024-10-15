@@ -70,6 +70,7 @@ class StoreInstrumentsExportJob implements ShouldQueue
 
     public function failed(Throwable $exception)
     {
+        Log::error('Exp.Instruments StoreInstrumentsExportJob failed');
         $export = $this->findExport($this->exportId);
         $export->fill([
             'status' => ExportStatusEnum::failed()->getKey()
