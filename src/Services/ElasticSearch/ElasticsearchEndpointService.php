@@ -191,7 +191,8 @@ class ElasticsearchEndpointService
             'body' => [
                 'query' => [
                     'match_all' => new \stdClass()
-                ]
+                ],
+                'size' => 1000
             ]
         ];
 

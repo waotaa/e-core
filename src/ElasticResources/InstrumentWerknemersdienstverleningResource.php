@@ -49,8 +49,6 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
             'Doelgroep' => TargetGroupResource::many($this->targetGroups),
             'WerklandschapTegel' => TileResource::many($this->tiles),
 
-            // todo: beschikbaarheid?
-
             // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
@@ -85,7 +83,7 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
             'total_duration_value' => $this->total_duration_value,
             'total_duration_unit' => $this->total_duration_unit,
             'total_duration_unit_key' => $this->raw_total_duration_unit,
-            'total_duration_hours' => $this->total_duration_hours, // calculated value
+            'total_duration_hours' => (float) $this->total_duration_hours, // calculated value
             'total_costs' => $this->total_costs,
             'total_costs_whole_number' => (int) round($this->total_costs),
             'costs_description' => $this->costs_description,

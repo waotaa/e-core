@@ -39,10 +39,15 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
             return;
         }
 
-        $instrumentDoc = $elasticSearchClient->get([
-            'index' => $prefixedIndex,
-            'id' => $this->instrument->uuid,
-        ]);
+        try {
+            $instrumentDoc = $elasticSearchClient->get([
+                'index' => $prefixedIndex,
+                'id' => $this->instrument->uuid,
+            ]);
+        } catch (\Elasticsearch\Common\Exceptions\Missing404Exception $e) {
+//            $instrumentDoc = null;
+            return;
+        }
 
         $ratings = collect($instrumentDoc['_source']['ratings']);
 

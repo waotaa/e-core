@@ -13,10 +13,10 @@ class ContactResource extends ElasticResource
 
         $data = [
             // >> SGR
-            'CdTypeContactpersoonRelatie' => $codeType,
-            'EmailadresContactpersoon' => $this->email,         // AN..320
             'NaamContactpersoon' => $this->name,                // AN..200
             'TelefoonnummerContactpersoon' => $this->phone,     // AN..14
+            'EmailadresContactpersoon' => $this->email,         // AN..320
+            'CdTypeContactpersoonRelatie' => $codeType,
 
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
             'InstrumentWerknemersdienstverlening' => InstrumentWerknemersdienstverleningResource::many($this->whenLoaded('instruments')),

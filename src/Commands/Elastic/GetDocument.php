@@ -32,6 +32,23 @@ class GetDocument extends Command
             return 1;
         }
 
+//        // Definieer de array van gewenste eigenschappen
+//        $desiredProperties = [
+//            'publish',
+//            'publish_from',
+//            'publish_to',
+//            'published',
+//            'complete',
+//        ];
+//
+//        $document = array_filter(
+//            $document,
+//            function ($key) use ($desiredProperties) {
+//                return in_array($key, $desiredProperties);
+//            },
+//            ARRAY_FILTER_USE_KEY
+//        );
+
         $this->getOutput()->writeln(json_encode($document, JSON_PRETTY_PRINT));
         $this->getOutput()->writeln('Document retrieved successfully!');
         return 0;

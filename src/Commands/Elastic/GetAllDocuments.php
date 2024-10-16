@@ -38,7 +38,8 @@ class GetAllDocuments extends Command
         }
 
         foreach ($documents as $document) {
-            $this->getOutput()->writeln(json_encode($document, JSON_PRETTY_PRINT));
+            $this->getOutput()->writeln($document['id']);
+//            $this->getOutput()->writeln(json_encode($document, JSON_PRETTY_PRINT));
         }
 
         $this->getOutput()->writeln('Document retrieval finished!');
