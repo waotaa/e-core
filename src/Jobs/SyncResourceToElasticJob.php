@@ -35,6 +35,7 @@ class SyncResourceToElasticJob extends ElasticJob
         $elasticSearchClient = $this->getClient();
 
         Log::info('Syncing resource ['. get_class($this->getResource()) .'] with id ['. $this->getId() .'] to index ['. $this->getFullIndex() .']');
+        $this->updateAttemptStatus('job started');
 
         try {
             Log::info('Before index attempt');
