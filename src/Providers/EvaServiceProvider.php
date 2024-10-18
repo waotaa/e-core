@@ -11,7 +11,8 @@ use Vng\EvaCore\Commands\Dev\Test;
 use Vng\EvaCore\Commands\Elastic\CreateIndex;
 use Vng\EvaCore\Commands\Elastic\DeleteIndex;
 use Vng\EvaCore\Commands\Elastic\DeletePublicIndex;
-use Vng\EvaCore\Commands\Elastic\FetchNewInstrumentRatings;
+use Vng\EvaCore\Commands\Elastic\FetchInstrumentRating;
+use Vng\EvaCore\Commands\Elastic\FetchInstrumentRatings;
 use Vng\EvaCore\Commands\Elastic\GetAllDocuments;
 use Vng\EvaCore\Commands\Elastic\GetDocument;
 use Vng\EvaCore\Commands\Elastic\GetElasticsearchClusterSettings;
@@ -24,6 +25,7 @@ use Vng\EvaCore\Commands\Elastic\SyncAll;
 use Vng\EvaCore\Commands\Elastic\SyncClientCharacteristics;
 use Vng\EvaCore\Commands\Elastic\SyncEnvironments;
 use Vng\EvaCore\Commands\Elastic\SyncForApi;
+use Vng\EvaCore\Commands\Elastic\SyncInstrument;
 use Vng\EvaCore\Commands\Elastic\SyncInstruments;
 use Vng\EvaCore\Commands\Elastic\SyncInstrumentsDescription;
 use Vng\EvaCore\Commands\Elastic\SyncNewsItems;
@@ -173,7 +175,8 @@ class EvaServiceProvider extends AggregateServiceProvider
         CreateIndex::class,
         DeleteIndex::class,
         DeletePublicIndex::class,
-        FetchNewInstrumentRatings::class,
+        FetchInstrumentRating::class,
+        FetchInstrumentRatings::class,
         GetAllDocuments::class,
         GetDocument::class,
         GetElasticsearchClusterSettings::class,
@@ -186,6 +189,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         SyncClientCharacteristics::class,
         SyncEnvironments::class,
         SyncForApi::class,
+        SyncInstrument::class,
         SyncInstruments::class,
         SyncInstrumentsDescription::class,
         SyncNewsItems::class,

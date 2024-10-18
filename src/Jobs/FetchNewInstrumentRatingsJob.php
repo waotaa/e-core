@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Jobs;
 
+use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\ElasticResources\RatingResource;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Rating;
@@ -28,6 +29,7 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
             'index' => $prefixedIndex
         ]);
         if (!$indexExists) {
+            Log::warning('Index not found');
             return;
         }
 
@@ -36,6 +38,7 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
             'id' => $this->instrument->uuid,
         ]);
         if (!$exists) {
+            Log::warning('Document not found');
             return;
         }
 
@@ -45,11 +48,12 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
                 'id' => $this->instrument->uuid,
             ]);
         } catch (\Elasticsearch\Common\Exceptions\Missing404Exception $e) {
-//            $instrumentDoc = null;
+            Log::warning('Document not found');
             return;
         }
 
         $ratings = collect($instrumentDoc['_source']['ratings']);
+        Log::warning('No ratings for instrument');
 
         if ($ratings->isNotEmpty()) {
             $newRatings = $ratings->filter(fn ($r) => is_null($r['id']));

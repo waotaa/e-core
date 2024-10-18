@@ -6,7 +6,7 @@ use Vng\EvaCore\Jobs\FetchNewInstrumentRatingsJob;
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
 
-class FetchNewInstrumentRatings extends Command
+class FetchInstrumentRatings extends Command
 {
     protected $signature = 'elastic:fetch-ratings';
     protected $description = 'Check the instrument index for new ratings and add them to the database';
