@@ -35,7 +35,7 @@ class CreateIndex extends Command
             'index' => [
                 'mapping' => [
                     'total_fields' => [
-                        'limit' => config('elastic.field_limit', 2000),     // default 1000
+                        'limit' => config('elastic.field_limit', 1000),     // default 1000
                     ],
                     'depth' => [
                         'limit' => 20 // default 20

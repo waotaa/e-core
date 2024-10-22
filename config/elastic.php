@@ -2,7 +2,7 @@
 
 return [
     'prefix' => env('ELASTIC_INDEX_PREFIX'),
-    'field_limit' => env('ELASTIC_FIELD_LIMIT', 2000),
+    'field_limit' => env('ELASTIC_FIELD_LIMIT', 1000),
     'kibana' => [
         'host' => env('KIBANA_API_HOST'),
         'apiKey' => env('KIBANA_API_KEY')
