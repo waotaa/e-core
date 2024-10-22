@@ -1,0 +1,8 @@
+type: object
+properties:
+  CdDienstverband:
+    $ref: '../codelijsten/CdDienstverband.yml'
+  NaamDienstverband:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"

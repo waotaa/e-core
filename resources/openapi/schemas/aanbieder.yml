@@ -1,0 +1,21 @@
+type: object
+properties:
+  NaamAanbieder:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  UuidAanbieder:
+    type: string
+    minLength: 36
+    maxLength: 36
+    pattern: "^[a-zA-Z0-9]*$"
+  InstrumentBeherendeOrganisatie:
+    $ref: './instrumentBeherendeOrganisatie.yml'
+  Adres:
+    oneOf:
+      - type: 'null'
+      - $ref: './adres.yml'
+  Contactpersoon:
+    type: array
+    items:
+      $ref: './contact.yml'

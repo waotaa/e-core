@@ -1,0 +1,10 @@
+type: string
+enum:
+  - "01"  # Arbeidsmarktregio
+  - "02"  # Gemeente
+  - "03"  # Wijk
+description: |
+  Codelijst voor type gebied:
+  - "01": Arbeidsmarktregio
+  - "02": Gemeente
+  - "03": Wijk

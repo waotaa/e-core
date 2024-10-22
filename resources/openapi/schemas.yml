@@ -1,64 +1,111 @@
-Address:
-  $ref: './schemas/address.yml'
-Area:
-  $ref: './schemas/area.yml'
-ClientCharacteristic:
-  $ref: './schemas/client-characteristic.yml'
-Contact:
-  $ref: './schemas/contact.yml'
+Aanbieder:
+  $ref: './schemas/aanbieder.yml'
+Adres:
+  $ref: './schemas/adres.yml'
+Arbeidsmarktregio:
+  $ref: './schemas/arbeidsmarktregio.yml'
+Beoordeling:
+  $ref: './schemas/beoordeling.yml'
+Contactpersoon:
+  $ref: './schemas/contactpersoon.yml'
+Dienstverband:
+  $ref: './schemas/dienstverband.yml'
+Doelgroep:
+  $ref: './schemas/doelgroep.yml'
+Gebied:
+  $ref: './schemas/gebied.yml'
+Gemeente:
+  $ref: './schemas/gemeente.yml'
+Groepsvorm:
+  $ref: './schemas/groupsvorm.yml'
+Instrument:
+  $ref: './schemas/instrument.yml'
+InstrumentBeherendeOrganisatie:
+  $ref: './schemas/instrumentBeherendeOrganisatie.yml'
+InstrumentWerkgeversdienstverlening:
+  $ref: './schemas/instrumentWerkgeversdienstverlening.yml'
+InstrumentWerknemersdienstverlening:
+  $ref: './schemas/instrumentWerknemersdienstverlening.yml'
+Klantkenmerk:
+  $ref: './schemas/klantkenmerk.yml'
+Landelijkepartij:
+  $ref: './schemas/landelijkePartij.yml'
+Leeftijdsgroep:
+  $ref: './schemas/leeftijdsgroep.yml'
+Lokalepartij:
+  $ref: './schemas/lokalePartij.yml'
+Regionalepartij:
+  $ref: './schemas/regionalePartij.yml'
+Registratiecode:
+  $ref: './schemas/registratiecode.yml'
+Samenwerking:
+  $ref: './schemas/samenwerking.yml'
+SectorInstrument:
+  $ref: './schemas/sectorInstrument.yml'
+Uitvoeringslocatie:
+  $ref: './schemas/uitvoeringslocatie.yml'
+Uitvoeringsvorm:
+  $ref: './schemas/uitvoeringsvorm.yml'
+Werklandschaptegel:
+  $ref: './schemas/werklandschaptegel.yml'
+Wijk:
+  $ref: './schemas/wijk.yml'
+
 Download:
   $ref: './schemas/download.yml'
 Environment:
   $ref: './schemas/environment.yml'
-GroupForm:
-  $ref: './schemas/group-form.yml'
-Implementation:
-  $ref: './schemas/implementation.yml'
-Instrument:
-  $ref: './schemas/instrument.yml'
 InstrumentTracker:
   $ref: './schemas/instrument-tracker.yml'
 Link:
   $ref: './schemas/link.yml'
-LocalParty:
-  $ref: './schemas/local-party.yml'
-Location:
-  $ref: './schemas/location.yml'
 Manager:
   $ref: './schemas/manager.yml'
 Mutation:
   $ref: './schemas/mutation.yml'
-NationalParty:
-  $ref: './schemas/national-party.yml'
-Neighbourhood:
-  $ref: './schemas/neighbourhood.yml'
 NewsItem:
   $ref: './schemas/news-item.yml'
-Organisation:
-  $ref: './schemas/organisation.yml'
-Partnership:
-  $ref: './schemas/partnership.yml'
 Professional:
   $ref: './schemas/professional.yml'
-Provider:
-  $ref: './schemas/provider.yml'
-Rating:
-  $ref: './schemas/rating.yml'
-Region:
-  $ref: './schemas/region.yml'
-RegionalParty:
-  $ref: './schemas/regional-party.yml'
-RegistrationCode:
-  $ref: './schemas/registration-code.yml'
 Role:
   $ref: './schemas/role.yml'
-TargetGroup:
-  $ref: './schemas/target-group.yml'
-Tile:
-  $ref: './schemas/tile.yml'
-Township:
-  $ref: './schemas/township.yml'
 User:
   $ref: './schemas/user.yml'
 Video:
   $ref: './schemas/video.yml'
+
+
+CdArbeidsmarktregio:
+  $ref: './codelijsten/CdArbeidsmarktregio.yml'
+CdBereikInstrument:
+  $ref: './codelijsten/CdBereikInstrument.yml'
+CdDienstverband:
+  $ref: './codelijsten/CdDienstverband.yml'
+CdDoelgroep:
+  $ref: './codelijsten/CdDoelgroep.yml'
+CdEenheidDuurTraject:
+  $ref: './codelijsten/CdEenheidDuurTraject.yml'
+CdGroepsvorm:
+  $ref: './codelijsten/CdGroepsvorm.yml'
+CdKlantkenmerk:
+  $ref: './codelijsten/CdKlantkenmerk.yml'
+CdLeeftijdsgroep:
+  $ref: './codelijsten/CdLeeftijdsgroep.yml'
+CdSbi:
+  $ref: './codelijsten/CdSbi.yml'
+CdTypeContactpersoonRelatie:
+  $ref: './codelijsten/CdTypeContactpersoonRelatie.yml'
+CdTypeGebied:
+  $ref: './codelijsten/CdTypeGebied.yml'
+CdTypeOrganisatie:
+  $ref: './codelijsten/CdTypeOrganisatie.yml'
+CdTypeUitvoeringslocatie:
+  $ref: './codelijsten/CdTypeUitvoeringslocatie.yml'
+CdUitvoeringsvorm:
+  $ref: './codelijsten/CdUitvoeringsvorm.yml'
+CdWerklandschaptegel:
+  $ref: './codelijsten/CdWerklandschaptegel.yml'
+StdIndJN:
+  $ref: './codelijsten/StdIndJN.yml'
+StdIndNvt:
+  $ref: './codelijsten/StdIndNvt.yml'

@@ -1,0 +1,12 @@
+type: string
+enum:
+  - "01"  # Lokale Partij
+  - "02"  # Samenwerking
+  - "03"  # Regionale Partij
+  - "04"  # Landelijke Partij
+description: |
+  Codelijst voor type gebied:
+  - "01": Lokale Partij
+  - "02": Samenwerking
+  - "03": Regionale Partij
+  - "04": Landelijke Partij

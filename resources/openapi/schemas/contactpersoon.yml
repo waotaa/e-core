@@ -1,0 +1,32 @@
+type: object
+properties:
+  NaamContactpersoon:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  TelefoonnummerContactpersoon:
+    type: string
+    maxLength: 14
+    pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
+  EmailadresContactpersoon:
+    type: string
+    maxLength: 320
+    pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
+  CdTypeContactpersoonRelatie:
+    anyOf:
+      - type: 'null'
+      - $ref: '../codelijsten/CdTypeContactpersoonRelatie.yml'
+  InstrumentBeherendeOrganisatie:
+    $ref: './instrumentBeherendeOrganisatie.yml'
+  InstrumentWerknemersdienstverlening:
+    type: array
+    nullable: true
+    items:
+      $ref: './instrumentWerknemersdienstverlening.yml'
+  Aanbieder:
+    type: array
+    nullable: true
+    items:
+      $ref: './aanbieder.yml'

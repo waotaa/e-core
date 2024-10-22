@@ -1,0 +1,15 @@
+type: object
+properties:
+  NaamGemeente:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  CdGemeente:
+    type: string
+    minLength: 4
+    maxLength: 4
+    pattern: "^[0-9]*$"
+  Arbeidsmarktregio:
+    anyOf:
+      - type: 'null'
+      - $ref: './arbeidsmarktregio.yml'

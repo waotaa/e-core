@@ -1,0 +1,8 @@
+type: object
+properties:
+  CdDoelgroep:
+    $ref: '../codelijsten/CdDoelgroep.yml'
+  NaamDoelgroep:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"

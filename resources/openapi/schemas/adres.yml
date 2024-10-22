@@ -1,0 +1,6 @@
+type: object
+properties:
+  AdresNederland:
+    $ref: './adresNederland.yml'
+  InstrumentBeherendeOrganisatie:
+    $ref: './instrumentBeherendeOrganisatie.yml'

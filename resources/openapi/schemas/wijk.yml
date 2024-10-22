@@ -1,0 +1,8 @@
+type: object
+properties:
+  NaamWijk:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  Gemeente:
+    $ref: './gemeente.yml'

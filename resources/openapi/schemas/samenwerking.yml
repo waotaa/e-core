@@ -1,0 +1,10 @@
+type: object
+properties:
+  InstrumentBeherendeOrganisatie:
+    anyOf:
+      - type: 'null'
+      - $ref: './instrumentBeherendeOrganisatie.yml'
+  Gemeente:
+    type: array
+    items:
+      $ref: './gemeente.yml'

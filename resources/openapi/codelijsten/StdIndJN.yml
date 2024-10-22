@@ -1,0 +1,8 @@
+StdIndJN:
+  type: string
+  enum:
+    - "1"
+    - "2"
+  description: |
+    - "1": Ja
+    - "2": Nee

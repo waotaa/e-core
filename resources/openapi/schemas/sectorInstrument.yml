@@ -1,0 +1,8 @@
+type: object
+properties:
+  SbiCd:
+    $ref: '../codelijsten/CdSbi.yml'
+  OmsSbiCd:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"

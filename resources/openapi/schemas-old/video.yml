@@ -1,0 +1,17 @@
+type: object
+properties:
+  id:
+    type: integer
+  created_at:
+    type: string
+  updated_at:
+    type: string
+    nullable: true
+  provider:
+    type: string
+  video_identifier:
+    type: string
+  instrument:
+    anyOf:
+      - type: 'null'
+      - $ref: './instrument.yml'

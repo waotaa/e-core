@@ -9,38 +9,58 @@ class GenerateSchema extends Command
 {
     protected $signature = 'api-specs:generate-schema';
     protected $description = 'Merges Schema files by dereferencing $refs';
-
     protected $dereferencedEntities = [];
 
     public function handle(): int
     {
         $this->getOutput()->writeln('Generating schema');
 
-        $specsPath = resource_path('openapi/');
-        $schemaFilePath = $specsPath . 'schemas.yml';
+        $this->handleSchema('schemas');
+        $this->newLine(3);
+        $this->handleSchema('schemas-old');
 
-        if (!file_exists($schemaFilePath)) {
-            $this->warn('Schema file does not exist');
-            return 1;
-        }
-
-        // Laad de hoofd YAML-bestand
-        $schema = Yaml::parseFile($schemaFilePath);
-
-        // Vervang alle $ref verwijzingen
-        $schema = $this->dereferenceSchema($schema, $specsPath);
-
-        // Sla de aangepaste schema op in een nieuw bestand
-        $newSchemaPath = $specsPath . 'merged_schema.yml';
-        file_put_contents($newSchemaPath, Yaml::dump($schema, 4, 2, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK));
-
-        $this->info("Schema generated at '{$newSchemaPath}'.");
-
+        $this->line('Done!');
         return 0;
     }
 
-    protected function dereferenceSchema(array $schema, string $basePath): array
+    protected static function getSpecsPath()
     {
+        return resource_path('openapi/');
+    }
+
+    protected function handleSchema($fileName = 'schemas')
+    {
+        $this->newLine(1);
+        $this->info("Handling schema {$fileName}");
+        $schema = $this->getSchema($fileName);
+        if (is_null($schema)) {
+            $this->warn('Schema file does not exist');
+            return;
+        }
+
+        $schema = $this->dereferenceSchema($schema);
+
+        $newFileName = 'merged_' . $fileName;
+        $this->saveMergedSchema($schema, $newFileName);
+
+        $this->newLine(1);
+        $this->info("Handled schema {$fileName}");
+    }
+
+    protected function getSchema($fileName)
+    {
+        $fileName = $this->completeYmlFileName($fileName);
+        $schemaFilePath = self::getSpecsPath() . $fileName;
+        if (!file_exists($schemaFilePath)) {
+            return null;
+        }
+        return Yaml::parseFile($schemaFilePath);
+    }
+
+    protected function dereferenceSchema(array $schema): array
+    {
+        $this->newLine(1);
+        $basePath = self::getSpecsPath();
         foreach ($schema as $entity => &$entityValue) {
             $this->output->writeln("Dereferencing {$entity}");
             if (is_array($entityValue) && count($entityValue) ==1 && key_exists('$ref', $entityValue)) {
@@ -81,6 +101,16 @@ class GenerateSchema extends Command
         return $schema;
     }
 
+    protected function saveMergedSchema($schema, $newFileName)
+    {
+        $newFileName = $this->completeYmlFileName($newFileName);
+        // Sla de aangepaste schema op in een nieuw bestand
+        $newSchemaPath = self::getSpecsPath() . $newFileName;
+        file_put_contents($newSchemaPath, Yaml::dump($schema, 4, 2, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK));
+
+        $this->info("Schema generated at '{$newSchemaPath}'.");
+    }
+
     protected function extractEntityNameFromPath(string $path): ?string
     {
         $filename = basename($path, '.yml');
@@ -89,5 +119,14 @@ class GenerateSchema extends Command
         $entityName = str_replace(' ', '', ucwords(str_replace('-', ' ', $filename)));
 
         return $entityName ?: null;
+    }
+
+    private function completeYmlFileName($fileName)
+    {
+        $fileInfo = pathinfo($fileName);
+        if (!isset($fileInfo['extension'])) {
+            $fileName .= '.yml';
+        }
+        return $fileName;
     }
 }

@@ -1,0 +1,20 @@
+type: object
+properties:
+  NaamGebied:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  CdTypeGebied:
+    $ref: '../codelijsten/CdTypeGebied.yml'
+  Arbeidsmarktregio:
+    anyOf:
+      - type: 'null'
+      - $ref: './arbeidsmarktregio.yml'
+  Gemeente:
+    anyOf:
+      - type: 'null'
+      - $ref: './gemeente.yml'
+  Wijk:
+    anyOf:
+      - type: 'null'
+      - $ref: './wijk.yml'

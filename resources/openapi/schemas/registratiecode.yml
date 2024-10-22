@@ -1,0 +1,12 @@
+type: object
+properties:
+  Registratiecode:
+    type: string
+    maxLength: 34
+    pattern: "^[a-zA-Z0-9]*$"
+  RegistratiecodeLabel:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  IndWeergeven:
+    type: boolean

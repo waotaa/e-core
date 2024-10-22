@@ -1,0 +1,21 @@
+type: object
+properties:
+  Locatieoms:
+    type: string
+    maxLength: 70
+    pattern: "^[a-zA-Z0-9]*$"
+  Postcd:
+    type: string
+    minLength: 6
+    maxLength: 6
+    pattern: '^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-zA-Z]{2}$'
+  Woonplaatsnaam:
+    type: string
+    maxLength: 80
+    pattern: "^[a-zA-Z0-9]*$"
+  Postadres:
+    $ref: './postadres.yml'
+  Antwoordnradres:
+    $ref: './antwoordnradres.yml'
+  Straatadres:
+    $ref: './straatadres.yml'

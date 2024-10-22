@@ -1,0 +1,16 @@
+type: object
+properties:
+  NaamUitvoeringslocatie:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  CdTypeUitvoerigslocatie:
+    $ref: '../codelijsten/CdTypeUitvoeringslocatie.yml'
+  IndUitvoeringslocatieActief:
+    type: boolean
+  ToelUitvoeringslocatie:
+    type: string
+    maxLength: 200o
+    pattern: "^[a-zA-Z0-9]*$"
+  Adres:
+    $ref: './adres.yml'

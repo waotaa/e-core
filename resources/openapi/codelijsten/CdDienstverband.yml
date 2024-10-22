@@ -1,0 +1,12 @@
+type: string
+enum:
+  - DV01
+  - DV02
+  - DV03
+  - DV04
+description: |
+  Codelijst voor dienstverbanden:
+  - DV01: Regulier arbeidsovereenkomst
+  - DV02: BBL arbeidsovereenkomst
+  - DV03: Stage (met stagevergoeding)
+  - DV04: Werkervaring

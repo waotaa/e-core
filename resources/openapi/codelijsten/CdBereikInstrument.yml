@@ -1,0 +1,10 @@
+type: string
+enum:
+  - "01"  # Landelijk
+  - "02"  # Regionaal
+  - "03"  # Lokaal
+description: |
+  Codelijst voor bereik instrument:
+  - "01": Landelijk
+  - "02": Regionaal
+  - "03": Lokaal

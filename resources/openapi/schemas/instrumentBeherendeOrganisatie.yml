@@ -1,0 +1,29 @@
+type: object
+properties:
+  NaamInstrumentBeherendeOrganisatie:
+    type: string
+  SlugOrganisatie:
+    type: string
+  TypeOrganisatie:
+    type: string
+  Contactpersoon:
+    type: array
+    nullable: true
+    items:
+      $ref: './contact.yml'
+  LokalePartij:
+    anyOf:
+      - type: 'null'
+      - $ref: './lokalePartij.yml'
+  RegionalePartij:
+    anyOf:
+      - type: 'null'
+      - $ref: './regionalePartij.yml'
+  LandelijkePartij:
+    anyOf:
+      - type: 'null'
+      - $ref: './landelijkePartij.yml'
+  Samenwerking:
+    anyOf:
+      - type: 'null'
+      - $ref: './samenwerking.yml'

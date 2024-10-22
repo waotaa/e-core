@@ -23,10 +23,10 @@ properties:
     type: string
   ratings_count:
     type: integer
-  Beoordeling:
+  ratings:
     type: array
     items:
-      $ref: './beoordeling.yml'
+      $ref: './rating.yml'
   environment:
     anyOf:
       - type: 'null'

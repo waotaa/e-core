@@ -1,138 +1,113 @@
 type: object
 properties:
-  id:
-    type: integer
-  created_at:
+  NaamInstrument:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  UuidInstrument:
+    type: string
+    minLength: 36
+    maxLength: 36
+    pattern: "^[a-zA-Z0-9]*$"
+  SlugInstrument:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  IndPublicatie:
+    type: boolean
+  DatBPublicatie:
     type: string
     format: date-time
-  updated_at:
+    nullable: true
+  DatEPublicatie:
     type: string
     format: date-time
     nullable: true
-  deleted_at:
+  DatAangemaakt:
+    type: string
+    format: date-time
+  DatGewijzigd:
     type: string
     format: date-time
     nullable: true
-
-  uuid:
+  DatVerwijderd:
     type: string
-  name:
+    format: date-time
+    nullable: true
+  CdBereikInstrument:
+    $ref: '../codelijsten/CdBereikInstrument.yml'
+  NaamBereikInstrument:
     type: string
-  slug:
-    type: string
-  publish:
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  IndLandelijk:
     type: boolean
-  publish_from:
-    type: string
-  publish_to:
-    type: string
-  published:
+  IndRegionaal:
     type: boolean
-  complete:
+  IndLokaal:
     type: boolean
+  InstrumentBeherendeOrganisatie:
+    $ref: './instrumentBeherendeOrganisatie.yml'
+  Uitvoeringsvorm:
+    $ref: './uitvoeringsvorm.yml'
+  Groepsvorm:
+    type: array
+    nullable: true
+    items:
+      $ref: './groepsvorm.yml'
+  Uitvoeringslocatie:
+    type: array
+    nullable: true
+    items:
+      $ref: './uitvoeringslocatie.yml'
 
-  aim:
-    type: string
-  summary:
-    type: string
-  method:
-    type: string
-  distinctive_approach:
-    type: string
-  target_group_description:
-    type: string
-  participation_conditions:
-    type: string
-  cooperatioon_partners:
-    type: string
-  additional_information:
-    type: string
-
-  work_agreements:
-    type: string
-  application_instructions:
-    type: string
-  intensity_hours_per_week:
-    type: integer
-  total_duration_value:
-    type: integer
-  total_duration_unit:
-    type: string
-  total_duration_unit_key:
-    type: string
-  total_duration_hours:
-    type: integer
-  total_costs:
-    type: string
-  total_costs_whole_number:
-    type: integer
-  costs_description:
-    type: string
-  duration_description:
-    type: string
-  intensity_description:
-    type: string
-
-  import_mark:
-    type: string
-
-  is_national:
-    type: boolean
-  is_regional:
-    type: boolean
-  is_local:
-    type: boolean
-  reach:
-    type: string
-
-  organisation:
-    $ref: './organisation.yml'
-  implementation:
-    $ref: './implementation.yml'
-  group_forms:
+  RegistratieCode:
     type: array
     nullable: true
     items:
-      $ref: './group-form.yml'
-  locations:
+      $ref: './registratiecode.yml'
+  Beoordeling:
     type: array
     nullable: true
     items:
-      $ref: './location.yml'
-
-  registration_codes:
+      $ref: './beoordeling.yml'
+  Werklandschaptegel:
     type: array
     nullable: true
     items:
-      $ref: './registration-code.yml'
-  rating:
-    type: string
-  ratings:
+      $ref: './werklandschaptegel.yml'
+  Doelgroep:
     type: array
     nullable: true
     items:
-      $ref: './rating.yml'
-  tiles:
+      $ref: './doelgroep.yml'
+  Klantkenmerk:
     type: array
     nullable: true
     items:
-      $ref: './tile.yml'
-  tiles_count:
-    type: integer
-  target_groups:
+      $ref: './klantkenmerk.yml'
+  Aanbieder:
+    $ref: './aanbieder.yml'
+  Contactpersoon:
     type: array
     nullable: true
     items:
-      $ref: './target-group.yml'
-  target_groups_count:
-    type: integer
-  client_characteristics:
+      $ref: './contactpersoon.yml'
+  BeschikbareGebieden:
     type: array
     nullable: true
     items:
-      $ref: './client-characteristic.yml'
-  client_characteristics_count:
-    type: integer
+      $ref: './gebied.yml'
+  OmvatteBeschikbareGebieden:
+    type: array
+    nullable: true
+    items:
+      $ref: './gebied.yml'
+  OmvatteBeschikbareGebiedenGemeenten:
+    type: array
+    nullable: true
+    items:
+      $ref: './gebied.yml'
   links:
     type: array
     nullable: true
@@ -148,48 +123,3 @@ properties:
     nullable: true
     items:
       $ref: './download.yml'
-  provider:
-    $ref: './provider.yml'
-  contacts:
-    type: array
-    nullable: true
-    items:
-      $ref: './contact.yml'
-
-  available_areas:
-    type: array
-    nullable: true
-    items:
-      $ref: './area.yml'
-  available_areas_all:
-    type: array
-    nullable: true
-    items:
-      $ref: './area.yml'
-  available_areas_specified:
-    type: array
-    nullable: true
-    items:
-      $ref: './area.yml'
-  available_regions:
-    type: array
-    nullable: true
-    items:
-      $ref: './region.yml'
-  available_townships:
-    type: array
-    nullable: true
-    items:
-      $ref: './township.yml'
-  available_neighbourhoods:
-    type: array
-    nullable: true
-    items:
-      $ref: './neighbourhood.yml'
-  parent_instrument:
-    $ref: './instrument.yml'
-#  mutations:
-#    type: array
-#    nullable: true
-#    items:
-#      $ref: './mutation.yml'
