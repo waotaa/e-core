@@ -43,6 +43,10 @@ class GetAllDocuments extends Command
 //            $this->getOutput()->writeln(json_encode($document['source'], JSON_PRETTY_PRINT));
         }
 
+        $this->output->writeln('');
+        $this->output->writeln(count($documents) . ' documents found');
+        $this->output->writeln('');
+
         $this->getOutput()->writeln('Document retrieval finished!');
         return 0;
     }
