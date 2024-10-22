@@ -6,7 +6,7 @@ use Database\Factories\RegionalPartyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
-use Vng\EvaCore\ElasticResources\RegionalPartyResource;
+use Vng\EvaCore\ElasticResources\Original\RegionalPartyResource;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Traits\AreaTrait;
 

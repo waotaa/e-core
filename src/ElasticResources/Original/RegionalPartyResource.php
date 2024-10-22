@@ -1,0 +1,23 @@
+<?php
+
+namespace Vng\EvaCore\ElasticResources\Original;
+
+class RegionalPartyResource extends ElasticResource
+{
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+
+            'created_at' => $this->formatDate($this->created_at),
+            'updated_at' => $this->formatDate($this->updated_at),
+            'deleted_at' => $this->formatDate($this->deleted_at),
+
+            'name' => $this->name,
+            'slug' => $this->slug,
+
+            'organisation' => OrganisationResource::one($this->whenLoaded('organisation')),
+            'region' => RegionResource::one($this->whenLoaded('region')),
+        ];
+    }
+}

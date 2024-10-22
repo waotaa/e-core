@@ -7,7 +7,7 @@ use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class GetDocument extends Command
 {
-    protected $signature = 'elastic:document {index} {id}';
+    protected $signature = 'elastic:document {index} {id} {--e|exact}';
     protected $description = 'Retrieve a document from the Elasticsearch index';
 
     public function handle(): int
@@ -16,10 +16,13 @@ class GetDocument extends Command
 
         $index = $this->argument('index');
         $id = $this->argument('id');
+
         $prefix = config('elastic.prefix');
-        if ($prefix) {
+        if ($prefix && !$this->option('exact')) {
+            $this->output->writeln("used index-prefix: {$prefix}");
             $index = $prefix . '-' . $index;
         }
+        $this->output->writeln("used index: {$index}");
 
         if (!ElasticsearchEndpointService::make()->indexExists($index)) {
             $this->getOutput()->writeln('Requested index does not exist');

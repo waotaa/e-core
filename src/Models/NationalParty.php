@@ -5,7 +5,7 @@ namespace Vng\EvaCore\Models;
 use Database\Factories\NationalPartyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Collection;
-use Vng\EvaCore\ElasticResources\NationalPartyResource;
+use Vng\EvaCore\ElasticResources\Original\NationalPartyResource;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Observers\NationalPartyObserver;
 use Vng\EvaCore\Services\AreaService;

@@ -5,7 +5,7 @@ namespace Vng\EvaCore\Services\Export;
 use Illuminate\Support\Enumerable;
 use Illuminate\Support\Facades\Log;
 use Throwable;
-use Vng\EvaCore\ElasticResources\ProfessionalResource;
+use Vng\EvaCore\ElasticResources\Original\ProfessionalResource;
 use Vng\EvaCore\Models\Export;
 use Vng\EvaCore\Models\Professional;
 use Vng\EvaCore\Repositories\ProfessionalRepositoryInterface;

@@ -10,7 +10,7 @@ use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class GetAllDocuments extends Command
 {
-    protected $signature = 'elastic:documents {index}';
+    protected $signature = 'elastic:documents {index} {--e|exact}';
     protected $description = 'Retrieve all documents from the Elasticsearch index';
 
     public function handle(): int
@@ -18,12 +18,13 @@ class GetAllDocuments extends Command
         $this->getOutput()->writeln('Retrieving all documents...');
 
         $index = $this->argument('index');
-        $prefix = config('elastic.prefix');
-        $this->output->writeln('used index-prefix: ' . config('elastic.prefix'));
 
-        if ($prefix) {
+        $prefix = config('elastic.prefix');
+        if ($prefix && !$this->option('exact')) {
+            $this->output->writeln("used index-prefix: {$prefix}");
             $index = $prefix . '-' . $index;
         }
+        $this->output->writeln("used index: {$index}");
 
         if (!ElasticsearchEndpointService::make()->indexExists($index)) {
             $this->getOutput()->writeln('Requested index does not exist');
@@ -39,7 +40,7 @@ class GetAllDocuments extends Command
 
         foreach ($documents as $document) {
             $this->getOutput()->writeln($document['id']);
-//            $this->getOutput()->writeln(json_encode($document, JSON_PRETTY_PRINT));
+//            $this->getOutput()->writeln(json_encode($document['source'], JSON_PRETTY_PRINT));
         }
 
         $this->getOutput()->writeln('Document retrieval finished!');

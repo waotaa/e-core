@@ -2,9 +2,9 @@
 
 namespace Vng\EvaCore\Models;
 
-use Vng\EvaCore\ElasticResources\ClientCharacteristicResource;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Vng\EvaCore\ElasticResources\Original\ClientCharacteristicResource;
 
 class ClientCharacteristic extends SearchableModel
 {

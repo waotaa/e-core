@@ -1,0 +1,48 @@
+<?php
+
+namespace Vng\EvaCore\ElasticResources\Both;
+
+use Vng\EvaCore\ElasticResources\Both\Environment\BasicEnvironmentResource;
+
+class OrganisationResource extends ElasticResource
+{
+    public function toArray()
+    {
+        return [
+            // >> SGR
+            'NaamInstrumentBeherendeOrganisatie' => $this->name,    // AN..200
+            'SlugOrganisatie' => $this->slug,                       // AN..200
+            'TypeOrganisatie' => $this->type,
+
+            'LokalePartij' => LocalPartyResource::one($this->whenLoaded('localParty')),
+            'RegionalePartij' => RegionalPartyResource::one($this->whenLoaded('regionalParty')),
+            'NationalePartij' => NationalPartyResource::one($this->whenLoaded('nationalParty')),
+            'Samenwerking' => PartnershipResource::one($this->whenLoaded('partnership')),
+
+            'Contactpersoon' => ContactResource::many($this->whenLoaded('contacts')),
+
+            // >> Current
+            'id' => $this->id,
+            'created_at' => $this->formatDate($this->created_at),
+            'updated_at' => $this->formatDate($this->updated_at),
+            'deleted_at' => $this->formatDate($this->deleted_at),
+
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'type' => $this->type,
+
+            'organisationable_type' => $this->organisationable_type,
+            'organisationable_id' => $this->organisationable_id,
+
+            'localParty' => LocalPartyResource::one($this->whenLoaded('localParty')),
+            'regionalParty' => RegionalPartyResource::one($this->whenLoaded('regionalParty')),
+            'nationalParty' => NationalPartyResource::one($this->whenLoaded('nationalParty')),
+            'partnership' => PartnershipResource::one($this->whenLoaded('partnership')),
+
+            'featuringEnvironments' => BasicEnvironmentResource::many($this->whenLoaded('featuringEnvironments')),
+            'contacts' => ContactResource::many($this->whenLoaded('contacts')),
+
+            'areasActiveIn' => AreaInterfaceResource::many($this->resource->getAreasActiveInAttribute())
+        ];
+    }
+}

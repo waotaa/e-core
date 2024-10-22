@@ -7,7 +7,7 @@ use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class CreateIndex extends Command
 {
-    protected $signature = 'elastic:create-index {index}';
+    protected $signature = 'elastic:create-index {index} {--e|exact}';
     protected $description = 'Create an empty index in Elasticsearch';
 
     public function handle(): int
@@ -18,11 +18,11 @@ class CreateIndex extends Command
 
         // Voeg een prefix toe als dat is geconfigureerd
         $prefix = config('elastic.prefix');
-        if ($prefix) {
+        if ($prefix && !$this->option('exact')) {
+            $this->output->writeln("used index-prefix: {$prefix}");
             $indexName = $prefix . '-' . $indexName;
         }
 
-        $this->output->writeln("used index-prefix: {$prefix}");
         $this->output->writeln("used index: {$indexName}");
 
         // Controleer of de index al bestaat

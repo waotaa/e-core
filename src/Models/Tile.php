@@ -3,10 +3,10 @@
 namespace Vng\EvaCore\Models;
 
 use Database\Factories\TileFactory;
-use Vng\EvaCore\ElasticResources\TileResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Vng\EvaCore\ElasticResources\Original\TileResource;
 
 class Tile extends SearchableModel
 {

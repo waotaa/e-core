@@ -1,0 +1,23 @@
+<?php
+
+namespace Vng\EvaCore\ElasticResources\Original;
+
+use Vng\EvaCore\Helpers\Codelijsten;
+
+class RegistrationCodeResource extends ElasticResource
+{
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'created_at' => $this->formatDate($this->created_at),
+            'updated_at' => $this->formatDate($this->updated_at),
+
+            'code' => $this->code,
+            'label' => $this->label,
+            'is_displayed' => $this->is_displayed,
+
+            'instrument' => InstrumentResource::one($this->whenLoaded('instrument'))
+        ];
+    }
+}

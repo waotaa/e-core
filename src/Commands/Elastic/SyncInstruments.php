@@ -20,19 +20,21 @@ class SyncInstruments extends Command
     public function handle(): int
     {
         $this->output->writeln('syncing instruments...');
-        $this->output->writeln('used index-prefix: ' . config('elastic.prefix'));
+        $this->output->writeln('');
 
         if ($this->option('fresh')) {
             $this->call('elastic:delete-index', ['index' => 'instruments', '--force' => true]);
         }
 
-        $this->output->writeln('');
-
         $index = 'instruments';
         $prefix = config('elastic.prefix');
-        if ($prefix) {
+        if ($prefix && !$this->option('exact')) {
+            $this->output->writeln("used index-prefix: {$prefix}");
             $index = $prefix . '-' . $index;
         }
+        $this->output->writeln("used index: {$index}");
+
+
         if (!ElasticsearchEndpointService::make()->indexExists($index)) {
             $this->call(CreateIndex::class, [
                 'index' => 'instruments'

@@ -201,7 +201,10 @@ class ElasticsearchEndpointService
 
             // Map over the hits to return only the _source field
             return array_map(function ($hit) {
-                return $hit['_source'] ?? [];
+                return [
+                    'id' => $hit['_id'], // The document ID
+                    'source' => $hit['_source'] ?? [] // The document source
+                ];
             }, $response['hits']['hits'] ?? []);
         } catch (\Exception $e) {
             return [];

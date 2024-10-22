@@ -2,11 +2,11 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
-use Vng\EvaCore\ElasticResources\EnvironmentResource;
+use Illuminate\Console\Command;
+use Vng\EvaCore\ElasticResources\Original\EnvironmentResource;
 use Vng\EvaCore\Jobs\ElasticPublic\RemoveResourceFromPublicElasticJob;
 use Vng\EvaCore\Jobs\ElasticPublic\SyncResourceToPublicElasticJob;
 use Vng\EvaCore\Models\Environment;
-use Illuminate\Console\Command;
 use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
 use Vng\EvaCore\Services\ElasticSearch\ElasticPublicClientBuilder;
 

@@ -4,16 +4,16 @@ namespace Vng\EvaCore\Models;
 
 use Database\Factories\ProviderFactory;
 use Illuminate\Database\Eloquent\Builder;
-use Vng\EvaCore\ElasticResources\ProviderResource;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Vng\EvaCore\ElasticResources\Original\ProviderResource;
 use Vng\EvaCore\Interfaces\IsMemberInterface;
 use Vng\EvaCore\Observers\ProviderObserver;
 use Vng\EvaCore\Repositories\Eloquent\ProviderRepository;
 use Vng\EvaCore\Traits\HasContacts;
 use Vng\EvaCore\Traits\HasOwner;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Webpatser\Uuid\Uuid;
 
 class Provider extends SearchableModel

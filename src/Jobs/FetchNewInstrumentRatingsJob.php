@@ -2,11 +2,11 @@
 
 namespace Vng\EvaCore\Jobs;
 
+use DateTime;
 use Illuminate\Support\Facades\Log;
-use Vng\EvaCore\ElasticResources\RatingResource;
+use Vng\EvaCore\ElasticResources\Original\RatingResource;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Rating;
-use DateTime;
 
 class FetchNewInstrumentRatingsJob extends ElasticJob
 {

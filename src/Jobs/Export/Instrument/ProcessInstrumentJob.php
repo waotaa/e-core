@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Throwable;
-use Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource;
+use Vng\EvaCore\ElasticResources\Original\InstrumentResource;
 use Vng\EvaCore\Enums\ExportStatusEnum;
 use Vng\EvaCore\Jobs\Export\useExportEntityTrait;
 use Vng\EvaCore\Jobs\Export\useTempLocalStorageTrait;
@@ -50,7 +50,7 @@ class ProcessInstrumentJob implements ShouldQueue
         Log::debug("Exp.Instruments Processing instrument {$instrument->id} for export {$mark}");
 
         // Transform instrument to array
-        $transformedItem = InstrumentWerknemersdienstverleningResource::make($instrument)->toArray();
+        $transformedItem = InstrumentResource::make($instrument)->toArray();
         $jsonItem = json_encode($transformedItem, JSON_PRETTY_PRINT);
 
         $result = $this->storeTempFile($jsonItem, $mark, "{$instrument->id}.json");

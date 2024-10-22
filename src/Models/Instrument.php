@@ -4,8 +4,14 @@ namespace Vng\EvaCore\Models;
 
 use Database\Factories\InstrumentFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Vng\EvaCore\Casts\CleanedHtml;
-use Vng\EvaCore\ElasticResources\InstrumentWerknemersdienstverleningResource;
+use Vng\EvaCore\ElasticResources\Original\InstrumentResource;
 use Vng\EvaCore\Enums\DurationUnitEnum;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Interfaces\IsMemberInterface;
@@ -15,12 +21,6 @@ use Vng\EvaCore\Services\AreaService;
 use Vng\EvaCore\Traits\CanSaveQuietly;
 use Vng\EvaCore\Traits\HasContacts;
 use Vng\EvaCore\Traits\HasOwner;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
 use Webpatser\Uuid\Uuid;
 
 class Instrument extends SearchableModel
@@ -32,7 +32,7 @@ class Instrument extends SearchableModel
     const REACH_NATIONAL = 'national';
 
     protected $table = 'instruments';
-    protected string $elasticResource = InstrumentWerknemersdienstverleningResource::class;
+    protected string $elasticResource = InstrumentResource::class;
     protected $fillable = [
         'created_at',
         'updated_at',

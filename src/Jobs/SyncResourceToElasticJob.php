@@ -2,13 +2,13 @@
 
 namespace Vng\EvaCore\Jobs;
 
+use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
-use Vng\EvaCore\ElasticResources\ElasticResource;
+use Vng\EvaCore\ElasticResources\ElasticResourceInterface;
 use Vng\EvaCore\Models\SyncAttempt;
-use Elasticsearch\Client;
 use Vng\EvaCore\Services\ElasticSearch\ElasticClientBuilder;
 
 class SyncResourceToElasticJob extends ElasticJob
@@ -96,10 +96,10 @@ class SyncResourceToElasticJob extends ElasticJob
         return $this->model->getSearchId();
     }
 
-    protected function getResource(): ElasticResource
+    protected function getResource(): ElasticResourceInterface
     {
         $resource = $this->resourceClass::make($this->model);
-        if (!$resource instanceof ElasticResource) {
+        if (!$resource instanceof ElasticResourceInterface) {
             throw new Exception('Invalid resource class provided');
         }
         return $resource;

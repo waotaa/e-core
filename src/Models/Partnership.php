@@ -3,13 +3,13 @@
 namespace Vng\EvaCore\Models;
 
 use Database\Factories\PartnershipFactory;
-use Vng\EvaCore\ElasticResources\PartnershipResource;
-use Vng\EvaCore\Interfaces\AreaInterface;
-use Vng\EvaCore\Traits\AreaTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Collection;
+use Vng\EvaCore\ElasticResources\Original\PartnershipResource;
+use Vng\EvaCore\Interfaces\AreaInterface;
+use Vng\EvaCore\Traits\AreaTrait;
 
 class Partnership extends AbstractOrganisationBase implements AreaInterface
 {

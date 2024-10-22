@@ -2,17 +2,16 @@
 
 namespace Vng\EvaCore\Models;
 
-use Carbon\Carbon;
 use Database\Factories\EnvironmentFactory;
 use Illuminate\Contracts\Encryption\DecryptException;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Contracts\Encryption\Encrypter;
-use Illuminate\Support\Str;
-use Vng\EvaCore\ElasticResources\EnvironmentResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
+use Vng\EvaCore\ElasticResources\Original\EnvironmentResource;
 use Vng\EvaCore\Observers\EnvironmentObserver;
 use Vng\EvaCore\Services\AreaService;
 use Vng\EvaCore\Services\Storage\LogoStorageService;

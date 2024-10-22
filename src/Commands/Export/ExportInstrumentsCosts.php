@@ -3,7 +3,7 @@
 namespace Vng\EvaCore\Commands\Export;
 
 use Illuminate\Console\Command;
-use Vng\EvaCore\ElasticResources\Instrument\InstrumentCostResource;
+use Vng\EvaCore\ElasticResources\Original\Instrument\InstrumentCostResource;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Services\StorageService;
 use function collect;

@@ -3,19 +3,19 @@
 namespace Vng\EvaCore\Models;
 
 use Database\Factories\TownshipFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Vng\EvaCore\ElasticResources\TownshipResource;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
+use Vng\EvaCore\ElasticResources\Original\TownshipResource;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Interfaces\IsOwnerInterface;
 use Vng\EvaCore\Traits\AreaTrait;
 use Vng\EvaCore\Traits\HasDynamicSlug;
 use Vng\EvaCore\Traits\IsOwner;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
 
 class Township extends SearchableModel implements IsOwnerInterface, AreaInterface
 {
