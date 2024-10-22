@@ -28,7 +28,7 @@ class SyncInstruments extends Command
 
         $index = 'instruments';
         $prefix = config('elastic.prefix');
-        if ($prefix && !$this->option('exact')) {
+        if ($prefix) {
             $this->output->writeln("used index-prefix: {$prefix}");
             $index = $prefix . '-' . $index;
         }
