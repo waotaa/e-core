@@ -1,13 +1,13 @@
 type: object
-  properties:
-    NaamArbeidsmarktregio:
-      type: string
-      maxLength: 200
-      pattern: "^[a-zA-Z0-9]*$"
-    CdArbeidsmarktregio:
-      $ref: '../codelijsten/CdArbeidsmarktregio.yml'
-    Gemeente:
-      type: array
-      nullable: true
-      items:
-        $ref: './gemeente.yml'
+properties:
+  NaamArbeidsmarktregio:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  CdArbeidsmarktregio:
+    $ref: '../codelijsten/CdArbeidsmarktregio.yml'
+  Gemeente:
+    type: array
+    nullable: true
+    items:
+      $ref: './gemeente.yml'

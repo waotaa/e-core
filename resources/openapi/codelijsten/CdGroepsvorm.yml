@@ -1,11 +1,8 @@
-components:
-  schemas:
-    CdGroepsvorm:
-      type: string
-      enum:
-        - "GV01"  # Individueel
-        - "GV02"  # Groep
-      description: |
-        Codelijst voor groepsvormen:
-        - "GV01": Individueel
-        - "GV02": Groep
+type: string
+enum:
+  - "GV01"  # Individueel
+  - "GV02"  # Groep
+description: |
+  Codelijst voor groepsvormen:
+  - "GV01": Individueel
+  - "GV02": Groep

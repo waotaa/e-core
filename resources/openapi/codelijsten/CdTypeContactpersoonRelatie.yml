@@ -1,11 +1,8 @@
-components:
-  schemas:
-    CdContactpersoonRelatieType:
-      type: string
-      enum:
-        - "01"  # Extern
-        - "02"  # Intern
-      description: |
-        Codelijst voor type contactpersoon relaties:
-        - "01": Extern
-        - "02": Intern
+type: string
+enum:
+  - "01"  # Extern
+  - "02"  # Intern
+description: |
+  Codelijst voor type contactpersoon relaties:
+  - "01": Extern
+  - "02": Intern

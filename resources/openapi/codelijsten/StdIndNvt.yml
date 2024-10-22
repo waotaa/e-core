@@ -1,10 +1,9 @@
-StdIndNvt:
-  type: string
-  enum:
-    - "1"
-    - "2"
-    - "8"
-  description: |
-    - "1": Ja
-    - "2": Nee
-    - "8": Niet van toepassing
+type: string
+enum:
+  - "1"
+  - "2"
+  - "8"
+description: |
+  - "1": Ja
+  - "2": Nee
+  - "8": Niet van toepassing

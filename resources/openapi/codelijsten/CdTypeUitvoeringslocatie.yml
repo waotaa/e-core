@@ -1,17 +1,14 @@
-components:
-  schemas:
-    CdUitvoeringslocatieType:
-      type: string
-      enum:
-        - "01"  # Aanbieder
-        - "02"  # Werkgever
-        - "03"  # Gemeente
-        - "04"  # Klant thuis
-        - "05"  # Adres
-      description: |
-        Codelijst voor type uitvoeringslocaties:
-        - "01": Aanbieder
-        - "02": Werkgever
-        - "03": Gemeente
-        - "04": Klant thuis
-        - "05": Adres
+type: string
+enum:
+  - "01"  # Aanbieder
+  - "02"  # Werkgever
+  - "03"  # Gemeente
+  - "04"  # Klant thuis
+  - "05"  # Adres
+description: |
+  Codelijst voor type uitvoeringslocaties:
+  - "01": Aanbieder
+  - "02": Werkgever
+  - "03": Gemeente
+  - "04": Klant thuis
+  - "05": Adres
