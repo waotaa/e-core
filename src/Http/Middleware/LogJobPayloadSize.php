@@ -2,7 +2,6 @@
 
 namespace Vng\EvaCore\Http\Middleware;
 
-use Closure;
 use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\Jobs\ElasticJob;
 

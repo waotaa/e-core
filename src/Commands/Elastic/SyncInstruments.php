@@ -34,12 +34,11 @@ class SyncInstruments extends Command
         }
         $this->output->writeln("used index: {$index}");
 
-
-        if (!ElasticsearchEndpointService::make()->indexExists($index)) {
-            $this->call(CreateIndex::class, [
-                'index' => 'instruments'
-            ]);
-        }
+//        if (!ElasticsearchEndpointService::make()->indexExists($index)) {
+//            $this->call(CreateIndex::class, [
+//                'index' => 'instruments'
+//            ]);
+//        }
 
         /** @var InstrumentRepositoryInterface $instrumentRepository */
         $instrumentRepository = app(InstrumentRepositoryInterface::class);
