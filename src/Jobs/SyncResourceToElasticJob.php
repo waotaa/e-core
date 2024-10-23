@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\ElasticResources\ElasticResourceInterface;
+use Vng\EvaCore\Http\Middleware\LogJobPayloadSize;
 use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Services\ElasticSearch\ElasticClientBuilder;
 
@@ -23,6 +24,11 @@ class SyncResourceToElasticJob extends ElasticJob
         $this->model = $model;
         $this->index = $index;
         $this->resourceClass = $resourceClass;
+    }
+
+    public function middleware()
+    {
+        return [new LogJobPayloadSize()];
     }
 
     public function handle(): void

@@ -21,7 +21,7 @@ class SyncForSgr extends Command
     public function handle(): int
     {
         $this->getOutput()->writeln('syncing...');
-        $this->getOutput()->writeln('_ index prefix: ' . $this->getIndexPrefix());
+        $this->getOutput()->writeln('_ index prefix: ' . config('elastic.prefix') . $this->getIndexPrefix());
 
         $this->syncInstruments();
 

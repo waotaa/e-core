@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Providers;
 
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\AggregateServiceProvider;
 use Vng\EvaCore\Commands\ApiSpecs\GenerateSchema;
 use Vng\EvaCore\Commands\AssignRegions;
@@ -87,6 +88,7 @@ use Vng\EvaCore\Commands\Setup\SeedCharacteristics;
 use Vng\EvaCore\Commands\Setup\Setup;
 use Vng\EvaCore\Commands\Setup\SetupAuthorizationMatrix;
 use Vng\EvaCore\Commands\Setup\Update;
+use Vng\EvaCore\Http\Middleware\LogAsyncPayloadSize;
 use Vng\EvaCore\Notifications\RatingStoredNotification;
 use Vng\EvaCore\Notifications\RatingStoredNotificationInterface;
 use Vng\EvaCore\Repositories\AddressRepositoryInterface;
@@ -282,11 +284,24 @@ class EvaServiceProvider extends AggregateServiceProvider
         $this->publishTranslations();
         $this->publishApiSpecs();
         $this->registerCommands();
+        $this->registerGlobalMiddleware();
 
 //        Relation::morphMap([
 //            'instrument' => 'App\Models\Instrument',
 //            'provider' => 'App\Models\Provider'
 //        ]);
+    }
+
+    /**
+     * Registreer de LogAsyncPayloadSize middleware als globale middleware.
+     */
+    protected function registerGlobalMiddleware()
+    {
+        // Maak de Kernel aan (verantwoordelijk voor het verwerken van HTTP-verzoeken)
+        $kernel = $this->app->make(Kernel::class);
+
+        // Voeg de middleware toe aan de globale middleware stack
+        $kernel->pushMiddleware(LogAsyncPayloadSize::class);
     }
 
     private function publishConfig()
