@@ -1,8 +1,8 @@
 <?php
 
-namespace Vng\EvaCore\ElasticResources\Original\Shared;
+namespace Vng\EvaCore\ElasticResources\Both\Shared;
 
-class RegionResource extends \Vng\EvaCore\ElasticResources\Original\RegionResource
+class RegionResource extends \Vng\EvaCore\ElasticResources\Both\RegionResource
 {
     public function toArray(): array
     {

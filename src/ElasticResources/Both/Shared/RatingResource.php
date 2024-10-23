@@ -1,8 +1,8 @@
 <?php
 
-namespace Vng\EvaCore\ElasticResources\Original\Shared;
+namespace Vng\EvaCore\ElasticResources\Both\Shared;
 
-class RatingResource extends \Vng\EvaCore\ElasticResources\Original\RatingResource
+class RatingResource extends \Vng\EvaCore\ElasticResources\Both\RatingResource
 {
     public function toArray(): array
     {
