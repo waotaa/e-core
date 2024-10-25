@@ -8,7 +8,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Vng\EvaCore\ElasticResources\Original\ProfessionalResource;
+use Vng\EvaCore\ElasticResources\Both\ProfessionalResource;
 use Vng\EvaCore\Observers\ProfessionalObserver;
 
 class Professional extends SearchableModel implements CanResetPasswordContract

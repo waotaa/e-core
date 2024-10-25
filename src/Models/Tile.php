@@ -6,7 +6,7 @@ use Database\Factories\TileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Vng\EvaCore\ElasticResources\Original\TileResource;
+use Vng\EvaCore\ElasticResources\Both\TileResource;
 
 class Tile extends SearchableModel
 {

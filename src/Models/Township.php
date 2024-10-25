@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
-use Vng\EvaCore\ElasticResources\Original\TownshipResource;
+use Vng\EvaCore\ElasticResources\Both\TownshipResource;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Interfaces\IsOwnerInterface;
 use Vng\EvaCore\Traits\AreaTrait;

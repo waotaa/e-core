@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Vng\EvaCore\ElasticResources\Original\ProviderResource;
+use Vng\EvaCore\ElasticResources\Both\ProviderResource;
 use Vng\EvaCore\Interfaces\IsMemberInterface;
 use Vng\EvaCore\Observers\ProviderObserver;
 use Vng\EvaCore\Repositories\Eloquent\ProviderRepository;

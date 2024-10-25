@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
-use Vng\EvaCore\ElasticResources\Original\EnvironmentResource;
+use Vng\EvaCore\ElasticResources\Both\EnvironmentResource;
 use Vng\EvaCore\Observers\EnvironmentObserver;
 use Vng\EvaCore\Services\AreaService;
 use Vng\EvaCore\Services\Storage\LogoStorageService;

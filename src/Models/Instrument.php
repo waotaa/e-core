@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Vng\EvaCore\Casts\CleanedHtml;
-use Vng\EvaCore\ElasticResources\Original\InstrumentResource;
+use Vng\EvaCore\ElasticResources\Both\InstrumentResource;
 use Vng\EvaCore\Enums\DurationUnitEnum;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Interfaces\IsMemberInterface;

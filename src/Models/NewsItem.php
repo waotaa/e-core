@@ -5,7 +5,7 @@ namespace Vng\EvaCore\Models;
 use Database\Factories\NewsItemFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Vng\EvaCore\ElasticResources\Original\NewsItemResource;
+use Vng\EvaCore\ElasticResources\Both\NewsItemResource;
 use Vng\EvaCore\Observers\NewsItemObserver;
 
 class NewsItem extends SearchableModel
