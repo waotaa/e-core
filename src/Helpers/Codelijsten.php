@@ -8,7 +8,8 @@ class Codelijsten
 {
     public static function get(string $listName)
     {
-        $path = resource_path("codelijsten/{$listName}.php");
+        $path = __DIR__ . "/../../resources/codelijsten/{$listName}.php";
+//        $path = resource_path("codelijsten/{$listName}.php");
 
         if (File::exists($path)) {
             return include $path;

@@ -29,6 +29,11 @@ class RegistrationCode extends Model
         static::observe(RegistrationCodeObserver::class);
     }
 
+    public function shouldDisplay(): bool
+    {
+        return is_null($this->getAttribute('is_displayed')) ? true : $this->getAttribute('is_displayed');
+    }
+
     public function instrument(): BelongsTo
     {
         return $this->belongsTo(Instrument::class);

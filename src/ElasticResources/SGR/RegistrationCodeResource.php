@@ -11,7 +11,7 @@ class RegistrationCodeResource extends ElasticResource
         return [
             'Registratiecode' => $this->code,       // AN..34
             'Registratiecodelabel' => $this->label, // AN..200
-            'IndWeergeven' => Codelijsten::getJaNeeNvtIndicatieCode($this->is_displayed),
+            'IndWeergeven' => Codelijsten::getJaNeeIndicatieCode($this->resource->shouldDisplay()),
 
             'InstrumentWerknemersdienstverlening' => InstrumentResource::one($this->whenLoaded('instrument')),
         ];
