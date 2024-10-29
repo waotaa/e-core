@@ -17,11 +17,11 @@ properties:
     maxLength: 5000
     pattern: "^[a-zA-Z0-9]*$"
   IndDoelgroepregister:
-    type: boolean
+    $ref: '../codelijsten/StdIndNvt.yml'
   IndTijdelijkeRegeling:
-    type: boolean
+    $ref: '../codelijsten/StdIndJN.yml'
   IndLeerwerktraject:
-    type: boolean
+    $ref: '../codelijsten/StdIndJN.yml'
 
   Instrument:
     $ref: './instrument.yml'

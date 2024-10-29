@@ -28,8 +28,8 @@ properties:
     items:
       $ref: './beoordeling.yml'
   environment:
+    nullable: true
     anyOf:
-      - type: 'null'
       - $ref: './environment.yml'
 #  mutations:
 #    type: array

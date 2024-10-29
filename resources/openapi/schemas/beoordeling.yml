@@ -11,38 +11,32 @@ properties:
     pattern: "^[a-zA-Z0-9]*$"
   AlgemeneScore:
     type: integer
-    minLength: 1
-    maxLength: 1
-    pattern: "^[1-5]*$"
+    maximum: 5
   ToelAlgemeneScore:
     type: string
-    maxLength: 320
+    maxLength: 2000
     pattern: "^[a-zA-Z0-9]*$"
     nullable: true
   ResultaatScore:
     type: integer
-    minLength: 1
-    maxLength: 1
-    pattern: "^[1-5]*$"
+    maximum: 5
   ToelResultaatScore:
     type: string
-    maxLength: 320
+    maxLength: 2000
     pattern: "^[a-zA-Z0-9]*$"
     nullable: true
   UitvoeringsScore:
     type: integer
-    minLength: 1
-    maxLength: 1
-    pattern: "^[1-5]*$"
+    maximum: 5
   ToelUitvoeringsScore:
     type: string
-    maxLength: 320
+    maxLength: 2000
     pattern: "^[a-zA-Z0-9]*$"
     nullable: true
   DatTijdBeoordeling:
     type: string
     format: date-time
   InstrumentWerknemersdienstverlening:
+    nullable: true
     anyOf:
-      - type: 'null'
       - $ref: './instrumentWerknemersdienstverlening.yml'

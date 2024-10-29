@@ -7,11 +7,11 @@ use Illuminate\Support\Collection;
 
 interface AreaInterface
 {
-    public function getName(): string;
+    public function getAreaName(): string;
 
-    public function getSlug(): string;
+    public function getAreaSlug(): string;
 
-    public function getType(): string;
+    public function getAreaType(): string;
 
     public function getAreaIdentifier(): string;
 

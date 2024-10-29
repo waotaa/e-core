@@ -42,6 +42,16 @@ class Codelijsten
         return self::getName('Arbeidsmarktregios', $key);
     }
 
+    public static function getBereikName(?string $key = null): ?string
+    {
+        return self::getName('Bereik', $key);
+    }
+
+    public static function getBereikCode(?string $key = null): ?string
+    {
+        return self::getCode('Bereik', $key);
+    }
+
     public static function getDienstverbandName(?string $key = null): ?string
     {
         return self::getName('Dienstverbanden', $key);
@@ -131,6 +141,26 @@ class Codelijsten
     public static function getTypeContactPersoonRelatieCode(?string $key = null): ?string
     {
         return self::getCode('TypeContactPersoonRelaties', $key);
+    }
+
+    public static function getTypeGebiedName(?string $key = null): ?string
+    {
+        return self::getName('TypeGebieden', $key);
+    }
+
+    public static function getTypeGebiedCode(?string $key = null): ?string
+    {
+        return self::getCode('TypeGebieden', $key);
+    }
+
+    public static function getTypeOrganisatieName(?string $key = null): ?string
+    {
+        return self::getName('TypeOrganisaties', $key);
+    }
+
+    public static function getTypeOrganisatieCode(?string $key = null): ?string
+    {
+        return self::getCode('TypeOrganisaties', $key);
     }
 
     public static function getUitvoeringLocatieName(?string $key = null): ?string

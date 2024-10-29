@@ -14,7 +14,7 @@ properties:
     maxLength: 200
     pattern: "^[a-zA-Z0-9]*$"
   IndPublicatie:
-    type: boolean
+    $ref: '../codelijsten/StdIndJN.yml'
   DatBPublicatie:
     type: string
     format: date-time
@@ -23,6 +23,8 @@ properties:
     type: string
     format: date-time
     nullable: true
+  IndCompleet:
+    $ref: '../codelijsten/StdIndJN.yml'
   DatAangemaakt:
     type: string
     format: date-time
@@ -41,11 +43,11 @@ properties:
     maxLength: 200
     pattern: "^[a-zA-Z0-9]*$"
   IndLandelijk:
-    type: boolean
+    $ref: '../codelijsten/StdIndJN.yml'
   IndRegionaal:
-    type: boolean
+    $ref: '../codelijsten/StdIndJN.yml'
   IndLokaal:
-    type: boolean
+    $ref: '../codelijsten/StdIndJN.yml'
   InstrumentBeherendeOrganisatie:
     $ref: './instrumentBeherendeOrganisatie.yml'
   Uitvoeringsvorm:
@@ -108,17 +110,17 @@ properties:
     nullable: true
     items:
       $ref: './gebied.yml'
-  links:
+  Link:
     type: array
     nullable: true
     items:
       $ref: './link.yml'
-  videos:
+  Video:
     type: array
     nullable: true
     items:
       $ref: './video.yml'
-  downloads:
+  Download:
     type: array
     nullable: true
     items:

@@ -2,6 +2,10 @@ Aanbieder:
   $ref: './schemas/aanbieder.yml'
 Adres:
   $ref: './schemas/adres.yml'
+AdresNederland:
+  $ref: './schemas/adresNederland.yml'
+Antwoordnradres:
+  $ref: './schemas/antwoordnradres.yml'
 Arbeidsmarktregio:
   $ref: './schemas/arbeidsmarktregio.yml'
 Beoordeling:
@@ -22,6 +26,8 @@ Instrument:
   $ref: './schemas/instrument.yml'
 InstrumentBeherendeOrganisatie:
   $ref: './schemas/instrumentBeherendeOrganisatie.yml'
+InstrumentOmgeving:
+  $ref: './schemas/instrumentOmgeving.yml'
 InstrumentWerkgeversdienstverlening:
   $ref: './schemas/instrumentWerkgeversdienstverlening.yml'
 InstrumentWerknemersdienstverlening:
@@ -34,6 +40,10 @@ Leeftijdsgroep:
   $ref: './schemas/leeftijdsgroep.yml'
 Lokalepartij:
   $ref: './schemas/lokalePartij.yml'
+Nieuwsberickt:
+  $ref: './schemas/nieuwsbericht.yml'
+Postadres:
+  $ref: './schemas/postadres.yml'
 Regionalepartij:
   $ref: './schemas/regionalePartij.yml'
 Registratiecode:
@@ -42,6 +52,8 @@ Samenwerking:
   $ref: './schemas/samenwerking.yml'
 SectorInstrument:
   $ref: './schemas/sectorInstrument.yml'
+StraatAdres:
+  $ref: './schemas/straatAdres.yml'
 Uitvoeringslocatie:
   $ref: './schemas/uitvoeringslocatie.yml'
 Uitvoeringsvorm:
@@ -55,22 +67,12 @@ Download:
   $ref: './schemas/download.yml'
 Environment:
   $ref: './schemas/environment.yml'
-InstrumentTracker:
-  $ref: './schemas/instrument-tracker.yml'
 Link:
   $ref: './schemas/link.yml'
 Manager:
   $ref: './schemas/manager.yml'
-Mutation:
-  $ref: './schemas/mutation.yml'
 NewsItem:
   $ref: './schemas/news-item.yml'
-Professional:
-  $ref: './schemas/professional.yml'
-Role:
-  $ref: './schemas/role.yml'
-User:
-  $ref: './schemas/user.yml'
 Video:
   $ref: './schemas/video.yml'
 

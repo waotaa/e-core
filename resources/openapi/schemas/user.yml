@@ -18,6 +18,6 @@ properties:
   password_updated_at:
     type: string
   manager:
+    nullable: true
     anyOf:
-      - type: 'null'
       - $ref: './manager.yml'

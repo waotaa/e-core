@@ -8,5 +8,6 @@ properties:
     type: string
     maxLength: 200
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   IndWeergeven:
-    type: boolean
+    $ref: '../codelijsten/StdIndJN.yml'

@@ -1,4 +1,6 @@
 type: object
 properties:
   Antwoordnr:
-    type: integer
+    type: string
+    maxLength: 5
+    pattern: "^[0-9]*$"

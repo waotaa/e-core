@@ -1,8 +1,9 @@
 type: object
 properties:
   Huisnr:
-    type: integer
+    type: string
     maxLength: 5
+    pattern: "^[0-9]*$"
   Huisnrtoevoeging:
     type: string
     maxLength: 6

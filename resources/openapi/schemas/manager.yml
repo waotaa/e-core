@@ -20,8 +20,8 @@ properties:
   months_unupdated_limit:
     type: integer
   created_by:
+    nullable: true
     anyOf:
-      - type: 'null'
       - $ref: './manager.yml'
   instrumentTrackers:
     type: array

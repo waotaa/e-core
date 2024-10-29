@@ -28,6 +28,11 @@ class RegionalParty extends AbstractOrganisationBase implements AreaInterface
         return RegionalPartyFactory::new();
     }
 
+    public function getTypeAttribute(): string
+    {
+        return 'Regionale partij';
+    }
+
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);

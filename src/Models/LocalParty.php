@@ -28,6 +28,11 @@ class LocalParty extends AbstractOrganisationBase implements AreaInterface
         return LocalPartyFactory::new();
     }
 
+    public function getTypeAttribute(): string
+    {
+        return 'Lokale partij';
+    }
+
     public function township(): BelongsTo
     {
         return $this->belongsTo(Township::class);

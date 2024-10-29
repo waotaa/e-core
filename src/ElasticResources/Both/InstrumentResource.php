@@ -4,6 +4,7 @@ namespace Vng\EvaCore\ElasticResources\Both;
 
 use Vng\EvaCore\Helpers\Codelijsten;
 use Vng\EvaCore\Models\Instrument;
+use Vng\EvaCore\Services\ModelHelpers\InstrumentHelper;
 
 class InstrumentResource extends ElasticResource
 {
@@ -12,14 +13,18 @@ class InstrumentResource extends ElasticResource
 
     public function toArray(): array
     {
+        $isComplete = InstrumentHelper::create($this->resource)->isComplete();
+
         return [
             // >> SGR
-            // Instrument
-            'DatBPublicatie' => $this->formatDate($this->publish_from),                 // DATUM
-            'DatEPublicatie' => $this->formatDate($this->publish_to),                   // DATUM
-            'IndPublicatie' => Codelijsten::getJaNeeIndicatieCode($this->is_active),    // StdIndJN
             'NaamInstrument' => $this->name,                                            // AN..200
             'UuidInstrument' => $this->uuid,                                            // AN36
+            'SlugInstrument' => $this->slug,                                            // AN36
+
+            'IndPublicatie' => Codelijsten::getJaNeeIndicatieCode($this->is_active),    // StdIndJN
+            'DatBPublicatie' => $this->formatDate($this->publish_from),                 // DATUM
+            'DatEPublicatie' => $this->formatDate($this->publish_to),                   // DATUM
+            'IndCompleet' => Codelijsten::getJaNeeIndicatieCode($isComplete),           // StdIndJN
 
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->organisation),
 
@@ -27,7 +32,8 @@ class InstrumentResource extends ElasticResource
             'DatGewijzigd' => $this->formatDate($this->updated_at),     // DATUMTIJD
             'DatVerwijderd' => $this->formatDate($this->deleted_at),    // DATUMTIJD
 
-            'SlugInstrument' => $this->slug,                                            // AN36
+            'CdBereikInstrument' => Codelijsten::getBereikCode($this->resource->getReachSGR()),
+            'NaamBereikInstrument' => $this->resource->getReachSGR(),
 
             'Aanbieder' => ProviderResource::one($this->provider),
             'Contactpersoon' => ContactResource::many($this->contacts),
@@ -38,10 +44,9 @@ class InstrumentResource extends ElasticResource
             'Video' => VideoResource::many($this->videos),
 
             // Wens SGR
-            'IndLandelijk' => $this->resource->isNational(),
-            'IndRegionaal' => $this->resource->isRegional(),
-            'IndLokaal' => $this->resource->isLocal(),
-            'Bereik' => $this->resource->getReach(),
+            'IndLandelijk' => Codelijsten::getJaNeeIndicatieCode($this->resource->isNational()),
+            'IndRegionaal' => Codelijsten::getJaNeeIndicatieCode($this->resource->isRegional()),
+            'IndLokaal' => Codelijsten::getJaNeeIndicatieCode($this->resource->isLocal()),
 
             'BeschikbareGebieden' => AreaInterfaceResource::many($this->availableAreas),
             'OmvatteBeschikbareGebieden' => AreaInterfaceResource::many($this->allAvailableAreas),

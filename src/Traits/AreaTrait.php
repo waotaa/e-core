@@ -9,25 +9,35 @@ use Vng\EvaCore\Services\AreaService;
 
 trait AreaTrait
 {
-    public function getName(): string
+    public function getAreaName(): string
     {
         return $this->name;
     }
 
-    public function getSlug(): string
+    public function getAreaSlug(): string
     {
         return $this->slug;
     }
 
-    public function getType(): string
+    public function getAreaType(): string
     {
 //        return get_class($this);
         return (new ReflectionClass($this))->getShortName();
     }
 
+    public function getAreaTypeSGR(): ?string
+    {
+        return match ($this->getAreaType()) {
+            'Region' => 'Arbeidsmarktregio',
+            'Township' => 'Gemeente',
+            'Neighbourhood' => 'Wijk',
+            default => null,
+        };
+    }
+
     public function getAreaIdentifier(): string
     {
-        return $this->getType() . '-' . $this->getName();
+        return $this->getAreaType() . '-' . $this->getAreaName();
     }
 
     /**

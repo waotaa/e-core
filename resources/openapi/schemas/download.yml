@@ -1,19 +1,12 @@
 type: object
 properties:
-  id:
-    type: integer
-  created_at:
+  NaamDownload:
     type: string
-    format: date-time
-  updated_at:
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  UrlDownload:
     type: string
-    format: date-time
-    nullable: true
-  label:
-    type: string
-  url:
-    type: string
-  filename:
-    type: string
-  instrument:
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  Instrument:
     $ref: './instrument.yml'

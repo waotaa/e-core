@@ -6,15 +6,19 @@ properties:
     pattern: "^[a-zA-Z0-9]*$"
   CdTypeGebied:
     $ref: '../codelijsten/CdTypeGebied.yml'
-  Arbeidsmarktregio:
-    anyOf:
-      - type: 'null'
-      - $ref: './arbeidsmarktregio.yml'
-  Gemeente:
-    anyOf:
-      - type: 'null'
-      - $ref: './gemeente.yml'
-  Wijk:
-    anyOf:
-      - type: 'null'
-      - $ref: './wijk.yml'
+  NaamTypeGebied:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+#  Arbeidsmarktregio:
+#    nullable: true
+#    anyOf:
+#      - $ref: './arbeidsmarktregio.yml'
+#  Gemeente:
+#    nullable: true
+#    anyOf:
+#      - $ref: './gemeente.yml'
+#  Wijk:
+#    nullable: true
+#    anyOf:
+#      - $ref: './wijk.yml'

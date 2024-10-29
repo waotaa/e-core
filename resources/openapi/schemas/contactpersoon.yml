@@ -14,9 +14,14 @@ properties:
     maxLength: 320
     pattern: "^[a-zA-Z0-9]*$"
     nullable: true
+  OmsContactpersoon:
+    type: string
+    maxLength: 10000
+    pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   CdTypeContactpersoonRelatie:
+    nullable: true
     anyOf:
-      - type: 'null'
       - $ref: '../codelijsten/CdTypeContactpersoonRelatie.yml'
   InstrumentBeherendeOrganisatie:
     $ref: './instrumentBeherendeOrganisatie.yml'

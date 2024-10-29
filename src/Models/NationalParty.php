@@ -35,6 +35,11 @@ class NationalParty extends AbstractOrganisationBase implements AreaInterface
         return NationalPartyFactory::new();
     }
 
+    public function getTypeAttribute(): string
+    {
+        return 'Landelijke partij';
+    }
+
     public function getParentAreas(): ?Collection
     {
         return null;

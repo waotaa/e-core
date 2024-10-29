@@ -1,0 +1,38 @@
+type: object
+properties:
+  TitelNieuwsbericht:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  OndertitelNieuwsbericht:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  InhoudNieuwsbericht:
+    type: string
+    maxLength: 10000
+    pattern: "^[a-zA-Z0-9]*$"
+  TeaserNieuwsbericht:
+    type: string
+    maxLength: 10000
+    pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
+  DatAangemaakt:
+    type: string
+    format: date-time
+  DatGewijzigd:
+    type: string
+    format: date-time
+    nullable: true
+  IndPublicatie:
+    $ref: '../codelijsten/StdIndJN.yml'
+  DatBPublicatie:
+    type: string
+    format: date-time
+    nullable: true
+  DatEPublicatie:
+    type: string
+    format: date-time
+    nullable: true
+  InstrumentOmgeving:
+    $ref: './instrumentOmgeving.yml'

@@ -13,9 +13,9 @@ class AreaInterfaceResource extends ElasticResource
     {
         return [
             'identifier' => $this->resource->getAreaIdentifier(),
-            'name' => $this->resource->getName(),
-            'slug' => $this->resource->getSlug(),
-            'type' => $this->resource->getType(),
+            'name' => $this->resource->getAreaName(),
+            'slug' => $this->resource->getAreaSlug(),
+            'type' => $this->resource->getAreaType(),
         ];
     }
 }

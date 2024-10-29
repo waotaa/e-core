@@ -28,8 +28,11 @@ class Instrument extends SearchableModel
     use SoftDeletes, HasOwner, HasFactory, CanSaveQuietly, HasContacts, MutationLog;
 
     const REACH_LOCAL = 'local';
+    const REACH_LOCAL_SGR = 'Lokaal';
     const REACH_REGIONAL = 'regional';
+    const REACH_REGIONAL_SGR = 'Regionaal';
     const REACH_NATIONAL = 'national';
+    const REACH_NATIONAL_SGR = 'Landelijk';
 
     protected $table = 'instruments';
     protected string $elasticResource = InstrumentResource::class;
@@ -269,9 +272,9 @@ class Instrument extends SearchableModel
 
     public function getAllAvailableTownshipsAttribute(): Collection
     {
-        $townshipType = (new Township())->getType();
+        $townshipType = (new Township())->getAreaType();
         return $this->getAttribute('allAvailableAreas')
-            ->filter(fn (AreaInterface $area) => $area->getType() === $townshipType)
+            ->filter(fn (AreaInterface $area) => $area->getAreaType() === $townshipType)
             ->values();
     }
 
@@ -293,8 +296,9 @@ class Instrument extends SearchableModel
         if ($this->isNational()) {
             return false;
         }
-        $regionAreas = $this->availableAreas->filter(function (AreaInterface $area) {
-            return $area->getType() === 'Region';
+        $regionType = (new Region())->getAreaType();
+        $regionAreas = $this->availableAreas->filter(function (AreaInterface $area) use ($regionType) {
+            return $area->getAreaType() === $regionType;
         });
         return $regionAreas->count() > 0;
     }
@@ -313,6 +317,17 @@ class Instrument extends SearchableModel
             return static::REACH_REGIONAL;
         }
         return static::REACH_NATIONAL;
+    }
+
+    public function getReachSGR()
+    {
+        if ($this->isLocal()) {
+            return static::REACH_LOCAL_SGR;
+        }
+        if ($this->isRegional()) {
+            return static::REACH_REGIONAL_SGR;
+        }
+        return static::REACH_NATIONAL_SGR;
     }
 
     public function parentInstrument(): BelongsTo

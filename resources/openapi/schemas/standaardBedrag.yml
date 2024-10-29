@@ -1,14 +1,16 @@
 type: object
 properties:
-  NaamAanbieder:
+  CdMunteenheid:
     type: string
-    maxLength: 200
+    maxLength: 3
     pattern: "^[a-zA-Z0-9]*$"
-  UuidAanbieder:
+  CdPositiefNegatief:
     type: string
-    minLength: 36
-    maxLength: 36
-    pattern: "^[a-zA-Z0-9]*$"
+    maxLength: 1
+    pattern: "^[0-1]*$"
+  WaardeBedr:
+    type: integer
+    maximum: 999999999999999999
   InstrumentBeherendeOrganisatie:
     $ref: './instrumentBeherendeOrganisatie.yml'
   Adres:

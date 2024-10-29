@@ -1,17 +1,18 @@
 type: object
 properties:
-  id:
-    type: integer
-  created_at:
+  NaamVideo:
     type: string
-  updated_at:
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  AanbiederVideo:
     type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  SleutelVideo:
+    type: string
+    maxLength: 200
+    pattern: "^[a-zA-Z0-9]*$"
+  Instrument:
     nullable: true
-  provider:
-    type: string
-  video_identifier:
-    type: string
-  instrument:
     anyOf:
-      - type: 'null'
       - $ref: './instrument.yml'

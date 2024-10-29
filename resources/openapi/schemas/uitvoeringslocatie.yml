@@ -7,10 +7,11 @@ properties:
   CdTypeUitvoerigslocatie:
     $ref: '../codelijsten/CdTypeUitvoeringslocatie.yml'
   IndUitvoeringslocatieActief:
-    type: boolean
+    $ref: '../codelijsten/StdIndJN.yml'
   ToelUitvoeringslocatie:
     type: string
-    maxLength: 200o
+    maxLength: 2000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   Adres:
     $ref: './adres.yml'

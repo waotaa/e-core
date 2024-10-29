@@ -18,7 +18,9 @@ properties:
     type: string
     maxLength: 2000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   OmsWerklandschaptegel:
     type: string
     maxLength: 10000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true

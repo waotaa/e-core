@@ -4,5 +4,5 @@ properties:
     $ref: '../codelijsten/CdSbi.yml'
   OmsSbiCd:
     type: string
-    maxLength: 200
+    maxLength: 60
     pattern: "^[a-zA-Z0-9]*$"

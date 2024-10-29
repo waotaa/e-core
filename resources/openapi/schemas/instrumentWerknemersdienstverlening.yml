@@ -12,58 +12,71 @@ properties:
     type: string
     maxLength: 5000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   OmsOnderscheidendeAanpak:
     type: string
     maxLength: 5000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   OmsVoorwaardenDeelname:
     type: string
     maxLength: 5000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   ToelDoelgroep:
     type: string
     maxLength: 2000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   OmsSamenwerkingspartners:
     type: string
     maxLength: 5000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   OmsWerkafspraken:
     type: string
     maxLength: 5000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   AantalUrenIntensiteitPerWeek:
     type: integer
     maximum: 9999
+    nullable: true
   OmsAanvullendeInfo:
     type: string
     maxLength: 5000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   ToelIntensiteit:
     type: string
     maxLength: 2000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   DuurTraject:
     type: integer
     maximum: 9999
+    nullable: true
+  UrenDuurTraject:
+    type: integer
+    maximum: 999999
+    nullable: true
   CdEenheidDuurTraject:
     $ref: '../codelijsten/CdEenheidDuurTraject.yml'
+    nullable: true
   ToelDuurTraject:
     type: string
     maxLength: 2000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   BedragTotaalKosten:
-    type: string
+    $ref: './standaardBedrag.yml'
+    nullable: true
   ToelKosten:
     type: string
     maxLength: 2000
     pattern: "^[a-zA-Z0-9]*$"
+    nullable: true
   OmwWerkwijzeInstrument:
     type: string
     maxLength: 10000
     pattern: "^[a-zA-Z0-9]*$"
-
-  total_duration_hours:
-    type: integer
-  total_costs_whole_number:
-    type: integer

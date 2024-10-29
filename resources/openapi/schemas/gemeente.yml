@@ -10,6 +10,6 @@ properties:
     maxLength: 4
     pattern: "^[0-9]*$"
   Arbeidsmarktregio:
+    nullable: true
     anyOf:
-      - type: 'null'
       - $ref: './arbeidsmarktregio.yml'

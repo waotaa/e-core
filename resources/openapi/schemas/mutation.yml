@@ -11,8 +11,8 @@ properties:
   changes:
     type: string
   manager:
+    nullable: true
     anyOf:
-      - type: 'null'
       - $ref: './manager.yml'
   loggable_type:
     type: string

@@ -27,6 +27,11 @@ class Partnership extends AbstractOrganisationBase implements AreaInterface
         return PartnershipFactory::new();
     }
 
+    public function getTypeAttribute(): string
+    {
+        return 'Samenwerking';
+    }
+
     public function townships(): BelongsToMany
     {
         return $this->belongsToMany(Township::class);
