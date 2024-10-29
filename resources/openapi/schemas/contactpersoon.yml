@@ -21,7 +21,7 @@ properties:
     nullable: true
   CdTypeContactpersoonRelatie:
     nullable: true
-    anyOf:
+    allOf:
       - $ref: '../codelijsten/CdTypeContactpersoonRelatie.yml'
   InstrumentBeherendeOrganisatie:
     $ref: './instrumentBeherendeOrganisatie.yml'

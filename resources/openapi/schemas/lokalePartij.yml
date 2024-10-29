@@ -2,7 +2,7 @@ type: object
 properties:
   InstrumentBeherendeOrganisatie:
     nullable: true
-    anyOf:
+    allOf:
       - $ref: './instrumentBeherendeOrganisatie.yml'
   Gemeente:
     $ref: './gemeente.yml'

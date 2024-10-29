@@ -12,13 +12,13 @@ properties:
     pattern: "^[a-zA-Z0-9]*$"
 #  Arbeidsmarktregio:
 #    nullable: true
-#    anyOf:
+#    allOf:
 #      - $ref: './arbeidsmarktregio.yml'
 #  Gemeente:
 #    nullable: true
-#    anyOf:
+#    allOf:
 #      - $ref: './gemeente.yml'
 #  Wijk:
 #    nullable: true
-#    anyOf:
+#    allOf:
 #      - $ref: './wijk.yml'

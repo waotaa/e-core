@@ -13,7 +13,7 @@ properties:
     $ref: './instrumentBeherendeOrganisatie.yml'
   Adres:
     nullable: true
-    oneOf:
+    allOf:
       - $ref: './adres.yml'
   Contactpersoon:
     type: array

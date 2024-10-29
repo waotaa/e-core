@@ -38,5 +38,5 @@ properties:
     format: date-time
   InstrumentWerknemersdienstverlening:
     nullable: true
-    anyOf:
+    allOf:
       - $ref: './instrumentWerknemersdienstverlening.yml'

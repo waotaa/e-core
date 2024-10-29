@@ -61,16 +61,18 @@ properties:
     maximum: 999999
     nullable: true
   CdEenheidDuurTraject:
-    $ref: '../codelijsten/CdEenheidDuurTraject.yml'
     nullable: true
+    allOf:
+      - $ref: '../codelijsten/CdEenheidDuurTraject.yml'
   ToelDuurTraject:
     type: string
     maxLength: 2000
     pattern: "^[a-zA-Z0-9]*$"
     nullable: true
   BedragTotaalKosten:
-    $ref: './standaardBedrag.yml'
     nullable: true
+    allOf:
+      - $ref: './standaardBedrag.yml'
   ToelKosten:
     type: string
     maxLength: 2000

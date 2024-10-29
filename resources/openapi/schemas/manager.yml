@@ -21,7 +21,7 @@ properties:
     type: integer
   created_by:
     nullable: true
-    anyOf:
+    allOf:
       - $ref: './manager.yml'
   instrumentTrackers:
     type: array

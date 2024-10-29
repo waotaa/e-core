@@ -44,7 +44,8 @@ properties:
     nullable: true
   Contactpersoon:
     nullable: true
-    $ref: './contactpersoon.yml'
+    allOf:
+      - $ref: './contactpersoon.yml'
   GetoondeOrganisaties:
     type: array
     items:

@@ -12,7 +12,7 @@ properties:
     type: string
   manager:
     nullable: true
-    anyOf:
+    allOf:
       - $ref: './manager.yml'
   loggable_type:
     type: string

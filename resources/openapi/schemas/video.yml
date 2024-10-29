@@ -14,5 +14,5 @@ properties:
     pattern: "^[a-zA-Z0-9]*$"
   Instrument:
     nullable: true
-    anyOf:
+    allOf:
       - $ref: './instrument.yml'

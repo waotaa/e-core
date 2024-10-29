@@ -29,7 +29,7 @@ properties:
       $ref: './beoordeling.yml'
   environment:
     nullable: true
-    anyOf:
+    allOf:
       - $ref: './environment.yml'
 #  mutations:
 #    type: array

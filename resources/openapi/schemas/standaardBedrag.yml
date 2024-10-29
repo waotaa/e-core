@@ -11,13 +11,3 @@ properties:
   WaardeBedr:
     type: integer
     maximum: 999999999999999999
-  InstrumentBeherendeOrganisatie:
-    $ref: './instrumentBeherendeOrganisatie.yml'
-  Adres:
-    nullable: true
-    oneOf:
-      - $ref: './adres.yml'
-  Contactpersoon:
-    type: array
-    items:
-      $ref: './contactpersoon.yml'

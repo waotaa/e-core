@@ -17,19 +17,19 @@ properties:
       $ref: './contactpersoon.yml'
   LokalePartij:
     nullable: true
-    anyOf:
+    allOf:
       - $ref: './lokalePartij.yml'
   RegionalePartij:
     nullable: true
-    anyOf:
+    allOf:
       - $ref: './regionalePartij.yml'
   LandelijkePartij:
     nullable: true
-    anyOf:
+    allOf:
       - $ref: './landelijkePartij.yml'
   Samenwerking:
     nullable: true
-    anyOf:
+    allOf:
       - $ref: './samenwerking.yml'
   ActieveGebieden:
     nullable: true

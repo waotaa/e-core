@@ -11,5 +11,5 @@ properties:
     pattern: "^[0-9]*$"
   Arbeidsmarktregio:
     nullable: true
-    anyOf:
+    allOf:
       - $ref: './arbeidsmarktregio.yml'
