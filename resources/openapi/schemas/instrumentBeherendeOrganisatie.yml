@@ -14,7 +14,7 @@ properties:
     type: array
     nullable: true
     items:
-      $ref: './contact.yml'
+      $ref: './contactpersoon.yml'
   LokalePartij:
     nullable: true
     anyOf:

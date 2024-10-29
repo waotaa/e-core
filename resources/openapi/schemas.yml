@@ -16,6 +16,8 @@ Dienstverband:
   $ref: './schemas/dienstverband.yml'
 Doelgroep:
   $ref: './schemas/doelgroep.yml'
+Download:
+  $ref: './schemas/download.yml'
 Gebied:
   $ref: './schemas/gebied.yml'
 Gemeente:
@@ -34,17 +36,19 @@ InstrumentWerknemersdienstverlening:
   $ref: './schemas/instrumentWerknemersdienstverlening.yml'
 Klantkenmerk:
   $ref: './schemas/klantkenmerk.yml'
-Landelijkepartij:
+LandelijkePartij:
   $ref: './schemas/landelijkePartij.yml'
 Leeftijdsgroep:
   $ref: './schemas/leeftijdsgroep.yml'
-Lokalepartij:
+Link:
+  $ref: './schemas/link.yml'
+LokalePartij:
   $ref: './schemas/lokalePartij.yml'
-Nieuwsberickt:
+Nieuwsbericht:
   $ref: './schemas/nieuwsbericht.yml'
 Postadres:
   $ref: './schemas/postadres.yml'
-Regionalepartij:
+RegionalePartij:
   $ref: './schemas/regionalePartij.yml'
 Registratiecode:
   $ref: './schemas/registratiecode.yml'
@@ -52,29 +56,20 @@ Samenwerking:
   $ref: './schemas/samenwerking.yml'
 SectorInstrument:
   $ref: './schemas/sectorInstrument.yml'
-StraatAdres:
-  $ref: './schemas/straatAdres.yml'
+StandaardBedrag:
+  $ref: './schemas/standaardBedrag.yml'
+Straatadres:
+  $ref: './schemas/straatadres.yml'
 Uitvoeringslocatie:
   $ref: './schemas/uitvoeringslocatie.yml'
 Uitvoeringsvorm:
   $ref: './schemas/uitvoeringsvorm.yml'
+Video:
+  $ref: './schemas/video.yml'
 Werklandschaptegel:
   $ref: './schemas/werklandschaptegel.yml'
 Wijk:
   $ref: './schemas/wijk.yml'
-
-Download:
-  $ref: './schemas/download.yml'
-Environment:
-  $ref: './schemas/environment.yml'
-Link:
-  $ref: './schemas/link.yml'
-Manager:
-  $ref: './schemas/manager.yml'
-NewsItem:
-  $ref: './schemas/news-item.yml'
-Video:
-  $ref: './schemas/video.yml'
 
 
 CdArbeidsmarktregio:

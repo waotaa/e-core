@@ -44,7 +44,7 @@ properties:
     nullable: true
   Contactpersoon:
     nullable: true
-    $ref: './contact.yml'
+    $ref: './contactpersoon.yml'
   GetoondeOrganisaties:
     type: array
     items:
@@ -53,7 +53,7 @@ properties:
   GetoondeGebieden:
     type: array
     items:
-      $ref: './area.yml'
+      $ref: './gebied.yml'
     nullable: true
   Nieuwsbericht:
     type: array
