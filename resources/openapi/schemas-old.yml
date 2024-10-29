@@ -1,64 +1,64 @@
 Address:
-  $ref: './schemas/address.yml'
+  $ref: './schemas-old/address.yml'
 Area:
-  $ref: './schemas/area.yml'
+  $ref: './schemas-old/area.yml'
 ClientCharacteristic:
-  $ref: './schemas/client-characteristic.yml'
+  $ref: './schemas-old/client-characteristic.yml'
 Contact:
-  $ref: './schemas/contact.yml'
+  $ref: './schemas-old/contact.yml'
 Download:
-  $ref: './schemas/download.yml'
+  $ref: './schemas-old/download.yml'
 Environment:
-  $ref: './schemas/environment.yml'
+  $ref: './schemas-old/environment.yml'
 GroupForm:
-  $ref: './schemas/group-form.yml'
+  $ref: './schemas-old/group-form.yml'
 Implementation:
-  $ref: './schemas/implementation.yml'
+  $ref: './schemas-old/implementation.yml'
 Instrument:
-  $ref: './schemas/instrument.yml'
+  $ref: './schemas-old/instrument.yml'
 InstrumentTracker:
-  $ref: './schemas/instrument-tracker.yml'
+  $ref: './schemas-old/instrument-tracker.yml'
 Link:
-  $ref: './schemas/link.yml'
+  $ref: './schemas-old/link.yml'
 LocalParty:
-  $ref: './schemas/local-party.yml'
+  $ref: './schemas-old/local-party.yml'
 Location:
-  $ref: './schemas/location.yml'
+  $ref: './schemas-old/location.yml'
 Manager:
-  $ref: './schemas/manager.yml'
+  $ref: './schemas-old/manager.yml'
 Mutation:
-  $ref: './schemas/mutation.yml'
+  $ref: './schemas-old/mutation.yml'
 NationalParty:
-  $ref: './schemas/national-party.yml'
+  $ref: './schemas-old/national-party.yml'
 Neighbourhood:
-  $ref: './schemas/neighbourhood.yml'
+  $ref: './schemas-old/neighbourhood.yml'
 NewsItem:
-  $ref: './schemas/news-item.yml'
+  $ref: './schemas-old/news-item.yml'
 Organisation:
-  $ref: './schemas/organisation.yml'
+  $ref: './schemas-old/organisation.yml'
 Partnership:
-  $ref: './schemas/partnership.yml'
+  $ref: './schemas-old/partnership.yml'
 Professional:
-  $ref: './schemas/professional.yml'
+  $ref: './schemas-old/professional.yml'
 Provider:
-  $ref: './schemas/provider.yml'
+  $ref: './schemas-old/provider.yml'
 Rating:
-  $ref: './schemas/rating.yml'
+  $ref: './schemas-old/rating.yml'
 Region:
-  $ref: './schemas/region.yml'
+  $ref: './schemas-old/region.yml'
 RegionalParty:
-  $ref: './schemas/regional-party.yml'
+  $ref: './schemas-old/regional-party.yml'
 RegistrationCode:
-  $ref: './schemas/registration-code.yml'
+  $ref: './schemas-old/registration-code.yml'
 Role:
-  $ref: './schemas/role.yml'
+  $ref: './schemas-old/role.yml'
 TargetGroup:
-  $ref: './schemas/target-group.yml'
+  $ref: './schemas-old/target-group.yml'
 Tile:
-  $ref: './schemas/tile.yml'
+  $ref: './schemas-old/tile.yml'
 Township:
-  $ref: './schemas/township.yml'
+  $ref: './schemas-old/township.yml'
 User:
-  $ref: './schemas/user.yml'
+  $ref: './schemas-old/user.yml'
 Video:
-  $ref: './schemas/video.yml'
+  $ref: './schemas-old/video.yml'
