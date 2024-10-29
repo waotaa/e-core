@@ -9,8 +9,11 @@ class BasicEnvironmentResource extends ElasticResource
     public function toArray()
     {
         return [
-            // >> Niet in SGR
+            // >> SGR
+            'NaamOmgeving' => $this->name,
+            'SlugOmgeving' => $this->slug,
 
+            // >> Current
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,

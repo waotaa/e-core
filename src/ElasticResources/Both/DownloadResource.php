@@ -12,6 +12,12 @@ class DownloadResource extends ElasticResource
     public function toArray()
     {
         return [
+            // >> SGR
+            'NaamDownload' => $this->label,
+            'UrlDownload' => $this->cdnUrl,
+            'Instrument' => InstrumentResource::many($this->whenLoaded('instruments')),
+
+            // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
             'updated_at' => $this->formatDate($this->updated_at),

@@ -35,6 +35,14 @@ class InstrumentResource extends ElasticResource
             'CdBereikInstrument' => Codelijsten::getBereikCode($this->resource->getReachSGR()),
             'NaamBereikInstrument' => $this->resource->getReachSGR(),
 
+            'IndLandelijk' => Codelijsten::getJaNeeIndicatieCode($this->resource->isNational()),
+            'IndRegionaal' => Codelijsten::getJaNeeIndicatieCode($this->resource->isRegional()),
+            'IndLokaal' => Codelijsten::getJaNeeIndicatieCode($this->resource->isLocal()),
+
+            'BeschikbareGebieden' => AreaInterfaceResource::many($this->availableAreas),
+            'OmvatteBeschikbareGebieden' => AreaInterfaceResource::many($this->allAvailableAreas),
+            'OmvatteBeschikbareGebiedenGemeenten' => AreaInterfaceResource::many($this->allAvailableTownships),
+
             'Aanbieder' => ProviderResource::one($this->provider),
             'Contactpersoon' => ContactResource::many($this->contacts),
             'Download' => DownloadResource::many($this->downloads),
@@ -43,14 +51,6 @@ class InstrumentResource extends ElasticResource
             'Uitvoeringslocatie' => LocationResource::many($this->locations),
             'Video' => VideoResource::many($this->videos),
 
-            // Wens SGR
-            'IndLandelijk' => Codelijsten::getJaNeeIndicatieCode($this->resource->isNational()),
-            'IndRegionaal' => Codelijsten::getJaNeeIndicatieCode($this->resource->isRegional()),
-            'IndLokaal' => Codelijsten::getJaNeeIndicatieCode($this->resource->isLocal()),
-
-            'BeschikbareGebieden' => AreaInterfaceResource::many($this->availableAreas),
-            'OmvatteBeschikbareGebieden' => AreaInterfaceResource::many($this->allAvailableAreas),
-            'OmvatteBeschikbareGebiedenGemeenten' => AreaInterfaceResource::many($this->allAvailableTownships),
         ];
     }
 }

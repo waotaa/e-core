@@ -11,9 +11,12 @@ class TileResource extends ElasticResource
         return [
             // >> SGR
             'CdWerklandschapTegel' => $this->code,
-
-            // Bonus
             'NaamWerklandschapTegel' => Codelijsten::getWerklandschapTegelName($this->code), // AN..200
+
+            'ToelNaamWerklandschaptegel' => $this->sub_title,
+            'SlugWerklandschaptegel' => $this->key,
+            'KorteOmsWerklandschaptegel' => $this->excerpt,
+            'OmsWerklandschaptegel' => $this->description,
 
             // >> Current
             'id' => $this->id,

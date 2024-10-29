@@ -10,8 +10,9 @@ class GroupFormResource extends ElasticResource
     {
         return [
             'CdGroepsvorm' => $this->code,
-            'IndEigenToevoegingGroepsvorm' => Codelijsten::getJaNeeIndicatieCode($this->custom),    // StdIndJN
             'NaamGroepsvorm' => Codelijsten::getGroepsvormName($this->code),                        // AN..200
+
+//            'IndEigenToevoegingGroepsvorm' => Codelijsten::getJaNeeIndicatieCode($this->custom),    // StdIndJN
         ];
     }
 }

@@ -11,8 +11,6 @@ class ClientCharacteristicResource extends ElasticResource
         return [
             // >> SGR
             'CdKlantkenmerk' => $this->code,
-
-            // Bonus
             'NaamKlantkenmerk' => Codelijsten::getKlantkenmerkName($this->code), // AN..200
 
             // >> Current

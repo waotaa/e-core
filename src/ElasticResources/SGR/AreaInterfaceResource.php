@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\ElasticResources\SGR;
 
+use Vng\EvaCore\Helpers\Codelijsten;
 use Vng\EvaCore\Interfaces\AreaInterface;
 
 class AreaInterfaceResource extends ElasticResource
@@ -13,7 +14,9 @@ class AreaInterfaceResource extends ElasticResource
     {
         return [
             'NaamGebied' => $this->resource->getAreaName(),
-            'TypeGebied' => $this->resource->getAreaType(),
+//            'TypeGebied' => $this->resource->getType(),
+            'CdTypeGebied' => Codelijsten::getTypeGebiedCode($this->resource->getAreaTypeSGR()),
+            'NaamTypeGebied' => $this->resource->getAreaTypeSGR(),
         ];
     }
 }

@@ -10,8 +10,9 @@ class ImplementationResource extends ElasticResource
     {
         return [
             'CdUitvoeringsvorm' => $this->code,
-            'IndEigenToevoegingUitvoeringsvorm' => Codelijsten::getJaNeeIndicatieCode($this->custom),   // StdIndJN
             'NaamUitvoeringsvorm' => Codelijsten::getUitvoeringsVormName($this->code),                  // AN..200
+
+//            'IndEigenToevoegingUitvoeringsvorm' => Codelijsten::getJaNeeIndicatieCode($this->custom),   // StdIndJN
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Vng\EvaCore\ElasticResources\SGR;
 
-use Vng\EvaCore\ElasticResources\SGR\Environment\BasicEnvironmentResource;
+use Vng\EvaCore\Helpers\Codelijsten;
 
 class OrganisationResource extends ElasticResource
 {
@@ -12,6 +12,7 @@ class OrganisationResource extends ElasticResource
             'NaamInstrumentBeherendeOrganisatie' => $this->name,    // AN..200
             'SlugOrganisatie' => $this->slug,                       // AN..200
             'TypeOrganisatie' => $this->type,
+            'CdTypeOrganisatie' => Codelijsten::getTypeOrganisatieCode($this->type),
 
             'LokalePartij' => LocalPartyResource::one($this->whenLoaded('localParty')),
             'RegionalePartij' => RegionalPartyResource::one($this->whenLoaded('regionalParty')),
