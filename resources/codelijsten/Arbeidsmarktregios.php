@@ -36,5 +36,4 @@ return [
     "33" => "Zuidoost-Brabant",
     "34" => "Midden-Limburg",
     "35" => "Zuid-Limburg",
-]
-    ;
+];

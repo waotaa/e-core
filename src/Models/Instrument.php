@@ -28,10 +28,11 @@ class Instrument extends SearchableModel
     use SoftDeletes, HasOwner, HasFactory, CanSaveQuietly, HasContacts, MutationLog;
 
     const REACH_LOCAL = 'local';
-    const REACH_LOCAL_SGR = 'Lokaal';
     const REACH_REGIONAL = 'regional';
-    const REACH_REGIONAL_SGR = 'Regionaal';
     const REACH_NATIONAL = 'national';
+
+    const REACH_LOCAL_SGR = 'Lokaal';
+    const REACH_REGIONAL_SGR = 'Regionaal';
     const REACH_NATIONAL_SGR = 'Landelijk';
 
     protected $table = 'instruments';

@@ -89,7 +89,7 @@ class Codelijsten
         return self::getName('StdIndJN', $key);
     }
 
-    public static function getJaNeeIndicatieCode(bool $bool): ?string
+    public static function getJaNeeIndicatieCode(?bool $bool): ?string
     {
         $naam = $bool ? 'Ja' : 'Nee';
         return self::getCode('StdIndJN', $naam);
