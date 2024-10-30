@@ -18,9 +18,9 @@ properties:
   slug:
     type: string
   organisation:
-    oneOf:
-      - type: 'null'
-      - $ref: './organisation.yml'
+    nullable: true
+    allOf:
+      $ref: './organisation.yml'
   townships:
     type: array
     items:

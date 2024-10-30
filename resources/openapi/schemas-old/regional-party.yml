@@ -16,6 +16,8 @@ properties:
   slug:
     type: string
   organisation:
-    $ref: './organisation.yml'
+    nullable: true
+    allOf:
+      $ref: './organisation.yml'
   region:
     $ref: './region.yml'

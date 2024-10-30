@@ -56,7 +56,7 @@ class NationalPartyPolicy extends BaseOrganisationPolicy
     public function delete(IsManagerInterface $user, NationalParty $nationalParty)
     {
         if($nationalParty->hasMember($user)
-            && $user->managerCan('association.delete')) {
+            && $user->managerCan('organisation.delete')) {
             return true;
         }
         return $user->managerCan('nationalParty.delete');

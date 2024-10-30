@@ -18,6 +18,6 @@ properties:
   slug:
     type: string
   organisation:
-    anyOf:
-      - type: 'null'
-      - $ref: './organisation.yml'
+    nullable: true
+    allOf:
+      $ref: './organisation.yml'

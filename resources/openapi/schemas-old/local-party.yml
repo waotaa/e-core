@@ -18,6 +18,6 @@ properties:
   township:
     $ref: './township.yml'
   organisation:
-    anyOf:
-      - type: 'null'
+    nullable: true
+    allOf:
       $ref: './organisation.yml'
