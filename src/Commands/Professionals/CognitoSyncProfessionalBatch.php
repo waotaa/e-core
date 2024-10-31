@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Commands\Professionals;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\Models\Professional;
 use Vng\EvaCore\Repositories\ProfessionalRepositoryInterface;
 use Vng\EvaCore\Services\Cognito\CognitoService;
@@ -41,6 +42,11 @@ class CognitoSyncProfessionalBatch extends AbstractCognitoCommand
 
     public function syncProfessional(Professional $professional)
     {
-        CognitoService::make($professional->environment)->syncProfessional($professional);
+        $environment = $professional->environment;
+        if (is_null($environment)) {
+            Log::warning('Attempted to sync professional without environment ['. $professional->id .']');
+            return;
+        }
+        CognitoService::make($environment)->syncProfessional($professional);
     }
 }
