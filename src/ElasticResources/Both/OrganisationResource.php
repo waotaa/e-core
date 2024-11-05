@@ -22,6 +22,7 @@ class OrganisationResource extends ElasticResource
             'Samenwerking' => PartnershipResource::one($this->whenLoaded('partnership')),
 
             'Contactpersoon' => ContactResource::many($this->whenLoaded('contacts')),
+            'ActieveGebieden' => AreaInterfaceResource::many($this->resource->getAreasActiveInAttribute()),
 
             // >> Current
             'id' => $this->id,

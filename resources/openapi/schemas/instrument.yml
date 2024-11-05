@@ -13,29 +13,20 @@ properties:
     type: string
     maxLength: 200
     pattern: "^[a-zA-Z0-9]*$"
-  IndPublicatie:
+  IndPublicatieInstrument:
     $ref: '../codelijsten/StdIndJN.yml'
-  DatBPublicatie:
+  DatBPublicatieInstrument:
     type: string
     format: date-time
     nullable: true
-  DatEPublicatie:
+  DatEPublicatieInstrument:
     type: string
     format: date-time
     nullable: true
   IndCompleet:
     $ref: '../codelijsten/StdIndJN.yml'
-  DatAangemaakt:
-    type: string
-    format: date-time
-  DatGewijzigd:
-    type: string
-    format: date-time
-    nullable: true
-  DatVerwijderd:
-    type: string
-    format: date-time
-    nullable: true
+  Bewerkmoment:
+    $ref: './bewerkmoment.yml'
   CdBereikInstrument:
     $ref: '../codelijsten/CdBereikInstrument.yml'
   NaamBereikInstrument:
@@ -50,8 +41,6 @@ properties:
     $ref: '../codelijsten/StdIndJN.yml'
   InstrumentBeherendeOrganisatie:
     $ref: './instrumentBeherendeOrganisatie.yml'
-  Uitvoeringsvorm:
-    $ref: './uitvoeringsvorm.yml'
   Groepsvorm:
     type: array
     nullable: true

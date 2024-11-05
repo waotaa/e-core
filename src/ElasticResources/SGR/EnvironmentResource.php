@@ -7,12 +7,12 @@ class EnvironmentResource extends ElasticResource
     public function toArray()
     {
         return [
-            'NaamOmgeving' => $this->name,
-            'SlugOmgeving' => $this->slug,
-            'OmsKopOmgeving' => $this->description_header,
-            'OmgOmgeving' => $this->description,
+            'NaamInstrumentOmgeving' => $this->name,
+            'SlugInstrumentOmgeving' => $this->slug,
+            'TitelInstrumentOmgeving' => $this->description_header,
+            'OmsInstrumentOmgeving' => $this->description,
 
-            'UrlOmgeving' => $this->url,
+            'UrlInstrumentOmgeving' => $this->url,
             'UrlLogo' => $this->logo_url,
 
             'PrimaireKleur' => $this->color_primary,

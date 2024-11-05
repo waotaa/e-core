@@ -9,7 +9,7 @@ class VideoResource extends ElasticResource
         return [
             // >> SGR
             'NaamVideo' => $this->name,
-            'AanbiederVideo' => $this->provider,
+            'NaamAanbiederVideo' => $this->provider,
             'SleutelVideo' => $this->video_identifier,
 
             'Instrument' => InstrumentResource::one($this->whenLoaded('instrument')),

@@ -17,6 +17,7 @@ class ContactResource extends ElasticResource
             'TelefoonnummerContactpersoon' => $this->phone,     // AN..14
             'EmailadresContactpersoon' => $this->email,         // AN..320
             'CdTypeContactpersoonRelatie' => $codeType,
+            'OmsContactpersoon' => $this->description,          // AN..10000
 
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->whenLoaded('organisation')),
             'InstrumentWerknemersdienstverlening' => InstrumentResource::many($this->whenLoaded('instruments')),

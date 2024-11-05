@@ -56,7 +56,7 @@ properties:
     type: integer
     maximum: 9999
     nullable: true
-  UrenDuurTraject:
+  DuurTrajectInUren:
     type: integer
     maximum: 999999
     nullable: true
@@ -82,3 +82,8 @@ properties:
     type: string
     maxLength: 10000
     pattern: "^[a-zA-Z0-9]*$"
+  Uitvoeringsvorm:
+    type: array
+    nullable: true
+    items:
+      $ref: './uitvoeringsvorm.yml'

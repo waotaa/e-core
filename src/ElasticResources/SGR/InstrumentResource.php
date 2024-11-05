@@ -20,16 +20,18 @@ class InstrumentResource extends ElasticResource
             'UuidInstrument' => $this->uuid,                                            // AN36
             'SlugInstrument' => $this->slug,                                            // AN36
 
-            'IndPublicatie' => Codelijsten::getJaNeeIndicatieCode($this->is_active),    // StdIndJN
-            'DatBPublicatie' => $this->formatDate($this->publish_from),                 // DATUM
-            'DatEPublicatie' => $this->formatDate($this->publish_to),                   // DATUM
+            'IndPublicatieInstrument' => Codelijsten::getJaNeeIndicatieCode($this->is_active),    // StdIndJN
+            'DatBPublicatieInstrument' => $this->formatDate($this->publish_from),                 // DATUM
+            'DatEPublicatieInstrument' => $this->formatDate($this->publish_to),                   // DATUM
             'IndCompleet' => Codelijsten::getJaNeeIndicatieCode($isComplete),           // StdIndJN
 
-            'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->organisation),
+            'Bewerkmoment' => [
+                'DatAangemaakt' => $this->formatDate($this->created_at),    // DATUMTIJD
+                'DatGewijzigd' => $this->formatDate($this->updated_at),     // DATUMTIJD
+                'DatVerwijderd' => $this->formatDate($this->deleted_at),    // DATUMTIJD
+            ],
 
-            'DatAangemaakt' => $this->formatDate($this->created_at),    // DATUMTIJD
-            'DatGewijzigd' => $this->formatDate($this->updated_at),     // DATUMTIJD
-            'DatVerwijderd' => $this->formatDate($this->deleted_at),    // DATUMTIJD
+            'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->organisation),
 
             'CdBereikInstrument' => Codelijsten::getBereikCode($this->resource->getReachSGR()),
             'NaamBereikInstrument' => $this->resource->getReachSGR(),
@@ -44,11 +46,13 @@ class InstrumentResource extends ElasticResource
 
             'Aanbieder' => ProviderResource::one($this->provider),
             'Contactpersoon' => ContactResource::many($this->contacts),
+            'Doelgroep' => TargetGroupResource::many($this->targetGroups),
             'Download' => DownloadResource::many($this->downloads),
             'Link' => LinkResource::many($this->links),
             'Registratiecode' => RegistrationCodeResource::many($this->registrationCodes),
             'Uitvoeringslocatie' => LocationResource::many($this->locations),
             'Video' => VideoResource::many($this->videos),
+            'WerklandschapTegel' => TileResource::many($this->tiles),
         ];
     }
 }

@@ -18,12 +18,15 @@ class NewsItemResource extends ElasticResource
             'InhoudNieuwsbericht' => $this->body,
             'TeaserNieuwsbericht' => $this->teaser,
 
-            'DatAangemaakt' => $this->formatDate($this->created_at),
-            'DatGewijzigd' => $this->formatDate($this->updated_at),
+            'IndPublicatieNieuwsbericht' => Codelijsten::getJaNeeIndicatieCode($this->is_active),    // StdIndJN
+            'DatBPublicatieNieuwsbericht' => $this->formatDate($this->publish_from),                 // DATUM
+            'DatEPublicatieNieuwsbericht' => $this->formatDate($this->publish_to),                   // DATUM
+            'DatPublicatieNieuwsbericht' => $this->formatDate($this->publish_from) ?: $this->formatDate($this->created_at),
 
-            'IndPublicatie' => Codelijsten::getJaNeeIndicatieCode($this->is_active),    // StdIndJN
-            'DatBPublicatie' => $this->formatDate($this->publish_from),                 // DATUM
-            'DatEPublicatie' => $this->formatDate($this->publish_to),                   // DATUM
+            'Bewerkmoment' => [
+                'DatAangemaakt' => $this->formatDate($this->created_at),    // DATUMTIJD
+                'DatGewijzigd' => $this->formatDate($this->updated_at),     // DATUMTIJD
+            ],
 
             'InstrumentOmgeving' => EnvironmentResource::one($this->environment),
 

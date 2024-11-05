@@ -17,22 +17,20 @@ properties:
     maxLength: 10000
     pattern: "^[a-zA-Z0-9]*$"
     nullable: true
-  DatAangemaakt:
-    type: string
-    format: date-time
-  DatGewijzigd:
-    type: string
-    format: date-time
-    nullable: true
-  IndPublicatie:
+  IndPublicatieNieuwsbericht:
     $ref: '../codelijsten/StdIndJN.yml'
-  DatBPublicatie:
+  DatBPublicatieNieuwsbericht:
     type: string
     format: date-time
     nullable: true
-  DatEPublicatie:
+  DatEPublicatieNieuwsbericht:
     type: string
     format: date-time
     nullable: true
+  DatPublicatieNieuwsbericht:
+    type: string
+    format: date-time
+  Bewerkmoment:
+    $ref: './bewerkmoment.yml'
   InstrumentOmgeving:
     $ref: './instrumentOmgeving.yml'

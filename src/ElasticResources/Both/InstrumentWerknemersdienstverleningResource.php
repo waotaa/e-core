@@ -25,6 +25,7 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
             'CdEenheidDuurTraject' => Codelijsten::getTrajectDuurEenheidCode($this->total_duration_unit),
 //            'EenheidDuurTraject' => $this->total_duration_unit,
             'DuurTraject' => $this->total_duration_value,               // N..4
+            'DuurTrajectInUren' => (float) $this->total_duration_hours, // N..4
             'OmsDoelInstrument' => $this->aim,                          // AN..320
             'OmsOnderscheidendeAanpak' => $this->distinctive_approach,  // AN..320 - 3891
             'OmsWerkafspraken' => $this->work_agreements,               // AN..320 - 5374
@@ -44,10 +45,7 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
             'Beoordeling' => RatingResource::many($this->ratings),
             'Groepsvorm' => GroupFormResource::many($this->groupForms),
             'Klantkenmerk' => ClientCharacteristicResource::many($this->clientCharacteristics),
-            'Uitvoeringsvorm' => ImplementationResource::one($this->implementation),
-
-            'Doelgroep' => TargetGroupResource::many($this->targetGroups),
-            'WerklandschapTegel' => TileResource::many($this->tiles),
+            'Uitvoeringsvorm' => ImplementationResource::many($this->implementation),
 
             // >> Current
             'id' => $this->id,

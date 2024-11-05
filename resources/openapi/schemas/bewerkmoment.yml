@@ -1,0 +1,13 @@
+type: object
+properties:
+  DatAangemaakt:
+    type: string
+    format: date-time
+  DatGewijzigd:
+    type: string
+    format: date-time
+    nullable: true
+  DatVerwijderd:
+    type: string
+    format: date-time
+    nullable: true
