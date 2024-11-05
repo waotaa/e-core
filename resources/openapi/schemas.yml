@@ -10,6 +10,8 @@ Arbeidsmarktregio:
   $ref: './schemas/arbeidsmarktregio.yml'
 Beoordeling:
   $ref: './schemas/beoordeling.yml'
+Bewerkmoment:
+  $ref: './schemas/bewerkmoment.yml'
 Contactpersoon:
   $ref: './schemas/contactpersoon.yml'
 Dienstverband:
