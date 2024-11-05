@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Vng\EvaCore\Casts\CleanedHtml;
-use Vng\EvaCore\ElasticResources\Both\InstrumentResource;
+use Vng\EvaCore\ElasticResources\Both\InstrumentWerknemersdienstverleningResource;
 use Vng\EvaCore\Enums\DurationUnitEnum;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Interfaces\IsMemberInterface;
@@ -36,7 +36,7 @@ class Instrument extends SearchableModel
     const REACH_NATIONAL_SGR = 'Landelijk';
 
     protected $table = 'instruments';
-    protected string $elasticResource = InstrumentResource::class;
+    protected string $elasticResource = InstrumentWerknemersdienstverleningResource::class;
     protected $fillable = [
         'created_at',
         'updated_at',
@@ -363,6 +363,13 @@ class Instrument extends SearchableModel
     }
 
     // Property lists (multiple choice)
+    public function implementations(): BelongsToMany
+    {
+        return $this->belongsToMany(Implementation::class, 'implementation_instrument')
+            ->withTimestamps()
+            ->using(ImplementationInstrument::class);
+    }
+
     public function groupForms(): BelongsToMany
     {
         return $this->belongsToMany(GroupForm::class, 'group_form_instrument')
