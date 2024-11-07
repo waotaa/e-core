@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\Interfaces\AreaInterface;
 use Vng\EvaCore\Observers\OrganisationObserver;
 use Vng\EvaCore\Traits\HasContacts;
@@ -198,6 +199,10 @@ class Organisation extends Model
         }
         /** @var AreaInterface $organisationEntity */
         $organisationEntity = $this->organisationable()->first();
+        if (is_null($organisationEntity)) {
+            Log::warning('Organisation without organisationable encountered - org id ['. $this->getAttribute('id').']');
+            return collect();
+        }
         return $organisationEntity->getEncompassingAreas();
     }
 }
