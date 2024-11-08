@@ -15,7 +15,7 @@ class Partnership extends AbstractOrganisationBase implements AreaInterface
 {
     use HasFactory, AreaTrait;
 
-    protected string $elasticResource = PartnershipResource::class;
+    protected static string $elasticResource = PartnershipResource::class;
 
     protected $fillable = [
         'name',

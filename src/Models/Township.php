@@ -22,7 +22,7 @@ class Township extends SearchableModel implements IsOwnerInterface, AreaInterfac
     use HasFactory, SoftDeletes, HasDynamicSlug, IsOwner, AreaTrait;
 
     protected $table = 'townships';
-    protected string $elasticResource = TownshipResource::class;
+    protected static string $elasticResource = TownshipResource::class;
 
     protected $fillable = [
         'name',

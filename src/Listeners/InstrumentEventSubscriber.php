@@ -10,14 +10,21 @@ use Vng\EvaCore\Events\InstrumentSaved;
 use Vng\EvaCore\Jobs\PruneSyncAttempts;
 use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
 use Vng\EvaCore\Jobs\SyncResourceToElasticJob;
-use Vng\EvaCore\Services\ElasticSearch\SyncService;
+use Vng\EvaCore\Models\SyncAttempt;
+use Vng\EvaCore\Services\ElasticSearch\SyncAttemptFactory;
 
 class InstrumentEventSubscriber
 {
     public function handleInstrumentSaved(InstrumentSaved $event)
     {
         $instrument = $event->instrument;
-        $attempt = SyncService::createSyncAttempt($instrument, 'save_description');
+
+        $attempt = SyncAttemptFactory::createSyncAttempt(
+            SyncAttempt::ACTION_INDEX,
+            $instrument
+        );
+        $attempt->setAttribute('note', 'on instrumets_description index');
+        $attempt->save();
 
         Bus::chain([
             new SyncResourceToElasticJob(
@@ -33,7 +40,13 @@ class InstrumentEventSubscriber
     public function handleInstrumentRemoved(InstrumentRemoved $event)
     {
         $instrument = $event->instrument;
-        $attempt = SyncService::createSyncAttempt($instrument, 'remove_description');
+
+        $attempt = SyncAttemptFactory::createSyncAttempt(
+            SyncAttempt::ACTION_DELETE,
+            $instrument
+        );
+        $attempt->setAttribute('note', 'on instrumets_description index');
+        $attempt->save();
 
         Bus::chain([
             new RemoveResourceFromElasticJob(

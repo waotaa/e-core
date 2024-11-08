@@ -16,7 +16,7 @@ class LocalParty extends AbstractOrganisationBase implements AreaInterface
 
     protected $table = 'local_parties';
 
-    protected string $elasticResource = LocalPartyResource::class;
+    protected static string $elasticResource = LocalPartyResource::class;
 
     protected $fillable = [
         'name',

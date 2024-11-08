@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class SearchableModel extends Model implements SearchableInterface
 {
-    protected string $elasticResource;
+    protected static string $elasticResource;
 
     protected static function boot()
     {
@@ -30,9 +30,9 @@ abstract class SearchableModel extends Model implements SearchableInterface
         return $this->getTable();
     }
 
-    public function getResourceClass()
+    public static function getResourceClass(): string
     {
-        return $this->elasticResource;
+        return static::$elasticResource;
     }
 
     public function getSearchId()

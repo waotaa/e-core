@@ -13,7 +13,7 @@ class Tile extends SearchableModel
     use SoftDeletes, HasFactory;
 
     protected $table = 'tiles';
-    protected string $elasticResource = TileResource::class;
+    protected static string $elasticResource = TileResource::class;
 
     protected $fillable = [
         'name',

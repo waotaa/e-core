@@ -36,7 +36,7 @@ class Instrument extends SearchableModel
     const REACH_NATIONAL_SGR = 'Landelijk';
 
     protected $table = 'instruments';
-    protected string $elasticResource = InstrumentWerknemersdienstverleningResource::class;
+    protected static string $elasticResource = InstrumentWerknemersdienstverleningResource::class;
     protected $fillable = [
         'created_at',
         'updated_at',

@@ -11,6 +11,7 @@ use Vng\EvaCore\ElasticResources\ElasticResourceInterface;
 use Vng\EvaCore\Http\Middleware\LogJobPayloadSize;
 use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Services\ElasticSearch\ElasticClientBuilder;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchDocumentService;
 
 class SyncResourceToElasticJob extends ElasticJob
 {
@@ -33,52 +34,36 @@ class SyncResourceToElasticJob extends ElasticJob
 
     public function handle(): void
     {
+        $this->attempt?->updateStatus(SyncAttempt::STATUS_STARTED);
         $this->indexDocument();
     }
 
     protected function indexDocument()
     {
-        $elasticSearchClient = $this->getClient();
-
         Log::info('Syncing resource ['. get_class($this->getResource()) .'] with id ['. $this->getId() .'] to index ['. $this->getFullIndex() .']');
-        $this->updateAttemptStatus('job started');
 
         try {
-            Log::info('Before index attempt');
-            $result = $elasticSearchClient->index([
-                'index' => $this->getFullIndex(),
-    //            'type' => $this->model->getSearchType(),
-                'id' => $this->getId(),
-                'body' => $this->getResource()->toArray(),
-            ]);
-            Log::info('ElasticSearch result', ['result' => $result]);
+            $docService = ElasticsearchDocumentService::make()
+                ->setClient($this->getClient());
+            $documentResponse = $docService->index(
+                $this->getFullIndex(),
+                $this->getId(),
+                $this->getResource()->toArray()
+            );
 
-            $this->updateAttemptStatusWithResult($result);
-            Log::info('Document indexed successfully', [
-                'index' => $this->getFullIndex(),
-                'id' => $this->getId(),
-                'result' => $result,
-            ]);
-        } catch (NoNodesAvailableException $noNodesAvailableException) {
-            Log::warning('No nodes available exception', [
-                'exception' => $noNodesAvailableException,
-                'index' => $this->getFullIndex(),
-                'id' => $this->getId(),
-            ]);
-            $this->updateAttemptStatus('no nodes');
+            $status = $documentResponse->isSuccess() ? SyncAttempt::STATUS_SUCCESS : SyncAttempt::STATUS_FAILED;
+            $this->attempt?->updateStatus($status);
+        } catch (NoNodesAvailableException) {
+            $this->attempt?->updateStatus(SyncAttempt::STATUS_NO_NODES);
             $this->release(20);
         } catch (Exception $exception) {
-            Log::error('Sync failed', [
-                'exception' => $exception,
+            Log::error('ES >> index attempt: Sync failed - model info', [
                 'model_id' => $this->model->id,
                 'model' => $this->model,
                 'class' => $this->resourceClass,
-                'index' => $this->getFullIndex(),
-                'id' => $this->getId(),
             ]);
-            $this->updateAttemptStatus('failed');
+            $this->attempt?->updateStatus(SyncAttempt::STATUS_FAILED);
             throw new Exception('Syncing resource ['. $this->resourceClass .'] with model id ['. $this->model->id .'] to index ['. $this->getFullIndex() .'] failed', 0, $exception);
-//            throw $exception;
         }
     }
 

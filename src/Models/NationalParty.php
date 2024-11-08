@@ -17,7 +17,7 @@ class NationalParty extends AbstractOrganisationBase implements AreaInterface
 
     protected $table = 'national_parties';
 
-    protected string $elasticResource = NationalPartyResource::class;
+    protected static string $elasticResource = NationalPartyResource::class;
 
     protected $fillable = [
         'name',

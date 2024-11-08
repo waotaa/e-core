@@ -16,7 +16,7 @@ class RegionalParty extends AbstractOrganisationBase implements AreaInterface
 
     protected $table = 'regional_parties';
 
-    protected string $elasticResource = RegionalPartyResource::class;
+    protected static string $elasticResource = RegionalPartyResource::class;
 
     protected $fillable = [
         'name',

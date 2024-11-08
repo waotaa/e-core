@@ -14,7 +14,7 @@ class NewsItem extends SearchableModel
 
     protected $table = 'news_items';
 
-    protected string $elasticResource = NewsItemResource::class;
+    protected static string $elasticResource = NewsItemResource::class;
 
     protected $fillable = [
         'created_at',

@@ -21,7 +21,7 @@ class Provider extends SearchableModel
     use SoftDeletes, HasOwner, HasFactory, HasContacts, MutationLog;
 
     protected $table = 'providers';
-    protected string $elasticResource = ProviderResource::class;
+    protected static string $elasticResource = ProviderResource::class;
 
     protected $attributes = [
         'is_fixed' => false,

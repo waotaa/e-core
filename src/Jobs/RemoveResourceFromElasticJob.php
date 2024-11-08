@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Jobs;
 
 use Vng\EvaCore\Models\SyncAttempt;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchDocumentService;
 
 class RemoveResourceFromElasticJob extends ElasticJob
 {
@@ -18,27 +19,15 @@ class RemoveResourceFromElasticJob extends ElasticJob
 
     public function handle(): void
     {
-        $elasticSearchClient = $this->getClient();
+        $this->attempt?->updateStatus(SyncAttempt::STATUS_STARTED);
 
         $prefixedIndex = $this->getFullIndex();
+        $docService = ElasticsearchDocumentService::make()
+            ->setClient($this->getClient());
+        $documentResponse = $docService->delete($prefixedIndex, $this->id);
 
-        $this->updateAttemptStatus('Executing');
-
-        $exists = $elasticSearchClient->exists([
-            'index' => $prefixedIndex,
-            'id' => $this->id,
-        ]);
-        if (!$exists) {
-            $this->updateAttemptStatus('Resource not found');
-            return;
-        }
-
-        // Delete
-        $result = $elasticSearchClient->delete([
-            'index' => $prefixedIndex,
-            'id' => $this->id,
-        ]);
-        $this->updateAttemptStatusWithResult($result);
+        $status = $documentResponse->isSuccess() ? SyncAttempt::STATUS_SUCCESS : SyncAttempt::STATUS_FAILED;
+        $this->attempt?->updateStatus($status);
     }
 
     protected function getFullIndex(): string

@@ -15,7 +15,7 @@ class Professional extends SearchableModel implements CanResetPasswordContract
 {
     use HasFactory, CanResetPassword, MutationLog;
 
-    protected string $elasticResource = ProfessionalResource::class;
+    protected static string $elasticResource = ProfessionalResource::class;
 
     const STATUSSES = [
         'UNCONFIRMED' => 'Niet bevestigd',

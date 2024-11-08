@@ -21,23 +21,28 @@ use Vng\EvaCore\Models\Provider;
 use Vng\EvaCore\Models\Region;
 use Exception;
 use Illuminate\Events\Dispatcher;
-use Vng\EvaCore\Services\ElasticSearch\SyncService;
+use Vng\EvaCore\Models\SyncAttempt;
+use Vng\EvaCore\Services\ElasticSearch\SyncAttemptFactory;
 
 class ElasticResourceEventSubscriber
 {
     public function handleRelatedResourceChanged(ElasticRelatedResourceChanged $event)
     {
-        $relatedModel = $event->model;
-        $attempt = SyncService::createSyncAttempt($relatedModel, 'save', 'created');
-        $attempt = SyncService::addRelatedModel($attempt, $event->relatedModel);
+        $model = $event->model;
+
+        $attempt = SyncAttemptFactory::createSyncAttempt(
+            SyncAttempt::ACTION_INDEX,
+            $model,
+            $event->relatedModel
+        );
 
         $jobs = [
-            new SyncSearchableModelToElasticJob($relatedModel, $attempt),
+            new SyncSearchableModelToElasticJob($model, $attempt),
             new PruneSyncAttempts()
         ];
 
-        if (get_class($relatedModel) === Instrument::class) {
-            array_unshift($jobs, new FetchNewInstrumentRatingsJob($relatedModel));
+        if (get_class($model) === Instrument::class) {
+            array_unshift($jobs, new FetchNewInstrumentRatingsJob($model));
         }
 
         Bus::chain($jobs)->dispatch();
@@ -53,8 +58,11 @@ class ElasticResourceEventSubscriber
             throw new Exception('No instrument found with id [' . $instrument_id . ']');
         }
 
-        $attempt = SyncService::createSyncAttempt($instrument, 'attach', 'created');
-        $attempt = SyncService::addRelatedModel($attempt, $event->pivot);
+        $attempt = SyncAttemptFactory::createSyncAttempt(
+            SyncAttempt::ACTION_ATTACH,
+            $instrument,
+            $event->pivot
+        );
 
         Bus::chain([
             new FetchNewInstrumentRatingsJob($instrument),
@@ -73,8 +81,11 @@ class ElasticResourceEventSubscriber
             throw new Exception('No instrument found with id [' . $instrument_id . ']');
         }
 
-        $attempt = SyncService::createSyncAttempt($instrument, 'detach', 'created');
-        $attempt = SyncService::addRelatedModel($attempt, $event->pivot);
+        $attempt = SyncAttemptFactory::createSyncAttempt(
+            SyncAttempt::ACTION_DETACH,
+            $instrument,
+            $event->pivot
+        );
 
         Bus::chain([
             new FetchNewInstrumentRatingsJob($instrument),
@@ -88,8 +99,11 @@ class ElasticResourceEventSubscriber
         /** @var Provider $provider */
         $provider = Provider::withTrashed()->find($event->pivot->provider_id);
 
-        $attempt = SyncService::createSyncAttempt($provider, 'attach', 'created');
-        $attempt = SyncService::addRelatedModel($attempt, $event->pivot);
+        $attempt = SyncAttemptFactory::createSyncAttempt(
+            SyncAttempt::ACTION_ATTACH,
+            $provider,
+            $event->pivot
+        );
 
         Bus::chain([
             new SyncSearchableModelToElasticJob($provider, $attempt),
@@ -102,8 +116,11 @@ class ElasticResourceEventSubscriber
         /** @var Provider $provider */
         $provider = Provider::withTrashed()->find($event->pivot->provider_id);
 
-        $attempt = SyncService::createSyncAttempt($provider, 'detach', 'created');
-        $attempt = SyncService::addRelatedModel($attempt, $event->pivot);
+        $attempt = SyncAttemptFactory::createSyncAttempt(
+            SyncAttempt::ACTION_DETACH,
+            $provider,
+            $event->pivot
+        );
 
         Bus::chain([
             new SyncSearchableModelToElasticJob($provider, $attempt),
@@ -118,8 +135,11 @@ class ElasticResourceEventSubscriber
         /** @var Instrument|Provider|Region $attached */
         $attached = $event->contactable;
 
-        $attempt = SyncService::createSyncAttempt($attached, 'attach', 'created');
-        $attempt = SyncService::addRelatedModel($attempt, $contact);
+        $attempt = SyncAttemptFactory::createSyncAttempt(
+            SyncAttempt::ACTION_ATTACH,
+            $attached,
+            $contact
+        );
 
         $jobs = [
             new SyncSearchableModelToElasticJob($attached, $attempt),
@@ -140,8 +160,11 @@ class ElasticResourceEventSubscriber
         /** @var Instrument|Provider|Region $detached */
         $detached = $event->contactable;
 
-        $attempt = SyncService::createSyncAttempt($detached, 'detach', 'created');
-        $attempt = SyncService::addRelatedModel($attempt, $contact);
+        $attempt = SyncAttemptFactory::createSyncAttempt(
+            SyncAttempt::ACTION_DETACH,
+            $detached,
+            $contact
+        );
 
         $jobs = [
             new SyncSearchableModelToElasticJob($detached, $attempt),
@@ -158,7 +181,11 @@ class ElasticResourceEventSubscriber
     public function handleResourceRemoved(ElasticResourceRemoved $event)
     {
         $searchableModel = $event->model;
-        $attempt = SyncService::createSyncAttempt($searchableModel, 'remove', 'created');
+
+        $attempt = SyncAttemptFactory::createSyncAttempt(
+            SyncAttempt::ACTION_DELETE,
+            $searchableModel
+        );
 
         $jobs = [
             new RemoveResourceFromElasticJob($searchableModel->getSearchIndex(), $searchableModel->getSearchId(), $attempt),
@@ -175,7 +202,11 @@ class ElasticResourceEventSubscriber
     public function handleResourceSaved(ElasticResourceSaved $event)
     {
         $searchableModel = $event->model;
-        $attempt = SyncService::createSyncAttempt($searchableModel, 'save', 'created');
+
+        $attempt = SyncAttemptFactory::createSyncAttempt(
+            SyncAttempt::ACTION_INDEX,
+            $searchableModel
+        );
 
         $jobs = [
             new SyncSearchableModelToElasticJob($searchableModel, $attempt),

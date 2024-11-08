@@ -11,7 +11,7 @@ class ClientCharacteristic extends SearchableModel
     use SoftDeletes;
 
     protected $table = 'client_characteristics';
-    protected string $elasticResource = ClientCharacteristicResource::class;
+    protected static string $elasticResource = ClientCharacteristicResource::class;
 
     protected $fillable = [
         'name',

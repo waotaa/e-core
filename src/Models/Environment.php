@@ -22,7 +22,7 @@ class Environment extends SearchableModel
 {
     use HasFactory, HasOwner, SoftDeletes, HasPermanentSlug;
 
-    protected string $elasticResource = EnvironmentResource::class;
+    protected static string $elasticResource = EnvironmentResource::class;
 
     protected $fillable = [
         'created_at',

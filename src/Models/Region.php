@@ -21,7 +21,7 @@ class Region extends SearchableModel implements IsOwnerInterface, AreaInterface
     use HasFactory, SoftDeletes, HasDynamicSlug, IsOwner, HasContacts, AreaTrait;
 
     protected $table = 'regions';
-    protected string $elasticResource = RegionResource::class;
+    protected static string $elasticResource = RegionResource::class;
 
     protected $fillable = [
         'name',

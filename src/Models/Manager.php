@@ -96,6 +96,13 @@ class Manager extends Model implements IsInstrumentWatcherInterface
         return $this->hasAnyOrganisations() && $this->organisations->contains($organisation);
     }
 
+    public function hasManagingRelation(Manager $manager): bool
+    {
+        $isSelf = $this->id === $manager->id;
+        $isCreatedBy = $manager->isCreatedBy($this);
+        return  $isSelf || $isCreatedBy || $this->managersShareOrganisation($manager);
+    }
+
     public function managersShareOrganisation(Manager $manager): bool
     {
         if (!$this->hasAnyOrganisations()) {

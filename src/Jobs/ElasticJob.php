@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Services\ElasticSearch\ElasticClientBuilder;
-use Vng\EvaCore\Services\ElasticSearch\SyncService;
+use Vng\EvaCore\Services\ElasticSearch\SyncAttemptFactory;
 
 abstract class ElasticJob implements ElasticJobInterface, ShouldQueue
 {
@@ -44,14 +44,6 @@ abstract class ElasticJob implements ElasticJobInterface, ShouldQueue
 
     protected function updateAttemptStatus($status): void
     {
-        if (!is_null($this->attempt)){
-            SyncService::updateStatus($this->attempt, $status);
-        }
-    }
-
-    protected function updateAttemptStatusWithResult($result): void
-    {
-        $status = $result['_shards']['failed'] === 0 ? 'succes' : 'failed';
-        $this->updateAttemptStatus($status);
+        $this->attempt?->updateStatus($status);
     }
 }
