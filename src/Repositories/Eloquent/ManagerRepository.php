@@ -34,7 +34,7 @@ class ManagerRepository extends BaseRepository implements ManagerRepositoryInter
     public function addOrganisationCondition(Builder $query, Organisation $organisation): Builder
     {
         return $query->whereHas('organisations', function (Builder $query) use ($organisation) {
-            $query->where('id', $organisation->id);
+            $query->where('organisations.id', $organisation->id);
         });
     }
 

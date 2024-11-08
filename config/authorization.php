@@ -146,20 +146,22 @@ $organisationUserPermissions = [
     ...$professionalPermissions,
 
     // This permission allows you to create a manager for your organisation
-    'manager.organisation.create',
+    'manager.create.within-organisation',
     // This permission allows you to update a manager from your organisation
-    'manager.organisation.update',
+    'manager.update.within-organisation',
     // This permission allows you to delete a manager from your organisation
-    'manager.organisation.delete',
+    'manager.delete.within-organisation',
     // This permission allows you to restore a manager from your organisation
-    'manager.organisation.restore',
+    'manager.restore.within-organisation',
     // This permission allows you to forceDelete a manager from your organisation
-    'manager.organisation.forceDelete',
+    'manager.forceDelete.within-organisation',
 
     // This permission allows you to manage the role of a manager from your organisation
-    'manager.organisation.role',
-    // This permission allows you to manage the organisation of a manager from your organisation
-    'manager.organisation.members',
+    'manager.assign-role.within-organisation',
+
+    // for attaching and detaching the organisation - manager relation
+    'manager.assign-organisation.within-organisation',
+    'organisation.assign-manager.within-organisation',
 ];
 
 $userAdministratorPermissions = [
@@ -178,10 +180,13 @@ $userAdministratorPermissions = [
     'manager.restore',
     'manager.forceDelete',
 
-    // This permission allows you to manage the role of a manager
-    'manager.role',
-    // This permission allows you to manage the organisation of a manager
-    'manager.members',
+    // For attaching and detaching the manager - role relation
+    'manager.assign-role',
+    'role.assign-manager',
+
+    // For attaching and detaching the manager - organisation relation
+    'manager.assign-organisation',
+    'organisation.assign-manager',
 ];
 
 

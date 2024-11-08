@@ -5,11 +5,13 @@ namespace Vng\EvaCore\Repositories\Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Vng\EvaCore\Http\Requests\OrganisationCreateRequest;
 use Vng\EvaCore\Http\Requests\OrganisationUpdateRequest;
 use Vng\EvaCore\Interfaces\OrganisationEntityInterface;
 use Vng\EvaCore\Models\Manager;
 use Vng\EvaCore\Models\Organisation;
+use Vng\EvaCore\Repositories\ManagerRepositoryInterface;
 use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
 
 class OrganisationRepository extends BaseRepository implements OrganisationRepositoryInterface
@@ -77,12 +79,24 @@ class OrganisationRepository extends BaseRepository implements OrganisationRepos
 
     public function attachManagers(Organisation $organisation, string|array $managerIds): Organisation
     {
+        $managerIds = (array) $managerIds;
+        /** @var ManagerRepositoryInterface $managerRepo */
+        $managerRepo = app(ManagerRepositoryInterface::class);
+        $managers = $managerRepo->builder()->whereIn('id', $managerRepo)->get();
+        $managers->each(fn (Manager $manager) => Gate::authorize('attachManager', [$organisation, $manager]));
+
         $organisation->managers()->syncWithoutDetaching($managerIds);
         return $organisation;
     }
 
     public function detachManagers(Organisation $organisation, string|array $managerIds): Organisation
     {
+        $managerIds = (array) $managerIds;
+        /** @var ManagerRepositoryInterface $managerRepo */
+        $managerRepo = app(ManagerRepositoryInterface::class);
+        $managers = $managerRepo->builder()->whereIn('id', $managerRepo)->get();
+        $managers->each(fn (Manager $manager) => Gate::authorize('detachManager', [$organisation, $manager]));
+
         $organisation->managers()->detach($managerIds);
         return $organisation;
     }
