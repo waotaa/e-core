@@ -93,7 +93,6 @@ class SyncBulkResourcesToElasticJob extends ElasticJob
             $resultArray[$response->id] = $response->isSuccess();
 
             if (!$response->isSuccess()) {
-                dd($response->getErrorDetails());
                 $this->attempt?->updateNote(json_encode($response->getErrorDetails()));
             }
         }
