@@ -29,6 +29,7 @@ use Vng\EvaCore\Commands\Elastic\SyncForApi;
 use Vng\EvaCore\Commands\Elastic\SyncForSgr;
 use Vng\EvaCore\Commands\Elastic\SyncInstrument;
 use Vng\EvaCore\Commands\Elastic\SyncInstruments;
+use Vng\EvaCore\Commands\Elastic\SyncInstrumentsBatched;
 use Vng\EvaCore\Commands\Elastic\SyncInstrumentsDescription;
 use Vng\EvaCore\Commands\Elastic\SyncNewsItems;
 use Vng\EvaCore\Commands\Elastic\SyncProfessionals;
@@ -195,6 +196,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         SyncForSgr::class,
         SyncInstrument::class,
         SyncInstruments::class,
+        SyncInstrumentsBatched::class,
         SyncInstrumentsDescription::class,
         SyncNewsItems::class,
         SyncProfessionals::class,

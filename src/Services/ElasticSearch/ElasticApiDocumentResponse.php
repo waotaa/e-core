@@ -4,15 +4,30 @@ namespace Vng\EvaCore\Services\ElasticSearch;
 
 class ElasticApiDocumentResponse
 {
+//    public $originalData;
+
     public $id;
     public ?string $result;
     public ?int $failedShards;
 
+    public $status;
+    public $errorType;
+    public $errorReason;
+
     public function __construct(array $data)
     {
+//        $this->originalData = $data;
         $this->id = $data['_id'] ?? null;
+
         $this->result = $data['result'] ?? null;
         $this->failedShards = $data['_shards']['failed'] ?? null;
+
+        $this->status = $data['status'] ?? null; // Voeg de HTTP-statuscode toe
+        // Opslaan van fout details als het document gefaald is
+        if (isset($data['error'])) {
+            $this->errorType = $data['error']['type'] ?? 'unknown';
+            $this->errorReason = $data['error']['reason'] ?? 'unknown';
+        }
     }
 
     public static function fromApiResponse(array $data): self
@@ -33,6 +48,10 @@ class ElasticApiDocumentResponse
 
     public function isSuccess(): bool
     {
+        if (!in_array($this->status, [200, 201], true)) {
+            return false;
+        }
+
         $positiveResults = [
             'created',
             'updated',
@@ -50,6 +69,19 @@ class ElasticApiDocumentResponse
             $positiveResult = false;
         }
 
-        return $this->failedShards === 0 && $positiveResult;
+        return $positiveResult;
+//        return $this->failedShards === 0 && $positiveResult;
+    }
+
+    public function getErrorDetails(): ?array
+    {
+        if (!$this->isSuccess() && isset($this->errorType, $this->errorReason)) {
+            return [
+                'type' => $this->errorType,
+                'reason' => $this->errorReason,
+            ];
+        }
+
+        return null;
     }
 }

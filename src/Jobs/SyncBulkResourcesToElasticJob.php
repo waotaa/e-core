@@ -22,8 +22,9 @@ class SyncBulkResourcesToElasticJob extends ElasticJob
     protected string $index;
     protected QueueableCollection $models;
     protected string $resourceClass;
-    protected int $batchSize = 200;
+    const BATCH_SIZE = 25;
     protected int $iteration = 1;
+
 
     public function __construct(QueueableCollection $models, string $index, string $resourceClass, SyncAttempt $attempt = null)
     {
@@ -42,7 +43,7 @@ class SyncBulkResourcesToElasticJob extends ElasticJob
     {
         $this->attempt?->updateStatus(SyncAttempt::STATUS_STARTED);
 
-        $this->models->chunk($this->batchSize)->each(function (Collection $batch) {
+        $this->models->chunk(self::BATCH_SIZE)->each(function (Collection $batch) {
             $this->attempt?->addNote('starting iteration ' . $this->iteration);
             $this->indexDocuments($batch);
             $this->attempt?->addNote('finished iteration ' . $this->iteration);
@@ -76,15 +77,25 @@ class SyncBulkResourcesToElasticJob extends ElasticJob
                 'class' => $this->resourceClass,
             ]);
             $this->attempt?->updateStatus(SyncAttempt::STATUS_FAILED);
-            throw new Exception('Syncing resource ['. $this->resourceClass .'] in bulk to index ['. $this->getFullIndex() .'] failed', 0, $exception);
+            throw $exception;
+//            throw new Exception('Syncing resource ['. $this->resourceClass .'] in bulk to index ['. $this->getFullIndex() .'] failed', 0, $exception);
         }
     }
 
+    /**
+     * @param ElasticApiDocumentResponse[] $documentResponses
+     * @return void
+     */
     protected function processResponse($documentResponses)
     {
         $resultArray = [];
         foreach ($documentResponses as $response) {
             $resultArray[$response->id] = $response->isSuccess();
+
+            if (!$response->isSuccess()) {
+                dd($response->getErrorDetails());
+                $this->attempt?->updateNote(json_encode($response->getErrorDetails()));
+            }
         }
         $this->attempt?->addResults($resultArray);
     }
@@ -97,7 +108,6 @@ class SyncBulkResourcesToElasticJob extends ElasticJob
     protected function generatePayload()
     {
         $payload = [];
-
         $this->models->each(function(SearchableModel $model) use (&$payload) {
             $payload[] = [
                 'index' => [

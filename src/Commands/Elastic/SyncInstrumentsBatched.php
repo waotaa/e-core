@@ -2,11 +2,8 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
-use Illuminate\Support\Facades\Bus;
-use Vng\EvaCore\Jobs\FetchNewInstrumentRatingsJob;
-use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
+use Illuminate\Support\Facades\DB;
 use Vng\EvaCore\Jobs\SyncBulkResourcesToElasticJob;
-use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Models\SyncAttempt;
@@ -24,21 +21,20 @@ class SyncInstrumentsBatched extends Command
         $this->output->writeln('bulk syncing instruments...');
         $this->output->writeln('');
 
-        if ($this->option('fresh')) {
-            $this->call('elastic:delete-index', ['index' => 'instruments', '--force' => true]);
-        }
+        $this->call('elastic:delete-index', ['index' => 'instruments', '--force' => true]);
 
         $index = 'instruments';
+        $fullIndex = $index;
         $prefix = config('elastic.prefix');
         if ($prefix) {
             $this->output->writeln("used index-prefix: {$prefix}");
-            $index = $prefix . '-' . $index;
+            $fullIndex = $prefix . '-' . $index;
         }
-        $this->output->writeln("used index: {$index}");
+        $this->output->writeln("used index: {$fullIndex}");
 
-        if (!ElasticsearchEndpointService::make()->indexExists($index)) {
+        if (!ElasticsearchEndpointService::make()->indexExists($fullIndex)) {
             $this->call(CreateIndex::class, [
-                'index' => 'instruments'
+                'index' => $index
             ]);
         }
 
@@ -51,14 +47,17 @@ class SyncInstrumentsBatched extends Command
         $this->output->writeln($instruments->count() . ' instruments found');
         $this->output->writeln('');
 
-        $syncAttempt = SyncAttemptFactory::createSyncAttempt(SyncAttempt::ACTION_INDEX);
+        $instruments->chunk(SyncBulkResourcesToElasticJob::BATCH_SIZE)->each(function ($instrumentsBatch) use ($index) {
+            $syncAttempt = SyncAttemptFactory::createSyncAttempt(SyncAttempt::ACTION_INDEX);
 
-        new SyncBulkResourcesToElasticJob(
-            $instruments,
-            $index,
-            Instrument::getResourceClass(),
-            $syncAttempt
-        );
+            dispatch(new SyncBulkResourcesToElasticJob(
+                $instrumentsBatch,
+                $index,
+                Instrument::getResourceClass(),
+                $syncAttempt
+            ));
+        });
+
 
         $this->output->newLine(2);
         $this->output->writeln('syncing instruments finished!');
