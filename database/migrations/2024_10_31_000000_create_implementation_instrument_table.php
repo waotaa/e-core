@@ -17,15 +17,21 @@ class CreateImplementationInstrumentTable extends Migration
             $table->foreignId('instrument_id')->constrained()->cascadeOnDelete();
         });
 
-        // Migreer de bestaande gegevens van instruments.implementation_id naar implementation_instrument zonder het Instrument model te gebruiken
-        DB::table('instruments')->whereNotNull('implementation_id')->each(function ($instrument) {
-            DB::table('implementation_instrument')->insert([
-                'implementation_id' => $instrument->implementation_id,
-                'instrument_id' => $instrument->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        });
+        // Migreer de bestaande gegevens van instruments.implementation_id naar implementation_instrument
+        DB::table('instruments')
+            ->whereNotNull('implementation_id')
+            ->orderBy('id') // Voeg een orderBy clausule toe
+            ->chunk(100, function ($instruments) {
+                foreach ($instruments as $instrument) {
+                    DB::table('implementation_instrument')->insert([
+                        'implementation_id' => $instrument->implementation_id,
+                        'instrument_id' => $instrument->id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            });
+
 
         // Verwijder de implementation_id kolom uit de instruments tabel
         Schema::table('instruments', function (Blueprint $table) {
@@ -42,11 +48,15 @@ class CreateImplementationInstrumentTable extends Migration
         });
 
         // Migreer de gegevens terug van implementation_instrument naar instruments
-        DB::table('implementation_instrument')->each(function ($row) {
-            DB::table('instruments')
-                ->where('id', $row->instrument_id)
-                ->update(['implementation_id' => $row->implementation_id]);
-        });
+        DB::table('implementation_instrument')
+            ->orderBy('id') // Voeg een orderBy clausule toe
+            ->chunk(100, function ($rows) {
+                foreach ($rows as $row) {
+                    DB::table('instruments')
+                        ->where('id', $row->instrument_id)
+                        ->update(['implementation_id' => $row->implementation_id]);
+                }
+            });
 
         // Verwijder de tussenliggende tabel
         Schema::dropIfExists('implementation_instrument');
