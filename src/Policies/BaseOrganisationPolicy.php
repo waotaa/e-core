@@ -4,8 +4,7 @@ namespace Vng\EvaCore\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Database\Eloquent\Model;
-use Vng\EvaCore\Interfaces\EvaUserInterface;
-use Vng\EvaCore\Interfaces\HasMembersInterface;
+use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Interfaces\OrganisationEntityInterface;
 use Vng\EvaCore\Models\Manager;
@@ -19,24 +18,10 @@ abstract class BaseOrganisationPolicy extends BasePolicy
      * @param OrganisationEntityInterface $organisationEntity
      * @return bool
      */
-    private function canAssignManagerToOrganisation(IsManagerInterface $user, OrganisationEntityInterface $organisationEntity): bool
-    {
-        if ($user->managerCan('organisation.assign-manager.within-organisation')
-            && $organisationEntity->hasMember($user)
-        ) {
-            return true;
-        }
-        return $user->managerCan('organisation.assign-manager');
-    }
-
-    /**
-     * @param Model&IsManagerInterface $user
-     * @param OrganisationEntityInterface $organisationEntity
-     * @return bool
-     */
     public function attachAnyManager(IsManagerInterface $user, OrganisationEntityInterface $organisationEntity): bool
     {
-        return $this->canAssignManagerToOrganisation($user, $organisationEntity);
+        Log::warning('Using policy on organisation entity. Use organisation instead / attachAnyManager');
+        return $user->can('attachAnyManager', $organisationEntity->getOrganisation());
     }
 
     /**
@@ -47,12 +32,8 @@ abstract class BaseOrganisationPolicy extends BasePolicy
      */
     public function attachManager(IsManagerInterface $user, OrganisationEntityInterface $organisationEntity, Manager $targetManager): bool
     {
-        if ($user->getManager()->hasManagingRelation($targetManager)
-            && $this->canAssignManagerToOrganisation($user, $organisationEntity)
-        ) {
-            return true;
-        }
-        return $user->managerCan('organisation.assign-manager');
+        Log::warning('Using policy on organisation entity. Use organisation instead / attachManager');
+        return $user->can('attachManager', [$organisationEntity->getOrganisation(), $targetManager]);
     }
 
     /**
@@ -63,12 +44,8 @@ abstract class BaseOrganisationPolicy extends BasePolicy
      */
     public function detachManager(IsManagerInterface $user, OrganisationEntityInterface $organisationEntity, Manager $targetManager): bool
     {
-        if ($user->getManager()->hasManagingRelation($targetManager)
-            && $this->canAssignManagerToOrganisation($user, $organisationEntity)
-        ) {
-            return true;
-        }
-        return $user->managerCan('organisation.assign-manager');
+        Log::warning('Using policy on organisation entity. Use organisation instead / detachManager');
+        return $user->can('detachManager', [$organisationEntity->getOrganisation(), $targetManager]);
     }
 
     /**
@@ -78,12 +55,8 @@ abstract class BaseOrganisationPolicy extends BasePolicy
      */
     public function addInstrument(IsManagerInterface $user, OrganisationEntityInterface $organisationEntity): bool
     {
-        if ($user->managerCan('instrument.organisation.create')
-            && $organisationEntity->hasMember($user)
-        ) {
-            return true;
-        }
-        return $user->managerCan('instrument.create');
+        Log::warning('Using policy on organisation entity. Use organisation instead / addInstrument');
+        return $user->can('addInstrument', $organisationEntity->getOrganisation());
     }
 
     /**
@@ -93,12 +66,8 @@ abstract class BaseOrganisationPolicy extends BasePolicy
      */
     public function addProvider(IsManagerInterface $user, OrganisationEntityInterface $organisationEntity): bool
     {
-        if ($user->managerCan('provider.organisation.create')
-            && $organisationEntity->hasMember($user)
-        ) {
-            return true;
-        }
-        return $user->managerCan('provider.create');
+        Log::warning('Using policy on organisation entity. Use organisation instead / addProvider');
+        return $user->can('addProvider', $organisationEntity->getOrganisation());
     }
 
     /**
@@ -108,11 +77,7 @@ abstract class BaseOrganisationPolicy extends BasePolicy
      */
     public function addContact(IsManagerInterface $user, OrganisationEntityInterface $organisationEntity): bool
     {
-        if ($user->managerCan('contact.organisation.create')
-            && $organisationEntity->hasMember($user)
-        ) {
-            return true;
-        }
-        return $user->managerCan('contact.create');
+        Log::warning('Using policy on organisation entity. Use organisation instead / addContact');
+        return $user->can('addContact', $organisationEntity->getOrganisation());
     }
 }
