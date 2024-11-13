@@ -27,16 +27,17 @@ class SyncInstruments extends Command
         }
 
         $index = 'instruments';
+        $fullIndex = $index;
         $prefix = config('elastic.prefix');
         if ($prefix) {
             $this->output->writeln("used index-prefix: {$prefix}");
-            $index = $prefix . '-' . $index;
+            $fullIndex = $prefix . '-' . $index;
         }
-        $this->output->writeln("used index: {$index}");
+        $this->output->writeln("used index: {$fullIndex}");
 
-        if (!ElasticsearchEndpointService::make()->indexExists($index)) {
+        if (!ElasticsearchEndpointService::make()->indexExists($fullIndex)) {
             $this->call(CreateIndex::class, [
-                'index' => 'instruments'
+                'index' => $index
             ]);
         }
 

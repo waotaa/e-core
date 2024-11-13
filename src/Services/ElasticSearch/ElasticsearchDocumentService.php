@@ -64,7 +64,9 @@ class ElasticsearchDocumentService
     public function bulk($payload): array
     {
         try {
-            $response = $this->client->bulk($payload);
+            $response = $this->client->bulk([
+                'body' => $payload
+            ]);
         } catch (NoNodesAvailableException $noNodesAvailableException) {
             Log::error('ES >> bulk attempt: No nodes available exception', [
                 'exception' => $noNodesAvailableException,
