@@ -47,7 +47,8 @@ class SyncInstrumentsBatched extends Command
         $this->output->writeln($instruments->count() . ' instruments found');
         $this->output->writeln('');
 
-        $instruments->chunk(SyncBulkResourcesToElasticJob::BATCH_SIZE)->each(function ($instrumentsBatch) use ($index) {
+        $delay = 0;
+        $instruments->chunk(SyncBulkResourcesToElasticJob::BATCH_SIZE)->each(function ($instrumentsBatch) use ($index, &$delay) {
             $syncAttempt = SyncAttemptFactory::createSyncAttempt(SyncAttempt::ACTION_INDEX);
 
             dispatch(new SyncBulkResourcesToElasticJob(
@@ -55,9 +56,10 @@ class SyncInstrumentsBatched extends Command
                 $index,
                 Instrument::getResourceClass(),
                 $syncAttempt
-            ));
-        });
+            ))->delay(now()->addSeconds($delay));
 
+            $delay += 10; // Verhoog de vertraging met 10 seconden voor de volgende iteratie
+        });
 
         $this->output->newLine(2);
         $this->output->writeln('syncing instruments finished!');
