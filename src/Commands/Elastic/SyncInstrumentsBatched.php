@@ -58,7 +58,8 @@ class SyncInstrumentsBatched extends Command
                 $syncAttempt
             ))->delay(now()->addSeconds($delay));
 
-            $delay += 10; // Verhoog de vertraging met 10 seconden voor de volgende iteratie
+            // Verhoog de vertraging met 5 seconden voor de volgende iteratie, maar nooit meer dan 900
+            $delay = min($delay + 5, 900);
         });
 
         $this->output->newLine(2);
