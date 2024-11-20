@@ -50,7 +50,8 @@ class InstrumentHelper
     public function isComplete(): bool
     {
         return $this->hasTile()
-            && $this->hasClientCharacteristic();
+            && $this->hasClientCharacteristic()
+            && $this->hasImplementation();
     }
 
     public function hasTile(): bool
@@ -78,6 +79,15 @@ class InstrumentHelper
         }
 
         return $this->instrument->clientCharacteristics->isNotEmpty();
+    }
+
+    public function hasImplementation(): bool
+    {
+        if (!$this->instrument->relationLoaded('implementations')) {
+            $this->instrument->load('implementations');
+        }
+
+        return $this->instrument->implementations->isNotEmpty();
     }
 
     // Ratings
