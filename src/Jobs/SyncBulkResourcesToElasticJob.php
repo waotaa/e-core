@@ -66,7 +66,7 @@ class SyncBulkResourcesToElasticJob extends ElasticJob
         try {
             $docService = ElasticsearchDocumentService::make()
                 ->setClient($this->getClient());
-            $documentResponses = $docService->bulk($this->generatePayload());
+            $documentResponses = $docService->bulk($this->generatePayload($models));
             $this->processResponse($documentResponses);
 
         } catch (NoNodesAvailableException $noNodesAvailableException) {
@@ -104,10 +104,10 @@ class SyncBulkResourcesToElasticJob extends ElasticJob
         return ElasticClientBuilder::make();
     }
 
-    protected function generatePayload()
+    protected function generatePayload(Collection $models)
     {
         $payload = [];
-        $this->models->each(function(SearchableModel $model) use (&$payload) {
+        $models->each(function(SearchableModel $model) use (&$payload) {
             $payload[] = [
                 'index' => [
                     '_index' => $this->getFullIndex(),

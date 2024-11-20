@@ -10,6 +10,7 @@ use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\Contact;
 use Vng\EvaCore\Models\Download;
 use Vng\EvaCore\Models\GroupForm;
+use Vng\EvaCore\Models\Implementation;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Location;
 use Vng\EvaCore\Models\Neighbourhood;
@@ -233,6 +234,19 @@ class InstrumentPolicy extends BasePolicy
         return $this->update($user, $instrument);
     }
     public function detachClientCharacteristic(IsManagerInterface $user, Instrument $instrument, ClientCharacteristic $clientCharacteristic): bool
+    {
+        return $this->update($user, $instrument);
+    }
+
+    public function attachAnyImplementation(IsManagerInterface $user, Instrument $instrument): bool
+    {
+        return $this->update($user, $instrument);
+    }
+    public function attachImplementation(IsManagerInterface $user, Instrument $instrument, Implementation $implementation): bool
+    {
+        return $this->update($user, $instrument);
+    }
+    public function detachImplementation(IsManagerInterface $user, Instrument $instrument, Implementation $implementation): bool
     {
         return $this->update($user, $instrument);
     }

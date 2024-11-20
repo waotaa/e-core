@@ -5,12 +5,13 @@ namespace Vng\EvaCore\Commands\Elastic;
 use Illuminate\Support\Facades\Bus;
 use Vng\EvaCore\Jobs\FetchNewInstrumentRatingsJob;
 use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
-use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
+use Vng\EvaCore\Jobs\SyncBulkResourcesToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
+use Vng\EvaCore\Services\ElasticSearch\SyncAttemptFactory;
 
 class SyncInstruments extends Command
 {
@@ -50,26 +51,42 @@ class SyncInstruments extends Command
         $this->output->writeln($instruments->count() . ' instruments found');
         $this->output->writeln('');
 
-        foreach ($instruments as $instrument) {
+        $delay = 0;
+        $instruments->chunk(SyncBulkResourcesToElasticJob::BATCH_SIZE)->each(function ($instrumentsBatch) use ($index, &$delay) {
             $this->output->write('.');
-//            $this->getOutput()->write('- ' . $instrument->name);
-
-            $attempt = new SyncAttempt();
-            $attempt->action = 'sync';
-            $attempt->resource()->associate($instrument);
-            $attempt->save();
-
+            $syncAttempt = SyncAttemptFactory::createSyncAttempt(SyncAttempt::ACTION_INDEX);
             $jobs = [];
+
             // If not pure, then fetch rating first
             if (!$this->option('pure')) {
-                $jobs[] = new FetchNewInstrumentRatingsJob($instrument);
+                foreach ($instrumentsBatch as $instrument) {
+                    $jobs[] = new FetchNewInstrumentRatingsJob($instrument);
+                }
             }
-            $jobs[] = new SyncSearchableModelToElasticJob($instrument, $attempt);
-            Bus::chain($jobs)->dispatch();
-        }
+            $jobs[] = new SyncBulkResourcesToElasticJob(
+                $instrumentsBatch,
+                $index,
+                Instrument::getResourceClass(),
+                $syncAttempt
+            );
+
+            Bus::chain($jobs)->delay(now()->addSeconds($delay))->dispatch();
+
+            // Verhoog de vertraging met 5 seconden voor de volgende iteratie, maar nooit meer dan 900
+            $delay = min($delay + 5, 900);
+        });
 
         foreach (Instrument::onlyTrashed()->get() as $instrument) {
-            dispatch(new RemoveResourceFromElasticJob($instrument->getSearchIndex(), $instrument->getSearchId()));
+            $syncAttempt = SyncAttemptFactory::createSyncAttempt(
+                SyncAttempt::ACTION_DELETE,
+                $instrument
+            );
+
+            dispatch(new RemoveResourceFromElasticJob(
+                $instrument->getSearchIndex(),
+                $instrument->getSearchId(),
+                $syncAttempt
+            ));
         }
 
         $this->output->newLine(2);

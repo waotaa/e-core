@@ -5,10 +5,12 @@ namespace Vng\EvaCore\Commands\Elastic;
 use Illuminate\Console\Command;
 use Vng\EvaCore\ElasticResources\Original\Instrument\InstrumentDescriptionResource;
 use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
-use Vng\EvaCore\Jobs\SyncResourceToElasticJob;
+use Vng\EvaCore\Jobs\SyncBulkResourcesToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
+use Vng\EvaCore\Services\ElasticSearch\SyncAttemptFactory;
 
 class SyncInstrumentsDescription extends Command
 {
@@ -18,61 +20,67 @@ class SyncInstrumentsDescription extends Command
     public function handle(): int
     {
         $this->getOutput()->writeln('syncing instruments description');
-        $this->getOutput()->writeln('used index-prefix: ' . config('elastic.prefix'));
+        $this->output->writeln('');
 
         if ($this->option('fresh')) {
             $this->call('elastic:delete-index', ['index' => 'instruments_description', '--force' => true]);
         }
 
-        $this->output->writeln('');
+        $index = 'instruments_description';
+        $fullIndex = $index;
+        $prefix = config('elastic.prefix');
+        if ($prefix) {
+            $this->output->writeln("used index-prefix: {$prefix}");
+            $fullIndex = $prefix . '-' . $index;
+        }
+        $this->output->writeln("used index: {$fullIndex}");
+
+        if (!ElasticsearchEndpointService::make()->indexExists($fullIndex)) {
+            $this->call(CreateIndex::class, [
+                'index' => $index
+            ]);
+        }
+
 
         /** @var InstrumentRepositoryInterface $instrumentRepository */
         $instrumentRepository = app(InstrumentRepositoryInterface::class);
         $instruments = $instrumentRepository
-            ->builder()
-            ->with([
-                'organisation',
-                'implementation',
-                'groupForms',
-                'locations',
-                'registrationCodes',
-                'ratings',
-                'tiles',
-                'targetGroups',
-                'clientCharacteristics',
-                'links',
-                'videos',
-                'downloads',
-                'provider',
-                'contacts',
-                'availableRegions',
-                'availableTownships',
-                'availableNeighbourhoods',
-                'parentInstrument'
-            ])
+            ->getElasticResourceBuilder()
             ->get();
 
         $this->output->writeln($instruments->count() . ' instruments found');
         $this->output->writeln('');
 
-        foreach ($instruments as $instrument) {
-            $this->getOutput()->write('.');
+        $delay = 0;
+        $instruments->chunk(SyncBulkResourcesToElasticJob::BATCH_SIZE)->each(function ($instrumentsBatch) use ($index, &$delay) {
+            $syncAttempt = SyncAttemptFactory::makeSyncAttempt(SyncAttempt::ACTION_INDEX)
+                ->setNote('instrument description');
+            $syncAttempt->save();
 
-            $attempt = new SyncAttempt();
-            $attempt->action = 'sync-description';
-            $attempt->resource()->associate($instrument);
-            $attempt->save();
-
-            dispatch(new SyncResourceToElasticJob(
-                $instrument,
+            dispatch(new SyncBulkResourcesToElasticJob(
+                $instrumentsBatch,
                 'instruments_description',
                 InstrumentDescriptionResource::class,
-                $attempt
+                $syncAttempt
             ));
-        }
+
+            // Verhoog de vertraging met 5 seconden voor de volgende iteratie, maar nooit meer dan 900
+            $delay = min($delay + 5, 900);
+        });
 
         foreach (Instrument::onlyTrashed()->get() as $instrument) {
-            dispatch(new RemoveResourceFromElasticJob('instruments_description', $instrument->getSearchId()));
+            $syncAttempt = SyncAttemptFactory::makeSyncAttempt(
+                SyncAttempt::ACTION_DELETE,
+                $instrument
+            )
+                ->setNote('instrument description');
+            $syncAttempt->save();
+
+            dispatch(new RemoveResourceFromElasticJob(
+                'instruments_description',
+                $instrument->getSearchId(),
+                $syncAttempt
+            ));
         }
 
         $this->output->newLine(2);

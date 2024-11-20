@@ -2,7 +2,6 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
-use Illuminate\Support\Facades\DB;
 use Vng\EvaCore\Jobs\SyncBulkResourcesToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Illuminate\Console\Command;
@@ -11,9 +10,13 @@ use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 use Vng\EvaCore\Services\ElasticSearch\SyncAttemptFactory;
 
+/**
+ * A command that syncs all instruments in batches to elastic
+ * This was a POC. Will be integrated in normal instrument sync
+ */
 class SyncInstrumentsBatched extends Command
 {
-    protected $signature = 'elastic:sync-instruments-batched';
+    protected $signature = 'elastic:sync-instruments-batched {--f|fresh}';
     protected $description = 'Sync all instruments to ES in bulk requests';
 
     public function handle(): int
@@ -21,7 +24,9 @@ class SyncInstrumentsBatched extends Command
         $this->output->writeln('bulk syncing instruments...');
         $this->output->writeln('');
 
-        $this->call('elastic:delete-index', ['index' => 'instruments', '--force' => true]);
+        if ($this->option('fresh')) {
+            $this->call('elastic:delete-index', ['index' => 'instruments', '--force' => true]);
+        }
 
         $index = 'instruments';
         $fullIndex = $index;

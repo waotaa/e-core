@@ -3,11 +3,13 @@
 namespace Vng\EvaCore\Repositories\Eloquent;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Vng\EvaCore\Http\Requests\GroupFormCreateRequest;
 use Vng\EvaCore\Http\Requests\GroupFormUpdateRequest;
 use Vng\EvaCore\Models\GroupForm;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Repositories\GroupFormRepositoryInterface;
+use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 
 class GroupFormRepository extends BaseRepository implements GroupFormRepositoryInterface
 {
@@ -35,13 +37,35 @@ class GroupFormRepository extends BaseRepository implements GroupFormRepositoryI
 
     public function attachInstruments(GroupForm $groupForm, string|array $instrumentIds): GroupForm
     {
-        $groupForm->instruments()->syncWithoutDetaching((array) $instrumentIds);
+        $instrumentIds = (array) $instrumentIds;
+        /** @var InstrumentRepositoryInterface $instrumentRepository */
+        $instrumentRepository = app(InstrumentRepositoryInterface::class);
+        $instrumentRepository
+            ->findMany($instrumentIds)
+            ->each(
+                function (Instrument $instrument) use ($groupForm) {
+                    Gate::authorize('attachGroupForm', [$instrument, $groupForm]);
+                }
+            );
+
+        $groupForm->instruments()->syncWithoutDetaching($instrumentIds);
         return $groupForm;
     }
 
     public function detachInstruments(GroupForm $groupForm, string|array $instrumentIds): GroupForm
     {
-        $groupForm->instruments()->detach((array) $instrumentIds);
+        $instrumentIds = (array) $instrumentIds;
+        /** @var InstrumentRepositoryInterface $instrumentRepository */
+        $instrumentRepository = app(InstrumentRepositoryInterface::class);
+        $instrumentRepository
+            ->findMany($instrumentIds)
+            ->each(
+                function (Instrument $instrument) use ($groupForm) {
+                    Gate::authorize('detachGroupForm', [$instrument, $groupForm]);
+                }
+            );
+
+        $groupForm->instruments()->detach($instrumentIds);
         return $groupForm;
     }
 }

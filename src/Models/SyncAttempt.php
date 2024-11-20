@@ -61,9 +61,15 @@ class SyncAttempt extends Model
         return $this;
     }
 
-    public function updateNote(string $note)
+    public function setNote(string $note)
     {
         $this->note = $note;
+        return $this;
+    }
+
+    public function updateNote(string $note)
+    {
+        $this->setNote($note);
         $this->save();
         return $this;
     }

@@ -37,8 +37,32 @@ class InstrumentValidation extends ModelValidation
             'provider_id' => [
                 'required',
             ],
-            'implementation_id' => [
+            'implementations_ids' => [
                 'required',
+                'array',
+                'min:1',
+            ],
+            'implementation_ids.*' => [
+                'integer',
+                'exists:implementations,id',
+            ],
+            'tile_ids' => [
+                'required',
+                'array',
+                'min:1',
+            ],
+            'tile_ids.*' => [
+                'integer',
+                'exists:tiles,id',
+            ],
+            'client_characteristic_ids' => [
+                'required',
+                'array',
+                'min:1',
+            ],
+            'client_characteristic_ids.*' => [
+                'integer',
+                'exists:client_characteristics,id',
             ],
         ];
     }

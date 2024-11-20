@@ -13,6 +13,7 @@ use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\Contact;
 use Vng\EvaCore\Models\Download;
 use Vng\EvaCore\Models\GroupForm;
+use Vng\EvaCore\Models\Implementation;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Neighbourhood;
 use Vng\EvaCore\Models\Region;
@@ -23,6 +24,7 @@ use Vng\EvaCore\Repositories\ClientCharacteristicRepositoryInterface;
 use Vng\EvaCore\Repositories\ContactRepositoryInterface;
 use Vng\EvaCore\Repositories\DownloadRepositoryInterface;
 use Vng\EvaCore\Repositories\GroupFormRepositoryInterface;
+use Vng\EvaCore\Repositories\ImplementationRepositoryInterface;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 use Vng\EvaCore\Repositories\NeighbourhoodRepositoryInterface;
 use Vng\EvaCore\Repositories\RegionRepositoryInterface;
@@ -84,15 +86,21 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
 
         $instrument->organisation()->associate($organisation);
 
-        if ($request->input('implementation_id')) {
-            $instrument->implementation()->associate($request->input('implementation_id'));
-        }
-
         if ($request->input('provider_id')) {
             $instrument->provider()->associate($request->input('provider_id'));
         }
 
         $instrument->save();
+
+        if ($request->input('implementation_ids')) {
+            $this->attachImplementations($instrument, $request->input('implementation_ids'));
+        }
+        if ($request->input('client_characteristic_ids')) {
+            $this->attachClientCharacteristics($instrument, $request->input('client_characteristic_ids'));
+        }
+        if ($request->input('tile_ids')) {
+            $this->attachTiles($instrument, $request->input('tile_ids'));
+        }
 
         if ($request->input('group_form_ids')) {
             $this->attachGroupForms($instrument, $request->input('group_form_ids'));
@@ -250,6 +258,40 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
             );
 
         $instrument->groupForms()->detach($groupFormIds);
+        return $instrument;
+    }
+
+    public function attachImplementations(Instrument $instrument, string|array $implementationIds): Instrument
+    {
+        $implementationIds = (array) $implementationIds;
+        /** @var ImplementationRepositoryInterface $implementationRepository */
+        $implementationRepository = app(ImplementationRepositoryInterface::class);
+        $implementationRepository
+            ->findMany($implementationIds)
+            ->each(
+                function (Implementation $implementation) use ($instrument) {
+                    Gate::authorize('attachImplementation', [$instrument, $implementation]);
+                }
+            );
+
+        $instrument->implementations()->syncWithoutDetaching($implementationIds);
+        return $instrument;
+    }
+
+    public function detachImplementations(Instrument $instrument, string|array $implementationIds): Instrument
+    {
+        $implementationIds = (array) $implementationIds;
+        /** @var ImplementationRepositoryInterface $implementationRepository */
+        $implementationRepository = app(ImplementationRepositoryInterface::class);
+        $implementationRepository
+            ->findMany($implementationIds)
+            ->each(
+                function (Implementation $implementation) use ($instrument) {
+                    Gate::authorize('detachImplementation', [$instrument, $implementation]);
+                }
+            );
+
+        $instrument->implementations()->detach($implementationIds);
         return $instrument;
     }
 

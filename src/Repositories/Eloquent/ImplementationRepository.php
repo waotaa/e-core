@@ -3,10 +3,13 @@
 namespace Vng\EvaCore\Repositories\Eloquent;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Vng\EvaCore\Http\Requests\ImplementationCreateRequest;
 use Vng\EvaCore\Http\Requests\ImplementationUpdateRequest;
 use Vng\EvaCore\Models\Implementation;
+use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Repositories\ImplementationRepositoryInterface;
+use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 
 class ImplementationRepository extends BaseRepository implements ImplementationRepositoryInterface
 {
@@ -29,6 +32,40 @@ class ImplementationRepository extends BaseRepository implements ImplementationR
             'custom' => $request->input('custom'),
         ]);
         $implementation->save();
+        return $implementation;
+    }
+
+    public function attachInstruments(Implementation $implementation, string|array $instrumentIds): Implementation
+    {
+        $instrumentIds = (array) $instrumentIds;
+        /** @var InstrumentRepositoryInterface $instrumentRepository */
+        $instrumentRepository = app(InstrumentRepositoryInterface::class);
+        $instrumentRepository
+            ->findMany($instrumentIds)
+            ->each(
+                function (Instrument $instrument) use ($implementation) {
+                    Gate::authorize('attachImplementation', [$instrument, $implementation]);
+                }
+            );
+
+        $implementation->instruments()->syncWithoutDetaching($instrumentIds);
+        return $implementation;
+    }
+
+    public function detachInstruments(Implementation $implementation, string|array $instrumentIds): Implementation
+    {
+        $instrumentIds = (array) $instrumentIds;
+        /** @var InstrumentRepositoryInterface $instrumentRepository */
+        $instrumentRepository = app(InstrumentRepositoryInterface::class);
+        $instrumentRepository
+            ->findMany($instrumentIds)
+            ->each(
+                function (Instrument $instrument) use ($implementation) {
+                    Gate::authorize('detachImplementation', [$instrument, $implementation]);
+                }
+            );
+
+        $implementation->instruments()->detach($instrumentIds);
         return $implementation;
     }
 }
