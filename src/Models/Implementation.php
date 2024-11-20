@@ -3,7 +3,7 @@
 namespace Vng\EvaCore\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Vng\EvaCore\Observers\ImplementationObserver;
 
@@ -29,9 +29,9 @@ class Implementation extends Model
         static::observe(ImplementationObserver::class);
     }
 
-    public function instruments(): HasMany
+    public function instruments(): BelongsToMany
     {
-        return $this->hasMany(Instrument::class);
+        return $this->belongsToMany(Instrument::class, 'implementation_instrument')->using(ImplementationInstrument::class);
     }
 
     public function getOwningInstrumentAttribute(): ?Instrument
