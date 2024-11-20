@@ -37,7 +37,7 @@ class InstrumentValidation extends ModelValidation
             'provider_id' => [
                 'required',
             ],
-            'implementations_ids' => [
+            'implementation_ids' => [
                 'required',
                 'array',
                 'min:1',
