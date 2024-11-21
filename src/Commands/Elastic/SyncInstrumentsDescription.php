@@ -3,7 +3,7 @@
 namespace Vng\EvaCore\Commands\Elastic;
 
 use Illuminate\Console\Command;
-use Vng\EvaCore\ElasticResources\Original\Instrument\InstrumentDescriptionResource;
+use Vng\EvaCore\ElasticResources\Both\Instrument\InstrumentDescriptionWerknemersdienstverleningResource;
 use Vng\EvaCore\Jobs\RemoveResourceFromElasticJob;
 use Vng\EvaCore\Jobs\SyncBulkResourcesToElasticJob;
 use Vng\EvaCore\Models\Instrument;
@@ -59,7 +59,7 @@ class SyncInstrumentsDescription extends Command
             dispatch(new SyncBulkResourcesToElasticJob(
                 $instrumentsBatch,
                 'instruments_description',
-                InstrumentDescriptionResource::class,
+                InstrumentDescriptionWerknemersdienstverleningResource::class,
                 $syncAttempt
             ));
 
