@@ -9,6 +9,7 @@ use Vng\EvaCore\Models\Township;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Repositories\TownshipRepositoryInterface;
 use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
+use Vng\EvaCore\Services\ElasticSearch\SyncAttemptFactory;
 
 class SyncTownships extends Command
 {
@@ -55,12 +56,12 @@ class SyncTownships extends Command
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $township->name);
 
-            $attempt = new SyncAttempt();
-            $attempt->action = 'sync';
-            $attempt->resource()->associate($township);
-            $attempt->save();
+            $syncAttempt = SyncAttemptFactory::createSyncAttempt(
+                SyncAttempt::ACTION_INDEX,
+                $township
+            );
 
-            dispatch(new SyncSearchableModelToElasticJob($township, $attempt));
+            dispatch(new SyncSearchableModelToElasticJob($township, $syncAttempt));
         }
 
         foreach (Township::onlyTrashed()->get() as $township) {

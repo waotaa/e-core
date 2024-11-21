@@ -52,12 +52,13 @@ class SyncResourceToElasticJob extends ElasticJob
             );
 
             $status = $documentResponse->isSuccess() ? SyncAttempt::STATUS_SUCCESS : SyncAttempt::STATUS_FAILED;
+            Log::info("ES >> index attempt: request completed with status {$status}");
             $this->attempt?->updateStatus($status);
         } catch (NoNodesAvailableException) {
             $this->attempt?->updateStatus(SyncAttempt::STATUS_NO_NODES);
             $this->release(20);
         } catch (Exception $exception) {
-            Log::error('ES >> index attempt: Sync failed - model info', [
+            Log::error("ES >> index attempt: Sync failed - model info", [
                 'model_id' => $this->model->id,
                 'model' => $this->model,
                 'class' => $this->resourceClass,
