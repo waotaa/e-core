@@ -99,7 +99,7 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
 
             // relations
             'organisation' => OrganisationResource::one($this->organisation),
-            'implementations' => ImplementationResource::one($this->implementations),
+            'implementations' => ImplementationResource::many($this->implementations),
             'group_forms' => GroupFormResource::many($this->groupForms),
             'locations' => LocationResource::many($this->locations),
 

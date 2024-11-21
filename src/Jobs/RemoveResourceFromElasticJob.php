@@ -27,7 +27,11 @@ class RemoveResourceFromElasticJob extends ElasticJob
 
         $documentResponse = $docService->delete($prefixedIndex, $this->id);
 
-        $status = $documentResponse->isSuccess() ? SyncAttempt::STATUS_SUCCESS : SyncAttempt::STATUS_FAILED;
+        $status = SyncAttempt::STATUS_NO_EFFECT;
+        if (!is_null($documentResponse)) {
+            $status = $documentResponse->isSuccess() ? SyncAttempt::STATUS_SUCCESS : SyncAttempt::STATUS_FAILED;
+        }
+
         $this->attempt?->updateStatus($status);
     }
 

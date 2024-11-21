@@ -18,6 +18,7 @@ class SyncAttempt extends Model
     const STATUS_CREATED = 'created';
     const STATUS_STARTED = 'started';
     const STATUS_FAILED = 'failed';
+    const STATUS_NO_EFFECT = 'no effect';
     const STATUS_NO_NODES = 'no nodes';
     const STATUS_SUCCESS = 'success';
 
