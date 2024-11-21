@@ -45,7 +45,7 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
             'Beoordeling' => RatingResource::many($this->ratings),
             'Groepsvorm' => GroupFormResource::many($this->groupForms),
             'Klantkenmerk' => ClientCharacteristicResource::many($this->clientCharacteristics),
-            'Uitvoeringsvorm' => ImplementationResource::many($this->implementation),
+            'Uitvoeringsvorm' => ImplementationResource::many($this->implementations),
 
             // >> Current
             'id' => $this->id,
@@ -99,7 +99,7 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
 
             // relations
             'organisation' => OrganisationResource::one($this->organisation),
-            'implementation' => ImplementationResource::one($this->implementation),
+            'implementations' => ImplementationResource::one($this->implementations),
             'group_forms' => GroupFormResource::many($this->groupForms),
             'locations' => LocationResource::many($this->locations),
 
