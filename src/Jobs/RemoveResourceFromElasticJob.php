@@ -24,6 +24,7 @@ class RemoveResourceFromElasticJob extends ElasticJob
         $prefixedIndex = $this->getFullIndex();
         $docService = ElasticsearchDocumentService::make()
             ->setClient($this->getClient());
+
         $documentResponse = $docService->delete($prefixedIndex, $this->id);
 
         $status = $documentResponse->isSuccess() ? SyncAttempt::STATUS_SUCCESS : SyncAttempt::STATUS_FAILED;

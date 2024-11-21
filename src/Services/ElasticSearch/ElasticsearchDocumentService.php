@@ -83,11 +83,16 @@ class ElasticsearchDocumentService
         return ElasticApiDocumentResponse::fromBulkApiResponse($response);
     }
 
-    public function delete($indexName, $documentId): ElasticApiDocumentResponse
+    public function delete($indexName, $documentId): ?ElasticApiDocumentResponse
     {
         if (!ElasticsearchEndpointService::make()->indexExists($indexName)) {
             Log::info('ES >> delete attempt: index does not exist');
-            throw new \Exception('Index does not exist');
+//            throw new \Exception('Index does not exist');
+            return null;
+        }
+        if (!ElasticsearchEndpointService::make()->getDocument($indexName, $documentId)) {
+            Log::info('ES >> delete attempt: document does not exist');
+            return null;
         }
 
         $response = $this->client->delete([
