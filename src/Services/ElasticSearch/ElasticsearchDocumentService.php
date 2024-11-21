@@ -30,8 +30,8 @@ class ElasticsearchDocumentService
     public function index($indexName, $documentId, $body): ElasticApiDocumentResponse
     {
         if (!ElasticsearchEndpointService::make()->indexExists($indexName)) {
-            Log::info('ES >> index attempt: index does not exist');
-            throw new \Exception('Index does not exist');
+            Log::info("ES >> index attempt: index {$indexName} does not exist");
+//            throw new \Exception("Index {$indexName} does not exist");
         }
 
         try {

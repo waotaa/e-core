@@ -79,7 +79,8 @@ class ProviderRepository extends BaseRepository implements ProviderRepositoryInt
             ->builder()
             ->with([
                 'organisation',
-                'address'
+                'address',
+                'contacts'
             ]);
     }
 }

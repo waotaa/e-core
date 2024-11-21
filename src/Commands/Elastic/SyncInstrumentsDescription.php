@@ -41,7 +41,6 @@ class SyncInstrumentsDescription extends Command
             ]);
         }
 
-
         /** @var InstrumentRepositoryInterface $instrumentRepository */
         $instrumentRepository = app(InstrumentRepositoryInterface::class);
         $instruments = $instrumentRepository

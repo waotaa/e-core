@@ -8,6 +8,7 @@ use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Tile;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Repositories\TileRepositoryInterface;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class SyncTiles extends Command
 {
@@ -17,19 +18,35 @@ class SyncTiles extends Command
     public function handle(): int
     {
         $this->getOutput()->writeln('syncing tiles');
-        $this->getOutput()->writeln('used index-prefix: ' . config('elastic.prefix'));
+        $this->getOutput()->writeln('');
+        $index = 'tiles';
 
         if ($this->option('fresh')) {
-            $this->call('elastic:delete-index', ['index' => 'tiles', '--force' => true]);
+            $this->call('elastic:delete-index', ['index' => $index, '--force' => true]);
         }
 
-        $this->getOutput()->writeln('');
+        $fullIndex = $index;
+        $prefix = config('elastic.prefix');
+        if ($prefix) {
+            $this->output->writeln("used index-prefix: {$prefix}");
+            $fullIndex = $prefix . '-' . $index;
+        }
+        $this->output->writeln("used index: {$fullIndex}");
+
+        if (!ElasticsearchEndpointService::make()->indexExists($fullIndex)) {
+            $this->call(CreateIndex::class, [
+                'index' => $index
+            ]);
+        }
 
         /** @var TileRepositoryInterface $tileRepository */
         $tileRepository = app(TileRepositoryInterface::class);
         $tiles = $tileRepository
             ->builder()
             ->get();
+
+        $this->output->writeln($tiles->count() . ' tiles found');
+        $this->output->writeln('');
 
         foreach ($tiles as $tile) {
             $this->getOutput()->write('.');
@@ -41,8 +58,8 @@ class SyncTiles extends Command
             dispatch(new RemoveResourceFromElasticJob($tile->getSearchIndex(), $tile->getSearchId()));
         }
 
-        $this->getOutput()->writeln('');
-        $this->getOutput()->writeln('');
+        $this->output->newLine(2);
+        $this->output->writeln('syncing tiles finished!');
         return 0;
     }
 }

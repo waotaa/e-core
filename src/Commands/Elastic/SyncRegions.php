@@ -7,6 +7,7 @@ use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Region;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Repositories\RegionRepositoryInterface;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class SyncRegions extends Command
 {
@@ -16,13 +17,26 @@ class SyncRegions extends Command
     public function handle(): int
     {
         $this->getOutput()->writeln('syncing regions');
-        $this->getOutput()->writeln('used index-prefix: ' . config('elastic.prefix'));
+        $this->getOutput()->writeln('');
+        $index = 'regions';
 
         if ($this->option('fresh')) {
-            $this->call('elastic:delete-index', ['index' => 'regions', '--force' => true]);
+            $this->call('elastic:delete-index', ['index' => $index, '--force' => true]);
         }
 
-        $this->getOutput()->writeln('');
+        $fullIndex = $index;
+        $prefix = config('elastic.prefix');
+        if ($prefix) {
+            $this->output->writeln("used index-prefix: {$prefix}");
+            $fullIndex = $prefix . '-' . $index;
+        }
+        $this->output->writeln("used index: {$fullIndex}");
+
+        if (!ElasticsearchEndpointService::make()->indexExists($fullIndex)) {
+            $this->call(CreateIndex::class, [
+                'index' => $index
+            ]);
+        }
 
         /** @var RegionRepositoryInterface $regionRepository */
         $regionRepository = app(RegionRepositoryInterface::class);
@@ -32,6 +46,9 @@ class SyncRegions extends Command
                 'townships'
             ])
             ->get();
+
+        $this->output->writeln($regions->count() . ' regions found');
+        $this->output->writeln('');
 
         foreach ($regions as $region) {
             $this->getOutput()->write('.');
@@ -43,8 +60,8 @@ class SyncRegions extends Command
             dispatch(new RemoveResourceFromElasticJob($region->getSearchIndex(), $region->getSearchId()));
         }
 
-        $this->getOutput()->writeln('');
-        $this->getOutput()->writeln('');
+        $this->output->newLine(2);
+        $this->output->writeln('syncing regions finished!');
         return 0;
     }
 }

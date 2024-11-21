@@ -7,6 +7,7 @@ use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Environment;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class SyncEnvironments extends Command
 {
@@ -16,25 +17,35 @@ class SyncEnvironments extends Command
     public function handle(): int
     {
         $this->getOutput()->writeln('syncing environments');
-        $this->getOutput()->writeln('used index-prefix: ' . config('elastic.prefix'));
+        $this->output->writeln('');
+        $index = 'environments';
 
         if ($this->option('fresh')) {
-            $this->call('elastic:delete-index', ['index' => 'environments', '--force' => true]);
+            $this->call('elastic:delete-index', ['index' => $index, '--force' => true]);
         }
 
-        $this->output->writeln('');
+        $fullIndex = $index;
+        $prefix = config('elastic.prefix');
+        if ($prefix) {
+            $this->output->writeln("used index-prefix: {$prefix}");
+            $fullIndex = $prefix . '-' . $index;
+        }
+        $this->output->writeln("used index: {$fullIndex}");
+
+        if (!ElasticsearchEndpointService::make()->indexExists($fullIndex)) {
+            $this->call(CreateIndex::class, [
+                'index' => $index
+            ]);
+        }
 
         /** @var EnvironmentRepositoryInterface $environmentRepo */
         $environmentRepo = app(EnvironmentRepositoryInterface::class);
         $environments = $environmentRepo
-            ->builder()
-            ->with([
-                'contact',
-                'featuredOrganisations',
-                'organisation',
-                'professionals'
-            ])
+            ->getElasticResourceBuilder()
             ->get();
+
+        $this->output->writeln($environments->count() . ' environments found');
+        $this->output->writeln('');
 
         foreach ($environments as $environment) {
             $this->getOutput()->write('.');
@@ -46,8 +57,8 @@ class SyncEnvironments extends Command
             dispatch(new RemoveResourceFromElasticJob($environment->getSearchIndex(), $environment->getSearchId()));
         }
 
-        $this->output->writeln('');
-        $this->output->writeln('');
+        $this->output->newLine(2);
+        $this->output->writeln('syncing environments finished!');
         return 0;
     }
 }

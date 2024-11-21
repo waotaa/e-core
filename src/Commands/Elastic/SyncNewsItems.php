@@ -6,6 +6,7 @@ use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\NewsItem;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Repositories\NewsItemRepositoryInterface;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class SyncNewsItems extends Command
 {
@@ -15,13 +16,26 @@ class SyncNewsItems extends Command
     public function handle(): int
     {
         $this->getOutput()->writeln('syncing news items');
-        $this->getOutput()->writeln('used index-prefix: ' . config('elastic.prefix'));
+        $this->output->writeln('');
+        $index = 'news_items';
 
         if ($this->option('fresh')) {
-            $this->call('elastic:delete-index', ['index' => 'news_items', '--force' => true]);
+            $this->call('elastic:delete-index', ['index' => $index, '--force' => true]);
         }
 
-        $this->output->writeln('');
+        $fullIndex = $index;
+        $prefix = config('elastic.prefix');
+        if ($prefix) {
+            $this->output->writeln("used index-prefix: {$prefix}");
+            $fullIndex = $prefix . '-' . $index;
+        }
+        $this->output->writeln("used index: {$fullIndex}");
+
+        if (!ElasticsearchEndpointService::make()->indexExists($fullIndex)) {
+            $this->call(CreateIndex::class, [
+                'index' => $index
+            ]);
+        }
 
         /** @var NewsItemRepositoryInterface $newsItemRepository */
         $newsItemRepository = app(NewsItemRepositoryInterface::class);
@@ -38,8 +52,8 @@ class SyncNewsItems extends Command
             dispatch(new SyncSearchableModelToElasticJob($newsItem));
         }
 
-        $this->output->writeln('');
-        $this->output->writeln('');
+        $this->output->newLine(2);
+        $this->output->writeln('syncing news items finished!');
         return 0;
     }
 }

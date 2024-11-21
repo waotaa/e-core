@@ -8,6 +8,7 @@ use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\ClientCharacteristic;
 use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Repositories\ClientCharacteristicRepositoryInterface;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class SyncClientCharacteristics extends Command
 {
@@ -17,19 +18,34 @@ class SyncClientCharacteristics extends Command
     public function handle(): int
     {
         $this->output->writeln('syncing client characteristics...');
-        $this->output->writeln('used index-prefix: ' . config('elastic.prefix'));
+        $index = 'client_characteristics';
+        $this->output->writeln('');
 
         if ($this->option('fresh')) {
-            $this->call('elastic:delete-index', ['index' => 'client_characteristics', '--force' => true]);
+            $this->call('elastic:delete-index', ['index' => $index, '--force' => true]);
         }
 
-        $this->output->writeln('');
+        $fullIndex = $index;
+        $prefix = config('elastic.prefix');
+        if ($prefix) {
+            $this->output->writeln("used index-prefix: {$prefix}");
+            $fullIndex = $prefix . '-' . $index;
+        }
+        $this->output->writeln("used index: {$fullIndex}");
+
+        if (!ElasticsearchEndpointService::make()->indexExists($fullIndex)) {
+            $this->call(CreateIndex::class, [
+                'index' => $index
+            ]);
+        }
 
         /** @var ClientCharacteristicRepositoryInterface $clientCharacteristicsRepository */
         $clientCharacteristicsRepository = app(ClientCharacteristicRepositoryInterface::class);
         $clientCharacteristics = $clientCharacteristicsRepository
-            ->builder()
-            ->get();
+            ->all();
+
+        $this->output->writeln($clientCharacteristics->count() . ' client characteristics found');
+        $this->output->writeln('');
 
         foreach ($clientCharacteristics as $clientCharacteristic) {
             $this->output->write('.');

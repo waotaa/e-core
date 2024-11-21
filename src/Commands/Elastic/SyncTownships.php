@@ -8,6 +8,7 @@ use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Models\Township;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Repositories\TownshipRepositoryInterface;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class SyncTownships extends Command
 {
@@ -17,13 +18,26 @@ class SyncTownships extends Command
     public function handle(): int
     {
         $this->getOutput()->writeln('syncing townships');
-        $this->getOutput()->writeln('used index-prefix: ' . config('elastic.prefix'));
+        $this->output->writeln('');
+        $index = 'townships';
 
         if ($this->option('fresh')) {
-            $this->call('elastic:delete-index', ['index' => 'townships', '--force' => true]);
+            $this->call('elastic:delete-index', ['index' => $index, '--force' => true]);
         }
 
-        $this->output->writeln('');
+        $fullIndex = $index;
+        $prefix = config('elastic.prefix');
+        if ($prefix) {
+            $this->output->writeln("used index-prefix: {$prefix}");
+            $fullIndex = $prefix . '-' . $index;
+        }
+        $this->output->writeln("used index: {$fullIndex}");
+
+        if (!ElasticsearchEndpointService::make()->indexExists($fullIndex)) {
+            $this->call(CreateIndex::class, [
+                'index' => $index
+            ]);
+        }
 
         /** @var TownshipRepositoryInterface $townshipRepository */
         $townshipRepository = app(TownshipRepositoryInterface::class);
@@ -33,6 +47,9 @@ class SyncTownships extends Command
                 'region'
             ])
             ->get();
+
+        $this->output->writeln($townships->count() . ' townships found');
+        $this->output->writeln('');
 
         foreach ($townships as $township) {
             $this->getOutput()->write('.');
@@ -50,8 +67,8 @@ class SyncTownships extends Command
             dispatch(new RemoveResourceFromElasticJob($township->getSearchIndex(), $township->getSearchId()));
         }
 
-        $this->output->writeln('');
-        $this->output->writeln('');
+        $this->output->newLine(2);
+        $this->output->writeln('syncing townships finished!');
         return 0;
     }
 }

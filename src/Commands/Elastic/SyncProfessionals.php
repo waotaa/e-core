@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Vng\EvaCore\Jobs\SyncSearchableModelToElasticJob;
 use Vng\EvaCore\Models\Professional;
 use Vng\EvaCore\Repositories\ProfessionalRepositoryInterface;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class SyncProfessionals extends Command
 {
@@ -15,13 +16,26 @@ class SyncProfessionals extends Command
     public function handle(): int
     {
         $this->getOutput()->writeln('syncing professionals');
-        $this->getOutput()->writeln('used index-prefix: ' . config('elastic.prefix'));
+        $this->getOutput()->writeln('');
+        $index = 'professionals';
 
         if ($this->option('fresh')) {
-            $this->call('elastic:delete-index', ['index' => 'professionals', '--force' => true]);
+            $this->call('elastic:delete-index', ['index' => $index, '--force' => true]);
         }
 
-        $this->getOutput()->writeln('');
+        $fullIndex = $index;
+        $prefix = config('elastic.prefix');
+        if ($prefix) {
+            $this->output->writeln("used index-prefix: {$prefix}");
+            $fullIndex = $prefix . '-' . $index;
+        }
+        $this->output->writeln("used index: {$fullIndex}");
+
+        if (!ElasticsearchEndpointService::make()->indexExists($fullIndex)) {
+            $this->call(CreateIndex::class, [
+                'index' => $index
+            ]);
+        }
 
         /** @var ProfessionalRepositoryInterface $professionalRepository */
         $professionalRepository = app(ProfessionalRepositoryInterface::class);
@@ -32,14 +46,17 @@ class SyncProfessionals extends Command
             ])
             ->get();
 
+        $this->output->writeln($professionals->count() . ' professionals found');
+        $this->output->writeln('');
+
         foreach ($professionals as $professional) {
             $this->getOutput()->write('.');
 //            $this->getOutput()->write('- ' . $professional->name);
             dispatch(new SyncSearchableModelToElasticJob($professional));
         }
 
-        $this->getOutput()->writeln('');
-        $this->getOutput()->writeln('');
+        $this->output->newLine(2);
+        $this->output->writeln('syncing professionals finished!');
         return 0;
     }
 }
