@@ -65,11 +65,13 @@ class SyncPublicInstruments extends Command
             ));
         }
 
-        foreach (Instrument::onlyTrashed()->get() as $instrument) {
-            dispatch(new RemoveResourceFromPublicElasticJob(
-                'instruments',
-                $instrument->getSearchId()
-            ));
+        if (!$this->option('fresh')) {
+            foreach (Instrument::onlyTrashed()->get() as $instrument) {
+                dispatch(new RemoveResourceFromPublicElasticJob(
+                    'instruments',
+                    $instrument->getSearchId()
+                ));
+            }
         }
 
         $this->output->writeln('');

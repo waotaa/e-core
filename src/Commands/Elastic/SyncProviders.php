@@ -53,8 +53,10 @@ class SyncProviders extends Command
             dispatch(new SyncSearchableModelToElasticJob($provider));
         }
 
-        foreach (Provider::onlyTrashed()->get() as $provider) {
-            dispatch(new RemoveResourceFromElasticJob($provider->getSearchIndex(), $provider->getSearchId()));
+        if (!$this->option('fresh')) {
+            foreach (Provider::onlyTrashed()->get() as $provider) {
+                dispatch(new RemoveResourceFromElasticJob($provider->getSearchIndex(), $provider->getSearchId()));
+            }
         }
 
         $this->output->newLine(2);

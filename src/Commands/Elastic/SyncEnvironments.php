@@ -53,8 +53,10 @@ class SyncEnvironments extends Command
             dispatch(new SyncSearchableModelToElasticJob($environment));
         }
 
-        foreach (Environment::onlyTrashed()->get() as $environment) {
-            dispatch(new RemoveResourceFromElasticJob($environment->getSearchIndex(), $environment->getSearchId()));
+        if (!$this->option('fresh')) {
+            foreach (Environment::onlyTrashed()->get() as $environment) {
+                dispatch(new RemoveResourceFromElasticJob($environment->getSearchIndex(), $environment->getSearchId()));
+            }
         }
 
         $this->output->newLine(2);

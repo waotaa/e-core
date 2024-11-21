@@ -64,8 +64,10 @@ class SyncTownships extends Command
             dispatch(new SyncSearchableModelToElasticJob($township, $syncAttempt));
         }
 
-        foreach (Township::onlyTrashed()->get() as $township) {
-            dispatch(new RemoveResourceFromElasticJob($township->getSearchIndex(), $township->getSearchId()));
+        if (!$this->option('fresh')) {
+            foreach (Township::onlyTrashed()->get() as $township) {
+                dispatch(new RemoveResourceFromElasticJob($township->getSearchIndex(), $township->getSearchId()));
+            }
         }
 
         $this->output->newLine(2);

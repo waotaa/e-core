@@ -59,8 +59,10 @@ class SyncClientCharacteristics extends Command
             dispatch(new SyncSearchableModelToElasticJob($clientCharacteristic, $attempt));
         }
 
-        foreach (ClientCharacteristic::onlyTrashed()->get() as $clientCharacteristic) {
-            dispatch(new RemoveResourceFromElasticJob($clientCharacteristic->getSearchIndex(), $clientCharacteristic->getSearchId()));
+        if (!$this->option('fresh')) {
+            foreach (ClientCharacteristic::onlyTrashed()->get() as $clientCharacteristic) {
+                dispatch(new RemoveResourceFromElasticJob($clientCharacteristic->getSearchIndex(), $clientCharacteristic->getSearchId()));
+            }
         }
 
         $this->output->newLine(2);

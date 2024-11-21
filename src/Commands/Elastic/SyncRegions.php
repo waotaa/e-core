@@ -56,8 +56,10 @@ class SyncRegions extends Command
             dispatch(new SyncSearchableModelToElasticJob($region));
         }
 
-        foreach (Region::onlyTrashed()->get() as $region) {
-            dispatch(new RemoveResourceFromElasticJob($region->getSearchIndex(), $region->getSearchId()));
+        if (!$this->option('fresh')) {
+            foreach (Region::onlyTrashed()->get() as $region) {
+                dispatch(new RemoveResourceFromElasticJob($region->getSearchIndex(), $region->getSearchId()));
+            }
         }
 
         $this->output->newLine(2);

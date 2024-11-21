@@ -67,19 +67,21 @@ class SyncInstrumentsDescription extends Command
             $delay = min($delay + 5, 900);
         });
 
-        foreach (Instrument::onlyTrashed()->get() as $instrument) {
-            $syncAttempt = SyncAttemptFactory::makeSyncAttempt(
-                SyncAttempt::ACTION_DELETE,
-                $instrument
-            )
-                ->setNote('instrument description');
-            $syncAttempt->save();
+        if (!$this->option('fresh')) {
+            foreach (Instrument::onlyTrashed()->get() as $instrument) {
+                $syncAttempt = SyncAttemptFactory::makeSyncAttempt(
+                    SyncAttempt::ACTION_DELETE,
+                    $instrument
+                )
+                    ->setNote('instrument description');
+                $syncAttempt->save();
 
-            dispatch(new RemoveResourceFromElasticJob(
-                'instruments_description',
-                $instrument->getSearchId(),
-                $syncAttempt
-            ));
+                dispatch(new RemoveResourceFromElasticJob(
+                    'instruments_description',
+                    $instrument->getSearchId(),
+                    $syncAttempt
+                ));
+            }
         }
 
         $this->output->newLine(2);

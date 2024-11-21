@@ -51,11 +51,13 @@ class SyncPublicEnvironments extends Command
             ));
         }
 
-        foreach (Environment::onlyTrashed()->get() as $environment) {
-            dispatch(new RemoveResourceFromPublicElasticJob(
-                'environments',
-                $environment->getSearchId()
-            ));
+        if (!$this->option('fresh')) {
+            foreach (Environment::onlyTrashed()->get() as $environment) {
+                dispatch(new RemoveResourceFromPublicElasticJob(
+                    'environments',
+                    $environment->getSearchId()
+                ));
+            }
         }
 
         $this->output->writeln('');

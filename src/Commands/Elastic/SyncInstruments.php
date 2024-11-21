@@ -54,8 +54,9 @@ class SyncInstruments extends Command
         $delay = 0;
         $instruments->chunk(SyncBulkResourcesToElasticJob::BATCH_SIZE)->each(function ($instrumentsBatch) use ($index, &$delay) {
             $this->output->write('.');
-            $syncAttempt = SyncAttemptFactory::createSyncAttempt(SyncAttempt::ACTION_INDEX);
-            $syncAttempt->updateNote('instrument bulk');
+            $syncAttempt = SyncAttemptFactory::makeSyncAttempt(SyncAttempt::ACTION_INDEX)
+                ->setNote('instrument bulk');
+            $syncAttempt->save();
             $jobs = [];
 
             // If not pure, then fetch rating first
@@ -77,17 +78,19 @@ class SyncInstruments extends Command
             $delay = min($delay + 5, 900);
         });
 
-        foreach (Instrument::onlyTrashed()->get() as $instrument) {
-            $syncAttempt = SyncAttemptFactory::createSyncAttempt(
-                SyncAttempt::ACTION_DELETE,
-                $instrument
-            );
+        if (!$this->option('fresh')) {
+            foreach (Instrument::onlyTrashed()->get() as $instrument) {
+                $syncAttempt = SyncAttemptFactory::createSyncAttempt(
+                    SyncAttempt::ACTION_DELETE,
+                    $instrument
+                );
 
-            dispatch(new RemoveResourceFromElasticJob(
-                $instrument->getSearchIndex(),
-                $instrument->getSearchId(),
-                $syncAttempt
-            ));
+                dispatch(new RemoveResourceFromElasticJob(
+                    $instrument->getSearchIndex(),
+                    $instrument->getSearchId(),
+                    $syncAttempt
+                ));
+            }
         }
 
         $this->output->newLine(2);

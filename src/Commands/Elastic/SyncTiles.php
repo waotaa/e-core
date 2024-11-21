@@ -54,8 +54,10 @@ class SyncTiles extends Command
             dispatch(new SyncSearchableModelToElasticJob($tile));
         }
 
-        foreach (Tile::onlyTrashed()->get() as $tile) {
-            dispatch(new RemoveResourceFromElasticJob($tile->getSearchIndex(), $tile->getSearchId()));
+        if (!$this->option('fresh')) {
+            foreach (Tile::onlyTrashed()->get() as $tile) {
+                dispatch(new RemoveResourceFromElasticJob($tile->getSearchIndex(), $tile->getSearchId()));
+            }
         }
 
         $this->output->newLine(2);
