@@ -48,7 +48,7 @@ class ElasticApiDocumentResponse
 
     public function isSuccess(): bool
     {
-        if (!in_array($this->status, [200, 201], true)) {
+        if (!is_null($this->status) && !in_array($this->status, [200, 201], true)) {
             return false;
         }
 
