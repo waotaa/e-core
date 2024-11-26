@@ -7,6 +7,7 @@ use Vng\EvaCore\ElasticResources\Original\Shared\InstrumentResource;
 use Vng\EvaCore\Jobs\ElasticPublic\RemoveResourceFromPublicElasticJob;
 use Vng\EvaCore\Jobs\ElasticPublic\SyncBulkResourcesToPublicElasticJob;
 use Vng\EvaCore\Jobs\ElasticPublic\SyncResourceToPublicElasticJob;
+use Vng\EvaCore\Jobs\SyncBulkResourcesToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
@@ -41,7 +42,7 @@ class SyncPublicInstruments extends Command
 
         $index = 'instruments';
         $delay = 0;
-        $instruments->chunk(SyncBulkResourcesToPublicElasticJob::BATCH_SIZE)->each(function ($instrumentsBatch) use ($index, &$delay) {
+        $instruments->chunk(SyncBulkResourcesToElasticJob::BATCH_SIZE)->each(function ($instrumentsBatch) use ($index, &$delay) {
             $syncAttempt = SyncAttemptFactory::makeSyncAttempt(SyncAttempt::ACTION_INDEX)
                 ->setNote('public instruments');
             $syncAttempt->save();
@@ -56,15 +57,6 @@ class SyncPublicInstruments extends Command
             // Verhoog de vertraging met 5 seconden voor de volgende iteratie, maar nooit meer dan 900
             $delay = min($delay + 5, 900);
         });
-
-        foreach ($instruments as $instrument) {
-            $this->getOutput()->write('.');
-            dispatch(new SyncResourceToPublicElasticJob(
-                $instrument,
-                'instruments',
-                InstrumentResource::class,
-            ));
-        }
 
         if (!$this->option('fresh')) {
             foreach (Instrument::onlyTrashed()->get() as $instrument) {
