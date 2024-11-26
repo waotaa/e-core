@@ -13,6 +13,7 @@ class TownshipResource extends ElasticResource
             'NaamGemeente' => $this->name,              // AN..200
 
             'Arbeidsmarktregio' => $this->region ? TownshipRegionResource::one($this->region) : null,
+            'Wijk' => NeighbourhoodResource::many($this->neighbourhoods),
         ];
     }
 }

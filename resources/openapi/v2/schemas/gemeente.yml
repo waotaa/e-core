@@ -13,3 +13,8 @@ properties:
     nullable: true
     allOf:
       - $ref: './arbeidsmarktregio.yml'
+  Wijk:
+    type: array
+    nullable: true
+    items:
+      $ref: './wijk.yml'
