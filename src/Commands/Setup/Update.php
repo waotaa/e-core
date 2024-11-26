@@ -28,7 +28,9 @@ class Update extends Command
         $this->call(CleanupSyncAttempts::class);
         $this->call(SeedCharacteristics::class);
         $this->call(SetupAuthorizationMatrix::class);
-        $this->call(CognitoSetup::class, ['--no-interaction' => $this->option('no-interaction')]);
+        if (App::environment('production')) {
+            $this->call(CognitoSetup::class, ['--no-interaction' => $this->option('no-interaction')]);
+        }
         return 0;
     }
 }
