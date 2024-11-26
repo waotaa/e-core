@@ -138,7 +138,7 @@ class SyncForApi extends Command
             dispatch(new SyncBulkResourcesToElasticJob(
                 $providersBatch,
                 $index,
-                Instrument::getResourceClass(),
+                Provider::getResourceClass(),
                 $syncAttempt
             ))->delay(now()->addSeconds($delay));
 
