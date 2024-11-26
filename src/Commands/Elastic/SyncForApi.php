@@ -11,9 +11,12 @@ use Vng\EvaCore\Models\Provider;
 use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
 use Vng\EvaCore\Repositories\ProviderRepositoryInterface;
+use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class SyncForApi extends Command
 {
+    use UsePrefixedIndex;
+    
     protected $signature = 'elastic:sync-api {--f|fresh}';
     protected $description = 'Sync api entities to ES';
 
@@ -47,7 +50,7 @@ class SyncForApi extends Command
     {
         $this->output->info('Syncing for ' . $environment->name);
 
-        $this->output->writeln('_ index prefix: ' . $this->getIndexPrefix($environment));
+        $this->output->writeln('_ index prefix: ' . $this->getEnvironmentApiPrefix($environment));
 
         $orgIds = $this->getFeaturingOrgIds($environment);
         $this->output->writeln('_ featured orgs: ' . $orgIds->join(', '));
@@ -62,12 +65,33 @@ class SyncForApi extends Command
     public function refreshIndexes(Environment $environment)
     {
         if ($this->option('fresh')) {
-            $indexPrefix = $this->getIndexPrefix($environment);
-            $instrumentIndex = $indexPrefix . (new Instrument())->getSearchIndex();
-            $this->call('elastic:delete-index', ['index' => $instrumentIndex, '--force' => true]);
+            $environmentApiPrefix = $this->getEnvironmentApiPrefix($environment);
 
-            $providerIndex = $indexPrefix . (new Provider())->getSearchIndex();
-            $this->call('elastic:delete-index', ['index' => $providerIndex, '--force' => true]);
+            $instrumentIndex = $environmentApiPrefix . (new Instrument())->getSearchIndex();
+            $this->call(DeleteIndex::class, [
+                'index' => $instrumentIndex,
+                '--force' => true
+            ]);
+
+            $prefixedInstrumentIndex = $this->prefixIndex($instrumentIndex);
+            if (!ElasticsearchEndpointService::make()->indexExists($prefixedInstrumentIndex)) {
+                $this->call(CreateIndex::class, [
+                    'index' => $instrumentIndex
+                ]);
+            }
+
+            $providerIndex = $environmentApiPrefix . (new Provider())->getSearchIndex();
+            $this->call(DeleteIndex::class, [
+                'index' => $providerIndex,
+                '--force' => true
+            ]);
+
+            $prefixedProviderIndex = $this->prefixIndex($providerIndex);
+            if (!ElasticsearchEndpointService::make()->indexExists($prefixedProviderIndex)) {
+                $this->call(CreateIndex::class, [
+                    'index' => $providerIndex
+                ]);
+            }
         }
     }
 
@@ -77,7 +101,7 @@ class SyncForApi extends Command
         $instruments = $this->getInstruments($environment);
         foreach ($instruments as $instrument) {
             $this->output->write('.');
-            $this->syncInstrument($instrument, $this->getIndexPrefix($environment));
+            $this->syncInstrument($instrument, $this->getEnvironmentApiPrefix($environment));
         }
         $this->output->newLine();
     }
@@ -88,12 +112,12 @@ class SyncForApi extends Command
         $providers = $this->getProviders($environment);
         foreach ($providers as $provider) {
             $this->output->write('.');
-            $this->syncProvider($provider, $this->getIndexPrefix($environment));
+            $this->syncProvider($provider, $this->getEnvironmentApiPrefix($environment));
         }
         $this->output->newLine();
     }
 
-    public function getIndexPrefix(Environment $environment): string
+    public function getEnvironmentApiPrefix(Environment $environment): string
     {
         return 'api-'.$environment->getAttribute('slug').'-';
     }

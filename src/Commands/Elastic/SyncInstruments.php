@@ -15,6 +15,8 @@ use Vng\EvaCore\Services\ElasticSearch\SyncAttemptFactory;
 
 class SyncInstruments extends Command
 {
+    use UsePrefixedIndex;
+
     protected $signature = 'elastic:sync-instruments {--f|fresh} {--p|pure}';
     protected $description = 'Sync all instruments to ES';
 
@@ -22,18 +24,17 @@ class SyncInstruments extends Command
     {
         $this->output->writeln('syncing instruments...');
         $this->output->writeln('');
+        $index = 'instruments';
 
         if ($this->option('fresh')) {
-            $this->call('elastic:delete-index', ['index' => 'instruments', '--force' => true]);
+            $this->call('elastic:delete-index', ['index' => $index, '--force' => true]);
         }
 
-        $index = 'instruments';
-        $fullIndex = $index;
-        $prefix = config('elastic.prefix');
+        $prefix = $this->getIndexPrefix();
         if ($prefix) {
             $this->output->writeln("used index-prefix: {$prefix}");
-            $fullIndex = $prefix . '-' . $index;
         }
+        $fullIndex = $this->prefixIndex($index);
         $this->output->writeln("used index: {$fullIndex}");
 
         if (!ElasticsearchEndpointService::make()->indexExists($fullIndex)) {
