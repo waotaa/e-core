@@ -82,6 +82,16 @@ properties:
     type: string
     maxLength: 10000
     pattern: "^[a-zA-Z0-9]*$"
+  Groepsvorm:
+    type: array
+    nullable: true
+    items:
+      $ref: './groepsvorm.yml'
+  Klantkenmerk:
+    type: array
+    nullable: true
+    items:
+      $ref: './klantkenmerk.yml'
   Uitvoeringsvorm:
     type: array
     nullable: true

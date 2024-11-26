@@ -41,11 +41,6 @@ properties:
     $ref: '../codelijsten/StdIndJN.yml'
   InstrumentBeherendeOrganisatie:
     $ref: './instrumentBeherendeOrganisatie.yml'
-  Groepsvorm:
-    type: array
-    nullable: true
-    items:
-      $ref: './groepsvorm.yml'
   Uitvoeringslocatie:
     type: array
     nullable: true
@@ -72,11 +67,6 @@ properties:
     nullable: true
     items:
       $ref: './doelgroep.yml'
-  Klantkenmerk:
-    type: array
-    nullable: true
-    items:
-      $ref: './klantkenmerk.yml'
   Aanbieder:
     $ref: './aanbieder.yml'
   Contactpersoon:
