@@ -104,7 +104,7 @@ CdUitvoeringsvorm:
   $ref: './codelijsten/CdUitvoeringsvorm.yml'
 CdWerklandschaptegel:
   $ref: './codelijsten/CdWerklandschaptegel.yml'
-#StdIndJN:
-#  $ref: './codelijsten/StdIndJN.yml'
-StdIndNvt:
-  $ref: './codelijsten/StdIndNvt.yml'
+StdIndJN:
+  $ref: './codelijsten/StdIndJN.yml'
+#StdIndNvt:
+#  $ref: './codelijsten/StdIndNvt.yml'
