@@ -16,9 +16,7 @@ class DeletePublicIndex extends Command
 
         $index = $this->argument('index');
         $force = $this->option('force');
-
-        $prefix = config('elastic.prefix');
-        $prefixedIndex = $prefix ? $prefix . '-' . $index : $index;
+        $prefixedIndex = 'stats-' . $index;
 
         $confirmation = $force || $this->confirm('The index to delete is: '. $prefixedIndex . '. Is this correct?');
         if ($confirmation) {

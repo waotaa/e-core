@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Vng\EvaCore\ElasticResources\Original\Shared\InstrumentResource;
 use Vng\EvaCore\Jobs\ElasticPublic\RemoveResourceFromPublicElasticJob;
 use Vng\EvaCore\Jobs\ElasticPublic\SyncBulkResourcesToPublicElasticJob;
-use Vng\EvaCore\Jobs\ElasticPublic\SyncResourceToPublicElasticJob;
 use Vng\EvaCore\Jobs\SyncBulkResourcesToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\SyncAttempt;
@@ -22,9 +21,11 @@ class SyncPublicInstruments extends Command
     public function handle(): int
     {
         $this->getOutput()->writeln('syncing public instruments');
+        $this->output->writeln('');
+        $index = 'instruments';
 
         if ($this->option('fresh')) {
-            $this->call(DeletePublicIndex::class, ['index' => 'instruments', '--force' => true]);
+            $this->call(DeletePublicIndex::class, ['index' => $index, '--force' => true]);
         }
 
         if (!ElasticPublicClientBuilder::hasSettings()){
@@ -32,15 +33,16 @@ class SyncPublicInstruments extends Command
             return 0;
         }
 
-        $this->output->writeln('');
-
         /** @var InstrumentRepositoryInterface $instrumentRepository */
         $instrumentRepository = app(InstrumentRepositoryInterface::class);
         $instruments = $instrumentRepository
             ->getElasticResourceBuilder()
             ->get();
 
-        $index = 'instruments';
+
+        $this->output->writeln($instruments->count() . ' instruments found');
+        $this->output->writeln('');
+
         $delay = 0;
         $instruments->chunk(SyncBulkResourcesToElasticJob::BATCH_SIZE)->each(function ($instrumentsBatch) use ($index, &$delay) {
             $syncAttempt = SyncAttemptFactory::makeSyncAttempt(SyncAttempt::ACTION_INDEX)
@@ -67,8 +69,8 @@ class SyncPublicInstruments extends Command
             }
         }
 
-        $this->output->writeln('');
-        $this->output->writeln('');
+        $this->output->newLine(2);
+        $this->output->writeln('syncing public instruments finished!');
         return 0;
     }
 }
