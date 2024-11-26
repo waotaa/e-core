@@ -45,6 +45,7 @@ class SyncPublicInstruments extends Command
 
         $delay = 0;
         $instruments->chunk(SyncBulkResourcesToElasticJob::BATCH_SIZE)->each(function ($instrumentsBatch) use ($index, &$delay) {
+            $this->output->write('.');
             $syncAttempt = SyncAttemptFactory::makeSyncAttempt(SyncAttempt::ACTION_INDEX)
                 ->setNote('public instruments');
             $syncAttempt->save();
@@ -61,6 +62,7 @@ class SyncPublicInstruments extends Command
         });
 
         if (!$this->option('fresh')) {
+            $this->output->warning('Removing instruments from public instance');
             foreach (Instrument::onlyTrashed()->get() as $instrument) {
                 dispatch(new RemoveResourceFromPublicElasticJob(
                     'instruments',
