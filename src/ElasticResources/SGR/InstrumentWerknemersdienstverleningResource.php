@@ -13,6 +13,8 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
     public function toArray()
     {
         return [
+            'Instrument' => InstrumentResource::one($this->resource),
+
             'AantUrenIntensiteitPerWeek' => $this->intensity_hours_per_week,    // N..4
             'BedrTotaalKosten' => [
                 'CdMunteenheid' => 'EUR',
@@ -37,12 +39,11 @@ class InstrumentWerknemersdienstverleningResource extends ElasticResource
             'OmsSamenwerkingsPartners' => $this->cooperation_partners,  // meeste karakters 1690
             'OmsAanvullendeInfo' => $this->additional_information,      // meeste karakters 12065
 
-            'Instrument' => InstrumentResource::one($this->resource),
-
-            'Beoordeling' => RatingResource::many($this->ratings),
             'Groepsvorm' => GroupFormResource::many($this->groupForms),
             'Klantkenmerk' => ClientCharacteristicResource::many($this->clientCharacteristics),
             'Uitvoeringsvorm' => ImplementationResource::many($this->implementations),
+
+            'Beoordeling' => RatingResource::many($this->ratings),
         ];
     }
 }

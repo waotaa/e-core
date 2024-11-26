@@ -1,6 +1,6 @@
 <?php
 
-namespace Vng\EvaCore\ElasticResources\SGR\Shared;
+namespace Vng\EvaCore\ElasticResources\SGR\PublicData;
 
 class RatingResource extends \Vng\EvaCore\ElasticResources\SGR\RatingResource
 {

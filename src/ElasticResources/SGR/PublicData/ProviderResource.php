@@ -1,6 +1,6 @@
 <?php
 
-namespace Vng\EvaCore\ElasticResources\SGR\Shared;
+namespace Vng\EvaCore\ElasticResources\SGR\PublicData;
 
 class ProviderResource extends \Vng\EvaCore\ElasticResources\SGR\ProviderResource
 {

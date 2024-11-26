@@ -14,8 +14,8 @@ Bewerkmoment:
   $ref: './schemas/bewerkmoment.yml'
 Contactpersoon:
   $ref: './schemas/contactpersoon.yml'
-Dienstverband:
-  $ref: './schemas/dienstverband.yml'
+#Dienstverband:
+#  $ref: './schemas/dienstverband.yml'
 Doelgroep:
   $ref: './schemas/doelgroep.yml'
 Download:
@@ -25,23 +25,23 @@ Gebied:
 Gemeente:
   $ref: './schemas/gemeente.yml'
 Groepsvorm:
-  $ref: './schemas/groupsvorm.yml'
+  $ref: './schemas/groepsvorm.yml'
 Instrument:
   $ref: './schemas/instrument.yml'
 InstrumentBeherendeOrganisatie:
   $ref: './schemas/instrumentBeherendeOrganisatie.yml'
 InstrumentOmgeving:
   $ref: './schemas/instrumentOmgeving.yml'
-InstrumentWerkgeversdienstverlening:
-  $ref: './schemas/instrumentWerkgeversdienstverlening.yml'
+#InstrumentWerkgeversdienstverlening:
+#  $ref: './schemas/instrumentWerkgeversdienstverlening.yml'
 InstrumentWerknemersdienstverlening:
   $ref: './schemas/instrumentWerknemersdienstverlening.yml'
 Klantkenmerk:
   $ref: './schemas/klantkenmerk.yml'
 LandelijkePartij:
   $ref: './schemas/landelijkePartij.yml'
-Leeftijdsgroep:
-  $ref: './schemas/leeftijdsgroep.yml'
+#Leeftijdsgroep:
+#  $ref: './schemas/leeftijdsgroep.yml'
 Link:
   $ref: './schemas/link.yml'
 LokalePartij:
@@ -56,8 +56,8 @@ Registratiecode:
   $ref: './schemas/registratiecode.yml'
 Samenwerking:
   $ref: './schemas/samenwerking.yml'
-SectorInstrument:
-  $ref: './schemas/sectorInstrument.yml'
+#SectorInstrument:
+#  $ref: './schemas/sectorInstrument.yml'
 StandaardBedrag:
   $ref: './schemas/standaardBedrag.yml'
 Straatadres:
@@ -78,8 +78,8 @@ CdArbeidsmarktregio:
   $ref: './codelijsten/CdArbeidsmarktregio.yml'
 CdBereikInstrument:
   $ref: './codelijsten/CdBereikInstrument.yml'
-CdDienstverband:
-  $ref: './codelijsten/CdDienstverband.yml'
+#CdDienstverband:
+#  $ref: './codelijsten/CdDienstverband.yml'
 CdDoelgroep:
   $ref: './codelijsten/CdDoelgroep.yml'
 CdEenheidDuurTraject:
@@ -88,10 +88,10 @@ CdGroepsvorm:
   $ref: './codelijsten/CdGroepsvorm.yml'
 CdKlantkenmerk:
   $ref: './codelijsten/CdKlantkenmerk.yml'
-CdLeeftijdsgroep:
-  $ref: './codelijsten/CdLeeftijdsgroep.yml'
-CdSbi:
-  $ref: './codelijsten/CdSbi.yml'
+#CdLeeftijdsgroep:
+#  $ref: './codelijsten/CdLeeftijdsgroep.yml'
+#CdSbi:
+#  $ref: './codelijsten/CdSbi.yml'
 CdTypeContactpersoonRelatie:
   $ref: './codelijsten/CdTypeContactpersoonRelatie.yml'
 CdTypeGebied:

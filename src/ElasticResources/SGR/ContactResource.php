@@ -12,7 +12,6 @@ class ContactResource extends ElasticResource
         $codeType = $pivot ? Codelijsten::getTypeContactPersoonRelatieCode($pivot->type) : null;
 
         return [
-            // >> SGR
             'NaamContactpersoon' => $this->name,                // AN..200
             'TelefoonnummerContactpersoon' => $this->phone,     // AN..14
             'EmailadresContactpersoon' => $this->email,         // AN..320
