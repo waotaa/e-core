@@ -61,7 +61,7 @@ class SyncInstrumentsDescription extends Command
                 'instruments_description',
                 InstrumentDescriptionWerknemersdienstverleningResource::class,
                 $syncAttempt
-            ));
+            ))->delay(now()->addSeconds($delay));
 
             // Verhoog de vertraging met 5 seconden voor de volgende iteratie, maar nooit meer dan 900
             $delay = min($delay + 5, 900);
