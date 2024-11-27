@@ -52,6 +52,7 @@ class SyncInstrumentsDescription extends Command
 
         $delay = 0;
         $instruments->chunk(SyncBulkResourcesToElasticJob::BATCH_SIZE)->each(function ($instrumentsBatch) use ($index, &$delay) {
+            $this->output->write('.');
             $syncAttempt = SyncAttemptFactory::makeSyncAttempt(SyncAttempt::ACTION_INDEX)
                 ->setNote('instrument description');
             $syncAttempt->save();
