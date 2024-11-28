@@ -97,7 +97,6 @@ $townshipAdministratorPermissions = [
 // Environment
 $environmentGeneralPermissions = [
     'environment.viewAny',
-    'environment.view',
 ];
 
 // General
