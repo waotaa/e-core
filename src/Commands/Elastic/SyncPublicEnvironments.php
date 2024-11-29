@@ -8,7 +8,7 @@ use Vng\EvaCore\Jobs\ElasticPublic\RemoveResourceFromPublicElasticJob;
 use Vng\EvaCore\Jobs\ElasticPublic\SyncResourceToPublicElasticJob;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
-use Vng\EvaCore\Services\ElasticSearch\ElasticPublicClientBuilder;
+use Vng\EvaCore\Services\ElasticSearch\Clients\ElasticPublicClientBuilder;
 
 class SyncPublicEnvironments extends Command
 {

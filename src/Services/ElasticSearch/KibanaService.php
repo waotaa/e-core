@@ -23,13 +23,6 @@ class KibanaService
         return new self($environment, $elasticApiService);
     }
 
-    public function healthCheck()
-    {
-        $endpoint = '_cluster/health';
-        $result = $this->elasticApiService->get($endpoint)->json();
-        Log::debug('kibana health result', $result);
-        return $result;
-    }
 
     public function ensureKibanaSetup()
     {

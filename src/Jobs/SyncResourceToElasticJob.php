@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\ElasticResources\ElasticResourceInterface;
 use Vng\EvaCore\Http\Middleware\LogJobPayloadSize;
 use Vng\EvaCore\Models\SyncAttempt;
-use Vng\EvaCore\Services\ElasticSearch\ElasticClientBuilder;
+use Vng\EvaCore\Services\ElasticSearch\Clients\ElasticClientBuilder;
 use Vng\EvaCore\Services\ElasticSearch\ElasticsearchDocumentService;
 
 class SyncResourceToElasticJob extends ElasticJob

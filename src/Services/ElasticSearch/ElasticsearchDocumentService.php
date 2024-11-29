@@ -6,6 +6,7 @@ use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Vng\EvaCore\Services\ElasticSearch\Clients\ElasticClientBuilder;
 
 class ElasticsearchDocumentService
 {
@@ -103,4 +104,57 @@ class ElasticsearchDocumentService
         Log::info('ES >> delete result', ['response' => $response]);
         return ElasticApiDocumentResponse::fromApiResponse($response);
     }
+
+    public function getAllDocuments($indexName): array
+    {
+        return $this->scrollSearch($indexName);
+    }
+
+    public function scrollSearch(string $indexName, array $query = ['match_all' => []]): array
+    {
+        if (!ElasticsearchEndpointService::make()->indexExists($indexName)) {
+            Log::info("ES >> scroll search attempt: index {$indexName} does not exist");
+            return [];
+        }
+
+        try {
+            // Eerste zoekopdracht met scroll-parameter
+            $response = $this->client->search([
+                'index' => $indexName,
+                'scroll' => '1m', // Scroll-venster van 1 minuut
+                'body' => [
+                    'query' => $query,
+                ],
+            ]);
+
+            $scrollId = $response['_scroll_id'];
+            $documents = $response['hits']['hits'];
+
+            // Scroll herhalen tot alle documenten zijn opgehaald
+            while (count($response['hits']['hits']) > 0) {
+                $response = $this->client->scroll([
+                    'scroll_id' => $scrollId,
+                    'scroll' => '1m',
+                ]);
+
+                $scrollId = $response['_scroll_id'];
+                $documents = array_merge($documents, $response['hits']['hits']);
+            }
+
+            // Scroll ID opschonen
+            $this->client->clearScroll([
+                'scroll_id' => $scrollId,
+            ]);
+        } catch (Exception $exception) {
+            Log::error('ES >> scroll search attempt failed', [
+                'exception' => $exception,
+                'index' => $indexName,
+            ]);
+            throw $exception;
+        }
+
+        Log::info("ES >> scroll search result", ['total' => count($documents)]);
+        return $documents;
+    }
+
 }

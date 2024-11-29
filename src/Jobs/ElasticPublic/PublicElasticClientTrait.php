@@ -3,7 +3,7 @@
 namespace Vng\EvaCore\Jobs\ElasticPublic;
 
 use Elasticsearch\Client;
-use Vng\EvaCore\Services\ElasticSearch\ElasticPublicClientBuilder;
+use Vng\EvaCore\Services\ElasticSearch\Clients\ElasticPublicClientBuilder;
 
 trait PublicElasticClientTrait
 {

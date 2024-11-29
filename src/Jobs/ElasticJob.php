@@ -9,8 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Vng\EvaCore\Models\SyncAttempt;
-use Vng\EvaCore\Services\ElasticSearch\ElasticClientBuilder;
-use Vng\EvaCore\Services\ElasticSearch\SyncAttemptFactory;
+use Vng\EvaCore\Services\ElasticSearch\Clients\ElasticClientBuilder;
 
 abstract class ElasticJob implements ElasticJobInterface, ShouldQueue
 {
