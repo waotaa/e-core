@@ -21,6 +21,10 @@ class ContactValidation extends ModelValidation
                 'nullable',
                 'email'
             ],
+            'description' => [
+                'string',
+                'nullable',
+            ],
             'organisation_id' => [
                 'required'
             ],
