@@ -110,12 +110,49 @@ class ElasticsearchDocumentService
         return $this->scrollSearch($indexName);
     }
 
-    public function scrollSearch(string $indexName, array $query = ['match_all' => []]): array
+    public function search(string $indexName, array $query, int $size = 10, int $from = 0): array
+    {
+        if (!ElasticsearchEndpointService::make()->indexExists($indexName)) {
+            Log::info("ES >> search attempt: index {$indexName} does not exist");
+            return [];
+        }
+
+        try {
+            $response = $this->client->search([
+                'index' => $indexName,
+                'body' => [
+                    'query' => $query,
+                    'size' => $size,
+                    'from' => $from,
+                ],
+            ]);
+
+            Log::info('ES >> search result', [
+                'total' => $response['hits']['total']['value'] ?? 0,
+                'returned' => count($response['hits']['hits']),
+            ]);
+
+            return [
+                'total' => $response['hits']['total']['value'] ?? 0,
+                'documents' => $response['hits']['hits'],
+            ];
+        } catch (Exception $exception) {
+            Log::error('ES >> search attempt failed', [
+                'exception' => $exception,
+                'index' => $indexName,
+            ]);
+            throw $exception;
+        }
+    }
+
+    public function scrollSearch(string $indexName, array $query = null): array
     {
         if (!ElasticsearchEndpointService::make()->indexExists($indexName)) {
             Log::info("ES >> scroll search attempt: index {$indexName} does not exist");
             return [];
         }
+
+        $query = $query ?? ['match_all' => (object)[]];
 
         try {
             // Eerste zoekopdracht met scroll-parameter

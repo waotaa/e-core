@@ -6,27 +6,11 @@ use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
+/**
+ * This class offers a get and put method for making direct http requests (without SDK) to the kibana API
+ */
 class ElasticApiService
 {
-    /**
-     * Create a Kibana user.
-     *
-     * @param string $username
-     * @param string $password
-     * @return array
-     * @throws Exception
-     */
-    public function createKibanaUser($username, $password): array
-    {
-        $endpoint = '/_security/user/' . $username;
-        $requestBody = [
-            'password' => $password,
-            'roles' => ['kibana_user'], // Adjust roles as needed
-        ];
-
-        // Use the new put method to make the PUT request
-        return $this->put($endpoint, $requestBody);
-    }
 
     public function get(string $endpoint)
     {
@@ -49,13 +33,6 @@ class ElasticApiService
         $headers = $this->getCommonHeaders();
         $url = $this->getPathForEndpoint($endpoint);
 
-        // Construeer de curl command
-//        $curlCommand = "curl -X PUT";
-//        foreach ($headers as $key => $value) {
-//            $curlCommand .= " -H '" . $key . ": " . $value . "'";
-//        }
-//        $curlCommand .= " -d '" . json_encode($data) . "' '" . $url . "'";
-
         $response = Http::withHeaders($headers)->put($url, $data);
 
         if ($response->failed()) {
@@ -66,7 +43,7 @@ class ElasticApiService
         return $response->json();
     }
 
-    public function getPathForEndpoint($endpoint): string
+    private function getPathForEndpoint($endpoint): string
     {
         if (Str::startsWith($endpoint, '/')) {
             $endpoint = substr($endpoint, 1);

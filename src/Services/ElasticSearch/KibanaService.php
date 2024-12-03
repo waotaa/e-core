@@ -9,6 +9,10 @@ use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
 use Vng\EvaCore\Models\Environment;
 
+/**
+ * A service that offers methods to ensure that the kibana setup is as we want it
+ * It does so by making requests to the Kibana API
+ */
 class KibanaService
 {
     public function __construct(
