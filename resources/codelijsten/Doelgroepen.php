@@ -15,6 +15,12 @@ return [
     "ED04" => "(Vermoedelijk) Arbeidsbeperkten",
     "ED05" => "Statushouders",
     "ED06" => "Migranten",
-    "ED07" => "Ondernemers",
+    "ED07" => "(Ex) Ondernemers",
     "ED08" => "Dak- en thuislozen",
+    "ED09" => "Laaggeletterden en analfabeten",
+    "ED10" => "ZZP-er",
+    "ED11" => "Met werkloosheid bedreigd",
+    "ED12" => "Banenafspraak (doelgroepregister)",
+    "ED13" => "NUG-ers",
+    "ED14" => "Medewerkers",
 ];
