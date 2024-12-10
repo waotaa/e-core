@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Commands\Professionals;
 
+use Aws\CognitoIdentityProvider\Exception\CognitoIdentityProviderException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\Models\Professional;
@@ -18,14 +19,15 @@ class CognitoSyncProfessionalBatch extends AbstractCognitoCommand
         $this->output->writeln('syncing professional batch');
 
         if (!$this->hasValidConfig()) {
+            $this->getOutput()->warning('invalid config');
             return 1;
         }
 
         $professionals = $this->getProfessionals();
         $this->getOutput()->writeln($professionals->count() . ' professionals found');
         foreach ($professionals as $professional) {
-            $this->getOutput()->write('.');
-            $this->getOutput()->writeln($professional->last_seen_at);
+            $this->getOutput()->writeln('prof id: ' . $professional->id);
+            $this->getOutput()->writeln('last seen: ' . ($professional->last_seen_at ?? 'never seen'));
             $this->syncProfessional($professional);
         }
 
@@ -37,16 +39,27 @@ class CognitoSyncProfessionalBatch extends AbstractCognitoCommand
     {
         /** @var ProfessionalRepositoryInterface $professionalRepo */
         $professionalRepo = app(ProfessionalRepositoryInterface::class);
-        return $professionalRepo->getLastSeenProfessionals(20);
+        $query = $professionalRepo
+            ->builder()
+            ->whereHas('environment');
+
+        return $professionalRepo->addLastSeenConditions($query, 20)->get();
     }
 
     public function syncProfessional(Professional $professional)
     {
         $environment = $professional->environment;
         if (is_null($environment)) {
+            $this->warn('no environment found on professional');
             Log::warning('Attempted to sync professional without environment ['. $professional->id .']');
             return;
         }
-        CognitoService::make($environment)->syncProfessional($professional);
+        try {
+            CognitoService::make($environment)->syncProfessional($professional);
+        } catch (CognitoIdentityProviderException $exception) {
+            Log::error("Failed to sync professional; probably couldn't find userpool", [
+                'exception' => $exception
+            ]);
+        }
     }
 }
