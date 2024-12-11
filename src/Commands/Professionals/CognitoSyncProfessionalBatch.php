@@ -54,6 +54,9 @@ class CognitoSyncProfessionalBatch extends AbstractCognitoCommand
             Log::warning('Attempted to sync professional without environment ['. $professional->id .']');
             return;
         }
+
+        $this->getOutput()->writeln('environment: ' . ($professional->environment?->name ?? 'none?!?'));
+
         try {
             CognitoService::make($environment)->syncProfessional($professional);
         } catch (CognitoIdentityProviderException $exception) {
