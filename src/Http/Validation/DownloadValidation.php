@@ -12,15 +12,18 @@ class DownloadValidation extends ModelValidation
             'label' => [
                 'required'
             ],
+            // default upload method
             'file' => [
                 'required_without:key',
                 'prohibited_unless:key,null',
                 'max:5000',
             ],
+            // multipart upload method
             'key' => [
                 'required_without:file',
                 'prohibited_unless:file,null'
             ],
+            // multipart upload method
             'filename' => [
                 'prohibited_unless:file,null'
             ],
@@ -35,10 +38,13 @@ class DownloadValidation extends ModelValidation
         return [
             ...$this->rules(),
             'file' => [
-                'prohibited'
+                'nullable', // nullable, not required when key is missing
+                'prohibited_unless:key,null',
+                'max:5000',
             ],
             'key' => [
-                'prohibited'
+                'nullable', // nullable, not required when file is missing
+                'prohibited_unless:file,null'
             ]
         ];
     }
