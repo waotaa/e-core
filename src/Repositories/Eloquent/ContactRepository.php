@@ -37,6 +37,7 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
             'name' => $request->input('name'),
             'phone' => $request->input('phone'),
             'email' => $request->input('email'),
+            'description' => $request->input('description'),
         ]);
         $contact->organisation()->associate($organisation);
 

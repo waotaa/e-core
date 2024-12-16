@@ -21,7 +21,7 @@ class Contact extends Model
         'name',
         'phone',
         'email',
-//        'type'
+        'description'
     ];
 
     protected static function boot()
