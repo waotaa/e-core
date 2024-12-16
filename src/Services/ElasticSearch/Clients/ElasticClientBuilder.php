@@ -1,9 +1,10 @@
 <?php
 
-namespace Vng\EvaCore\Services\ElasticSearch;
+namespace Vng\EvaCore\Services\ElasticSearch\Clients;
 
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
+use function config;
 
 class ElasticClientBuilder extends ClientBuilder
 {

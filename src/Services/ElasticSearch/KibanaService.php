@@ -9,6 +9,10 @@ use Illuminate\Support\Str;
 use JetBrains\PhpStorm\ArrayShape;
 use Vng\EvaCore\Models\Environment;
 
+/**
+ * A service that offers methods to ensure that the kibana setup is as we want it
+ * It does so by making requests to the Kibana API
+ */
 class KibanaService
 {
     public function __construct(
@@ -23,13 +27,6 @@ class KibanaService
         return new self($environment, $elasticApiService);
     }
 
-    public function healthCheck()
-    {
-        $endpoint = '_cluster/health';
-        $result = $this->elasticApiService->get($endpoint)->json();
-        Log::debug('kibana health result', $result);
-        return $result;
-    }
 
     public function ensureKibanaSetup()
     {
