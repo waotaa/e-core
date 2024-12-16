@@ -6,6 +6,9 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\AggregateServiceProvider;
 use Vng\EvaCore\Commands\ApiSpecs\GenerateSchema;
 use Vng\EvaCore\Commands\AssignRegions;
+use Vng\EvaCore\Commands\Data\CheckLostProfessionals;
+use Vng\EvaCore\Commands\Data\CheckSoftDeletedOrganisations;
+use Vng\EvaCore\Commands\Data\EnsureIntegrity;
 use Vng\EvaCore\Commands\Dev\GenerateReport;
 use Vng\EvaCore\Commands\Dev\PasswordGenerationTest;
 use Vng\EvaCore\Commands\Dev\SyncInstrumentTest;
@@ -172,6 +175,10 @@ class EvaServiceProvider extends AggregateServiceProvider
 
     protected $commands = [
         GenerateSchema::class,
+
+        CheckLostProfessionals::class,
+        CheckSoftDeletedOrganisations::class,
+        EnsureIntegrity::class,
 
         GenerateReport::class,
         PasswordGenerationTest::class,

@@ -1,11 +1,15 @@
 <?php
 
 return [
-    "UV01" => "Training",
-    "UV02" => "Workshop",
-    "UV03" => "Vragenlijst",
-    "UV04" => "E-Learning",
-    "UV05" => "Coaching",
+    "UV01" => "(Bij)scholing",
+    "UV02" => "Opleiding",
+    "UV03" => "Leerwerktraject",
+    "UV04" => "(Vrijwilligers)werk",
+    "UV05" => "Vragenlijst",
     "UV06" => "Onderzoek",
-    "UV07" => "Werk/Stage",
+    "UV07" => "Coaching",
+    "UV08" => "Subsidie/Voucher",
+    "UV09" => "Tolken/Vertalen",
+    "UV10" => "Verwijzing",
+    "UV11" => "Materiele ondersteuning"
 ];

@@ -42,7 +42,7 @@ class ProfessionalRepository extends BaseRepository implements ProfessionalRepos
         return $professional;
     }
 
-    public function addForUserConditions(Builder $query, IsManagerInterface $user)
+    public function addForUserConditions(Builder $query, IsManagerInterface $user): Builder
     {
         /** @var EnvironmentRepositoryInterface $environmentRepository */
         $environmentRepository = app(EnvironmentRepositoryInterface::class);
@@ -59,9 +59,9 @@ class ProfessionalRepository extends BaseRepository implements ProfessionalRepos
         return $this->addForUserConditions($this->builder(), $user);
     }
 
-    public function getLastSeenProfessionals($limit = 200, $daysAgoThreshold = null): Collection|array
+    public function addLastSeenConditions(Builder $query, $limit = 200, $daysAgoThreshold = null): Builder
     {
-        $query = $this->builder()
+        $query
             ->orderBy('last_seen_at', 'ASC')
             ->limit($limit);
 
@@ -69,8 +69,12 @@ class ProfessionalRepository extends BaseRepository implements ProfessionalRepos
             $dateThreshold = Carbon::now()->subDays($daysAgoThreshold);
             $query->where('last_seen_at', '<=', $dateThreshold);
         }
+        return $query;
+    }
 
-        return $query->get();
+    public function getLastSeenProfessionals($limit = 200, $daysAgoThreshold = null): Collection|array
+    {
+        return $this->addLastSeenConditions($this->builder(), $limit, $daysAgoThreshold)->get();
     }
 
     public function getElasticResourceBuilder(): Builder
