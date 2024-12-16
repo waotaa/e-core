@@ -13,10 +13,11 @@ use Vng\EvaCore\Traits\HasDynamicSlug;
 
 abstract class AbstractOrganisationBase extends SearchableModel implements OrganisationEntityInterface
 {
-    use SoftDeletes {
-        SoftDeletes::restore as softDeleteRestore;
-    }
+    use SoftDeletes;
     use HasDynamicSlug;
+
+    public bool $isCascadingDelete = false;
+    public bool $isCascadingRestore = false;
 
     protected static function boot()
     {
@@ -60,12 +61,6 @@ abstract class AbstractOrganisationBase extends SearchableModel implements Organ
             $manager = $manager->getManager();
         }
         return $this->getOrganisation()->hasMember($manager);
-    }
-
-    public function restore()
-    {
-        $this->organisation()->withTrashed()->restore();
-        $this->softDeleteRestore();
     }
 }
 
