@@ -10,6 +10,14 @@ class ManagerValidation extends ModelValidation
             'email' => [
                 'nullable',
                 'email'
+            ],
+            'givenName' => [
+                'required',
+                'string'
+            ],
+            'surName' => [
+                'required',
+                'string'
             ]
         ];
     }

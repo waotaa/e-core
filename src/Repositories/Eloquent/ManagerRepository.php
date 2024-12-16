@@ -4,8 +4,10 @@ namespace Vng\EvaCore\Repositories\Eloquent;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
+use Vng\EvaCore\Http\Requests\ManagerUpdateRequest;
 use Vng\EvaCore\Interfaces\EvaUserInterface;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Manager;
@@ -68,6 +70,20 @@ class ManagerRepository extends BaseRepository implements ManagerRepositoryInter
 
         $manager->save();
         return $manager;
+    }
+
+    public function updateFromRequest(Manager $manager, ManagerUpdateRequest $request): Manager
+    {
+        return $this->saveFromRequest($manager, $request);
+    }
+
+    public function saveFromRequest(Manager $manager, FormRequest $request): Manager
+    {
+        return $this->update($manager, [
+            'givenName' => $request->input('givenName'),
+            'surName' => $request->input('surName'),
+            'months_unupdated_limit' => $request->input('months_unupdated_limit')
+        ]);
     }
 
     public function associateCreatedBy(Manager $manager, Manager $createdByManager)
