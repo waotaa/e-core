@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Observers;
 
 use Illuminate\Support\Facades\Log;
+use Vng\EvaCore\Models\AbstractOrganisationBase;
 use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
 
@@ -13,51 +14,46 @@ class OrganisationObserver
     )
     {}
 
-    public function forceDeleting(Organisation $organisation)
+    public function deleting(Organisation $model)
     {
-        Log::debug('force deleting organisation');
-        Log::debug('routing hard delete to organisation entity');
-        if ($organisation->localParty) {
-            $organisation->localParty->forceDelete();
-            return false;
+        if ($model->isForceDeleting()) {
+            Log::debug('hard deleting organisation');
+        } else {
+            Log::debug('soft deleting organisation');
         }
+        if (!$model->isCascadingDelete) {
+            // The deletion originated from the OrganisationEntity and needs to cascade to the organisation
 
-        if ($organisation->regionalParty) {
-            $organisation->regionalParty->forceDelete();
-            return false;
+            /** @var AbstractOrganisationBase $organisationEntity */
+            $organisationEntity = $model->organisationable()->withTrashed()->first();
+            if ($organisationEntity) {
+                // flag the organisation entity that the deletion performed on it originated here, so it does not need to cascade back
+                $organisationEntity->isCascadingDelete = true;
+
+                if ($model->isForceDeleting()) {
+                    Log::debug('cascade hard delete to organisation entity');
+                    $organisationEntity->forceDelete();
+                } else {
+                    Log::debug('cascade soft delete to organisation entity');
+                    $organisationEntity->delete();
+                }
+            }
         }
-
-        if ($organisation->nationalParty) {
-            $organisation->nationalParty->forceDelete();
-            return false;
-        }
-
-        if ($organisation->partnership) {
-            $organisation->partnership->forceDelete();
-            return false;
-        }
-
-        return null; // Allow the Organisation to be deleted if no related entities are found
     }
 
-    protected function trashed(Organisation $organisation)
+    public function restoring(Organisation $model)
     {
-        Log::debug('soft deleted organisation');
+        if (!$model->isCascadingRestore) {
+            // The restoration originated from the OrganisationEntity and needs to cascade to the organisation
 
-        if ($organisation->localParty && !$organisation->localParty->trashed()) {
-            $organisation->localParty->delete();
-        }
+            /** @var AbstractOrganisationBase $organisationEntity */
+            $organisationEntity = $model->organisationable()->withTrashed()->first();
+            if ($organisationEntity) {
+                // flag the organisation entity that the restoration performed on it originated here, so it does not need to cascade back
+                $organisationEntity->isCascadingRestore = true;
 
-        if ($organisation->regionalParty && !$organisation->regionalParty->trashed()) {
-            $organisation->regionalParty->delete();
-        }
-
-        if ($organisation->nationalParty && !$organisation->nationalParty->trashed()) {
-            $organisation->nationalParty->delete();
-        }
-
-        if ($organisation->partnership && !$organisation->partnership->trashed()) {
-            $organisation->partnership->delete();
+                $organisationEntity->restore();
+            }
         }
     }
 }

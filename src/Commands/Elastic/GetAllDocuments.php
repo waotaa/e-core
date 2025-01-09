@@ -2,10 +2,7 @@
 
 namespace Vng\EvaCore\Commands\Elastic;
 
-use Elasticsearch\Client;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\App;
-use Vng\EvaCore\Services\ElasticSearch\ElasticClientBuilder;
 use Vng\EvaCore\Services\ElasticSearch\ElasticsearchEndpointService;
 
 class GetAllDocuments extends Command

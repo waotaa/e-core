@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Services\ElasticSearch;
 
 use Elasticsearch\Client;
+use Vng\EvaCore\Services\ElasticSearch\Clients\ElasticClientBuilder;
 
 class ElasticsearchEndpointService
 {

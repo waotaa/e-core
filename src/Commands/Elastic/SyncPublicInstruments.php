@@ -10,7 +10,7 @@ use Vng\EvaCore\Jobs\SyncBulkResourcesToElasticJob;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\SyncAttempt;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
-use Vng\EvaCore\Services\ElasticSearch\ElasticPublicClientBuilder;
+use Vng\EvaCore\Services\ElasticSearch\Clients\ElasticPublicClientBuilder;
 use Vng\EvaCore\Services\ElasticSearch\SyncAttemptFactory;
 
 class SyncPublicInstruments extends Command

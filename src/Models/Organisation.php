@@ -20,6 +20,9 @@ class Organisation extends Model
 {
     use HasFactory, SoftDeletes, HasContacts;
 
+    public bool $isCascadingDelete = false;
+    public bool $isCascadingRestore = false;
+
     protected $table = 'organisations';
 
     protected $fillable = [];
