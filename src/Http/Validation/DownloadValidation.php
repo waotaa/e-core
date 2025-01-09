@@ -35,17 +35,19 @@ class DownloadValidation extends ModelValidation
 
     protected function updateRules(Model $model): array
     {
-        return [
-            ...$this->rules(),
-            'file' => [
-                'nullable', // nullable, not required when key is missing
-                'prohibited_unless:key,null',
-                'max:5000',
-            ],
-            'key' => [
-                'nullable', // nullable, not required when file is missing
-                'prohibited_unless:file,null'
-            ]
+        $rules = $this->rules();
+
+        // Pas bestaande regels aan
+        $rules['file'] = [
+            'nullable', // nullable, not required when key is missing
+            'prohibited_unless:key,null',
+            'max:5000',
         ];
+        $rules['key'] = [
+            'nullable', // nullable, not required when file is missing
+            'prohibited_unless:file,null'
+        ];
+
+        return $rules;
     }
 }
