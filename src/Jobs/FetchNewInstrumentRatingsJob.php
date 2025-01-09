@@ -52,8 +52,10 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
             return;
         }
 
-        $ratings = collect($instrumentDoc['_source']['ratings']);
-        Log::warning('No ratings for instrument');
+        $ratings = collect($instrumentDoc['_source']['ratings'] ?? []);
+        if ($ratings->isEmpty()) {
+            Log::warning('No ratings for instrument');
+        }
 
         if ($ratings->isNotEmpty()) {
             $newRatings = $ratings->filter(fn ($r) => is_null($r['id']));
@@ -87,5 +89,41 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
                 ]
             ]);
         }
+
+//        $ratings = collect($instrumentDoc['_source']['Beoordeling'] ?? []);
+//
+//        if ($ratings->isEmpty()) {
+//            Log::warning('No ratings for instrument');
+//            return;
+//        }
+//        $newRatings = $ratings->filter(fn ($r) => is_null($r['id']));
+//        $newRatings->each(function($rating) {
+//            $ratingModel = new Rating([
+//                'author' => $rating["AuteurBeoordeling"],
+//                'email' => $rating["EmailadresAuteurBeoordeling"],
+//                'general_score' => $rating["AlgemeneScore"],
+//                'general_explanation' => $rating["ToelAlgemeneScore"],
+//                'result_score' => $rating["ResultaatScore"],
+//                'result_explanation' => $rating["ToelResultaatScore"],
+//                'execution_score' => $rating["UitvoeringsScore"],
+//                'execution_explanation' => $rating["ToelUitvoeringsScore"],
+//
+//                'created_at' => new DateTime($rating['DatTijdBeoordeling']),
+//            ]);
+//            $ratingModel->instrument()->associate($this->instrument);
+//
+//            $ratingModel->saveQuietly();
+//        });
+//
+//        // Update the ratings field on the instrument document
+//        $elasticSearchClient->update([
+//            'index' => $prefixedIndex,
+//            'id' => $this->instrument->uuid,
+//            'body' => [
+//                'doc' => [
+//                    'Beoordeling' => RatingResource::many($this->instrument->fresh()->ratings),
+//                ]
+//            ]
+//        ]);
     }
 }

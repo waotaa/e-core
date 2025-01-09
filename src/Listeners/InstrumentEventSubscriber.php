@@ -23,7 +23,7 @@ class InstrumentEventSubscriber
             SyncAttempt::ACTION_INDEX,
             $instrument
         );
-        $attempt->setAttribute('note', 'on instrumets_description index');
+        $attempt->setAttribute('note', 'on instruments_description index');
         $attempt->save();
 
         Bus::chain([

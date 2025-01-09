@@ -440,4 +440,46 @@ class Instrument extends SearchableModel
         $instrumentRepository = $this->app->make(InstrumentRepositoryInterface::class);
         return $instrumentRepository->addMultipleOwnerConditions($query, $user->getAssociations());
     }
+
+    public function getElasticRequiredRelations(): void
+    {
+        $relations = [
+            'organisation',
+            'organisation.featuringEnvironments',
+
+            'organisation.organisationable',
+            'organisation.nationalParty',
+            'organisation.regionalParty',
+            'organisation.regionalParty.region',
+            'organisation.localParty',
+            'organisation.localParty.township',
+            'organisation.partnership',
+            'organisation.partnership.townships',
+
+            'implementation',
+            'groupForms',
+            'locations',
+            'registrationCodes',
+            'ratings',
+            'tiles',
+            'targetGroups',
+            'clientCharacteristics',
+            'links',
+            'videos',
+            'downloads',
+
+            'provider',
+            'provider.address',
+            'provider.contacts',
+
+            'contacts',
+            'availableRegions',
+            'availableTownships',
+            'availableNeighbourhoods',
+            'parentInstrument'
+        ];
+
+        // Laad alleen de relaties die nog niet geladen zijn
+        $this->loadMissing($relations);
+    }
 }
