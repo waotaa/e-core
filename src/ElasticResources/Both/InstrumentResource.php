@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\ElasticResources\Both;
 
+use Illuminate\Support\Str;
 use Vng\EvaCore\Helpers\Codelijsten;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Services\ModelHelpers\InstrumentHelper;
@@ -17,19 +18,19 @@ class InstrumentResource extends ElasticResource
 
         return [
             // >> SGR
-            'NaamInstrument' => $this->name,                                            // AN..200
-            'UuidInstrument' => $this->uuid,                                            // AN36
-            'SlugInstrument' => $this->slug,                                            // AN36
+            'NaamInstrument' => $this->name,                                                        // AN..200
+            'UuidInstrument' => $this->uuid,                                                        // AN36
+            'SlugInstrument' => (string) Str::slug($this->name),                                    // AN36
 
-            'IndPublicatieInstrument' => Codelijsten::getJaNeeIndicatieCode($this->is_active),    // StdIndJN
-            'DatBPublicatieInstrument' => $this->formatDate($this->publish_from),                 // DATUM
-            'DatEPublicatieInstrument' => $this->formatDate($this->publish_to),                   // DATUM
-            'IndCompleet' => Codelijsten::getJaNeeIndicatieCode($isComplete),           // StdIndJN
+            'IndPublicatieInstrument' => Codelijsten::getJaNeeIndicatieCode($this->is_active),      // StdIndJN
+            'DatBPublicatieInstrument' => $this->formatDate($this->publish_from),                   // DATUM
+            'DatEPublicatieInstrument' => $this->formatDate($this->publish_to),                     // DATUM
+            'IndCompleet' => Codelijsten::getJaNeeIndicatieCode($isComplete),                       // StdIndJN
 
             'Bewerkmoment' => [
-                'DatAangemaakt' => $this->formatDate($this->created_at),    // DATUMTIJD
-                'DatGewijzigd' => $this->formatDate($this->updated_at),     // DATUMTIJD
-                'DatVerwijderd' => $this->formatDate($this->deleted_at),    // DATUMTIJD
+                'DatAangemaakt' => $this->formatDate($this->created_at),                            // DATUMTIJD
+                'DatGewijzigd' => $this->formatDate($this->updated_at),                             // DATUMTIJD
+                'DatVerwijderd' => $this->formatDate($this->deleted_at),                            // DATUMTIJD
             ],
 
             'InstrumentBeherendeOrganisatie' => OrganisationResource::one($this->organisation),

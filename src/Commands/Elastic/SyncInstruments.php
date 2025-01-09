@@ -61,7 +61,7 @@ class SyncInstruments extends Command
             $jobs = [];
 
             // If not pure, then fetch rating first
-            if (!$this->option('pure')) {
+            if (!$this->option('fresh') || !$this->option('pure')) {
                 foreach ($instrumentsBatch as $instrument) {
                     $jobs[] = new FetchNewInstrumentRatingsJob($instrument);
                 }

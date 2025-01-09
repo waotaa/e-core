@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\ElasticResources\SGR;
 
+use Illuminate\Support\Str;
 use Vng\EvaCore\Helpers\Codelijsten;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Services\ModelHelpers\InstrumentHelper;
@@ -16,9 +17,9 @@ class InstrumentResource extends ElasticResource
         $isComplete = InstrumentHelper::create($this->resource)->isComplete();
 
         return [
-            'NaamInstrument' => $this->name,                                            // AN..200
-            'UuidInstrument' => $this->uuid,                                            // AN36
-            'SlugInstrument' => $this->slug,                                            // AN36
+            'NaamInstrument' => $this->name,                                                      // AN..200
+            'UuidInstrument' => $this->uuid,                                                      // AN36
+            'SlugInstrument' => (string) Str::slug($this->name),                                  // AN36
 
             'IndPublicatieInstrument' => Codelijsten::getJaNeeIndicatieCode($this->is_active),    // StdIndJN
             'DatBPublicatieInstrument' => $this->formatDate($this->publish_from),                 // DATUM

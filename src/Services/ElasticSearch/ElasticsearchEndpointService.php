@@ -3,7 +3,6 @@
 namespace Vng\EvaCore\Services\ElasticSearch;
 
 use Elasticsearch\Client;
-use Elasticsearch\ClientBuilder;
 
 class ElasticsearchEndpointService
 {
@@ -198,7 +197,6 @@ class ElasticsearchEndpointService
 
         try {
             $response = $this->client->search($params);
-
             // Map over the hits to return only the _source field
             return array_map(function ($hit) {
                 return [

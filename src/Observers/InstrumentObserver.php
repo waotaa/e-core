@@ -6,7 +6,6 @@ use Vng\EvaCore\Events\ElasticRelatedResourceChanged;
 use Vng\EvaCore\Events\InstrumentRemoved;
 use Vng\EvaCore\Events\InstrumentSaved;
 use Vng\EvaCore\Models\Instrument;
-use Vng\EvaCore\Models\InstrumentType;
 use Vng\EvaCore\Services\ModelHelpers\InstrumentTrackerHelper;
 
 class InstrumentObserver
