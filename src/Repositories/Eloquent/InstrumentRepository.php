@@ -542,7 +542,6 @@ class InstrumentRepository extends BaseRepository implements InstrumentRepositor
                 'organisation',
                 'organisation.featuringEnvironments', // Absolutely  needed.
 
-                'organisation.organisationable',
                 'organisation.nationalParty',
                 'organisation.regionalParty',
                 'organisation.regionalParty.region',

@@ -25,7 +25,8 @@ class OrganisationObserver
             // The deletion originated from the OrganisationEntity and needs to cascade to the organisation
 
             /** @var AbstractOrganisationBase $organisationEntity */
-            $organisationEntity = $model->organisationable()->withTrashed()->first();
+            $organisationEntity = $model->organisation_variant;
+
             if ($organisationEntity) {
                 // flag the organisation entity that the deletion performed on it originated here, so it does not need to cascade back
                 $organisationEntity->isCascadingDelete = true;
@@ -47,7 +48,7 @@ class OrganisationObserver
             // The restoration originated from the OrganisationEntity and needs to cascade to the organisation
 
             /** @var AbstractOrganisationBase $organisationEntity */
-            $organisationEntity = $model->organisationable()->withTrashed()->first();
+            $organisationEntity = $model->organisation_variant;
             if ($organisationEntity) {
                 // flag the organisation entity that the restoration performed on it originated here, so it does not need to cascade back
                 $organisationEntity->isCascadingRestore = true;

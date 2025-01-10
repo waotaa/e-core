@@ -22,9 +22,6 @@ class OrganisationResource extends JsonResource
             'slug' => $this->slug,
             'type' => $this->type,
 
-            'organisationable_type' => $this->organisationable_type,
-            'organisationable_id' => $this->organisationable_id,
-
             'localParty' => OrganisationLocalPartyResource::make($this->localParty),
             'regionalParty' => OrganisationRegionlPartyResource::make($this->regionalParty),
             'nationalParty' => OrganisationNationalPartyResource::make($this->nationalParty),

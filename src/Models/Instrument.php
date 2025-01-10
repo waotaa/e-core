@@ -254,9 +254,9 @@ class Instrument extends SearchableModel
         }
 
         // Has owner: Return owner areas
-        /** @var AreaInterface $organisationEntity */
-        $organisationEntity = $this->organisation->organisationable;
-        return $organisationEntity->getOwnAreas();
+        /** @var AreaInterface $organisationVariant */
+        $organisationVariant = $this->organisation->OrganisationVariant;
+        return $organisationVariant->getOwnAreas();
     }
 
     /**
@@ -447,7 +447,6 @@ class Instrument extends SearchableModel
             'organisation',
             'organisation.featuringEnvironments',
 
-            'organisation.organisationable',
             'organisation.nationalParty',
             'organisation.regionalParty',
             'organisation.regionalParty.region',

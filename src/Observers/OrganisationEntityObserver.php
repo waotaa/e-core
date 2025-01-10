@@ -17,15 +17,11 @@ class OrganisationEntityObserver
 
     public function creating(Model $model): void
     {
+        /** @var Organisation $organisation */
         $organisation = $this->organisationRepository->new();
+        $organisation->setOrganisationType($model);
         $organisation->save();
         $model->organisation()->associate($organisation);
-    }
-
-    public function saved(Model $model): void
-    {
-        $organisation = $this->organisationRepository->associateOrganisationable($model);
-        $organisation->save();
     }
 
     public function deleting(AbstractOrganisationBase $model)

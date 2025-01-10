@@ -19,8 +19,6 @@ interface OrganisationRepositoryInterface extends BaseRepositoryInterface
     public function create(OrganisationCreateRequest $request): Organisation;
     public function update(Organisation $organisation, OrganisationUpdateRequest $request): Organisation;
 
-    public function associateOrganisationable(Model $organisationEntity): ?Organisation;
-
     public function attachManagers(Organisation $organisation, string|array $managerIds): Organisation;
     public function detachManagers(Organisation $organisation, string|array $managerIds): Organisation;
 

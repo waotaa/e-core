@@ -6,6 +6,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\AggregateServiceProvider;
 use Vng\EvaCore\Commands\ApiSpecs\GenerateSchema;
 use Vng\EvaCore\Commands\AssignRegions;
+use Vng\EvaCore\Commands\Data\CheckAndSetOrganisationType;
 use Vng\EvaCore\Commands\Data\CheckLostProfessionals;
 use Vng\EvaCore\Commands\Data\CheckSoftDeletedOrganisations;
 use Vng\EvaCore\Commands\Data\EnsureIntegrity;
@@ -176,6 +177,7 @@ class EvaServiceProvider extends AggregateServiceProvider
     protected $commands = [
         GenerateSchema::class,
 
+        CheckAndSetOrganisationType::class,
         CheckLostProfessionals::class,
         CheckSoftDeletedOrganisations::class,
         EnsureIntegrity::class,

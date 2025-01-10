@@ -34,9 +34,6 @@ class OrganisationResource extends ElasticResource
             'slug' => $this->slug,
             'type' => $this->type,
 
-            'organisationable_type' => $this->organisationable_type,
-            'organisationable_id' => $this->organisationable_id,
-
             'localParty' => LocalPartyResource::one($this->whenLoaded('localParty')),
             'regionalParty' => RegionalPartyResource::one($this->whenLoaded('regionalParty')),
             'nationalParty' => NationalPartyResource::one($this->whenLoaded('nationalParty')),

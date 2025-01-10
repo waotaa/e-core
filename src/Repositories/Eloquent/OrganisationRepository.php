@@ -16,6 +16,8 @@ use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
 
 class OrganisationRepository extends BaseRepository implements OrganisationRepositoryInterface
 {
+    use SoftDeletableRepository;
+
     public string $model = Organisation::class;
 
     public function findBySlug(string $slug)
@@ -25,8 +27,16 @@ class OrganisationRepository extends BaseRepository implements OrganisationRepos
 
     public function addSlugCondition(Builder $query, $slug): Builder
     {
-        return $query->whereHas('organisationable', function (Builder $query) use ($slug){
-            $query->where('slug', $slug);
+        return $query->where(function (Builder $query) use ($slug) {
+            $query->whereHas('localParty', function (Builder $query) use ($slug) {
+                $query->where('slug', $slug);
+            })->orWhereHas('regionalParty', function (Builder $query) use ($slug) {
+                $query->where('slug', $slug);
+            })->orWhereHas('nationalParty', function (Builder $query) use ($slug) {
+                $query->where('slug', $slug);
+            })->orWhereHas('partnership', function (Builder $query) use ($slug) {
+                $query->where('slug', $slug);
+            });
         });
     }
 
@@ -58,24 +68,6 @@ class OrganisationRepository extends BaseRepository implements OrganisationRepos
         $organisation->save();
         return $organisation;
     }
-
-    /**
-     * Associates the organisation entity to the organisation to create a double reference for easy lookup
-     */
-    public function associateOrganisationable(Model $organisationEntity): ?Organisation
-    {
-        if (!$organisationEntity instanceof OrganisationEntityInterface) {
-            throw new \Exception('Model must implement OrganisationEntityInterface');
-        }
-        /** @var Organisation $organisation */
-        $organisation = $organisationEntity->organisation()->first();
-        if (is_null($organisation)) {
-            throw new \Exception('Model must belong to an organisation');
-        }
-        $organisation->organisationable()->associate($organisationEntity);
-        return $organisation;
-    }
-
 
     public function attachManagers(Organisation $organisation, string|array $managerIds): Organisation
     {
