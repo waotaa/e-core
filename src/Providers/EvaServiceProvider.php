@@ -8,6 +8,7 @@ use Vng\EvaCore\Commands\ApiSpecs\GenerateSchema;
 use Vng\EvaCore\Commands\AssignRegions;
 use Vng\EvaCore\Commands\Data\CheckAndSetOrganisationType;
 use Vng\EvaCore\Commands\Data\CheckLostProfessionals;
+use Vng\EvaCore\Commands\Data\CheckOrphanedOrganisations;
 use Vng\EvaCore\Commands\Data\CheckSoftDeletedOrganisations;
 use Vng\EvaCore\Commands\Data\EnsureIntegrity;
 use Vng\EvaCore\Commands\Dev\GenerateReport;
@@ -179,6 +180,7 @@ class EvaServiceProvider extends AggregateServiceProvider
 
         CheckAndSetOrganisationType::class,
         CheckLostProfessionals::class,
+        CheckOrphanedOrganisations::class,
         CheckSoftDeletedOrganisations::class,
         EnsureIntegrity::class,
 
