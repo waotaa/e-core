@@ -34,22 +34,35 @@ trait SoftDeletableRepository
         return $this->model::withTrashed()->find($id);
     }
 
-    public function restore(string $id): ?Model
+    public function restore($input): ?Model
     {
-        $model = $this->findInTrashed($id);
+        // Controleer of het argument een Model is
+        $model = $input instanceof Model
+            ? $input
+            : $this->findInTrashed($input);
+
         if (is_null($model)) {
+            $id = is_string($input) ? $input : $input->getKey();
             throw new ModelNotFoundException('Model with id [' . $id . '] not found in trash');
         }
+
         $model->restore();
         return $model;
     }
 
-    public function forceDelete(string $id): ?bool
+    public function forceDelete($input): ?bool
     {
-        $model = $this->findWithTrashed($id);
+        // Controleer of het argument een Model is
+        $model = $input instanceof Model
+            ? $input
+            : $this->findWithTrashed($input);
+
         if (is_null($model)) {
+            $id = is_string($input) ? $input : $input->getKey();
             throw new ModelNotFoundException('Model with id [' . $id . '] not found anywhere');
         }
+
         return $model->forceDelete();
     }
+
 }

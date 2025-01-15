@@ -21,5 +21,5 @@ interface BaseRepositoryInterface
 
     public function new(): Model;
 
-    public function delete(string $id): ?bool;
+    public function delete($input): ?bool;
 }

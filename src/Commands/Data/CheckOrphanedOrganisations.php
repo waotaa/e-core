@@ -4,7 +4,6 @@ namespace Vng\EvaCore\Commands\Data;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Event;
 use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Repositories\LocalPartyRepositoryInterface;
 use Vng\EvaCore\Repositories\NationalPartyRepositoryInterface;
@@ -70,7 +69,7 @@ class CheckOrphanedOrganisations extends Command
     {
         $orphanedOrganisations->each(function (Organisation $organisation) {
             Organisation::withoutEvents(function () use ($organisation) {
-                $this->organisationRepository->delete($organisation->id);
+                $this->organisationRepository->forceDelete($organisation->id);
             });
             $this->getOutput()->writeln("Deleted organisation ID: {$organisation->id}");
         });

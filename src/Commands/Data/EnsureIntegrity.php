@@ -17,6 +17,10 @@ class EnsureIntegrity extends Command
             '--fix' => $this->option('fix')
         ]);
 
+        $this->call(CheckOrphanedOrganisations::class, [
+            '--fix' => $this->option('fix')
+        ]);
+
         $this->call(CheckSoftDeletedOrganisations::class, [
             '--fix' => $this->option('fix')
         ]);

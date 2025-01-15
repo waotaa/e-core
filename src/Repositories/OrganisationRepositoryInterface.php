@@ -9,7 +9,7 @@ use Vng\EvaCore\Http\Requests\OrganisationUpdateRequest;
 use Vng\EvaCore\Models\Manager;
 use Vng\EvaCore\Models\Organisation;
 
-interface OrganisationRepositoryInterface extends BaseRepositoryInterface
+interface OrganisationRepositoryInterface extends BaseRepositoryInterface, SoftDeletableRepositoryInterface
 {
     public function findBySlug(string $slug);
 

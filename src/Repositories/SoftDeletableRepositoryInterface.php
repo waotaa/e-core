@@ -13,6 +13,6 @@ interface SoftDeletableRepositoryInterface
     public function findInTrashed(string $id): ?Model;
     public function builderWithTrashed(): Builder;
     public function findWithTrashed(string $id): ?Model;
-    public function restore(string $id): ?Model;
-    public function forceDelete(string $id): ?bool;
+    public function restore($input): ?Model;
+    public function forceDelete($input): ?bool;
 }

@@ -62,7 +62,7 @@ class CheckSoftDeletedOrganisations extends Command
 
         $this->getOutput()->info($entities->count() . " soft-deleted $entityName entries with active organisations found.");
 
-        if ($entities->count() && app()->environment() !== 'production' && $this->confirm("See $entityName IDs?")) {
+        if ($entities->count()) {
             $entities->each(fn ($entity) => $this->getOutput()->writeln($entity->id));
         }
 
