@@ -419,7 +419,11 @@ $globalProviderPermissions = [
     'provider.forceDelete'
 ];
 
-
+$faqEditPermissions = [
+    'faq.create',
+    'faq.update',
+    'faq.delete'
+];
 
 return [
     // Models that need policy permissions (viewAny, view, create, update, delete, restore, forceDelete)
@@ -477,6 +481,7 @@ return [
             ...$instrumentAdminRatingPermissions,
 
             ...$userAdministratorPermissions,
+            ...$faqEditPermissions
         ],
         'instrument-manager' => [
             ...$generalPermissions,
