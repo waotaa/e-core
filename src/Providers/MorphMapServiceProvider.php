@@ -13,7 +13,6 @@ use Vng\EvaCore\Models\GroupForm;
 use Vng\EvaCore\Models\Implementation;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\InstrumentTracker;
-use Vng\EvaCore\Models\InstrumentType;
 use Vng\EvaCore\Models\Link;
 use Vng\EvaCore\Models\LocalParty;
 use Vng\EvaCore\Models\Location;

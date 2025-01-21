@@ -6,7 +6,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Vng\EvaCore\Interfaces\IsManagerInterface;
 use Vng\EvaCore\Models\Faq;
 
-class FaqPolicy
+class FaqPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
