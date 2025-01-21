@@ -53,6 +53,8 @@ class CognitoService
      * Reset password -> invalidate current password
      */
 
+    protected ?UserPoolModel $userPool = null;
+
     public function __construct(
         protected Environment $environment
     )
@@ -72,13 +74,23 @@ class CognitoService
 
     public function ensureSetup(): Environment
     {
-        $userPoolModel = UserPoolService::ensureUserPool($this->environment);
-        $this->environment->user_pool_id = $userPoolModel->getId();
+        $this->userPool = UserPoolService::ensureUserPool($this->environment);
+        $this->environment->user_pool_id = $this->userPool->getId();
 
         $userPoolClientModel = UserPoolClientService::ensureUserPoolClient($this->environment);
         $this->environment->user_pool_client_id = $userPoolClientModel->getClientId();
 
         return $this->environment;
+    }
+
+    public function getUserPool(): ?UserPoolModel
+    {
+        if (!is_null($this->userPool)) {
+            return $this->userPool;
+        }
+
+        $this->userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
+        return $this->userPool;
     }
 
     public function fetchNewCognitoUsers()
@@ -173,7 +185,8 @@ class CognitoService
         $pwUpdatedAt = $user->getPasswordUpdatedAtDate();
         if (is_null($pwUpdatedAt)){
             // set a password_updated_at date if no current data is available
-            $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
+            $userPool = $this->getUserPool();
+//            $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
             static::updatePasswordUpdatedAtAttribute($userPool, $user->getUsername());
         } elseif ($user->isPasswordExpired()){
             $this->resetPassword($user->getUsername());
@@ -214,7 +227,8 @@ class CognitoService
 
     public function getUser(Professional $professional): ?UserModel
     {
-        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
+        $userPool = $this->getUserPool();
+//        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
         if (is_null($userPool)) {
             return null;
         }
@@ -230,7 +244,7 @@ class CognitoService
 
     protected function getUsers(): ?Collection
     {
-        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
+        $userPool = $this->getUserPool();
         if (is_null($userPool)) {
             return null;
         }
@@ -275,14 +289,14 @@ class CognitoService
 
     public function createProfessional(Professional $professional)
     {
-        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
+        $userPool = $this->getUserPool();
         $result = static::adminCreateUser($userPool, static::getDefaultAdminCreateUserArgs($professional));
         return static::updateOrCreateProfessionalQuietly(UserModel::create($result['User']));
     }
 
     public function resendInvitationNotification(Professional $professional)
     {
-        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
+        $userPool = $this->getUserPool();
         $args = static::getDefaultAdminCreateUserArgs($professional);
         $args['MessageAction'] = 'RESEND';
         $result = static::adminCreateUser($userPool, $args);
@@ -330,7 +344,7 @@ class CognitoService
      */
     public function resetPassword(string $username): void
     {
-        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
+        $userPool = $this->getUserPool();
         static::adminResetUserPassword($userPool, $username);
         // Might be nice to update this field on pw reset in front-end
         static::updatePasswordUpdatedAtAttribute($userPool, $username);
@@ -364,7 +378,7 @@ class CognitoService
 
     public function confirmEmail(string $confirmationCode)
     {
-        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
+        $userPool = $this->getUserPool();
         static::confirmSignUp($userPool, $confirmationCode);
     }
 
@@ -385,7 +399,7 @@ class CognitoService
             return null;
         }
 
-        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
+        $userPool = $this->getUserPool();
         static::adminDeleteUser($userPool, [
             'Username' => $professional->username,
         ]);

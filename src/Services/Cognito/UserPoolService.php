@@ -109,6 +109,8 @@ class UserPoolService
         ]
     ];
 
+    protected ?UserPoolModel $userPool = null;
+
     public static function ensureUserPool(Environment $environment): UserPoolModel
     {
         $userPool = static::getUserPoolByEnvironment($environment);
@@ -268,7 +270,7 @@ class UserPoolService
         return UserPoolModel::create(reset($matchingPools));
     }
 
-    protected static function getUserPoolById(string $userPoolId)
+    protected static function getUserPoolById(string $userPoolId): UserPoolModel
     {
         $userPoolDescription = self::describeUserPool($userPoolId);
         return UserPoolModel::create($userPoolDescription['UserPool']);

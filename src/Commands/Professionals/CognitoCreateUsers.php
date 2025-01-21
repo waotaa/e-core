@@ -2,13 +2,11 @@
 
 namespace Vng\EvaCore\Commands\Professionals;
 
-use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\Professional;
 use Vng\EvaCore\Services\Cognito\CognitoService;
-use Illuminate\Console\Command;
 
-class CognitoCreateUsers extends Command
+class CognitoCreateUsers extends AbstractCognitoCommand
 {
     protected $signature = 'professionals:create-users {environmentSlug?} {--n|no-interaction}';
     protected $description = 'Create a cognito user for professional entities';
@@ -41,17 +39,6 @@ class CognitoCreateUsers extends Command
 
         $this->getOutput()->writeln('creating cognito users finished');
         return 0;
-    }
-
-    public function hasValidConfig(): bool
-    {
-        if (!CognitoService::hasRequiredConfig()) {
-            $message = 'AWS Config missing: Could not create cognito users';
-            Log::warning($message);
-            $this->warn($message);
-            return false;
-        }
-        return true;
     }
 
     public function createCognitoUser(Professional $professional)

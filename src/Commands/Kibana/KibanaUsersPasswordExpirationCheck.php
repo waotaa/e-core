@@ -3,7 +3,6 @@
 namespace Vng\EvaCore\Commands\Kibana;
 
 use Vng\EvaCore\Models\Environment;
-use Vng\EvaCore\Services\Cognito\CognitoService;
 use Illuminate\Console\Command;
 use Vng\EvaCore\Services\ElasticSearch\KibanaService;
 

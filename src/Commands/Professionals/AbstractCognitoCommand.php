@@ -11,7 +11,7 @@ class AbstractCognitoCommand extends Command
     public function hasValidConfig(): bool
     {
         if (!CognitoService::hasRequiredConfig()) {
-            $message = 'AWS Config missing: Could not sync professionals';
+            $message = 'AWS Config missing';
             Log::warning($message);
             $this->warn($message);
             return false;
