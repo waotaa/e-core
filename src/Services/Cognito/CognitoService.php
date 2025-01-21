@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Services\Cognito;
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
 use Aws\CognitoIdentityProvider\Exception\CognitoIdentityProviderException;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\Professional;
 use Aws\Laravel\AwsFacade;
@@ -228,7 +229,6 @@ class CognitoService
     public function getUser(Professional $professional): ?UserModel
     {
         $userPool = $this->getUserPool();
-//        $userPool = UserPoolService::getUserPoolByEnvironment($this->environment);
         if (is_null($userPool)) {
             return null;
         }
@@ -238,6 +238,10 @@ class CognitoService
             if ($e->getAwsErrorCode() === 'UserNotFoundException') {
                 return null;
             }
+            Log::error('CognitoService:getUser faalde', [
+                'exception' => $e
+            ]);
+            throw $e;
         }
         return UserModel::create($user);
     }
