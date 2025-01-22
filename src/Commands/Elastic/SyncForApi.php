@@ -18,13 +18,15 @@ use Vng\EvaCore\Services\ElasticSearch\SyncAttemptFactory;
 class SyncForApi extends Command
 {
     use UsePrefixedIndex;
-    
+
     protected $signature = 'elastic:sync-api {--f|fresh}';
     protected $description = 'Sync api entities to ES';
 
     protected $environmentSlugs = [
         'weenerxl',
-        'amsterdam'
+        'amsterdam',
+        'orionis-walcheren',
+        'orionis-walcheren-acc'
     ];
 
     public function handle(): int
