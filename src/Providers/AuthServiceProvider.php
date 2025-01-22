@@ -10,11 +10,11 @@ use Vng\EvaCore\Models\Contact;
 use Vng\EvaCore\Models\Download;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\Export;
+use Vng\EvaCore\Models\Faq;
 use Vng\EvaCore\Models\GroupForm;
 use Vng\EvaCore\Models\Implementation;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\InstrumentTracker;
-use Vng\EvaCore\Models\InstrumentType;
 use Vng\EvaCore\Models\Link;
 use Vng\EvaCore\Models\LocalParty;
 use Vng\EvaCore\Models\Location;
@@ -43,11 +43,11 @@ use Vng\EvaCore\Policies\ContactPolicy;
 use Vng\EvaCore\Policies\DownloadPolicy;
 use Vng\EvaCore\Policies\EnvironmentPolicy;
 use Vng\EvaCore\Policies\ExportPolicy;
+use Vng\EvaCore\Policies\FaqPolicy;
 use Vng\EvaCore\Policies\GroupFormPolicy;
 use Vng\EvaCore\Policies\ImplementationPolicy;
 use Vng\EvaCore\Policies\InstrumentPolicy;
 use Vng\EvaCore\Policies\InstrumentTrackerPolicy;
-use Vng\EvaCore\Policies\InstrumentTypePolicy;
 use Vng\EvaCore\Policies\LinkPolicy;
 use Vng\EvaCore\Policies\LocalPartyPolicy;
 use Vng\EvaCore\Policies\LocationPolicy;
@@ -86,6 +86,7 @@ class AuthServiceProvider extends ServiceProvider
         Download::class => DownloadPolicy::class,
         Environment::class => EnvironmentPolicy::class,
         Export::class => ExportPolicy::class,
+        Faq::class => FaqPolicy::class,
         GroupForm::class => GroupFormPolicy::class,
         Implementation::class => ImplementationPolicy::class,
         Instrument::class => InstrumentPolicy::class,

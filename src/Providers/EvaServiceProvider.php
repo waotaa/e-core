@@ -31,6 +31,7 @@ use Vng\EvaCore\Commands\Elastic\SetFieldsLimit;
 use Vng\EvaCore\Commands\Elastic\SyncAll;
 use Vng\EvaCore\Commands\Elastic\SyncClientCharacteristics;
 use Vng\EvaCore\Commands\Elastic\SyncEnvironments;
+use Vng\EvaCore\Commands\Elastic\SyncFaqs;
 use Vng\EvaCore\Commands\Elastic\SyncForApi;
 use Vng\EvaCore\Commands\Elastic\SyncForSgr;
 use Vng\EvaCore\Commands\Elastic\SyncInstrument;
@@ -110,6 +111,7 @@ use Vng\EvaCore\Repositories\Eloquent\ContactRepository;
 use Vng\EvaCore\Repositories\Eloquent\DownloadRepository;
 use Vng\EvaCore\Repositories\Eloquent\EnvironmentRepository;
 use Vng\EvaCore\Repositories\Eloquent\ExportRepository;
+use Vng\EvaCore\Repositories\Eloquent\FaqRepository;
 use Vng\EvaCore\Repositories\Eloquent\GroupFormRepository;
 use Vng\EvaCore\Repositories\Eloquent\ImplementationRepository;
 use Vng\EvaCore\Repositories\Eloquent\InstrumentRepository;
@@ -139,6 +141,7 @@ use Vng\EvaCore\Repositories\Eloquent\TownshipRepository;
 use Vng\EvaCore\Repositories\Eloquent\VideoRepository;
 use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
 use Vng\EvaCore\Repositories\ExportRepositoryInterface;
+use Vng\EvaCore\Repositories\FaqRepositoryInterface;
 use Vng\EvaCore\Repositories\GroupFormRepositoryInterface;
 use Vng\EvaCore\Repositories\ImplementationRepositoryInterface;
 use Vng\EvaCore\Repositories\InstrumentRepositoryInterface;
@@ -205,6 +208,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         SyncAll::class,
         SyncClientCharacteristics::class,
         SyncEnvironments::class,
+        SyncFaqs::class,
         SyncForApi::class,
         SyncForSgr::class,
         SyncInstrument::class,
@@ -362,6 +366,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         $this->app->bind(DownloadRepositoryInterface::class, DownloadRepository::class);
         $this->app->bind(EnvironmentRepositoryInterface::class, EnvironmentRepository::class);
         $this->app->bind(ExportRepositoryInterface::class, ExportRepository::class);
+        $this->app->bind(FaqRepositoryInterface::class, FaqRepository::class);
         $this->app->bind(GroupFormRepositoryInterface::class, GroupFormRepository::class);
         $this->app->bind(ImplementationRepositoryInterface::class, ImplementationRepository::class);
         $this->app->bind(InstrumentRepositoryInterface::class, InstrumentRepository::class);
