@@ -256,7 +256,7 @@ class Instrument extends SearchableModel
 
         // Has owner: Return owner areas
         /** @var AreaInterface $organisationVariant */
-        $organisationVariant = $this->organisation->OrganisationVariant;
+        $organisationVariant = $this->organisation->organisationVariant;
         return $organisationVariant->getOwnAreas();
     }
 

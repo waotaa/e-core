@@ -2,12 +2,8 @@
 
 namespace Vng\EvaCore\Services\ElasticSearch;
 
-use Carbon\Carbon;
-use Exception;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-use JetBrains\PhpStorm\ArrayShape;
 use Vng\EvaCore\Models\Environment;
+use Vng\EvaCore\Services\ElasticSearch\Clients\ElasticBehaviourClientBuilder;
 
 class BehaviourService
 {
@@ -25,6 +21,7 @@ class BehaviourService
     public static function make(Environment $environment): self
     {
         $elasticsearchDocumentService = new ElasticsearchDocumentService();
+        $elasticsearchDocumentService->setClient(ElasticBehaviourClientBuilder::make());
         return new self($environment, $elasticsearchDocumentService);
     }
 
@@ -69,7 +66,7 @@ class BehaviourService
 
     private function getGeneralIndex(): string
     {
-        return $this->getIndexPrefix() . '-' . $this::INDEX_GENERAL;
+        return $this->getIndexPrefix() . '-'  . $this->environment->slug . '-' . $this::INDEX_GENERAL;
     }
 
     private function getIndexPrefix(): ?string
