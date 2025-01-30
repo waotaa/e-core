@@ -74,7 +74,7 @@ class OrganisationRepository extends BaseRepository implements OrganisationRepos
         $managerIds = (array) $managerIds;
         /** @var ManagerRepositoryInterface $managerRepo */
         $managerRepo = app(ManagerRepositoryInterface::class);
-        $managers = $managerRepo->builder()->whereIn('id', $managerRepo)->get();
+        $managers = $managerRepo->builder()->whereIn('id', $managerIds)->get();
         $managers->each(fn (Manager $manager) => Gate::authorize('attachManager', [$organisation, $manager]));
 
         $organisation->managers()->syncWithoutDetaching($managerIds);
@@ -86,7 +86,7 @@ class OrganisationRepository extends BaseRepository implements OrganisationRepos
         $managerIds = (array) $managerIds;
         /** @var ManagerRepositoryInterface $managerRepo */
         $managerRepo = app(ManagerRepositoryInterface::class);
-        $managers = $managerRepo->builder()->whereIn('id', $managerRepo)->get();
+        $managers = $managerRepo->builder()->whereIn('id', $managerIds)->get();
         $managers->each(fn (Manager $manager) => Gate::authorize('detachManager', [$organisation, $manager]));
 
         $organisation->managers()->detach($managerIds);

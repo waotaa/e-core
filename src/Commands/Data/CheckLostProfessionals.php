@@ -27,9 +27,6 @@ class CheckLostProfessionals extends Command
             ->get();
 
         $this->getOutput()->info($professionals->count() . " without environment found");
-        if ($professionals->count()) {
-            $professionals->each(fn (Professional $p) => $this->getOutput()->writeln($p->id));
-        }
 
         if ($this->option('fix')) {
             $this->professionalRepository->builder()
