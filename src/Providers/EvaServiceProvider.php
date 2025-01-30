@@ -46,6 +46,7 @@ use Vng\EvaCore\Commands\Elastic\SyncPublicInstruments;
 use Vng\EvaCore\Commands\Elastic\SyncRegions;
 use Vng\EvaCore\Commands\Elastic\SyncTiles;
 use Vng\EvaCore\Commands\Elastic\SyncTownships;
+use Vng\EvaCore\Commands\Export\ExportCleanUp;
 use Vng\EvaCore\Commands\Export\ExportInstruments;
 use Vng\EvaCore\Commands\Export\ExportInstrumentsCosts;
 use Vng\EvaCore\Commands\ExtractGeoData;
@@ -223,6 +224,8 @@ class EvaServiceProvider extends AggregateServiceProvider
         SyncRegions::class,
         SyncTiles::class,
         SyncTownships::class,
+
+        ExportCleanUp::class,
 
         ApplyMorphMap::class,
         AssociateProfessionalsWithEnvironment::class,

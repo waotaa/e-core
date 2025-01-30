@@ -9,7 +9,7 @@ class ExportDataSet extends Command
 {
     protected $signature = 'export:set {import-mark}';
 
-    protected $description = 'Import dataset from export json';
+    protected $description = 'Export dataset with import mark';
 
     public function handle(): int
     {
