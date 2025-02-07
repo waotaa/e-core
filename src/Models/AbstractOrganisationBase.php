@@ -47,7 +47,7 @@ abstract class AbstractOrganisationBase extends SearchableModel implements Organ
 
     public function organisation(): BelongsTo
     {
-        return $this->belongsTo(Organisation::class);
+        return $this->belongsTo(Organisation::class)->withTrashed();
     }
 
     public function getOrganisation(): ?Organisation
@@ -55,7 +55,7 @@ abstract class AbstractOrganisationBase extends SearchableModel implements Organ
         return $this->organisation;
     }
 
-    public function hasMember(Model $manager): bool
+    public function hasMember(Model $manager): ?bool
     {
         if ($manager instanceof IsManagerInterface) {
             $manager = $manager->getManager();

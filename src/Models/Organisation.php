@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 use RuntimeException;
 use Vng\EvaCore\Interfaces\AreaInterface;
@@ -127,22 +126,22 @@ class Organisation extends Model
 
     public function localParty(): HasOne
     {
-        return $this->hasOne(LocalParty::class, 'organisation_id');
+        return $this->hasOne(LocalParty::class, 'organisation_id')->withTrashed();
     }
 
     public function regionalParty(): HasOne
     {
-        return $this->hasOne(RegionalParty::class, 'organisation_id');
+        return $this->hasOne(RegionalParty::class, 'organisation_id')->withTrashed();
     }
 
     public function nationalParty(): HasOne
     {
-        return $this->hasOne(NationalParty::class, 'organisation_id');
+        return $this->hasOne(NationalParty::class, 'organisation_id')->withTrashed();
     }
 
     public function partnership(): HasOne
     {
-        return $this->hasOne(Partnership::class, 'organisation_id');
+        return $this->hasOne(Partnership::class, 'organisation_id')->withTrashed();
     }
 
     public function scopeNationalParty($query)
