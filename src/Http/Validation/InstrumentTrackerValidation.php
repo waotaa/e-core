@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Http\Validation;
 
+use Illuminate\Database\Eloquent\Model;
 use Vng\EvaCore\Enums\FollowerRoleEnum;
 
 class InstrumentTrackerValidation extends ModelValidation
@@ -10,6 +11,7 @@ class InstrumentTrackerValidation extends ModelValidation
     {
         return [
             'role' => [
+                'required',
                 'in:' . implode(',', FollowerRoleEnum::values()),
             ],
             'instrument_id' => [
@@ -19,5 +21,14 @@ class InstrumentTrackerValidation extends ModelValidation
                 'required',
             ],
         ];
+    }
+
+    protected function updateRules(Model $model): array
+    {
+        $rules = $this->rules();
+        $rules['role'] = [
+            'in:' . implode(',', FollowerRoleEnum::values()),
+        ];
+        return $rules;
     }
 }

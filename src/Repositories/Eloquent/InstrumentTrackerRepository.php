@@ -36,11 +36,15 @@ class InstrumentTrackerRepository extends BaseRepository implements InstrumentTr
     public function saveFromRequest(InstrumentTracker $instrumentTracker, FormRequest $request): InstrumentTracker
     {
         $instrumentTracker = $instrumentTracker->fill([
-            'role' => $request->input('role'),
             'notification_frequency' => $request->input('notification_frequency'),
             'on_modification' => $request->input('on_modification'),
             'on_expiration' => $request->input('on_expiration'),
         ]);
+
+        if ($request->has('role')) {
+            $instrumentTracker->setAttribute('rol', $request->input('role'));
+        }
+
         $instrumentTracker->instrument()->associate($request->input('instrument_id'));
         $instrumentTracker->manager()->associate($request->input('manager_id'));
 
