@@ -10,7 +10,7 @@ class TargetGroupResource extends ElasticResource
     {
         return [
             'CdDoelgroep' => $this->code,
-            'NaamDoelgroep' => Codelijsten::getDoelgroepName($this->code),  // AN..200
+            'NaamDoelgroep' => Codelijsten::getDoelgroepName($this->code) ?? $this->name,  // AN..200
         ];
     }
 }
