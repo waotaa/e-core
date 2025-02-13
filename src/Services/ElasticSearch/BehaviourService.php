@@ -35,6 +35,11 @@ class BehaviourService
         return $this->elasticsearchDocumentService->scrollSearch($this->getGeneralIndex(), $query);
     }
 
+    public function countGeneralInteraction(): int
+    {
+        return $this->elasticsearchDocumentService->count($this->getGeneralIndex());
+    }
+
     public function getBehaviourLast30Days()
     {
         $query = [
@@ -64,7 +69,7 @@ class BehaviourService
         return $this->elasticsearchDocumentService->scrollSearch($this->getGeneralIndex(), $query);
     }
 
-    private function getGeneralIndex(): string
+    public function getGeneralIndex(): string
     {
         return $this->getIndexPrefix() . '-'  . $this->environment->slug . '-' . $this::INDEX_GENERAL;
     }

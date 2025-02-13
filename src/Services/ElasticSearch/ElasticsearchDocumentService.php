@@ -105,6 +105,18 @@ class ElasticsearchDocumentService
         return ElasticApiDocumentResponse::fromApiResponse($response);
     }
 
+    public function count($indexName, array $query = null): int
+    {
+        $params = [
+            'index' => $indexName,
+        ];
+        if (!is_null($query)) {
+            $params['body']['query'] = $query;
+        }
+        $response = $this->client->count($params);
+        return $response['count'] ?? 0;
+    }
+
     public function getAllDocuments($indexName): array
     {
         return $this->scrollSearch($indexName);

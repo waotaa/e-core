@@ -105,9 +105,12 @@ class GenerateReport extends Command
 //        $this->line('complete instruments in Elastic: '. count($instrumentsElasticComplete));
 
         // behaviour
-        $environmentActions = BehaviourService::make($environment)->getAllBehaviour();
-        $csvRowData[] = count($environmentActions);
-        $this->line('total actions ' . count($environmentActions));
+        $behaviourService = BehaviourService::make($environment);
+        $this->input('Behaviour index: ' . $behaviourService->getGeneralIndex());
+        $actionCount = $behaviourService->countGeneralInteraction();
+//        $actionCount = count($behaviourService->getAllBehaviour());
+        $csvRowData[] = $actionCount;
+        $this->line('total actions ' . $actionCount);
 
         $actionsLast30Days = BehaviourService::make($environment)->getBehaviourLast30Days();
         $csvRowData[] = count($actionsLast30Days);
