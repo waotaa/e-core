@@ -24,6 +24,8 @@ class OrganisationResource extends ElasticResource
             'Contactpersoon' => ContactResource::many($this->whenLoaded('contacts')),
             'ActieveGebieden' => AreaInterfaceResource::many($this->resource->getAreasActiveInAttribute()),
 
+            'VertonendeOmgevingen' => BasicEnvironmentResource::many($this->featuringEnvironments), // Not when loaded, always
+
             // >> Current
             'id' => $this->id,
             'created_at' => $this->formatDate($this->created_at),
@@ -39,7 +41,7 @@ class OrganisationResource extends ElasticResource
             'nationalParty' => NationalPartyResource::one($this->whenLoaded('nationalParty')),
             'partnership' => PartnershipResource::one($this->whenLoaded('partnership')),
 
-            'featuringEnvironments' => BasicEnvironmentResource::many($this->whenLoaded('featuringEnvironments')),
+            'featuringEnvironments' => BasicEnvironmentResource::many($this->featuringEnvironments), // Not when loaded, always
             'contacts' => ContactResource::many($this->whenLoaded('contacts')),
 
             'areasActiveIn' => AreaInterfaceResource::many($this->resource->getAreasActiveInAttribute())
