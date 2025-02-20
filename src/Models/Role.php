@@ -8,6 +8,7 @@ class Role extends \Spatie\Permission\Models\Role
     const ROLES = [
         'super-admin' => 'Super Admin',
         'administrator' => 'Administrator',
+        'observer' => 'Observer',
 
         // global roles
         'instrument-manager' => 'Instrument beheerder',
@@ -23,6 +24,7 @@ class Role extends \Spatie\Permission\Models\Role
     const ASSIGNABLE_ROLES = [
         'administrator' => [
             'administrator',
+            'observer',
             'instrument-manager',
             'environment-manager',
             'instrument-manager-organisation',

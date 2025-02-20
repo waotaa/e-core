@@ -94,11 +94,6 @@ $townshipAdministratorPermissions = [
     ...$townshipGeneralPermissions,
 ];
 
-// Environment
-$environmentGeneralPermissions = [
-    'environment.viewAny',
-];
-
 // General
 $generalPermissions = [
     ...$organisationGeneralPermissions,
@@ -190,6 +185,10 @@ $userAdministratorPermissions = [
 
 
 // Environment
+$environmentGeneralPermissions = [
+    'environment.viewAny',
+];
+
 $newsItemPermissions = [
     'newsItem.viewAny',
     'newsItem.view',
@@ -483,6 +482,72 @@ return [
             ...$userAdministratorPermissions,
             ...$faqEditPermissions
         ],
+        'observer' => [
+            // anyone can see..
+            'manager.organisation.view',
+            'localParty.viewAny',
+            'localParty.view',
+            'regionalParty.viewAny',
+            'regionalParty.view',
+            'nationalParty.viewAny',
+            'nationalParty.view',
+            'partnership.viewAny',
+            'partnership.view',
+            'region.viewAny',
+            'region.view',
+            'township.viewAny',
+            'township.view',
+            'release.viewAny',
+            'release.view',
+            'role.viewAny',
+            'role.view',
+            'user.viewAny',
+            'manager.viewAny',
+            'professional.viewAny',
+            'professional.view',
+            'environment.viewAny',
+            'newsItem.viewAny',
+            'address.viewAny',
+            'contact.viewAny',
+            'download.viewAny',
+            'targetGroup.viewAny',
+            'clientCharacteristic.viewAny',
+            'clientCharacteristic.view',
+            'groupForm.viewAny',
+            'groupForm.view',
+            'implementation.viewAny',
+            'implementation.view',
+            'targetGroup.viewAny',
+            'targetGroup.view',
+            'tile.viewAny',
+            'tile.view',
+            'neighbourhood.viewAny',
+            'neighbourhood.view',
+            'rating.viewAny',
+            'rating.view',
+            'instrument.viewAny',
+            'provider.viewAny',
+
+            // next level view rights
+            'user.view',
+            'manager.view',
+            'newsItem.view',
+            'newsItem.viewAll',
+            'environment.view',
+            'environment.viewAll',
+            'address.viewAll',
+            'address.view',
+            'contact.viewAll',
+            'contact.view',
+            'download.viewAll',
+            'download.view',
+            'targetGroup.viewAll',
+            'targetGroup.view',
+            'instrument.viewAll',
+            'instrument.view',
+            'provider.viewAll',
+            'provider.view',
+        ],
         'instrument-manager' => [
             ...$generalPermissions,
             ...$globalAddressPermissions,
@@ -527,6 +592,7 @@ return [
     'roles' => [
         'super-admin' => 'Super Admin',
         'administrator' => 'Administrator',
+        'observer' => 'Observer',
         'instrument-manager' => 'Instrument beheerder',
         'environment-manager' => 'Omgeving beheerder',
         'instrument-manager-organisation' => 'Instrument beheerder voor organisatie',
@@ -536,6 +602,7 @@ return [
     'assignable-roles' => [
         'administrator' => [
             'administrator',
+            'observer',
             'instrument-manager',
             'instrument-manager-organisation',
             'environment-manager',
