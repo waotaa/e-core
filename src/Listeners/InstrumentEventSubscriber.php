@@ -4,7 +4,7 @@ namespace Vng\EvaCore\Listeners;
 
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Bus;
-use Vng\EvaCore\ElasticResources\Original\Instrument\InstrumentDescriptionResource;
+use Vng\EvaCore\ElasticResources\Both\Instrument\InstrumentDescriptionWerknemersdienstverleningResource;
 use Vng\EvaCore\Events\InstrumentRemoved;
 use Vng\EvaCore\Events\InstrumentSaved;
 use Vng\EvaCore\Jobs\PruneSyncAttempts;
@@ -30,7 +30,7 @@ class InstrumentEventSubscriber
             new SyncResourceToElasticJob(
                 $instrument,
                 'instruments_description',
-                InstrumentDescriptionResource::class,
+                InstrumentDescriptionWerknemersdienstverleningResource::class,
                 $attempt
             ),
             new PruneSyncAttempts()
