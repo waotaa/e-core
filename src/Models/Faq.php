@@ -4,6 +4,7 @@ namespace Vng\EvaCore\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use InvalidArgumentException;
+use Vng\EvaCore\Casts\CleanedHtml;
 use Vng\EvaCore\ElasticResources\SGR\FaqResource;
 
 class Faq extends SearchableModel
@@ -23,6 +24,9 @@ class Faq extends SearchableModel
         'category',
     ];
 
+    protected $casts = [
+        'answer' => CleanedHtml::class,
+    ];
 
     /**
      * Set the type attribute.
