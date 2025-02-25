@@ -47,7 +47,7 @@ class BehaviourService
                 'filter' => [
                     [
                         'term' => [
-                            'environment.slug' => $this->environment->getAttribute('slug'),
+                            'environment.slug.keyword' => $this->environment->getAttribute('slug'),
                         ],
                     ],
                     [
