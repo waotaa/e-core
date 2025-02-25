@@ -15,6 +15,15 @@ class ImplementationSeeder extends Seeder
     {
         Implementation::withoutEvents(function () {
             $uitvoeringsvormen = Codelijsten::get('TypeUitvoeringsVormen');
+
+            // clean up old implementations who should now be custom and codeless
+            Implementation::query()
+                ->whereNotIn('name', $uitvoeringsvormen)
+                ->update([
+                    'code' => null,
+                    'custom' => true
+                ]);
+
             foreach ($uitvoeringsvormen as $codeUitvoeringsvorm => $naamUitvoeringsvorm) {
                 Implementation::query()->updateOrCreate(
                     ['code' => $codeUitvoeringsvorm],
