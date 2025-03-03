@@ -20,6 +20,7 @@ use Vng\EvaCore\Commands\Elastic\DeleteIndex;
 use Vng\EvaCore\Commands\Elastic\DeletePublicIndex;
 use Vng\EvaCore\Commands\Elastic\FetchInstrumentRating;
 use Vng\EvaCore\Commands\Elastic\FetchInstrumentRatings;
+use Vng\EvaCore\Commands\Elastic\GetADocument;
 use Vng\EvaCore\Commands\Elastic\GetAllDocuments;
 use Vng\EvaCore\Commands\Elastic\GetDocument;
 use Vng\EvaCore\Commands\Elastic\GetElasticsearchClusterSettings;
@@ -198,6 +199,7 @@ class EvaServiceProvider extends AggregateServiceProvider
         DeletePublicIndex::class,
         FetchInstrumentRating::class,
         FetchInstrumentRatings::class,
+        GetADocument::class,
         GetAllDocuments::class,
         GetDocument::class,
         GetElasticsearchClusterSettings::class,

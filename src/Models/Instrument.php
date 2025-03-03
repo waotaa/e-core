@@ -371,6 +371,11 @@ class Instrument extends SearchableModel
             ->using(ImplementationInstrument::class);
     }
 
+    public function getFirstImplementationAttribute()
+    {
+        return $this->implementations()->orderBy('implementation_instrument.id', 'asc')->first();
+    }
+
     public function groupForms(): BelongsToMany
     {
         return $this->belongsToMany(GroupForm::class, 'group_form_instrument')
