@@ -65,6 +65,7 @@ class InstrumentResource extends ElasticResource
 
             // relations
             'organisation' => OrganisationResource::one($this->organisation),
+            'implementation' => ImplementationResource::one($this->first_implementation), // Temporary to allow api users some time to adjust
             'implementations' => ImplementationResource::many($this->implementations),
             'group_forms' => GroupFormResource::many($this->groupForms),
             'locations' => LocationResource::many($this->locations),
