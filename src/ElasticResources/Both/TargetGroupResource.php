@@ -11,7 +11,7 @@ class TargetGroupResource extends ElasticResource
         return [
             // >> SGR
             'CdDoelgroep' => $this->code,
-            'NaamDoelgroep' => Codelijsten::getDoelgroepName($this->code) ?? $this->name,  // AN..200
+            'NaamDoelgroep' => Codelijsten::getDoelgroepName($this->code) ?? $this->description,  // AN..200
 
             // >> Current
             'id' => $this->id,
