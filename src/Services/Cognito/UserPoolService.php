@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Services\Cognito;
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\Models\Environment;
 use Vng\EvaCore\Models\Professional;
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
@@ -129,6 +130,8 @@ class UserPoolService
 
     protected static function createUserPool(Environment $environment): Result
     {
+        Log::info('AWS SDK - user pool: createUserPool');
+
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         return $cognitoClient->createUserPool(static::getUserPoolArgs($environment));
@@ -136,6 +139,7 @@ class UserPoolService
 
     protected static function updateUserPool(UserPoolModel $userPoolModel, Environment $environment): Result
     {
+        Log::info('AWS SDK - user pool: updateUserPool');
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         $args = static::getUserPoolArgs($environment);
@@ -163,6 +167,7 @@ class UserPoolService
 
     protected static function setupMfaConfig($userPoolId): Result
     {
+        Log::info('AWS SDK - user pool: setupMfaConfig');
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         return $cognitoClient->setUserPoolMfaConfig([
@@ -278,6 +283,7 @@ class UserPoolService
 
     protected static function listUserPools(string $nextToken = null): Result
     {
+        Log::info('AWS SDK - user pool: ListUserPools');
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
 
@@ -292,6 +298,7 @@ class UserPoolService
 
     public static function describeUserPool(string $userPoolId): Result
     {
+        Log::info('AWS SDK - user pool: describeUserPool');
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         // max 15 requests per second
@@ -302,6 +309,7 @@ class UserPoolService
 
     public static function getUserPoolMfaConfig(string $userPoolId): Result
     {
+        Log::info('AWS SDK - user pool: getUserPoolMfaConfig');
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         return $cognitoClient->getUserPoolMfaConfig([
@@ -311,6 +319,7 @@ class UserPoolService
 
     public static function resendConfirmationCode(Professional $professional): Result
     {
+        Log::info('AWS SDK - user pool: resendConfirmationCode');
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         return $cognitoClient->resendConfirmationCode([
@@ -341,6 +350,7 @@ class UserPoolService
 
     protected static function addCustomAttributes(UserPoolModel $userPool, array $attributesSchema): Result
     {
+        Log::info('AWS SDK - user pool: addCustomAttributes');
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         return $cognitoClient->addCustomAttributes([

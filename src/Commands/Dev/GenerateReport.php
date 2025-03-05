@@ -108,7 +108,6 @@ class GenerateReport extends Command
         $behaviourService = BehaviourService::make($environment);
         $this->line('Behaviour index: ' . $behaviourService->getGeneralIndex());
         $actionCount = $behaviourService->countGeneralInteraction();
-//        $actionCount = count($behaviourService->getAllBehaviour());
         $csvRowData[] = $actionCount;
         $this->line('total actions ' . $actionCount);
 

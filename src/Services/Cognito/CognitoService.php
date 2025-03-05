@@ -75,6 +75,7 @@ class CognitoService
 
     public function ensureSetup(): Environment
     {
+        Log::info('Ensuring Userpool setup');
         $this->userPool = UserPoolService::ensureUserPool($this->environment);
         $this->environment->user_pool_id = $this->userPool->getId();
 
@@ -234,7 +235,7 @@ class CognitoService
         }
         try {
             $user = static::adminGetUser($userPool->getId(), $professional->username);
-            return UserModel::create($user);
+            // return UserModel::create($user); Ik wil hem hier. Test
         } catch (CognitoIdentityProviderException $e) {
             if ($e->getAwsErrorCode() === 'UserNotFoundException') {
                 return null;
@@ -244,6 +245,7 @@ class CognitoService
             ]);
             throw $e;
         }
+        return UserModel::create($user);
     }
 
     protected function getUsers(): ?Collection

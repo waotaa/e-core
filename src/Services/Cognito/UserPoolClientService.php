@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Services\Cognito;
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
 use Aws\Laravel\AwsFacade;
 use Aws\Result;
+use Illuminate\Support\Facades\Log;
 use Vng\EvaCore\Models\Environment;
 
 class UserPoolClientService
@@ -55,6 +56,7 @@ class UserPoolClientService
 
     protected static function createUserPoolClient(Environment $environment): Result
     {
+        Log::info('AWS SDK - user pool client: createUserPoolClient');
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         return $cognitoClient->createUserPoolClient(static::getUserPoolClientArgs($environment));
@@ -125,6 +127,7 @@ class UserPoolClientService
 
     public static function describeUserPoolClient(string $userPoolId, string $userPoolClientId): Result
     {
+        Log::info('AWS SDK - user pool client: describeUserPoolClient');
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
 

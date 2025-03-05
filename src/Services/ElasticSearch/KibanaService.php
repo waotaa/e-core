@@ -30,6 +30,7 @@ class KibanaService
 
     public function ensureKibanaSetup()
     {
+        Log::info('Ensuring Kibana setup');
         try {
             $this->updateOrCreateKibanaRoles();
         } catch (\Exception $e) {
@@ -65,6 +66,7 @@ class KibanaService
     public function updateOrCreateKibanaRoles(): array
     {
         try {
+            Log::info('Elastic API - security: put roles');
             $endpoint = '/_security/role/' . $this->getRoleName();
             $requestBody = $this->getRoleRequestBody();
             $result = $this->elasticApiService->put($endpoint, $requestBody);
@@ -114,6 +116,7 @@ class KibanaService
             // no userdata in database, user does not exist on our end
             return false;
         }
+        Log::info('Elastic API - security: get user');
         $endpoint = '/_security/user/' . $username;
         $response = $this->elasticApiService->get($endpoint);
 
@@ -168,6 +171,7 @@ class KibanaService
                     $this->getRoleName()
                 ],
             ];
+            Log::info('Elastic API - security: put user');
             $result = $this->elasticApiService->put($endpoint, $requestBody);
             Log::debug('kibana user creation result', $result);
             $created = $result['created'] ? '' : ' NOT';
