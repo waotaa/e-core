@@ -234,6 +234,7 @@ class CognitoService
         }
         try {
             $user = static::adminGetUser($userPool->getId(), $professional->username);
+            return UserModel::create($user);
         } catch (CognitoIdentityProviderException $e) {
             if ($e->getAwsErrorCode() === 'UserNotFoundException') {
                 return null;
@@ -243,7 +244,6 @@ class CognitoService
             ]);
             throw $e;
         }
-        return UserModel::create($user);
     }
 
     protected function getUsers(): ?Collection
