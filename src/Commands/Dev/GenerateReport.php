@@ -33,10 +33,18 @@ class GenerateReport extends Command
         $environments = $this->getTargetedEnvironments($environmentArgument);
 
         if (is_null($environmentArgument)) {
+            $this->line('No specific env given');
             $iterationOption = (int) $this->option('i');
+            $this->line('Processing iteration ' . $iterationOption . ' with limit ' . self::LIMIT_ENVIRONMENT_COUNT);
             $offset = ($iterationOption - 1) * self::LIMIT_ENVIRONMENT_COUNT; // Iteratie 1 geeft offset 0
             $environments = $environments->slice($offset, self::LIMIT_ENVIRONMENT_COUNT);
         }
+
+        if ($environments->count() === 0) {
+            $this->warn('No environments in set, aborting');
+            return 1;
+        }
+        $this->line($environments->count() . ' environments in set');
 
         $headers = [
             'omgeving',
