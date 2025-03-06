@@ -20,8 +20,10 @@ class GenerateReport extends Command
 {
     use EnvironmentArgument;
 
-    protected $signature = 'dev:report {environment?}';
+    protected $signature = 'dev:report {environment?} {--i=1}';
     protected $description = 'Create a usage report';
+
+    const LIMIT_ENVIRONMENT_COUNT = 20;
 
     public function handle(): int
     {
@@ -29,6 +31,12 @@ class GenerateReport extends Command
 
         $environmentArgument = $this->argument('environment');
         $environments = $this->getTargetedEnvironments($environmentArgument);
+
+        if (is_null($environmentArgument)) {
+            $iterationOption = (int) $this->option('i');
+            $offset = ($iterationOption - 1) * self::LIMIT_ENVIRONMENT_COUNT; // Iteratie 1 geeft offset 0
+            $environments = $environments->slice($offset, self::LIMIT_ENVIRONMENT_COUNT);
+        }
 
         $headers = [
             'omgeving',
