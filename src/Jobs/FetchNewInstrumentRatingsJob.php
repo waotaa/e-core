@@ -52,78 +52,46 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
             return;
         }
 
-        $ratings = collect($instrumentDoc['_source']['ratings'] ?? []);
+        $ratings = collect($instrumentDoc['_source']['Beoordeling'] ?? []);
+
         if ($ratings->isEmpty()) {
             Log::warning('No ratings for instrument');
+            return;
         }
 
-        if ($ratings->isNotEmpty()) {
-            $newRatings = $ratings->filter(fn ($r) => is_null($r['id']));
-            $newRatings->each(function($rating) {
-                $ratingModel = new Rating([
-                    'author' => $rating["author"],
-                    'email' => $rating["email"],
-//                    'email' => $rating["professional"]["email"],
-                    'general_score' => $rating["general_score"],
-                    'general_explanation' => $rating["general_explanation"],
-                    'result_score' => $rating["result_score"],
-                    'result_explanation' => $rating["result_explanation"],
-                    'execution_score' => $rating["execution_score"],
-                    'execution_explanation' => $rating["execution_explanation"],
+        $newRatings = $ratings->filter(fn ($r) => is_null($r['id']));
+        if ($newRatings->isEmpty()) {
+            Log::info('No new ratings for instrument');
+            return;
+        }
 
-                    'created_at' => new DateTime($rating['created_at']),
-                ]);
-                $ratingModel->instrument()->associate($this->instrument);
+        $newRatings->each(function($rating) {
+            $ratingModel = new Rating([
+                'author' => $rating["AuteurBeoordeling"],
+                'email' => $rating["EmailadresAuteurBeoordeling"],
+                'general_score' => $rating["AlgemeneScore"],
+                'general_explanation' => $rating["ToelAlgemeneScore"],
+                'result_score' => $rating["ResultaatScore"],
+                'result_explanation' => $rating["ToelResultaatScore"],
+                'execution_score' => $rating["UitvoeringsScore"],
+                'execution_explanation' => $rating["ToelUitvoeringsScore"],
 
-                $ratingModel->saveQuietly();
-            });
-
-            // Update the ratings field on the instrument document
-            $elasticSearchClient->update([
-                'index' => $prefixedIndex,
-                'id' => $this->instrument->uuid,
-                'body' => [
-                    'doc' => [
-                        'ratings' => RatingResource::many($this->instrument->fresh()->ratings),
-                    ]
-                ]
+                'created_at' => new DateTime($rating['DatTijdBeoordeling']),
             ]);
-        }
+            $ratingModel->instrument()->associate($this->instrument);
 
-//        $ratings = collect($instrumentDoc['_source']['Beoordeling'] ?? []);
-//
-//        if ($ratings->isEmpty()) {
-//            Log::warning('No ratings for instrument');
-//            return;
-//        }
-//        $newRatings = $ratings->filter(fn ($r) => is_null($r['id']));
-//        $newRatings->each(function($rating) {
-//            $ratingModel = new Rating([
-//                'author' => $rating["AuteurBeoordeling"],
-//                'email' => $rating["EmailadresAuteurBeoordeling"],
-//                'general_score' => $rating["AlgemeneScore"],
-//                'general_explanation' => $rating["ToelAlgemeneScore"],
-//                'result_score' => $rating["ResultaatScore"],
-//                'result_explanation' => $rating["ToelResultaatScore"],
-//                'execution_score' => $rating["UitvoeringsScore"],
-//                'execution_explanation' => $rating["ToelUitvoeringsScore"],
-//
-//                'created_at' => new DateTime($rating['DatTijdBeoordeling']),
-//            ]);
-//            $ratingModel->instrument()->associate($this->instrument);
-//
-//            $ratingModel->saveQuietly();
-//        });
-//
-//        // Update the ratings field on the instrument document
-//        $elasticSearchClient->update([
-//            'index' => $prefixedIndex,
-//            'id' => $this->instrument->uuid,
-//            'body' => [
-//                'doc' => [
-//                    'Beoordeling' => RatingResource::many($this->instrument->fresh()->ratings),
-//                ]
-//            ]
-//        ]);
+            $ratingModel->saveQuietly();
+        });
+
+        // Update the Beoordeling field on the instrument document
+        $elasticSearchClient->update([
+            'index' => $prefixedIndex,
+            'id' => $this->instrument->uuid,
+            'body' => [
+                'doc' => [
+                    'Beoordeling' => RatingResource::many($this->instrument->fresh()->ratings),
+                ]
+            ]
+        ]);
     }
 }
