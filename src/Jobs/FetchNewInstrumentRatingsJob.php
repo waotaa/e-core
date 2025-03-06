@@ -52,7 +52,7 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
             return;
         }
 
-        $ratings = collect($instrumentDoc['_source']['Beoordeling'] ?? []);
+        $ratings = collect($instrumentDoc['_source']['Beoordeling'] ?? $instrumentDoc['_source']['ratings'] ?? []);
 
         if ($ratings->isEmpty()) {
             Log::warning('No ratings for instrument');
@@ -66,21 +66,7 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
         }
 
         $newRatings->each(function($rating) {
-            $ratingModel = new Rating([
-                'author' => $rating["AuteurBeoordeling"],
-                'email' => $rating["EmailadresAuteurBeoordeling"],
-                'general_score' => $rating["AlgemeneScore"],
-                'general_explanation' => $rating["ToelAlgemeneScore"],
-                'result_score' => $rating["ResultaatScore"],
-                'result_explanation' => $rating["ToelResultaatScore"],
-                'execution_score' => $rating["UitvoeringsScore"],
-                'execution_explanation' => $rating["ToelUitvoeringsScore"],
-
-                'created_at' => new DateTime($rating['DatTijdBeoordeling']),
-            ]);
-            $ratingModel->instrument()->associate($this->instrument);
-
-            $ratingModel->saveQuietly();
+            $this->createRatingEntity($rating);
         });
 
         // Update the Beoordeling field on the instrument document
@@ -93,5 +79,25 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
                 ]
             ]
         ]);
+    }
+
+    private function createRatingEntity($rating): void
+    {
+        $createdAt = $rating['DatTijdBeoordeling'] ?? $rating['created_at'];
+
+        $ratingModel = new Rating([
+            'author' => $rating["AuteurBeoordeling"] ?? $rating["author"],
+            'email' => $rating["EmailadresAuteurBeoordeling"] ?? $rating["email"],
+            'general_score' => $rating["AlgemeneScore"] ?? $rating["general_score"],
+            'general_explanation' => $rating["ToelAlgemeneScore"] ?? $rating["general_explanation"],
+            'result_score' => $rating["ResultaatScore"] ?? $rating["result_score"],
+            'result_explanation' => $rating["ToelResultaatScore"] ?? $rating["result_explanation"],
+            'execution_score' => $rating["UitvoeringsScore"] ?? $rating["execution_score"],
+            'execution_explanation' => $rating["ToelUitvoeringsScore"] ?? $rating["execution_explanation"],
+            'created_at' => $createdAt ? new DateTime($createdAt) : null,
+        ]);
+
+        $ratingModel->instrument()->associate($this->instrument);
+        $ratingModel->saveQuietly();
     }
 }
