@@ -65,33 +65,18 @@ class Organisation extends Model
         if ($this->organisation_type) {
             $relationName = \Illuminate\Support\Str::camel($this->organisation_type);
 
-            // Controleer met `withTrashed()` of de relatie bestaat
             if (method_exists($this, $relationName)) {
-                return $this->{$relationName}()->withTrashed()->first();
+                return $this->{$relationName}; // Direct de relatie returnen
             }
         }
 
-        // Controleer de relaties op volgorde, inclusief soft-deleted records
-        if ($this->localParty()->withTrashed()->exists()) {
-            return $this->localParty()->withTrashed()->first();
-        }
-
-        if ($this->regionalParty()->withTrashed()->exists()) {
-            return $this->regionalParty()->withTrashed()->first();
-        }
-
-        if ($this->nationalParty()->withTrashed()->exists()) {
-            return $this->nationalParty()->withTrashed()->first();
-        }
-
-        if ($this->partnership()->withTrashed()->exists()) {
-            return $this->partnership()->withTrashed()->first();
-        }
-
-        // Werp een exception als geen variant gevonden wordt
-        throw new RuntimeException("Organisation with ID {$this->id} has no valid organisation variant.");
+        // Controleer de relaties op volgorde en return de eerste gevonden
+        return $this->localParty
+            ?? $this->partnership
+            ?? $this->regionalParty
+            ?? $this->nationalParty
+            ?? throw new RuntimeException("Organisation with ID {$this->id} has no valid organisation variant.");
     }
-
 
     public function getNameAttribute()
     {
