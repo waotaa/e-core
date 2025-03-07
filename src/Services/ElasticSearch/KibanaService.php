@@ -273,7 +273,7 @@ class KibanaService
                 'read',
                 'view_index_metadata'
             ],
-            'query' => '{"match": {"InstrumentBeherendeOrganisatie.VertonendeOmgevingen.SlugOmgeving.keyword":"'.$environmentSlug.'"}}',
+            'query' => '{"match": {"Instrument.InstrumentBeherendeOrganisatie.VertonendeOmgevingen.SlugOmgeving.keyword":"'.$environmentSlug.'"}}',
 //            'query' => '{"match": {"organisation.featuringEnvironments.slug.keyword":"'.$environmentSlug.'"}}',
             'allow_restricted_indices' => false
         ];

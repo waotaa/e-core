@@ -55,7 +55,9 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
         $ratings = collect($instrumentDoc['_source']['Beoordeling'] ?? $instrumentDoc['_source']['ratings'] ?? []);
 
         if ($ratings->isEmpty()) {
-            Log::warning('No ratings for instrument');
+            Log::warning('No ratings for instrument', [
+                'source' => $instrumentDoc['_source']
+            ]);
             return;
         }
 
@@ -64,6 +66,8 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
             Log::info('No new ratings for instrument');
             return;
         }
+
+        Log::info('New ratings found!');
 
         $newRatings->each(function($rating) {
             $this->createRatingEntity($rating);
