@@ -92,6 +92,16 @@ class Environment extends SearchableModel
             ->getFileUrl($this->attributes['logo']);
     }
 
+    public function getUserPoolId()
+    {
+        return $this->user_pool_id;
+    }
+
+    public function getUserPoolClientId()
+    {
+        return $this->user_pool_client_id;
+    }
+
     public function contact()
     {
         return $this->belongsTo(Contact::class);

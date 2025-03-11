@@ -42,47 +42,91 @@ class UserPoolClientService
 //        'WriteAttributes' => ['<string>', ...],
     ];
 
-    public static function ensureUserPoolClient(Environment $environment): ?UserPoolClientModel
+    protected ?UserPoolClientModel $userPoolClient = null;
+
+    public function __construct(
+        protected Environment $environment,
+    )
+    {}
+
+    public static function make(Environment $environment): static
     {
-        $userPoolClient = static::getUserPoolClientByEnvironment($environment);
-        if (!is_null($userPoolClient)) {
-            return $userPoolClient;
-        }
-        $result = static::createUserPoolClient($environment);
-        $userPoolId = $result['UserPoolClient']['UserPoolId'];
-        $userPoolClientId = $result['UserPoolClient']['ClientId'];
-        return static::getUserPoolClientByIds($userPoolId, $userPoolClientId);
+        return new static($environment);
     }
 
-    protected static function createUserPoolClient(Environment $environment): Result
+    public function ensureUserPoolClient(): ?UserPoolClientModel
+    {
+        $userPoolClient = $this->getUserPoolClient();
+        if (is_null($userPoolClient)) {
+            // No user pool client exists yet, create one
+            $result = $this->createUserPoolClient();
+            $userPoolId = $result['UserPoolClient']['UserPoolId'];
+            $userPoolClientId = $result['UserPoolClient']['ClientId'];
+            $userPoolClient = $this->getUserPoolClientByIds($userPoolId, $userPoolClientId);
+        }
+
+        return $userPoolClient;
+    }
+
+    private function createUserPoolClient(): Result
     {
         Log::info('AWS SDK - user pool client: createUserPoolClient');
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
-        return $cognitoClient->createUserPoolClient(static::getUserPoolClientArgs($environment));
+        return $cognitoClient->createUserPoolClient(static::getUserPoolClientArgs());
     }
 
-    protected static function getUserPoolClientArgs(Environment $environment): array
+    private function getUserPoolClientArgs(): array
     {
-        $userPool = UserPoolService::getUserPoolByEnvironment($environment);
+        $userPoolId = $this->environment->user_pool_id;
+
+        if (is_null($userPoolId)) {
+            Log::warning('Non optimal execution, make sure the user_pool_id is available on environment');
+            $userPoolService = UserPoolService::make($this->environment);
+            $userPool = $userPoolService->getUserPool();
+            $userPoolId = $userPool->getId();
+        }
 
         $args = static::DEFAULT_SETTINGS;
-        $args['ClientName'] = static::getUserPoolClientName($environment);
-        $args['UserPoolId'] = $userPool->getId();
+        $args['ClientName'] = static::getUserPoolClientName();
+        $args['UserPoolId'] = $userPoolId;
         return $args;
     }
 
-    private static function getUserPoolClientName(Environment $environment): string
+    private function getUserPoolClientName(): string
     {
-        return $environment->deriveUserPoolName() . '-Client';
+        return $this->environment->deriveUserPoolName() . '-Client';
     }
 
-    public static function getUserPoolClientByEnvironment(Environment $environment): ?UserPoolClientModel
+    public function getUserPoolClient(): ?UserPoolClientModel
     {
-        if (is_null($environment->user_pool_id) || is_null($environment->user_pool_client_id)){
+        if (!is_null($this->userPoolClient)) {
+            return $this->userPoolClient;
+        }
+
+        return $this->getUserPoolClientByEnvironment();
+    }
+
+    private function getUserPoolClientByEnvironment(): ?UserPoolClientModel
+    {
+        $userPoolId = $this->environment->getUserPoolId();
+        $userPoolClientId = $this->environment->getUserPoolClientId();
+        if (is_null($userPoolId) || is_null($userPoolClientId)){
             return null;
         }
-        return self::getUserPoolClientByIds($environment->user_pool_id, $environment->user_pool_client_id);
+        return $this->getUserPoolClientByIds($userPoolId, $userPoolClientId);
+    }
+
+    private function getUserPoolClientByIds(string $userPoolId, string $userPoolClientId): UserPoolClientModel
+    {
+        $userPoolClientDescription = $this->describeUserPoolClient(
+            $userPoolId,
+            $userPoolClientId
+        );
+        $this->userPoolClient = UserPoolClientModel::create(
+            $userPoolClientDescription['UserPoolClient']
+        );
+        return $this->userPoolClient;
     }
 
 //    protected static function getUserPoolClientByName($name, string $nextToken = null): ?UserPoolClientModel
@@ -119,13 +163,7 @@ class UserPoolClientService
 //        return $cognitoClient->ListUserPoolClients($args);
 //    }
 
-    protected static function getUserPoolClientByIds(string $userPoolId, string $userPoolClientId)
-    {
-        $userPoolClientDescription = self::describeUserPoolClient($userPoolId, $userPoolClientId);
-        return UserPoolClientModel::create($userPoolClientDescription['UserPoolClient']);
-    }
-
-    public static function describeUserPoolClient(string $userPoolId, string $userPoolClientId): Result
+    private function describeUserPoolClient(string $userPoolId, string $userPoolClientId): Result
     {
         Log::info('AWS SDK - user pool client: describeUserPoolClient');
         /** @var CognitoIdentityProviderClient $cognitoClient */

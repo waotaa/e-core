@@ -18,14 +18,16 @@ class CognitoGetConfig extends Command
         /** @var Environment $environment */
         $environment = Environment::query()->where('slug', $slug)->firstOrFail();
 
-        $userPool = UserPoolService::getUserPoolByEnvironment($environment);
+        $userPoolService = UserPoolService::make($environment);
+        $userPool = $userPoolService->getUserPool();
         if ($userPool) {
             $this->output->writeln('UserPoolId: ' . $userPool->getId());
         } else {
             $this->output->warning('UserPool not found');
         }
 
-        $client = UserPoolClientService::getUserPoolClientByEnvironment($environment);
+        $userPoolClientService = UserPoolClientService::make($environment, $userPool->getId());
+        $client = $userPoolClientService->getUserPoolClient();
         if ($client) {
             $this->output->writeln('UserPoolClientId: ' . $client->getClientId());
         } else {

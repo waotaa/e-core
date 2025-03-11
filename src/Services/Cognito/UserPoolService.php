@@ -9,7 +9,6 @@ use Vng\EvaCore\Models\Professional;
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
 use Aws\Laravel\AwsFacade;
 use Aws\Result;
-use Exception;
 
 class UserPoolService
 {
@@ -112,48 +111,62 @@ class UserPoolService
 
     protected ?UserPoolModel $userPool = null;
 
-    public static function ensureUserPool(Environment $environment): UserPoolModel
+    public function __construct(
+        protected Environment $environment
+    )
+    {}
+
+    public static function make(Environment $environment): static
     {
-        $userPool = static::getUserPoolByEnvironment($environment);
-        if (!is_null($userPool)) {
-            static::updateUserPool($userPool, $environment);
-            static::ensureUserPoolSchema($userPool);
-        } else {
-            $result = static::createUserPool($environment);
+        return new static($environment);
+    }
+
+    public function ensureUserPool(): UserPoolModel
+    {
+        $userPool = $this->getUserPool();
+        if (is_null($userPool)) {
+            // No user pool exists yet, create one
+            $result = $this->createUserPool();
             $userPoolId = $result['UserPool']['Id'];
-            $userPool = static::getUserPoolById($userPoolId);
+            $userPool = $this->getUserPoolById($userPoolId);
+        } else {
+            // User pool exists, update settings and schema
+            $this->updateUserPool($userPool);
+            $this->ensureUserPoolSchema($userPool);
         }
 
-        static::setupMfaConfig($userPool->getId());
+        $this->setupMfaConfig($userPool->getId());
         return $userPool;
     }
 
-    protected static function createUserPool(Environment $environment): Result
+    // >> Creating or updating userpool
+
+    private function createUserPool(): Result
     {
         Log::info('AWS SDK - user pool: createUserPool');
 
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
-        return $cognitoClient->createUserPool(static::getUserPoolArgs($environment));
+        return $cognitoClient->createUserPool($this->getUserPoolArgs());
     }
 
-    protected static function updateUserPool(UserPoolModel $userPoolModel, Environment $environment): Result
+    private function updateUserPool(UserPoolModel $userPoolModel): void
     {
         Log::info('AWS SDK - user pool: updateUserPool');
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
-        $args = static::getUserPoolArgs($environment);
+        $args = $this->getUserPoolArgs();
         $args['UserPoolId'] = $userPoolModel->getId();
         // 15 requests per second
-        return $cognitoClient->updateUserPool($args);
+        $cognitoClient->updateUserPool($args);
     }
 
-    protected static function getUserPoolArgs(Environment $environment)
+    private function getUserPoolArgs(): array
     {
         $args = static::DEFAULT_POOL_SETTINGS;
-        $args['PoolName'] = $environment->deriveUserPoolName();
-        $args['AdminCreateUserConfig']['InviteMessageTemplate']['EmailMessage'] = static::getInvitationEmail($environment->url);
-        $args['VerificationMessageTemplate']['EmailMessage'] = static::getValidationMessage($environment);
+        $args['PoolName'] = $this->environment->deriveUserPoolName();
+        $args['AdminCreateUserConfig']['InviteMessageTemplate']['EmailMessage'] = $this->getInvitationEmail();
+        $args['VerificationMessageTemplate']['EmailMessage'] = $this->getValidationMessage();
 
         if (App::environment('local')) {
             $args['EmailConfiguration'] = [
@@ -165,31 +178,12 @@ class UserPoolService
         return $args;
     }
 
-    protected static function setupMfaConfig($userPoolId): Result
-    {
-        Log::info('AWS SDK - user pool: setupMfaConfig');
-        /** @var CognitoIdentityProviderClient $cognitoClient */
-        $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
-        return $cognitoClient->setUserPoolMfaConfig([
-            "MfaConfiguration" => 'OPTIONAL',
-//            "SmsMfaConfiguration" => [
-//                "SmsAuthenticationMessage" => "a message with the token: {####}",
-//                "SmsConfiguration" => [
-//                    "ExternalId" => "string",
-//                    "SnsCallerArn" => "string"
-//                ]
-//            ],
-            "SoftwareTokenMfaConfiguration" => [
-                "Enabled" => true
-            ],
-            'UserPoolId' => $userPoolId
-        ]);
-    }
-
-    public static function getInvitationEmail(?string $environmentUrl = null)
+    // User pool invitation email config
+    private function getInvitationEmail(): string
     {
         $message = "Beste professional, <br><br>Er is een account voor je aangemaakt voor instrumentengids Eva.<br>";
 
+        $environmentUrl = $this->environment->url;
         if (!is_null($environmentUrl)) {
             $message .= "Je kan inloggen op <a href='". $environmentUrl ."'>" . $environmentUrl . "</a> om de instrumentengids te raadplegen over jullie instrumentenaanbod.";
         }
@@ -206,9 +200,10 @@ class UserPoolService
         return $message;
     }
 
-    public static function getValidationMessage(Environment $environment)
+    // User pool validation message config
+    private function getValidationMessage(): string
     {
-        $url = $environment->url;
+        $url = $this->environment->url;
 
         $message = "
         Beste professional,<br>
@@ -246,62 +241,141 @@ class UserPoolService
         return $message;
     }
 
-    public static function getUserPoolByEnvironment(Environment $environment): ?UserPoolModel
+    // >> Ensuring user pool schema
+
+    private function ensureUserPoolSchema(UserPoolModel $userPool)
     {
-        $userPoolId = $environment->user_pool_id;
+        $missingAttributes = $this->findMissingAttributes($userPool);
+        if (count($missingAttributes) === 0) {
+            return;
+        }
+        $this->addCustomAttributes($userPool, $missingAttributes);
+    }
+
+    private function findMissingAttributes(UserPoolModel $userPool): array
+    {
+        $args = static::DEFAULT_POOL_SETTINGS;
+        $schema = $args['Schema'];
+        $userPoolDescription = static::describeUserPool($userPool->getId());
+        $attributes = $userPoolDescription['UserPool']['SchemaAttributes'];
+        $attributeNames = collect($attributes)->map(fn ($a) => $a['Name'])->toArray();
+        return array_filter($schema, function ($schemaAttribute) use ($attributeNames) {
+            return !in_array('custom:' . $schemaAttribute['Name'], $attributeNames);
+        });
+    }
+
+    private function addCustomAttributes(UserPoolModel $userPool, array $attributesSchema): void
+    {
+        Log::info('AWS SDK - user pool: addCustomAttributes');
+        /** @var CognitoIdentityProviderClient $cognitoClient */
+        $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
+        $cognitoClient->addCustomAttributes([
+            'UserPoolId' => $userPool->getId(),
+            'CustomAttributes' => $attributesSchema
+        ]);
+    }
+
+    // >> Multi factor setup
+
+    private function setupMfaConfig($userPoolId): void
+    {
+        Log::info('AWS SDK - user pool: setupMfaConfig');
+        /** @var CognitoIdentityProviderClient $cognitoClient */
+        $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
+        $cognitoClient->setUserPoolMfaConfig([
+            "MfaConfiguration" => 'OPTIONAL',
+//            "SmsMfaConfiguration" => [
+//                "SmsAuthenticationMessage" => "a message with the token: {####}",
+//                "SmsConfiguration" => [
+//                    "ExternalId" => "string",
+//                    "SnsCallerArn" => "string"
+//                ]
+//            ],
+            "SoftwareTokenMfaConfiguration" => [
+                "Enabled" => true
+            ],
+            'UserPoolId' => $userPoolId
+        ]);
+    }
+
+    // Getting the user pool model
+
+    public function getUserPool(): ?UserPoolModel
+    {
+        if (!is_null($this->userPool)) {
+            return $this->userPool;
+        }
+
+        return $this->getUserPoolByEnvironment();
+    }
+
+    private function getUserPoolByEnvironment(): ?UserPoolModel
+    {
+        $userPoolId = $this->environment->user_pool_id;
         if (is_null($userPoolId)) {
             return null;
         }
-        return static::getUserPoolById($userPoolId);
+        return $this->getUserPoolById($userPoolId);
     }
 
-    protected static function getUserPoolByName(string $name, string $nextToken = null): ?UserPoolModel
-    {
-        $result = static::listUserPools($nextToken);
-        $userPools = $result['UserPools'];
-        if (!count($userPools)) {
-            return null;
-        }
-
-        $matchingPools = array_filter($userPools, fn ($pool) => $pool['Name'] === $name);
-        if (empty($matchingPools)) {
-            if ($result['NextToken']) {
-                static::sleepForRateLimit(15);
-                return static::getUserPoolByName($name, $result['NextToken']);
-            }
-            return null;
-        }
-
-        return UserPoolModel::create(reset($matchingPools));
-    }
-
-    protected static function getUserPoolById(string $userPoolId): UserPoolModel
+    private function getUserPoolById(string $userPoolId): UserPoolModel
     {
         $userPoolDescription = self::describeUserPool($userPoolId);
-        return UserPoolModel::create($userPoolDescription['UserPool']);
+        $this->userPool = UserPoolModel::create($userPoolDescription['UserPool']);
+        return $this->userPool;
     }
 
-    protected static function listUserPools(string $nextToken = null): Result
-    {
-        Log::info('AWS SDK - user pool: ListUserPools');
-        /** @var CognitoIdentityProviderClient $cognitoClient */
-        $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
+//    No need to get user pool by name
 
-        $args = [
-            'MaxResults' => 60,
-        ];
-        if (!is_null($nextToken)) {
-            $args['NextToken'] = $nextToken;
-        }
-        return $cognitoClient->ListUserPools($args);
-    }
+//    private function getUserPoolByName(string $name, string $nextToken = null): ?UserPoolModel
+//    {
+//        $result = $this->listUserPools($nextToken);
+//        $userPools = $result['UserPools'];
+//        if (!count($userPools)) {
+//            return null;
+//        }
+//
+//        $matchingPools = array_filter($userPools, fn ($pool) => $pool['Name'] === $name);
+//        if (empty($matchingPools)) {
+//            if ($result['NextToken']) {
+//                static::sleepForRateLimit(15);
+//                return $this->getUserPoolByName($name, $result['NextToken']);
+//            }
+//            return null;
+//        }
+//
+//        return UserPoolModel::create(reset($matchingPools));
+//    }
 
+//    Only used by: getUserPoolByName which is currently not used
+//
+//    private function listUserPools(string $nextToken = null): Result
+//    {
+//        Log::info('AWS SDK - user pool: ListUserPools');
+//        /** @var CognitoIdentityProviderClient $cognitoClient */
+//        $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
+//
+//        $args = [
+//            'MaxResults' => 60,
+//        ];
+//        if (!is_null($nextToken)) {
+//            $args['NextToken'] = $nextToken;
+//        }
+//        return $cognitoClient->ListUserPools($args);
+//    }
+
+    /**
+     * AWS endpoint to get UserPool details.
+     * See getUserPool method to get the general UserPool details
+     * getUserPool is preferred since it uses caching
+     * This method is used by some other method who seek additional details
+     */
     public static function describeUserPool(string $userPoolId): Result
     {
         Log::info('AWS SDK - user pool: describeUserPool');
         /** @var CognitoIdentityProviderClient $cognitoClient */
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
-        // max 15 requests per second
+        self::sleepForRateLimit(15); // max 15 requests per second
         return $cognitoClient->describeUserPool([
             'UserPoolId' => $userPoolId
         ]);
@@ -324,38 +398,6 @@ class UserPoolService
         $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
         return $cognitoClient->resendConfirmationCode([
             'Username' => $professional->email
-        ]);
-    }
-
-    public static function ensureUserPoolSchema(UserPoolModel $userPool)
-    {
-        $missingAttributes = static::findMissingAttributes($userPool);
-        if (count($missingAttributes) === 0) {
-            return;
-        }
-        static::addCustomAttributes($userPool, $missingAttributes);
-    }
-
-    public static function findMissingAttributes(UserPoolModel $userPool): array
-    {
-        $args = static::DEFAULT_POOL_SETTINGS;
-        $schema = $args['Schema'];
-        $userPoolDescription = static::describeUserPool($userPool->getId());
-        $attributes = $userPoolDescription['UserPool']['SchemaAttributes'];
-        $attributeNames = collect($attributes)->map(fn ($a) => $a['Name'])->toArray();
-        return array_filter($schema, function ($schemaAttribute) use ($attributeNames) {
-            return !in_array('custom:' . $schemaAttribute['Name'], $attributeNames);
-        });
-    }
-
-    protected static function addCustomAttributes(UserPoolModel $userPool, array $attributesSchema): Result
-    {
-        Log::info('AWS SDK - user pool: addCustomAttributes');
-        /** @var CognitoIdentityProviderClient $cognitoClient */
-        $cognitoClient = AwsFacade::createClient('CognitoIdentityProvider');
-        return $cognitoClient->addCustomAttributes([
-            'UserPoolId' => $userPool->getId(),
-            'CustomAttributes' => $attributesSchema
         ]);
     }
 

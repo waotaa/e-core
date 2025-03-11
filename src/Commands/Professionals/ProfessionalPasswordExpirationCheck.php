@@ -35,7 +35,7 @@ class ProfessionalPasswordExpirationCheck extends Command
 
     public function resetExpiredPasswords(Environment $environment)
     {
-        $this->output->writeln('handling environment ' . $environment->name . ' with userpool name ' . $environment->deriveUserPoolName());
+        $this->output->writeln('handling environment ' . $environment->name . ' with user pool name ' . $environment->deriveUserPoolName());
 
         if (CognitoService::hasRequiredConfig()) {
             CognitoService::make($environment)->resetExpiredPasswords();
