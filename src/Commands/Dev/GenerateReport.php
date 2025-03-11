@@ -4,7 +4,7 @@ namespace Vng\EvaCore\Commands\Dev;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Vng\EvaCore\Commands\EnvironmentArgument;
+use Vng\EvaCore\Commands\EnvironmentArgumentTrait;
 use Vng\EvaCore\Jobs\ElasticJob;
 use Vng\EvaCore\Models\Environment;
 use Illuminate\Console\Command;
@@ -18,7 +18,7 @@ use Vng\EvaCore\Services\Storage\InternalStorageService;
 
 class GenerateReport extends Command
 {
-    use EnvironmentArgument;
+    use EnvironmentArgumentTrait;
 
     protected $signature = 'dev:report {environment?} {--i=1}';
     protected $description = 'Create a usage report';

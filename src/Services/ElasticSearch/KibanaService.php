@@ -151,10 +151,15 @@ class KibanaService
     public function resetKibanaCredetialsIfExpired(): void
     {
         if ($this->kibanaUserCredetialsAreExpired()) {
-            $user = $this->updateOrCreateKibanaUser();
-            if (!is_null($user)) {
-                $this->saveKibanaUser($user['username'], $user['password']);
-            }
+            $this->resetKibanaCredentials();
+        }
+    }
+
+    public function resetKibanaCredentials(): void
+    {
+        $user = $this->updateOrCreateKibanaUser();
+        if (!is_null($user)) {
+            $this->saveKibanaUser($user['username'], $user['password']);
         }
     }
 

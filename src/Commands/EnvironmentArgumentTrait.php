@@ -5,7 +5,7 @@ namespace Vng\EvaCore\Commands;
 use Illuminate\Support\Collection;
 use Vng\EvaCore\Repositories\EnvironmentRepositoryInterface;
 
-trait EnvironmentArgument
+trait EnvironmentArgumentTrait
 {
     public function getTargetedEnvironments($environmentArgument = null): Collection
     {
