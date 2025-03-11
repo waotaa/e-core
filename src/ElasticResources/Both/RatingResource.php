@@ -10,11 +10,11 @@ class RatingResource extends ElasticResource
             // >> SGR
             'AuteurBeoordeling' => $this->author,                       // AN..200
             'EmailadresAuteurBeoordeling' => $this->email,              // AN..320
-            'AlgemeneScore' => $this->general_score,                    // N1
+            'AlgemeneScore' => (int) $this->general_score,                    // N1
             'ToelAlgemeneScore' => $this->general_explanation,          // AN..320
-            'ResultaatScore' => $this->result_score,                    // N1
+            'ResultaatScore' => (int) $this->result_score,                    // N1
             'ToelResultaatScore' => $this->result_explanation,          // AN..320
-            'UitvoeringsScore' => $this->execution_score,               // N1
+            'UitvoeringsScore' => (int) $this->execution_score,               // N1
             'ToelUitvoeringsScore' => $this->execution_explanation,     // AN..320
             'DatTijdBeoordeling' => $this->formatDate($this->created_at),   // DATUMTIJDSTIP
 
