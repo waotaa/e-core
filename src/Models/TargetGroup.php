@@ -5,6 +5,7 @@ namespace Vng\EvaCore\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Vng\EvaCore\Observers\TargetGroupObserver;
 use Vng\EvaCore\Traits\HasOwner;
 
 class TargetGroup extends Model
@@ -26,6 +27,12 @@ class TargetGroup extends Model
     protected $casts = [
         'custom' => 'boolean',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(TargetGroupObserver::class);
+    }
 
     public function instruments(): BelongsToMany
     {
