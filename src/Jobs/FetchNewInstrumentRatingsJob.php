@@ -4,7 +4,7 @@ namespace Vng\EvaCore\Jobs;
 
 use DateTime;
 use Illuminate\Support\Facades\Log;
-use Vng\EvaCore\ElasticResources\Original\RatingResource;
+use Vng\EvaCore\ElasticResources\Both\RatingResource;
 use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\Rating;
 
@@ -102,6 +102,7 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
         ]);
 
         $ratingModel->instrument()->associate($this->instrument);
-        $ratingModel->save();
+        $ratingModel->saveQuietly();
+        $ratingModel->notifyOfCreation();
     }
 }

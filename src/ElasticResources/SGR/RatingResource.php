@@ -7,6 +7,7 @@ class RatingResource extends ElasticResource
     public function toArray()
     {
         return [
+            'id' => $this->id,                                              // Leeg id == nieuwe beoordeling
             'AuteurBeoordeling' => $this->author,                           // AN..200
             'EmailadresAuteurBeoordeling' => $this->email,                  // AN..320
             'AlgemeneScore' => (int) $this->general_score,                  // N1

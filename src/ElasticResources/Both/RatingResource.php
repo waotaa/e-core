@@ -8,6 +8,7 @@ class RatingResource extends ElasticResource
     {
         return [
             // >> SGR
+//            'id' => $this->id,
             'AuteurBeoordeling' => $this->author,                       // AN..200
             'EmailadresAuteurBeoordeling' => $this->email,              // AN..320
             'AlgemeneScore' => (int) $this->general_score,                    // N1

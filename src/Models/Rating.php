@@ -6,6 +6,8 @@ use Database\Factories\RatingFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Notification;
+use Vng\EvaCore\Notifications\RatingStoredNotificationInterface;
 use Vng\EvaCore\Observers\RatingObserver;
 
 class Rating extends Model
@@ -53,5 +55,14 @@ class Rating extends Model
             return null;
         }
         return $this->instrument->provider;
+    }
+
+    public function notifyOfCreation()
+    {
+        $notification = app(RatingStoredNotificationInterface::class, [
+            'rating' => $this
+        ]);
+        $managers = $this->instrument->watchingUsers;
+        Notification::send($managers, $notification);
     }
 }
