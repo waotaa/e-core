@@ -102,6 +102,6 @@ class FetchNewInstrumentRatingsJob extends ElasticJob
         ]);
 
         $ratingModel->instrument()->associate($this->instrument);
-        $ratingModel->saveQuietly();
+        $ratingModel->save();
     }
 }

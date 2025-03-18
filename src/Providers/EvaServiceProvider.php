@@ -76,6 +76,9 @@ use Vng\EvaCore\Commands\Geo\TownshipsCreateDataSetFromApi;
 use Vng\EvaCore\Commands\Geo\TownshipsUpdateDataFromSource;
 use Vng\EvaCore\Commands\ImportInstruments;
 use Vng\EvaCore\Commands\ImportOldFormatInstruments;
+use Vng\EvaCore\Commands\Instruments\InstrumentExpirationCheck;
+use Vng\EvaCore\Commands\Instruments\InstrumentModifiedCheck;
+use Vng\EvaCore\Commands\Instruments\InstrumentRevisionCheck;
 use Vng\EvaCore\Commands\Instruments\InstrumentSignalingCheck;
 use Vng\EvaCore\Commands\Kibana\KibanaUsersPasswordExpirationCheck;
 use Vng\EvaCore\Commands\Kibana\KibanaUsersPasswordReset;
@@ -100,6 +103,10 @@ use Vng\EvaCore\Commands\Setup\Setup;
 use Vng\EvaCore\Commands\Setup\SetupAuthorizationMatrix;
 use Vng\EvaCore\Commands\Setup\Update;
 use Vng\EvaCore\Http\Middleware\LogAsyncPayloadSize;
+use Vng\EvaCore\Notifications\InstrumentExpiredNotification;
+use Vng\EvaCore\Notifications\InstrumentExpiredNotificationInterface;
+use Vng\EvaCore\Notifications\InstrumentModifiedNotification;
+use Vng\EvaCore\Notifications\InstrumentModifiedNotificationInterface;
 use Vng\EvaCore\Notifications\RatingStoredNotification;
 use Vng\EvaCore\Notifications\RatingStoredNotificationInterface;
 use Vng\EvaCore\Repositories\AddressRepositoryInterface;
@@ -258,6 +265,9 @@ class EvaServiceProvider extends AggregateServiceProvider
         ExportInstruments::class,
         ExportInstrumentsCosts::class,
 
+        InstrumentExpirationCheck::class,
+        InstrumentModifiedCheck::class,
+        InstrumentRevisionCheck::class,
         InstrumentSignalingCheck::class,
 
         KibanaUsersPasswordExpirationCheck::class,
@@ -300,6 +310,8 @@ class EvaServiceProvider extends AggregateServiceProvider
         $this->bindRepositoryInterfaces();
 
         $this->app->bind(RatingStoredNotificationInterface::class, RatingStoredNotification::class);
+        $this->app->bind(InstrumentExpiredNotificationInterface::class, InstrumentExpiredNotification::class);
+        $this->app->bind(InstrumentModifiedNotificationInterface::class, InstrumentModifiedNotification::class);
     }
 
     public function boot()

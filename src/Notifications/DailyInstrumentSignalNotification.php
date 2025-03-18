@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Notifications;
 
+use Vng\EvaCore\Models\Instrument;
 use Vng\EvaCore\Models\InstrumentTracker;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -55,14 +56,15 @@ class DailyInstrumentSignalNotification extends Notification
     public function addTrackerInfo(MailMessage $message)
     {
         $this->trackers->each(function (InstrumentTracker $tracker) use (&$message) {
-            if($tracker->instrumentExpiredToday()) {
+            $instrument = $tracker->getInstrument();
+            if($instrument->instrumentExpiredToday()) {
                 $message = $message->line(__('The instrument - :instrument - has expired', [
-                    'instrument' => $tracker->instrument->name
+                    'instrument' => $instrument->name
                 ]));
             }
-            if($tracker->instrumentModifiedYesterday()) {
+            if($instrument->instrumentModifiedYesterday()) {
                 $message = $message->line(__('The instrument - :instrument - was modified yesterday', [
-                    'instrument' => $tracker->instrument->name
+                    'instrument' => $instrument->name
                 ]));
             }
         });

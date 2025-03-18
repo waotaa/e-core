@@ -2,6 +2,7 @@
 
 namespace Vng\EvaCore\Models;
 
+use Carbon\Carbon;
 use Database\Factories\InstrumentFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -486,5 +487,41 @@ class Instrument extends SearchableModel
 
         // Laad alleen de relaties die nog niet geladen zijn
         $this->loadMissing($relations);
+    }
+
+    public function getExpirationDay(): bool|Carbon|null
+    {
+        $lastPublicationDay = $this->getAttribute('publish_to');
+        if (is_null($lastPublicationDay)) {
+            return null;
+        }
+        return Carbon::create($lastPublicationDay)->addDay();
+    }
+
+    public function instrumentExpiredToday(): bool
+    {
+        $expirationDay = $this->getExpirationDay();
+        return $expirationDay && $expirationDay->isToday();
+    }
+
+    public function instrumentHasExpired(): bool
+    {
+        $expirationDay = $this->getExpirationDay();
+        return $expirationDay && $expirationDay <= Carbon::today();
+    }
+
+    public function getModificationDay(): bool|Carbon|null
+    {
+        $modificationDay = $this->getAttribute('updated_at');
+        if (is_null($modificationDay)) {
+            return null;
+        }
+        return Carbon::create($modificationDay);
+    }
+
+    public function instrumentModifiedYesterday(): bool
+    {
+        $modificationDay = $this->getModificationDay();
+        return $modificationDay && $modificationDay->isYesterday();
     }
 }

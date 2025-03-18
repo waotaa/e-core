@@ -20,7 +20,7 @@ class Manager extends Model implements IsInstrumentWatcherInterface
     protected $guard_name = 'web';
 
     protected $attributes = [
-        'months_unupdated_limit' => 6
+        'months_unupdated_limit' => 6   // The amount of months an instrument may be unupdated
     ];
 
     protected $fillable = [
@@ -64,6 +64,12 @@ class Manager extends Model implements IsInstrumentWatcherInterface
     public function getFullNameAttribute()
     {
         return $this->givenName . ' ' . $this->surName;
+    }
+
+    // The amount of months after which the user wants to revise instruments
+    public function getRevisionPreference(): int
+    {
+        return (int) $this->getAttribute('months_unupdated_limit') ?? 6;
     }
 
     public function createdBy(): BelongsTo
