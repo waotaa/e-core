@@ -27,6 +27,11 @@ class KibanaService
         return new self($environment, $elasticApiService);
     }
 
+    public static function hasRequiredConfig(): bool
+    {
+        $hasApiKey = config('elastic.kibana.apiKey');
+        return !!$hasApiKey;
+    }
 
     public function ensureKibanaSetup()
     {

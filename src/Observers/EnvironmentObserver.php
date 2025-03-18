@@ -31,7 +31,7 @@ class EnvironmentObserver
     public function saved(Environment $environment): void
     {
         // ensure kibana setup
-        if (!is_null(config('elastic.kibana.apiKey'))) {
+        if (KibanaService::hasRequiredConfig()) {
             KibanaService::make($environment)->ensureKibanaSetup();
         }
     }
