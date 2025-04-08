@@ -24,6 +24,7 @@ class ContactValidation extends ModelValidation
             'description' => [
                 'string',
                 'nullable',
+                'max:10000',
             ],
             'organisation_id' => [
                 'required'
