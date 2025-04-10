@@ -3,6 +3,7 @@
 namespace Vng\EvaCore\Observers;
 
 use Illuminate\Support\Facades\Log;
+use Vng\EvaCore\Events\ElasticRelatedResourceChanged;
 use Vng\EvaCore\Models\AbstractOrganisationBase;
 use Vng\EvaCore\Models\Organisation;
 use Vng\EvaCore\Repositories\OrganisationRepositoryInterface;
@@ -40,6 +41,7 @@ class OrganisationObserver
                 }
             }
         }
+        $this->syncConnectedElasticResources($model);
     }
 
     public function restoring(Organisation $model)
@@ -56,5 +58,13 @@ class OrganisationObserver
                 $organisationEntity->restore();
             }
         }
+        $this->syncConnectedElasticResources($model);
+    }
+
+    private function syncConnectedElasticResources(Organisation $organisation): void
+    {
+        $organisation->featuringEnvironments->each(
+            fn($environment) => ElasticRelatedResourceChanged::dispatch($environment, $organisation)
+        );
     }
 }
