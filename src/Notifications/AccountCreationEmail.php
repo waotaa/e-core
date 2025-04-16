@@ -8,6 +8,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
+use Vng\EvaCore\Interfaces\IsManagerInterface;
+use Vng\EvaCore\Models\Manager;
 
 class AccountCreationEmail extends Notification
 {
@@ -31,21 +33,31 @@ class AccountCreationEmail extends Notification
     public function toMail($notifiable)
     {
         $verificationUrl = $this->verificationUrl($notifiable);
-        return $this->buildMailMessage($notifiable->generatedPassword, $verificationUrl);
+        $creatingManager = $this->getCreatingManager($notifiable);
+        return $this->buildMailMessage($notifiable->generatedPassword, $verificationUrl, $creatingManager);
     }
 
     /**
      * Get the email notification mail message
      */
-    protected function buildMailMessage(string $generatedPassword, string $url): MailMessage
+    protected function buildMailMessage(string $generatedPassword, string $url, Manager $creatingManager = null): MailMessage
     {
-        return (new MailMessage)
+         $message = (new MailMessage)
             ->subject(Lang::get('Eva Account Created'))
             ->line(Lang::get('An Eva account has been created for you.'))
             ->line(Lang::get('Your password is :password', ['password' => $generatedPassword]))
             ->line(Lang::get('After you have verified your email address you can login.'))
             ->action(Lang::get('Verify Email Address'), $url)
             ->line(Lang::get('If you did not create an account, no further action is required.'));
+
+        if (!is_null($creatingManager)) {
+            $message->line(Lang::get('Your account was created by :manager (:email)', [
+                'manager' => $creatingManager->getFullNameAttribute(),
+                'email' => $creatingManager->email
+            ]));
+        }
+
+        return $message;
     }
 
     /**
@@ -66,4 +78,20 @@ class AccountCreationEmail extends Notification
         );
     }
 
+    protected function getCreatingManager($notifiable): ?Manager
+    {
+        $createdManager = null;
+        if ($notifiable instanceof IsManagerInterface) {
+            $createdManager = $notifiable->getManager();
+        }
+        if ($notifiable instanceof Manager) {
+            $createdManager = $notifiable;
+        }
+
+        if (is_null($createdManager)) {
+            return null;
+        }
+
+        return $createdManager->createdBy;
+    }
 }
