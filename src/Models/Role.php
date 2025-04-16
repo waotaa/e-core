@@ -11,14 +11,14 @@ class Role extends \Spatie\Permission\Models\Role
         'observer' => 'Observer',
 
         // global roles
-        'instrument-manager' => 'Instrument beheerder',
+        'instrument-manager' => 'Instrumentbeheerder',
 
         // environment (includes organisation level roles)
-        'environment-manager' => 'Omgeving beheerder',
+        'environment-manager' => 'Omgevingsbeheerder',
 
         // organisation
-        'user-manager-organisation' => 'Organisatie gebruikers beheerder',
-        'instrument-manager-organisation' => 'Instrument beheerder organisatie',
+        'user-manager-organisation' => 'Gebruikersbeheerder (org)',
+        'instrument-manager-organisation' => 'Instrumentbeheerder (org)',
     ];
 
     const ASSIGNABLE_ROLES = [
