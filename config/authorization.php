@@ -418,6 +418,22 @@ $globalProviderPermissions = [
     'provider.forceDelete'
 ];
 
+// Exports
+$organisationExportPermissions = [
+    'export.viewAny',
+    'export.organisation.view',
+    'export.organisation.create',
+    'export.organisation.delete',
+];
+$globalExportPermissions = [
+    ...$organisationExportPermissions,
+    'export.viewAny',
+    'export.viewAll',
+    'export.view',
+    'export.create',
+    'export.delete',
+];
+
 $faqEditPermissions = [
     'faq.create',
     'faq.update',
@@ -433,6 +449,7 @@ return [
         'download',
         'environment.organisation',
         'environment',
+        'export',
         'groupForm',
         'implementation',
         'instrument',
@@ -477,6 +494,7 @@ return [
             ...$globalDownloadPermissions,
             ...$globalInstrumentPermissions,
             ...$globalProviderPermissions,
+            ...$globalExportPermissions,
             ...$instrumentAdminRatingPermissions,
 
             ...$userAdministratorPermissions,
@@ -527,6 +545,7 @@ return [
             'rating.view',
             'instrument.viewAny',
             'provider.viewAny',
+            'export.viewAny',
 
             // next level view rights
             'user.view',
@@ -547,6 +566,8 @@ return [
             'instrument.view',
             'provider.viewAll',
             'provider.view',
+            'export.viewAll',
+            'export.view'
         ],
         'instrument-manager' => [
             ...$generalPermissions,
@@ -555,6 +576,7 @@ return [
             ...$globalDownloadPermissions,
             ...$globalInstrumentPermissions,
             ...$globalProviderPermissions,
+            ...$globalExportPermissions,
         ],
         'instrument-manager-organisation' => [
             ...$generalPermissions,
@@ -564,6 +586,7 @@ return [
             ...$organisationTargetGroupPermissions,
             ...$organisationInstrumentPermissions,
             ...$organisationProviderPermissions,
+            ...$organisationExportPermissions
         ],
         'environment-manager' => [
             ...$generalPermissions,
@@ -579,6 +602,7 @@ return [
             ...$organisationTargetGroupPermissions,
             ...$organisationInstrumentPermissions,
             ...$organisationProviderPermissions,
+            ...$organisationExportPermissions
         ],
         'user-manager-organisation' => [
             ...$generalPermissions,
