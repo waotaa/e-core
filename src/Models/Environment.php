@@ -85,10 +85,14 @@ class Environment extends SearchableModel
         }
     }
 
-    public function getLogoUrlAttribute()
+    public function getLogoUrlAttribute(): ?string
     {
+        $organisation = $this->organisation;
+        if (is_null($organisation)) {
+            return null;
+        }
         return LogoStorageService::make()
-            ->setOrganisation($this->organisation)
+            ->setOrganisation($organisation)
             ->getFileUrl($this->attributes['logo']);
     }
 
