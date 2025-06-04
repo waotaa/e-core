@@ -26,7 +26,9 @@ class SyncForApi extends Command
         'weenerxl',
         'amsterdam',
         'orionis-walcheren',
-        'orionis-walcheren-acc'
+        'orionis-walcheren-acc',
+        'haaglanden',
+        'haaglanden-acc'
     ];
 
     public function handle(): int
