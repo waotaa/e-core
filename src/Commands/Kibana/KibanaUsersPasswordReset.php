@@ -10,7 +10,7 @@ class KibanaUsersPasswordReset extends Command
 {
     use EnvironmentArgumentTrait;
 
-    protected $signature = 'kibana:password-reset {environmentSlug}';
+    protected $signature = 'kibana:password-reset {environment}';
     protected $description = 'Reset passwords of kibana user';
 
     public function handle(): int
