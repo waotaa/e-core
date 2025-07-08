@@ -1,5 +1,7 @@
 <?php
 
+// TODO: Replace hardcoded slugs with a dynamic list from the environment repository
+
 namespace Vng\EvaCore\Commands\Elastic;
 
 use Illuminate\Console\Command;
@@ -29,6 +31,7 @@ class SyncForApi extends Command
         'orionis-walcheren-acc',
         'haaglanden',
         'haaglanden-acc',
+        'haaglanden-rmt',
         'west-brabant',
     ];
 
