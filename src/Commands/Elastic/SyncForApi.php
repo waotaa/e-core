@@ -25,13 +25,14 @@ class SyncForApi extends Command
     protected $description = 'Sync api entities to ES';
 
     protected $environmentSlugs = [
-        'weenerxl',
         'amsterdam',
-        'orionis-walcheren',
-        'orionis-walcheren-acc',
+        'den-haag',
+        'friesland',
         'haaglanden',
         'haaglanden-acc',
-        'haaglanden-rmt',
+        'orionis-walcheren',
+        'orionis-walcheren-acc',
+        'weenerxl',
         'west-brabant',
     ];
 
