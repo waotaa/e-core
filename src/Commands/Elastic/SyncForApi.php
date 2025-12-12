@@ -1,5 +1,7 @@
 <?php
 
+// TODO: Replace hardcoded slugs with a dynamic list from the environment repository
+
 namespace Vng\EvaCore\Commands\Elastic;
 
 use Illuminate\Console\Command;
@@ -23,12 +25,15 @@ class SyncForApi extends Command
     protected $description = 'Sync api entities to ES';
 
     protected $environmentSlugs = [
-        'weenerxl',
         'amsterdam',
+        'den-haag',
+        'friesland',
+        'haaglanden',
+        'haaglanden-acc',
         'orionis-walcheren',
         'orionis-walcheren-acc',
-        'haaglanden',
-        'haaglanden-acc'
+        'weenerxl',
+        'west-brabant',
     ];
 
     public function handle(): int
