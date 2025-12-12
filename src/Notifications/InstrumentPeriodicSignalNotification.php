@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 
-class PeriodicInstrumentUpdate extends Notification
+class InstrumentPeriodicSignalNotification extends Notification implements InstrumentPeriodicSignalNotificationInterface
 {
     use Queueable;
 
@@ -28,6 +28,11 @@ class PeriodicInstrumentUpdate extends Notification
     public function via($notifiable)
     {
         return ['mail'];
+    }
+
+    public static function notify($notifiable, Collection $trackers)
+    {
+        $notifiable->notify(new self($trackers));
     }
 
     /**

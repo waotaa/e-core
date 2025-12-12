@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 
-class DailyInstrumentSignalNotification extends Notification
+class InstrumentDailySignalNotification extends Notification implements InstrumentDailySignalNotificationInterface
 {
     use Queueable;
 
@@ -29,6 +29,11 @@ class DailyInstrumentSignalNotification extends Notification
     public function via($notifiable)
     {
         return ['mail'];
+    }
+
+    public static function notify($notifiable, Collection $trackers)
+    {
+        $notifiable->notify(new self($trackers));
     }
 
     /**

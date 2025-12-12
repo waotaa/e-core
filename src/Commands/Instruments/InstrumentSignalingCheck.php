@@ -4,7 +4,7 @@ namespace Vng\EvaCore\Commands\Instruments;
 
 use Illuminate\Console\Command;
 use Vng\EvaCore\Interfaces\IsInstrumentWatcherInterface;
-use Vng\EvaCore\Repositories\UserRepositoryInterface;
+use Vng\EvaCore\Repositories\ManagerRepositoryInterface;
 
 class InstrumentSignalingCheck extends Command
 {
@@ -28,7 +28,7 @@ class InstrumentSignalingCheck extends Command
      * @return void
      */
     public function __construct(
-        protected UserRepositoryInterface $userRepository
+        protected ManagerRepositoryInterface $managerRepository
     )
     {
         parent::__construct();
@@ -41,17 +41,28 @@ class InstrumentSignalingCheck extends Command
      */
     public function handle()
     {
+        $this->info('Starting instrument signaling check');
         $this->checkForNotifications();
+        $this->line('..done');
         return 0;
     }
 
+    /**
+     * Checks every manager with instrument trackers
+     * Direct trackers: expiration (of publication) and modification
+     * Periodic: expiration (of publication) and revision
+     *
+     * @return void
+     */
     public function checkForNotifications()
     {
-
-        $watchingUsers = $this->userRepository->builder()->whereHas('watchedInstruments')->get();
+        $watchingUsers = $this->managerRepository->builder()->whereHas('watchedInstruments')->get();
+        $this->line($watchingUsers->count() . ' with trackers found');
         $watchingUsers->each(function (IsInstrumentWatcherInterface $user) {
-            $user->notifyOfDirectSignals();
-            $user->notifyOfPeriodicSignals();
+            $directSignals = $user->notifyOfDirectSignals();
+            $periodicSignals = $user->notifyOfPeriodicSignals();
+            $userId = $user->id ?? 'unknown';
+            $this->line("user [{$userId}] - direct signals {$directSignals} - periodic signals {$periodicSignals}");
         });
     }
 }

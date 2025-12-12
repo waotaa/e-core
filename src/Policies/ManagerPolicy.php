@@ -19,11 +19,6 @@ class ManagerPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
-    private function hasManagingRelation(Manager $manager, Manager $targetManager)
-    {
-        return $manager->hasManagingRelation($targetManager);
-    }
-
     public function viewAny(IsManagerInterface $user)
     {
         return $user->managerCan('manager.viewAny');
@@ -194,7 +189,7 @@ class ManagerPolicy extends BasePolicy
         ) {
             return true;
         }
-        return $user->managerCan('manager.members');
+        return $user->managerCan('manager.assign-organisation');
     }
 
 
