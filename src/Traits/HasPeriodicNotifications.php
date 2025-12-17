@@ -86,11 +86,11 @@ trait HasPeriodicNotifications
 
     public function wantsWeeklyNotification()
     {
-        return NotificationFrequencyEnum::weekly()->equals($this->getAttribute('notification_frequecy'));
+        return NotificationFrequencyEnum::weekly()->equals($this->getAttribute('notification_frequency'));
     }
 
     public function wantsMonthlyNotification()
     {
-        return NotificationFrequencyEnum::monthly()->equals($this->getAttribute('notification_frequecy'));
+        return NotificationFrequencyEnum::monthly()->equals($this->getAttribute('notification_frequency'));
     }
 }

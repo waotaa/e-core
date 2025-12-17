@@ -103,10 +103,14 @@ use Vng\EvaCore\Commands\Setup\Setup;
 use Vng\EvaCore\Commands\Setup\SetupAuthorizationMatrix;
 use Vng\EvaCore\Commands\Setup\Update;
 use Vng\EvaCore\Http\Middleware\LogAsyncPayloadSize;
+use Vng\EvaCore\Notifications\InstrumentDailySignalNotification;
+use Vng\EvaCore\Notifications\InstrumentDailySignalNotificationInterface;
 use Vng\EvaCore\Notifications\InstrumentExpiredNotification;
 use Vng\EvaCore\Notifications\InstrumentExpiredNotificationInterface;
 use Vng\EvaCore\Notifications\InstrumentModifiedNotification;
 use Vng\EvaCore\Notifications\InstrumentModifiedNotificationInterface;
+use Vng\EvaCore\Notifications\InstrumentPeriodicSignalNotification;
+use Vng\EvaCore\Notifications\InstrumentPeriodicSignalNotificationInterface;
 use Vng\EvaCore\Notifications\RatingStoredNotification;
 use Vng\EvaCore\Notifications\RatingStoredNotificationInterface;
 use Vng\EvaCore\Repositories\AddressRepositoryInterface;
@@ -308,6 +312,9 @@ class EvaServiceProvider extends AggregateServiceProvider
     {
         parent::register();
         $this->bindRepositoryInterfaces();
+
+        $this->app->bind(InstrumentDailySignalNotificationInterface::class, InstrumentDailySignalNotification::class);
+        $this->app->bind(InstrumentPeriodicSignalNotificationInterface::class, InstrumentPeriodicSignalNotification::class);
 
         $this->app->bind(RatingStoredNotificationInterface::class, RatingStoredNotification::class);
         $this->app->bind(InstrumentExpiredNotificationInterface::class, InstrumentExpiredNotification::class);

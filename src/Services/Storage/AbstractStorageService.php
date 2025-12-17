@@ -46,7 +46,7 @@ abstract class AbstractStorageService
     {
         $originalFileName = $uploadedFile->getClientOriginalName();
         // The storage directory here does not have a name.
-        $filePath = $this->storeFile($uploadedFile);
+        $filePath = $this->storeFile($uploadedFile, $originalFileName);
 
         return new StoredFile($originalFileName, $filePath);
     }
