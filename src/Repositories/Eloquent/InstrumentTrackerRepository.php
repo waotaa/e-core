@@ -42,7 +42,7 @@ class InstrumentTrackerRepository extends BaseRepository implements InstrumentTr
         ]);
 
         if ($request->has('role')) {
-            $instrumentTracker->setAttribute('rol', $request->input('role'));
+            $instrumentTracker->setAttribute('role', $request->input('role'));
         }
 
         $instrumentTracker->instrument()->associate($request->input('instrument_id'));
